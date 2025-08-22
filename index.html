@@ -1,1285 +1,2404 @@
+
+<!-- Format URL Google Drive -->
+https://lh3.googleusercontent.com/d/[FILE_ID]
+
+<!-- Contoh penggunaan -->
+<img src="https://lh3.googleusercontent.com/d/1twkoCo04vePhKNFXn33SKaHj_-8D5iaf" 
+     alt="Gambar soal matematika">
+
+<!-- Copy image address dari Google Images -->
+<img src="https://example.com/image.jpg" 
+     alt="Deskripsi gambar"
+     onerror="this.style.display='none';">
+
+<!-- Upload ke Imgur lalu gunakan direct link -->
+<img src="https://i.imgur.com/example.jpg" 
+     alt="Gambar soal">
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EthnoMath - Game Kuis Kesebangunan</title>
+    <title>Ethnomath - Game Kesebangunan</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-        }
-        
-        .basketball {
-            width: 35px;
-            height: 35px;
-            background: linear-gradient(45deg, #ff8c00, #ffa500);
-            border-radius: 50%;
-            position: absolute;
-            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
-            transition: all 0.8s ease;
-            z-index: 10;
-            border: 2px solid #8b4513;
-        }
-        
-        .basketball::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 2px;
-            height: 100%;
-            background: #8b4513;
-        }
-        
-        .basketball::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 2px;
-            background: #8b4513;
-        }
-        
-        .basketball.shooting {
-            animation: basketShoot 2.5s ease-in-out;
-        }
-        
-        .basketball.scored {
-            animation: basketScore 1.5s ease-out;
-        }
-        
-        .basketball.missed {
-            animation: basketMiss 2s ease-out;
-        }
-        
-        @keyframes basketShoot {
-            0% { transform: translateY(0) translateX(0) scale(1) rotate(0deg); }
-            30% { transform: translateY(-120px) translateX(120px) scale(0.9) rotate(180deg); }
-            60% { transform: translateY(-160px) translateX(240px) scale(0.8) rotate(360deg); }
-            80% { transform: translateY(-140px) translateX(320px) scale(0.9) rotate(540deg); }
-            100% { transform: translateY(-130px) translateX(380px) scale(1) rotate(720deg); }
-        }
-        
-        @keyframes basketScore {
-            0% { transform: translateY(-130px) translateX(380px) scale(1); }
-            20% { transform: translateY(-125px) translateX(385px) scale(0.9); background: linear-gradient(45deg, #32cd32, #00ff00); }
-            40% { transform: translateY(-120px) translateX(390px) scale(0.8); }
-            60% { transform: translateY(-100px) translateX(395px) scale(0.7); }
-            80% { transform: translateY(-60px) translateX(400px) scale(0.6); }
-            100% { transform: translateY(20px) translateX(405px) scale(0.4); opacity: 0; }
-        }
-        
-        @keyframes basketMiss {
-            0% { transform: translateY(-130px) scale(1) rotate(720deg); }
-            30% { transform: translateY(-120px) translateX(420px) scale(0.9) rotate(900deg); }
-            60% { transform: translateY(-80px) translateX(450px) scale(0.8) rotate(1080deg); }
-            100% { transform: translateY(150px) translateX(480px) scale(0.5) rotate(1260deg); opacity: 0; }
-        }
-        
-        .player {
-            width: 70px;
-            height: 90px;
-            position: absolute;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
-        
-        .player-avatar {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: white;
-            margin-bottom: 5px;
-            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
-            border: 3px solid #fff;
-        }
-        
-        .player-name {
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-align: center;
-            color: #1f2937;
-            background: rgba(255,255,255,0.95);
-            padding: 3px 8px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .player.shooting .player-avatar {
-            animation: playerShoot 0.8s ease-out;
-        }
-        
-        .player.celebrating .player-avatar {
-            animation: playerCelebrate 1.5s ease-out;
-        }
-        
-        .player.disappointed .player-avatar {
-            animation: playerDisappointed 1s ease-out;
-        }
-        
-        @keyframes playerShoot {
-            0% { transform: scale(1) translateY(0); }
-            40% { transform: scale(1.1) translateY(-15px); }
-            70% { transform: scale(1.05) translateY(-8px); }
-            100% { transform: scale(1) translateY(0); }
-        }
-        
-        @keyframes playerCelebrate {
-            0% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.2) rotate(-10deg) translateY(-10px); }
-            50% { transform: scale(1.3) rotate(10deg) translateY(-15px); }
-            75% { transform: scale(1.2) rotate(-5deg) translateY(-10px); }
-            100% { transform: scale(1) rotate(0deg) translateY(0); }
-        }
-        
-        @keyframes playerDisappointed {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.9) translateY(8px); }
-            100% { transform: scale(1) translateY(0); }
-        }
-        
-        .basketball-court {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffd700 100%);
-            border-radius: 20px;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { 
+            font-family: 'Poppins', sans-serif; 
             position: relative;
-            overflow: hidden;
-            border: 4px solid #8b4513;
+            overflow-x: hidden;
         }
         
-        .basketball-court::before {
+        .gradient-bg { 
+            background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 25%, #45B7D1 50%, #96CEB4 75%, #FFEAA7 100%);
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        .gradient-bg::before {
             content: '';
-            position: absolute;
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%), 
-                        linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%);
-            background-size: 30px 30px;
-            background-position: 0 0, 15px 15px;
-            opacity: 0.3;
-        }
-        
-        .basketball-hoop {
-            position: absolute;
-            width: 80px;
-            height: 60px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .hoop-rim {
-            width: 60px;
-            height: 8px;
-            background: linear-gradient(to bottom, #ff4500, #ff6347);
-            border-radius: 50px;
-            border: 2px solid #8b0000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            position: relative;
-        }
-        
-        .hoop-net {
-            width: 50px;
-            height: 40px;
-            border-left: 2px solid #fff;
-            border-right: 2px solid #fff;
-            border-bottom: 2px solid #fff;
-            border-radius: 0 0 25px 25px;
-            position: relative;
-            margin-top: -2px;
-        }
-        
-        .hoop-net::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
+            width: 100%;
             height: 100%;
-            background: #fff;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%2387CEEB;stop-opacity:1" /><stop offset="50%" style="stop-color:%23B0E0E6;stop-opacity:1" /><stop offset="100%" style="stop-color:%23E0F6FF;stop-opacity:1" /></linearGradient><linearGradient id="riverGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:%234682B4;stop-opacity:1" /><stop offset="50%" style="stop-color:%235F9EA0;stop-opacity:1" /><stop offset="100%" style="stop-color:%234682B4;stop-opacity:1" /></linearGradient><linearGradient id="roofGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23D2691E;stop-opacity:1" /><stop offset="100%" style="stop-color:%23A0522D;stop-opacity:1" /></linearGradient><linearGradient id="wallGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23F4A460;stop-opacity:1" /><stop offset="100%" style="stop-color:%23DEB887;stop-opacity:1" /></linearGradient><linearGradient id="bridgeGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23708090;stop-opacity:1" /><stop offset="100%" style="stop-color:%23556B2F;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23skyGrad)"/><ellipse cx="150" cy="80" rx="70" ry="30" fill="white" opacity="0.9"/><ellipse cx="400" cy="60" rx="90" ry="35" fill="white" opacity="0.8"/><ellipse cx="800" cy="90" rx="60" ry="25" fill="white" opacity="0.85"/><ellipse cx="1000" cy="70" rx="80" ry="30" fill="white" opacity="0.8"/><rect x="0" y="650" width="1200" height="150" fill="url(%23riverGrad)" opacity="0.8"/><path d="M0 650 Q300 640 600 650 Q900 660 1200 650 L1200 800 L0 800 Z" fill="url(%23riverGrad)" opacity="0.6"/><rect x="200" y="620" width="800" height="8" fill="url(%23bridgeGrad)" rx="4"/><rect x="180" y="615" width="20" height="40" fill="url(%23bridgeGrad)"/><rect x="1000" y="615" width="20" height="40" fill="url(%23bridgeGrad)"/><rect x="400" y="610" width="15" height="50" fill="url(%23bridgeGrad)"/><rect x="600" y="610" width="15" height="50" fill="url(%23bridgeGrad)"/><rect x="800" y="610" width="15" height="50" fill="url(%23bridgeGrad)"/><path d="M150 400 L350 380 L380 320 L360 300 L340 290 L160 290 L140 300 L120 320 Z" fill="url(%23roofGrad)"/><path d="M160 380 L340 380 L340 500 L160 500 Z" fill="url(%23wallGrad)"/><rect x="170" y="400" width="12" height="100" fill="%23654321"/><rect x="200" y="400" width="12" height="100" fill="%23654321"/><rect x="230" y="400" width="12" height="100" fill="%23654321"/><rect x="300" y="400" width="12" height="100" fill="%23654321"/><rect x="320" y="400" width="12" height="100" fill="%23654321"/><rect x="190" y="420" width="60" height="80" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="270" y="430" width="50" height="70" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><path d="M600 420 L800 400 L830 340 L810 320 L790 310 L610 310 L590 320 L570 340 Z" fill="url(%23roofGrad)"/><path d="M610 400 L790 400 L790 520 L610 520 Z" fill="url(%23wallGrad)"/><rect x="620" y="420" width="12" height="100" fill="%23654321"/><rect x="650" y="420" width="12" height="100" fill="%23654321"/><rect x="680" y="420" width="12" height="100" fill="%23654321"/><rect x="750" y="420" width="12" height="100" fill="%23654321"/><rect x="770" y="420" width="12" height="100" fill="%23654321"/><rect x="640" y="440" width="70" height="80" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="720" y="450" width="50" height="70" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><ellipse cx="100" cy="550" rx="40" ry="60" fill="%2332CD32"/><ellipse cx="120" cy="540" rx="35" ry="55" fill="%2328A745"/><ellipse cx="80" cy="560" rx="30" ry="50" fill="%2334CE57"/><ellipse cx="500" cy="570" rx="45" ry="65" fill="%2332CD32"/><ellipse cx="520" cy="560" rx="40" ry="60" fill="%2328A745"/><ellipse cx="480" cy="580" rx="35" ry="55" fill="%2334CE57"/><ellipse cx="900" cy="540" rx="50" ry="70" fill="%2332CD32"/><ellipse cx="920" cy="530" rx="45" ry="65" fill="%2328A745"/><ellipse cx="880" cy="550" rx="40" ry="60" fill="%2334CE57"/><ellipse cx="1100" cy="560" rx="40" ry="60" fill="%2332CD32"/><ellipse cx="1120" cy="550" rx="35" ry="55" fill="%2328A745"/><path d="M400 350 Q450 330 500 350 Q550 370 600 350 Q650 330 700 350" stroke="%23FFD700" stroke-width="3" fill="none" opacity="0.9"/><circle cx="420" cy="360" r="6" fill="%23FFD700" opacity="0.8"/><circle cx="480" cy="365" r="5" fill="%23FFD700" opacity="0.8"/><circle cx="580" cy="355" r="7" fill="%23FFD700" opacity="0.8"/><circle cx="680" cy="362" r="5" fill="%23FFD700" opacity="0.8"/><rect x="50" y="600" width="100" height="50" rx="25" fill="%2332CD32" opacity="0.7"/><rect x="300" y="620" width="80" height="40" rx="20" fill="%2328A745" opacity="0.7"/><rect x="1000" y="610" width="120" height="45" rx="22" fill="%2334CE57" opacity="0.7"/></svg>');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            opacity: 0.4;
+            z-index: -2;
+            pointer-events: none;
         }
         
-        .hoop-backboard {
-            width: 70px;
-            height: 50px;
-            background: linear-gradient(to bottom, #f0f0f0, #d0d0d0);
-            border: 3px solid #333;
-            border-radius: 5px;
-            position: absolute;
-            top: -25px;
-            right: -5px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-        
-        .hoop-backboard::after {
+        .gradient-bg::after {
             content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 25px;
-            height: 18px;
-            border: 2px solid #ff4500;
-            border-radius: 3px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, 
+                rgba(139, 69, 19, 0.3) 0%, 
+                rgba(160, 82, 45, 0.2) 30%, 
+                rgba(210, 180, 140, 0.1) 60%, 
+                transparent 100%);
+            z-index: -1;
+            pointer-events: none;
         }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
+        .card-shadow { 
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3), 0 5px 15px rgba(78, 205, 196, 0.2); 
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
+        .pulse-animation { animation: pulse 2s infinite; }
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
         
-        .celebration {
-            animation: celebration 2s ease-in-out;
+        /* Basketball Animation Styles */
+        .basketball-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.1);
         }
         
-        @keyframes celebration {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.1) rotate(-5deg); }
-            75% { transform: scale(1.1) rotate(5deg); }
-        }
-        
-        .swish-effect {
+        .basketball-court {
             position: absolute;
-            top: 120px;
-            right: 70px;
-            color: #32cd32;
-            font-size: 2rem;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, 
+                #87CEEB 0%, 
+                #B0E0E6 40%, 
+                #98FB98 70%, 
+                #228B22 85%, 
+                #006400 100%);
+            perspective: 1000px;
+        }
+        
+        .court-floor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(45deg, #8B4513 25%, #A0522D 25%, #A0522D 50%, #8B4513 50%, #8B4513 75%, #A0522D 75%);
+            background-size: 20px 20px;
+            opacity: 0.8;
+        }
+        
+        .court-lines {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            border-top: 3px solid #fff;
+        }
+        
+        .court-lines::before {
+            content: '';
+            position: absolute;
+            bottom: 50%;
+            left: 20%;
+            width: 60%;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
+        }
+        
+        .basketball-hoop {
+            position: absolute;
+            right: 60px;
+            top: 60px;
+            width: 100px;
+            height: 80px;
+            transform: perspective(500px) rotateY(-15deg);
+        }
+        
+        .hoop-pole {
+            position: absolute;
+            right: 30px;
+            top: 40px;
+            width: 6px;
+            height: 60px;
+            background: linear-gradient(to right, #666, #999, #666);
+            border-radius: 3px;
+        }
+        
+        .hoop-backboard {
+            width: 70px;
+            height: 50px;
+            background: linear-gradient(135deg, #f8f8f8, #e0e0e0, #f8f8f8);
+            border: 4px solid #333;
+            border-radius: 8px;
+            position: absolute;
+            right: 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .backboard-square {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 30px;
+            height: 20px;
+            border: 2px solid #ff0000;
+            border-radius: 2px;
+        }
+        
+        .hoop-rim {
+            position: absolute;
+            bottom: -12px;
+            right: 8px;
+            width: 55px;
+            height: 12px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .rim-front {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(to bottom, #ff8800, #cc5500);
+            border-radius: 50px 50px 0 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .rim-back {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(to bottom, #cc5500, #994400);
+            border-radius: 0 0 50px 50px;
+        }
+        
+        .hoop-net {
+            position: absolute;
+            bottom: -35px;
+            right: 13px;
+            width: 45px;
+            height: 30px;
+        }
+        
+        .net-strand {
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, #fff, #f0f0f0, #fff);
+            border-radius: 1px;
+            animation: netSway 3s ease-in-out infinite;
+        }
+        
+        @keyframes netSway {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(2deg); }
+        }
+        
+        @keyframes netSwaySuccess {
+            0% { transform: rotate(0deg); }
+            20% { transform: rotate(8deg) scale(1.1); }
+            40% { transform: rotate(-6deg) scale(1.05); }
+            60% { transform: rotate(4deg) scale(1.02); }
+            80% { transform: rotate(-2deg) scale(1.01); }
+            100% { transform: rotate(0deg) scale(1); }
+        }
+        
+        .player {
+            position: absolute;
+            left: 80px;
+            bottom: 40px;
+            width: 70px;
+            height: 100px;
+            transition: all 0.5s ease;
+            transform-origin: bottom center;
+        }
+        
+        .player-shadow {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 8px;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.3), transparent);
+            border-radius: 50%;
+        }
+        
+        .player-legs {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 35px;
+        }
+        
+        .player-leg {
+            position: absolute;
+            bottom: 0;
+            width: 12px;
+            height: 35px;
+            background: linear-gradient(to right, #8B4513, #A0522D);
+            border-radius: 6px;
+        }
+        
+        .player-leg.left {
+            left: 8px;
+        }
+        
+        .player-leg.right {
+            right: 8px;
+        }
+        
+        .player-body {
+            width: 35px;
+            height: 45px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            border-radius: 18px 18px 8px 8px;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        .jersey-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
             font-weight: bold;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .player-head {
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle at 30% 30%, #f4c2a1, #d4a574);
+            border-radius: 50%;
+            position: absolute;
+            top: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .player-face {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 15px;
+        }
+        
+        .eye {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #333;
+            border-radius: 50%;
+            top: 2px;
+        }
+        
+        .eye.left {
+            left: 4px;
+        }
+        
+        .eye.right {
+            right: 4px;
+        }
+        
+        .mouth {
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 3px;
+            border: 1px solid #333;
+            border-top: none;
+            border-radius: 0 0 6px 6px;
+        }
+        
+        .player-hair {
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 15px;
+            background: #2d1810;
+            border-radius: 50% 50% 0 0;
+        }
+        
+        .player-arms {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+        }
+        
+        .player-arm {
+            width: 18px;
+            height: 35px;
+            background: linear-gradient(to right, #f4c2a1, #d4a574);
+            border-radius: 12px;
+            position: absolute;
+            transition: all 0.3s ease;
+            transform-origin: top center;
+        }
+        
+        .player-arm.left {
+            left: 0;
+        }
+        
+        .player-arm.right {
+            right: 0;
+        }
+        
+        .hand {
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 12px;
+            background: radial-gradient(circle, #f4c2a1, #d4a574);
+            border-radius: 50%;
+        }
+        
+        .basketball {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: radial-gradient(circle at 30% 30%, #ff8800, #cc5500);
+            border-radius: 50%;
+            left: 90px;
+            bottom: 100px;
+            transition: none;
+            z-index: 10;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .ball-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+        }
+        
+        .ball-line {
+            position: absolute;
+            background: #333;
+            border-radius: 1px;
+        }
+        
+        .ball-line.horizontal {
+            top: 50%;
+            left: 10%;
+            width: 80%;
+            height: 2px;
+            transform: translateY(-50%);
+        }
+        
+        .ball-line.vertical {
+            left: 50%;
+            top: 10%;
+            width: 2px;
+            height: 80%;
+            transform: translateX(-50%);
+        }
+        
+        .ball-line.curve1 {
+            top: 20%;
+            left: 20%;
+            width: 60%;
+            height: 2px;
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+        
+        .ball-line.curve2 {
+            top: 20%;
+            left: 20%;
+            width: 60%;
+            height: 2px;
+            border-radius: 50%;
+            transform: rotate(-45deg);
+        }
+        
+        .ball-shadow {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 25px;
+            height: 8px;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.4), transparent);
+            border-radius: 50%;
+            transition: none;
+        }
+        
+        .score-effect {
+            position: absolute;
+            top: 50px;
+            right: 100px;
             opacity: 0;
-            animation: swishText 2s ease-out;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+        
+        .score-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+        }
+        
+        .score-stars {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .star {
+            font-size: 16px;
+            animation: starTwinkle 0.6s ease-in-out infinite alternate;
+        }
+        
+        .star:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .star:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes starTwinkle {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.2) rotate(180deg); }
+        }
+        
+        /* Animation Classes */
+        .shooting {
+            transform: rotate(-20deg);
+        }
+        
+        .shooting .player-arm.right {
+            transform: rotate(-45deg);
+        }
+        
+        .shooting .player-arm.left {
+            transform: rotate(-30deg);
+        }
+        
+
+        
+        .celebration {
+            animation: celebrate 1s ease-in-out;
+        }
+        
+        .disappointment {
+            animation: disappoint 1s ease-in-out;
+        }
+        
+        @keyframes celebrate {
+            0%, 100% { transform: translateY(0); }
+            25% { transform: translateY(-10px) rotate(5deg); }
+            75% { transform: translateY(-5px) rotate(-5deg); }
+        }
+        
+        @keyframes disappoint {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(5px) rotate(2deg); }
+        }
+        
+        /* Miss Animation Effects */
+        .miss-effect {
+            position: absolute;
+            top: 80px;
+            right: 120px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+            z-index: 15;
+        }
+        
+        .miss-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff4444;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 5px;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        .miss-icons {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .miss-icon {
+            font-size: 16px;
+            animation: bounce 0.6s ease-in-out infinite alternate;
+        }
+        
+        .miss-icon:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .miss-icon:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        @keyframes bounce {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-10px) scale(1.2); }
+        }
+        
+        /* Rim shake animation for misses */
+        .rim-shake {
+            animation: rimShake 0.8s ease-in-out;
+        }
+        
+        @keyframes rimShake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+            20%, 40%, 60%, 80% { transform: translateX(2px); }
+        }
+        
+        /* Ball bounce effects */
+        .ball-bounce-1 {
+            animation: ballBounce1 0.6s ease-out;
+        }
+        
+        .ball-bounce-2 {
+            animation: ballBounce2 0.4s ease-out;
+        }
+        
+        .ball-bounce-3 {
+            animation: ballBounce3 0.3s ease-out;
+        }
+        
+        @keyframes ballBounce1 {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(0.95); }
+        }
+        
+        @keyframes ballBounce2 {
+            0% { transform: rotate(0deg) scale(0.95); }
+            50% { transform: rotate(90deg) scale(1.05); }
+            100% { transform: rotate(180deg) scale(0.9); }
+        }
+        
+        @keyframes ballBounce3 {
+            0% { transform: rotate(0deg) scale(0.9); }
+            50% { transform: rotate(45deg) scale(1); }
+            100% { transform: rotate(90deg) scale(0.85); }
+        }
+        
+        /* Success celebration effects */
+        .success-celebration {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
             z-index: 20;
         }
         
-        @keyframes swishText {
-            0% { opacity: 0; transform: scale(0.5) translateY(20px); }
-            30% { opacity: 1; transform: scale(1.2) translateY(-10px); }
-            70% { opacity: 1; transform: scale(1) translateY(-20px); }
-            100% { opacity: 0; transform: scale(0.8) translateY(-40px); }
+        .celebration-text {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: celebrationPulse 1s ease-in-out;
         }
         
-        .music-visualizer {
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-            margin-left: 8px;
+        @keyframes celebrationPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
         
-        .music-bar {
-            width: 3px;
-            height: 12px;
-            background: #fff;
-            border-radius: 2px;
-            animation: musicBounce 1s ease-in-out infinite;
+        /* Audio controls */
+        .audio-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
         }
         
-        .music-bar:nth-child(2) { animation-delay: 0.1s; }
-        .music-bar:nth-child(3) { animation-delay: 0.2s; }
-        .music-bar:nth-child(4) { animation-delay: 0.3s; }
+        .audio-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid rgba(218, 165, 32, 0.5);
+            background: linear-gradient(135deg, #D2691E 0%, #8B4513 100%);
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
         
-        @keyframes musicBounce {
-            0%, 100% { transform: scaleY(0.3); }
-            50% { transform: scaleY(1); }
+        .audio-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+            background: linear-gradient(135deg, #F4A460 0%, #D2691E 100%);
+        }
+        
+        .audio-btn.muted {
+            background: linear-gradient(135deg, #CD853F 0%, #A0522D 100%);
+            border-color: rgba(160, 82, 45, 0.5);
+        }
+
+        /* Reward Animation Styles */
+        .reward-sparkle {
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
+        }
+        
+        .reward-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .reward-glow {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
+            to { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.6); }
         }
     </style>
 </head>
-<body class="min-h-screen relative">
-    <!-- Background SVG -->
-    <div class="fixed inset-0 z-0">
-        <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" class="w-full h-full object-cover">
-            <!-- Sky Gradient -->
-            <defs>
-                <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
-                    <stop offset="70%" style="stop-color:#FFE4B5;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
-                </linearGradient>
-                <linearGradient id="riverGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" style="stop-color:#4682B4;stop-opacity:1" />
-                    <stop offset="100%" style="stop-color:#2F4F4F;stop-opacity:1" />
-                </linearGradient>
-            </defs>
-            
-            <!-- Sky -->
-            <rect width="1200" height="800" fill="url(#skyGradient)"/>
-            
-            <!-- Mountains/Hills in background -->
-            <path d="M0,300 Q200,250 400,280 T800,260 L1200,280 L1200,800 L0,800 Z" fill="#228B22" opacity="0.3"/>
-            
-            <!-- Traditional Pontianak Houses -->
-            <!-- House 1 -->
-            <g>
-                <!-- House base -->
-                <rect x="100" y="400" width="200" height="150" fill="#D2691E" stroke="#A0522D" stroke-width="2"/>
-                <!-- Roof -->
-                <polygon points="80,400 200,300 320,400" fill="#B22222" stroke="#800000" stroke-width="2"/>
-                <!-- Door -->
-                <rect x="140" y="480" width="30" height="70" fill="#654321"/>
-                <!-- Windows -->
-                <rect x="180" y="430" width="40" height="40" fill="#87CEEB" stroke="#000" stroke-width="1"/>
-                <rect x="120" y="430" width="40" height="40" fill="#87CEEB" stroke="#000" stroke-width="1"/>
-                <!-- Stilts/Pillars -->
-                <rect x="120" y="550" width="8" height="50" fill="#8B4513"/>
-                <rect x="160" y="550" width="8" height="50" fill="#8B4513"/>
-                <rect x="200" y="550" width="8" height="50" fill="#8B4513"/>
-                <rect x="240" y="550" width="8" height="50" fill="#8B4513"/>
-            </g>
-            
-            <!-- House 2 -->
-            <g>
-                <rect x="400" y="380" width="180" height="170" fill="#DEB887" stroke="#A0522D" stroke-width="2"/>
-                <polygon points="380,380 490,280 600,380" fill="#B22222" stroke="#800000" stroke-width="2"/>
-                <rect x="440" y="460" width="25" height="60" fill="#654321"/>
-                <rect x="500" y="410" width="35" height="35" fill="#87CEEB" stroke="#000" stroke-width="1"/>
-                <rect x="540" y="450" width="35" height="35" fill="#87CEEB" stroke="#000" stroke-width="1"/>
-                <!-- Stilts -->
-                <rect x="420" y="550" width="8" height="50" fill="#8B4513"/>
-                <rect x="460" y="550" width="8" height="50" fill="#8B4513"/>
-                <rect x="500" y="550" width="8" height="50" fill="#8B4513"/>
-                <rect x="540" y="550" width="8" height="50" fill="#8B4513"/>
-            </g>
-            
-            <!-- House 3 -->
-            <g>
-                <rect x="700" y="420" width="160" height="130" fill="#F4A460" stroke="#A0522D" stroke-width="2"/>
-                <polygon points="680,420 780,320 880,420" fill="#B22222" stroke="#800000" stroke-width="2"/>
-                <rect x="730" y="480" width="25" height="50" fill="#654321"/>
-                <rect x="800" y="450" width="30" height="30" fill="#87CEEB" stroke="#000" stroke-width="1"/>
-                <!-- Stilts -->
-                <rect x="720" y="550" width="8" height="50" fill="#8B4513"/>
-                <rect x="760" y="550" width="8" height="50" fill="#8B4513"/>
-                <rect x="820" y="550" width="8" height="50" fill="#8B4513"/>
-            </g>
-            
-            <!-- Trees and vegetation -->
-            <ellipse cx="150" cy="380" rx="30" ry="50" fill="#006400"/>
-            <ellipse cx="350" cy="370" rx="25" ry="45" fill="#228B22"/>
-            <ellipse cx="650" cy="390" rx="35" ry="55" fill="#006400"/>
-            <ellipse cx="950" cy="380" rx="30" ry="50" fill="#228B22"/>
-            <ellipse cx="50" cy="400" rx="20" ry="40" fill="#006400"/>
-            <ellipse cx="1100" cy="390" rx="25" ry="45" fill="#228B22"/>
-            
-            <!-- Ground/Grass -->
-            <rect x="0" y="600" width="1200" height="50" fill="#228B22"/>
-            
-            <!-- Kapuas River -->
-            <path d="M0,650 Q300,630 600,650 T1200,650 L1200,800 L0,800 Z" fill="url(#riverGradient)"/>
-            
-            <!-- River reflections -->
-            <ellipse cx="200" cy="720" rx="80" ry="15" fill="#87CEEB" opacity="0.3"/>
-            <ellipse cx="490" cy="710" rx="90" ry="12" fill="#87CEEB" opacity="0.3"/>
-            <ellipse cx="780" cy="725" rx="70" ry="10" fill="#87CEEB" opacity="0.3"/>
-            
-            <!-- Boats on river -->
-            <ellipse cx="300" cy="680" rx="25" ry="8" fill="#8B4513"/>
-            <ellipse cx="800" cy="690" rx="30" ry="10" fill="#654321"/>
-            
-            <!-- Clouds -->
-            <ellipse cx="200" cy="100" rx="40" ry="25" fill="#FFFFFF" opacity="0.8"/>
-            <ellipse cx="220" cy="90" rx="35" ry="20" fill="#FFFFFF" opacity="0.8"/>
-            <ellipse cx="600" cy="80" rx="50" ry="30" fill="#FFFFFF" opacity="0.7"/>
-            <ellipse cx="630" cy="70" rx="40" ry="25" fill="#FFFFFF" opacity="0.7"/>
-            <ellipse cx="1000" cy="120" rx="45" ry="28" fill="#FFFFFF" opacity="0.6"/>
-        </svg>
-        
-        <!-- Dark overlay for better text readability -->
-        <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+<body class="gradient-bg min-h-screen">
+    <!-- Audio Controls -->
+    <div class="audio-controls">
+        <button id="musicToggle" class="audio-btn" onclick="toggleMusic()" title="Toggle Background Music">
+            🎵
+        </button>
+        <button id="volumeToggle" class="audio-btn" onclick="toggleVolume()" title="Toggle Volume">
+            🔊
+        </button>
     </div>
     
-    <!-- Content wrapper -->
-    <div class="relative z-10">
-    <!-- Audio Elements -->
-    <audio id="backgroundMusic" loop preload="auto" volume="0.3">
-        <!-- Menggunakan link audio yang dapat diakses -->
+    <!-- Host Panel Button (Bottom Right Corner) -->
+    <div class="fixed bottom-4 right-4 z-50">
+        <button onclick="showHostLogin()" class="w-12 h-12 bg-gradient-to-r from-orange-700 to-red-800 hover:from-orange-800 hover:to-red-900 text-white rounded-full font-medium transition-all duration-300 shadow-lg border-2 border-orange-400 hover:scale-110" title="Panel Host">
+            👨‍💼
+        </button>
+    </div>
+    
+    <!-- Background Music -->
+    <audio id="backgroundMusic" loop autoplay>
         <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
-        <source src="https://actions.google.com/sounds/v1/alarms/bugle_tune.ogg" type="audio/ogg">
-        <!-- Fallback untuk musik game -->
-        <source src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-one/zapsplat_multimedia_game_sound_bright_positive_musical_tone_001_19735.mp3" type="audio/mpeg">
+        <!-- Fallback to a more accessible background music -->
     </audio>
     
-    <audio id="correctSound" preload="auto" volume="0.5">
-        <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg">
-        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+    <!-- YouTube Background Music (Hidden) -->
+    <div id="youtubePlayer" style="display: none;"></div>
+    
+    <!-- Sound Effects -->
+    <audio id="successSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
     </audio>
     
-    <audio id="wrongSound" preload="auto" volume="0.4">
-        <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" type="audio/ogg">
-        <source src="https://www.soundjay.com/misc/sounds/fail-buzzer-02.wav" type="audio/wav">
+    <audio id="missSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm1QIBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
     </audio>
-    
     <!-- Opening Screen -->
     <div id="openingScreen" class="min-h-screen flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-2xl w-full text-center fade-in">
-            <div class="mb-8">
-                <div class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
-                    <span class="text-6xl">🎓</span>
+        <div class="bg-white rounded-3xl p-8 text-center card-shadow max-w-md w-full">
+            <div class="mb-6">
+                <div class="w-24 h-24 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-white shadow-2xl animate-pulse">
+                    <span class="text-white text-3xl font-bold">📐</span>
                 </div>
-                <h1 class="text-4xl font-bold text-gray-800 mb-2">EthnoMath</h1>
-                <p class="text-xl text-gray-600 mb-6">Game Kuis Matematika Kesebangunan</p>
-            </div>
-            
-            <div class="bg-gray-50 rounded-2xl p-6 mb-8">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">👨‍🏫</h2>
-                <div class="flex items-center justify-center space-x-4">
-                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
-                        <span class="text-2xl text-white">👨‍💻</span>
-                    </div>
-                    <div class="text-left">
-                        <h3 class="font-semibold text-gray-800">Guru Matematika</h3>
-                        <p class="text-gray-600">Ethnomath Kesebangunan</p>
-                        <p class="text-sm text-gray-500">by Veni Siswiandini</p>
-                    </div>
+                <h1 class="text-4xl font-bold text-white mb-2 drop-shadow-lg">Ethnomath</h1>
+                <p class="text-white text-lg mb-4 drop-shadow-md">Game Kuis Kesebangunan</p>
+                <div class="bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl p-4 mb-6 border-2 border-white shadow-lg">
+                    <p class="text-sm text-white font-medium">Dibuat oleh:</p>
+                    <p class="text-xl font-bold text-yellow-200">Veni Siswiandini</p>
                 </div>
             </div>
-            
-            <div class="space-y-4">
-                <button onclick="showMaterial()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    📚 Pelajari Materi Kesebangunan
+            <div class="space-y-3">
+                <button onclick="showMaterial()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-4 px-6 rounded-2xl font-bold transition-all duration-300 shadow-xl border-3 border-white transform hover:scale-105 hover:shadow-2xl">
+                    📚 Lihat Materi
                 </button>
-                <button onclick="showRoleSelection()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                <button onclick="showPlayerJoin()" class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white py-4 px-6 rounded-2xl font-bold transition-all duration-300 shadow-xl border-3 border-white transform hover:scale-105 hover:shadow-2xl">
                     🎮 Mulai Bermain
                 </button>
+
             </div>
         </div>
     </div>
-    
-    <!-- Role Selection Screen -->
-    <div id="roleSelection" class="min-h-screen flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center fade-in">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Pilih Peran Anda</h2>
-            <div class="space-y-4">
-                <button onclick="showPlayerLogin()" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    👨‍🎓 Masuk sebagai Pemain
-                </button>
-                <button onclick="showHostLogin()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    👨‍🏫 Masuk sebagai Host
-                </button>
-                <button onclick="showOpeningScreen()" class="w-full bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
-                    ← Kembali
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Player Login Screen -->
-    <div id="playerLogin" class="min-h-screen flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center fade-in">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Masuk sebagai Pemain</h2>
-            <div class="space-y-4">
-                <input type="text" id="playerName" placeholder="Masukkan nama Anda" class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-lg">
-                <button onclick="startGame()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    🎮 Mulai Game
-                </button>
-                <button onclick="showRoleSelection()" class="w-full bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
-                    ← Kembali
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Host Login Screen -->
-    <div id="hostLogin" class="min-h-screen flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center fade-in">
-            <h2 class="text-3xl font-bold text-gray-800 mb-8">Panel Host</h2>
-            <div class="space-y-4">
-                <input type="password" id="hostPassword" placeholder="Masukkan password host" class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-orange-500 focus:outline-none text-lg">
-                <button onclick="loginHost()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    🔑 Masuk sebagai Host
-                </button>
-                <button onclick="showRoleSelection()" class="w-full bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
-                    ← Kembali
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Host Dashboard -->
-    <div id="hostDashboard" class="min-h-screen p-4 hidden">
-        <div class="max-w-6xl mx-auto">
-            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-6">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">🎯 Dashboard Host EthoMath</h2>
-                <div class="grid md:grid-cols-3 gap-6">
-                    <div class="bg-blue-50 p-6 rounded-2xl">
-                        <h3 class="text-xl font-semibold text-blue-800 mb-2">👥 Pemain Aktif</h3>
-                        <p class="text-3xl font-bold text-blue-600" id="activePlayersCount">0</p>
-                    </div>
-                    <div class="bg-green-50 p-6 rounded-2xl">
-                        <h3 class="text-xl font-semibold text-green-800 mb-2">🎮 Game Dimainkan</h3>
-                        <p class="text-3xl font-bold text-green-600" id="gamesPlayedCount">0</p>
-                    </div>
-                    <div class="bg-purple-50 p-6 rounded-2xl">
-                        <h3 class="text-xl font-semibold text-purple-800 mb-2">⭐ Rata-rata Skor</h3>
-                        <p class="text-3xl font-bold text-purple-600" id="averageScore">0</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="bg-white rounded-3xl shadow-2xl p-8">
-                <h3 class="text-2xl font-bold text-gray-800 mb-6">📊 Leaderboard Real-time</h3>
-                <div id="hostLeaderboard" class="space-y-3">
-                    <p class="text-gray-500 text-center py-8">Belum ada data pemain</p>
-                </div>
-            </div>
-            
-            <div class="mt-6 text-center">
-                <button onclick="showRoleSelection()" class="bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
-                    ← Kembali ke Menu
-                </button>
-            </div>
-        </div>
-    </div>
-    
+
     <!-- Material Screen -->
-    <div id="materialScreen" class="min-h-screen p-4 hidden">
+    <div id="materialScreen" class="hidden min-h-screen p-4">
         <div class="max-w-4xl mx-auto">
-            <div class="bg-white rounded-3xl shadow-2xl p-8 fade-in">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">📐 Materi Kesebangunan</h2>
+            <div class="bg-white rounded-3xl p-8 card-shadow">
+                <button onclick="showOpening()" class="mb-6 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
+                    ← Kembali
+                </button>
+                <h2 class="text-4xl font-bold text-center mb-8 text-white drop-shadow-lg">📐 Materi Kesebangunan</h2>
                 
-                <div class="space-y-8">
-                    <div class="bg-blue-50 p-6 rounded-2xl">
-                        <h3 class="text-2xl font-semibold text-blue-800 mb-4">🔍 Apa itu Kesebangunan?</h3>
-                        <p class="text-gray-700 leading-relaxed mb-4">
-                            Kesebangunan adalah konsep dalam geometri dimana dua bangun datar memiliki bentuk yang sama tetapi ukurannya berbeda. 
-                            Bangun-bangun yang sebangun memiliki sudut-sudut yang bersesuaian sama besar dan sisi-sisi yang bersesuaian sebanding.
-                        </p>
-                    </div>
-                    
-                    <div class="bg-green-50 p-6 rounded-2xl">
-                        <h3 class="text-2xl font-semibold text-green-800 mb-4">📏 Ciri-ciri Bangun Sebangun</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-2">
-                            <li>Sudut-sudut yang bersesuaian sama besar</li>
-                            <li>Sisi-sisi yang bersesuaian sebanding</li>
-                            <li>Perbandingan sisi-sisi yang bersesuaian sama (skala)</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bg-purple-50 p-6 rounded-2xl">
-                        <h3 class="text-2xl font-semibold text-purple-800 mb-4">🧮 Contoh Soal</h3>
-                        <div class="bg-white p-4 rounded-xl">
-                            <p class="text-gray-700 mb-2">
-                                <strong>Soal:</strong> Segitiga ABC sebangun dengan segitiga DEF. Jika AB = 6 cm, BC = 8 cm, dan DE = 9 cm, 
-                                berapakah panjang EF?
-                            </p>
-                            <p class="text-gray-700">
-                                <strong>Jawab:</strong> Karena sebangun, maka AB/DE = BC/EF<br>
-                                6/9 = 8/EF<br>
-                                EF = (8 × 9)/6 = 12 cm
-                            </p>
+                <div class="grid md:grid-cols-1 gap-6 mb-6">
+                    <div class="bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl p-6 border-3 border-white shadow-xl">
+                        <h3 class="text-2xl font-bold mb-4 text-purple-800">📐 Definisi Kesebangunan</h3>
+                        <div class="bg-gradient-to-r from-white to-blue-50 rounded-xl p-4 mb-4 border-2 border-blue-200 shadow-lg">
+                            <p class="text-gray-800 mb-3 text-lg"><strong>Kesebangunan</strong> adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama.</p>
+                            <p class="font-bold text-purple-700 mb-2 text-lg">Dua bangun dikatakan sebangun jika:</p>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2 ml-4 text-lg">
+                                <li><strong>Bentuknya sama</strong> (sudut-sudut yang bersesuaian sama besar)</li>
+                                <li><strong>Perbandingan panjang sisi-sisi yang bersesuaian sama</strong></li>
+                            </ul>
                         </div>
+                        
+                        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-4 mb-4 border-2 border-orange-300 shadow-lg">
+                            <p class="font-bold text-orange-800 mb-2 text-lg">🔢 Rumus Perbandingan Sisi:</p>
+                            <div class="text-center bg-white rounded-xl p-4 font-mono text-xl border-2 border-orange-200 shadow-md">
+                                <span class="text-red-600 font-bold">sisi 1</span>/<span class="text-blue-600 font-bold">sisi 1'</span> = <span class="text-red-600 font-bold">sisi 2</span>/<span class="text-blue-600 font-bold">sisi 2'</span> = ...
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-r from-green-100 to-teal-100 rounded-xl p-4 border-2 border-green-300 shadow-lg">
+                            <p class="font-bold text-green-800 mb-2 text-lg">📝 Simbol Kesebangunan:</p>
+                            <div class="text-center bg-white rounded-xl p-4 border-2 border-green-200 shadow-md">
+                                <span class="text-2xl font-mono font-bold text-purple-600">∆ABC ~ ∆DEF</span>
+                                <p class="text-lg text-gray-700 mt-2 font-medium">artinya segitiga ABC sebangun dengan segitiga DEF</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl p-6 border-3 border-white shadow-xl">
+                        <h3 class="text-2xl font-bold mb-4 text-blue-800">💡 Contoh Soal Singkat</h3>
+                        <div class="bg-gradient-to-r from-white to-cyan-50 rounded-xl p-4 space-y-3 border-2 border-cyan-200 shadow-lg">
+                            <div class="bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl p-3 border-2 border-green-300 shadow-md">
+                                <p class="text-lg font-bold text-green-800">Soal:</p>
+                                <p class="text-gray-800 text-lg">∆PQR sebangun dengan ∆XYZ. Panjang PQ = 4 cm, QR = 6 cm, dan XY = 6 cm. Tentukan panjang YZ.</p>
+                            </div>
+                            
+                            <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 border-2 border-yellow-300 shadow-md">
+                                <p class="text-lg font-bold text-orange-800">Penyelesaian:</p>
+                                <div class="font-mono text-lg space-y-1 text-gray-800">
+                                    <p>PQ/XY = QR/YZ</p>
+                                    <p>4/6 = 6/YZ</p>
+                                    <p>YZ = (6 × 6)/4</p>
+                                    <p class="font-bold text-red-600 text-xl">YZ = 9 cm</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-green-100 to-teal-100 rounded-2xl p-6 border-3 border-white shadow-xl">
+                        <h3 class="text-2xl font-bold mb-4 text-teal-800">Contoh Kesebangunan</h3>
+                        <div class="bg-gradient-to-r from-white to-green-50 rounded-xl p-4 text-center border-2 border-green-200 shadow-lg">
+                            <div class="flex justify-center items-center space-x-4 mb-4">
+                                <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 transform rotate-45 shadow-lg"></div>
+                                <span class="text-4xl text-pink-500 font-bold">~</span>
+                                <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 transform rotate-45 shadow-lg"></div>
+                            </div>
+                            <p class="text-lg text-gray-800 font-medium">Kedua persegi ini sebangun karena memiliki bentuk sama dengan perbandingan sisi 3:2</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 border-3 border-white shadow-xl">
+                        <h3 class="text-2xl font-bold mb-4 text-purple-800">Rumus Perbandingan</h3>
+                        <div class="bg-gradient-to-r from-white to-purple-50 rounded-xl p-4 border-2 border-purple-200 shadow-lg">
+                            <p class="font-bold text-purple-700 mb-2 text-lg">Jika segitiga ABC ~ segitiga DEF:</p>
+                            <p class="text-center text-xl font-mono bg-gradient-to-r from-yellow-100 to-orange-100 p-3 rounded-xl border-2 border-yellow-300 shadow-md font-bold text-purple-800">AB/DE = BC/EF = AC/DF = k</p>
+                            <p class="text-lg text-gray-700 mt-2 font-medium">k = faktor skala kesebangunan</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl p-6 border-3 border-white shadow-xl">
+                        <h3 class="text-2xl font-bold mb-4 text-red-800">Tips Mengerjakan Soal</h3>
+                        <ul class="list-disc list-inside text-gray-800 space-y-3 text-lg font-medium">
+                            <li>Identifikasi sisi-sisi yang bersesuaian</li>
+                            <li>Hitung perbandingan sisi</li>
+                            <li>Periksa apakah perbandingannya sama</li>
+                            <li>Gunakan sifat sudut yang sama</li>
+                        </ul>
                     </div>
                 </div>
                 
                 <div class="text-center mt-8">
-                    <button onclick="showOpeningScreen()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-8 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                        ← Kembali ke Menu Utama
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Game Screen -->
-    <div id="gameScreen" class="min-h-screen p-4 hidden">
-        <div class="max-w-6xl mx-auto">
-            <!-- Game Header -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 flex justify-between items-center">
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800">🎮 EthoMath Game</h2>
-                    <p class="text-gray-600">Pemain: <span id="currentPlayerName" class="font-semibold"></span></p>
-                    <button onclick="toggleMusic()" id="musicToggle" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-colors flex items-center">
-                        🎵 Musik: ON
-                        <div class="music-visualizer ml-2" id="musicVisualizer">
-                            <div class="music-bar"></div>
-                            <div class="music-bar"></div>
-                            <div class="music-bar"></div>
-                            <div class="music-bar"></div>
-                        </div>
-                    </button>
-                </div>
-                <div class="text-center">
-                    <p class="text-lg font-semibold text-red-600">⏰ Waktu Tersisa</p>
-                    <p class="text-2xl font-bold text-red-600" id="gameTimer">15:00</p>
-                </div>
-                <div class="text-right">
-                    <p class="text-lg font-semibold text-purple-600">Soal <span id="questionNumber">1</span>/5</p>
-                    <p class="text-2xl font-bold text-green-600">Skor: <span id="currentScore">0</span></p>
-                </div>
-            </div>
-            
-            <!-- Question Area -->
-            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-6">
-                <div id="questionArea" class="mb-6">
-                    <h3 class="text-xl font-semibold text-gray-800 mb-4" id="questionText"></h3>
-                    <div id="questionDiagram" class="flex justify-center mb-6"></div>
-                    <div id="questionOptions" class="grid grid-cols-2 gap-4"></div>
-                </div>
-            </div>
-            
-            <!-- Game Field -->
-            <div class="bg-white rounded-3xl shadow-2xl p-6 mb-6">
-                <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">🏀 Arena Basket EthoMath</h3>
-                <div class="basketball-court relative" style="height: 300px;">
-                    <!-- Single Basketball Hoop (centered) -->
-                    <div class="basketball-hoop" style="top: 120px; right: 50px;">
-                        <div class="hoop-backboard"></div>
-                        <div class="hoop-rim"></div>
-                        <div class="hoop-net"></div>
-                    </div>
-                    
-                    <!-- Single Basketball -->
-                    <div id="currentBall" class="basketball" style="left: 80px; top: 150px;"></div>
-                    
-                    <!-- Current Player -->
-                    <div id="currentPlayer" class="player" style="left: 150px; top: 130px;">
-                        <div id="currentPlayerAvatar" class="player-avatar" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">🏀</div>
-                        <div id="currentPlayerName" class="player-name">Alex</div>
-                    </div>
-                    
-                    <!-- SWISH Effect -->
-                    <div id="swishEffect" class="swish-effect">SWISH! 🎯</div>
-                    
-                    <!-- Game Status -->
-                    <div id="gameStatus" class="absolute top-4 left-4 bg-white bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-gray-700 shadow-lg">
-                        🏀 Pilih jawaban untuk menembak!
-                    </div>
-                    
-                    <!-- Question Progress -->
-                    <div id="questionProgress" class="absolute bottom-4 left-4 bg-white bg-opacity-90 px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 shadow-lg">
-                        Pemain: <span id="progressPlayerName">Alex</span> | Soal <span id="progressQuestionNumber">1</span>/5
-                    </div>
-                </div>
-            </div>
-            
-            <div class="text-center">
-                <button onclick="showOpeningScreen()" class="bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
-                    🏠 Kembali ke Menu
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Leaderboard Screen -->
-    <div id="leaderboardScreen" class="min-h-screen p-4 hidden">
-        <div class="max-w-2xl mx-auto">
-            <div class="bg-white rounded-3xl shadow-2xl p-8 text-center fade-in">
-                <h2 class="text-3xl font-bold text-gray-800 mb-2">🏆 Leaderboard</h2>
-                <p class="text-gray-600 mb-8">Skor Tertinggi EthoMath</p>
-                
-                <div id="leaderboardList" class="space-y-4 mb-8">
-                    <!-- Leaderboard akan diisi oleh JavaScript -->
-                </div>
-                
-                <div class="space-y-4">
-                    <button onclick="startGame()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                        🔄 Main Lagi
-                    </button>
-                    <button onclick="showOpeningScreen()" class="w-full bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
-                        🏠 Menu Utama
+                    <button onclick="showPlayerJoin()" class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white py-4 px-10 rounded-2xl font-bold text-xl transition-all duration-300 pulse-animation shadow-2xl border-3 border-white transform hover:scale-110">
+                        Siap Bermain! 🎮✨
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Game State
-        let currentPlayer = '';
-        let currentQuestion = 0;
-        let currentScore = 0;
-        let gameQuestions = [];
-        let leaderboard = JSON.parse(localStorage.getItem('ethomath_leaderboard') || '[]');
-        let hostStats = JSON.parse(localStorage.getItem('ethomath_host_stats') || '{"activePlayersCount": 0, "gamesPlayedCount": 0, "totalScore": 0}');
-        let gameTimer = null;
-        let timeRemaining = 900; // 15 minutes in seconds
-        let musicEnabled = true;
-        
-        // Basketball Players Data (1 player per question)
-        const basketballPlayers = [
-            { name: "Alex", avatar: "🏀", gradient: "linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)" },
-            { name: "Maya", avatar: "⛹️‍♀️", gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
-            { name: "Rio", avatar: "⛹️‍♂️", gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
-            { name: "Luna", avatar: "🏀", gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" },
-            { name: "Dani", avatar: "⛹️‍♂️", gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" }
-        ];
-        
-        // Questions Database
-        const questionsDB = [
-            {
-                question: "Segitiga ABC sebangun dengan segitiga DEF. Jika AB = 6 cm, BC = 8 cm, dan DE = 9 cm, berapakah panjang EF?",
-                options: ["10 cm", "12 cm", "14 cm", "16 cm"],
-                correct: 1,
-                explanation: "Karena sebangun: AB/DE = BC/EF → 6/9 = 8/EF → EF = 12 cm",
-                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
-                    <polygon points="50,150 150,50 200,150" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
-                    <text x="100" y="40" font-size="14" fill="#1976d2" font-weight="bold">A</text>
-                    <text x="210" y="160" font-size="14" fill="#1976d2" font-weight="bold">B</text>
-                    <text x="40" y="160" font-size="14" fill="#1976d2" font-weight="bold">C</text>
-                    <text x="100" y="90" font-size="12" fill="#1976d2">6 cm</text>
-                    <text x="180" y="110" font-size="12" fill="#1976d2">8 cm</text>
-                    
-                    <polygon points="250,150 350,50 400,150" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
-                    <text x="300" y="40" font-size="14" fill="#f57c00" font-weight="bold">D</text>
-                    <text x="410" y="160" font-size="14" fill="#f57c00" font-weight="bold">E</text>
-                    <text x="240" y="160" font-size="14" fill="#f57c00" font-weight="bold">F</text>
-                    <text x="300" y="90" font-size="12" fill="#f57c00">9 cm</text>
-                    <text x="380" y="110" font-size="12" fill="#f57c00">EF = ?</text>
-                </svg>`
-            },
-            {
-                question: "Dua persegi panjang sebangun memiliki perbandingan sisi 2:3. Jika luas persegi panjang kecil 8 cm², berapakah luas persegi panjang besar?",
-                options: ["12 cm²", "16 cm²", "18 cm²", "24 cm²"],
-                correct: 2,
-                explanation: "Perbandingan luas = (2:3)² = 4:9 → Luas besar = 8 × 9/4 = 18 cm²",
-                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
-                    <rect x="50" y="80" width="80" height="60" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
-                    <text x="90" y="75" font-size="12" fill="#4caf50">Kecil</text>
-                    <text x="85" y="115" font-size="12" fill="#4caf50">8 cm²</text>
-                    
-                    <rect x="200" y="60" width="120" height="90" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
-                    <text x="255" y="55" font-size="12" fill="#ff9800">Besar</text>
-                    <text x="250" y="110" font-size="12" fill="#ff9800">? cm²</text>
-                    
-                    <text x="160" y="180" font-size="14" fill="#333">Perbandingan sisi = 2:3</text>
-                </svg>`
-            },
-            {
-                question: "Trapesium ABCD sebangun dengan trapesium PQRS. Jika AB = 4 cm, CD = 8 cm, dan PQ = 6 cm, berapakah panjang RS?",
-                options: ["10 cm", "12 cm", "14 cm", "16 cm"],
-                correct: 1,
-                explanation: "Perbandingan sisi = 4:6 = 2:3 → RS = 8 × 3/2 = 12 cm",
-                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
-                    <polygon points="70,150 130,150 110,80 90,80" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
-                    <text x="85" y="75" font-size="12" fill="#9c27b0">A</text>
-                    <text x="115" y="75" font-size="12" fill="#9c27b0">B</text>
-                    <text x="135" y="160" font-size="12" fill="#9c27b0">C</text>
-                    <text x="65" y="160" font-size="12" fill="#9c27b0">D</text>
-                    <text x="95" y="70" font-size="10" fill="#9c27b0">4 cm</text>
-                    <text x="95" y="170" font-size="10" fill="#9c27b0">8 cm</text>
-                    
-                    <polygon points="220,150 310,150 280,80 250,80" fill="#e0f2f1" stroke="#009688" stroke-width="2"/>
-                    <text x="245" y="75" font-size="12" fill="#009688">P</text>
-                    <text x="285" y="75" font-size="12" fill="#009688">Q</text>
-                    <text x="315" y="160" font-size="12" fill="#009688">R</text>
-                    <text x="215" y="160" font-size="12" fill="#009688">S</text>
-                    <text x="260" y="70" font-size="10" fill="#009688">6 cm</text>
-                    <text x="260" y="170" font-size="10" fill="#009688">RS = ?</text>
-                </svg>`
-            },
-            {
-                question: "Segitiga siku-siku ABC dengan siku-siku di C sebangun dengan segitiga DEF. Jika AC = 3 cm, BC = 4 cm, dan DE = 10 cm, berapakah keliling segitiga DEF?",
-                options: ["24 cm", "30 cm", "36 cm", "40 cm"],
-                correct: 1,
-                explanation: "AB = 5 cm (teorema Pythagoras). Skala = 10:5 = 2:1. Keliling DEF = 2 × (3+4+5) = 24 cm",
-                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
-                    <polygon points="50,150 50,90 110,150" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
-                    <text x="45" y="85" font-size="12" fill="#f44336">A</text>
-                    <text x="45" y="165" font-size="12" fill="#f44336">C</text>
-                    <text x="115" y="165" font-size="12" fill="#f44336">B</text>
-                    <text x="25" y="120" font-size="10" fill="#f44336">3 cm</text>
-                    <text x="75" y="170" font-size="10" fill="#f44336">4 cm</text>
-                    <rect x="45" y="145" width="10" height="10" fill="none" stroke="#f44336" stroke-width="1"/>
-                    
-                    <polygon points="220,150 220,30 340,150" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
-                    <text x="215" y="25" font-size="12" fill="#4caf50">D</text>
-                    <text x="215" y="165" font-size="12" fill="#4caf50">F</text>
-                    <text x="345" y="165" font-size="12" fill="#4caf50">E</text>
-                    <text x="270" y="95" font-size="10" fill="#4caf50">10 cm</text>
-                    <rect x="215" y="145" width="10" height="10" fill="none" stroke="#4caf50" stroke-width="1"/>
-                </svg>`
-            },
-            {
-                question: "Dua lingkaran sebangun memiliki jari-jari 5 cm dan 15 cm. Jika keliling lingkaran kecil 31,4 cm, berapakah keliling lingkaran besar?",
-                options: ["62,8 cm", "78,5 cm", "94,2 cm", "125,6 cm"],
-                correct: 2,
-                explanation: "Perbandingan jari-jari = 5:15 = 1:3. Keliling besar = 31,4 × 3 = 94,2 cm",
-                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
-                    <circle cx="120" cy="100" r="40" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
-                    <line x1="120" y1="100" x2="160" y2="100" stroke="#2196f3" stroke-width="2"/>
-                    <text x="135" y="105" font-size="10" fill="#2196f3">5 cm</text>
-                    <text x="100" y="180" font-size="12" fill="#2196f3">K = 31,4 cm</text>
-                    
-                    <circle cx="300" cy="100" r="80" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
-                    <line x1="300" y1="100" x2="380" y2="100" stroke="#ff9800" stroke-width="2"/>
-                    <text x="335" y="105" font-size="10" fill="#ff9800">15 cm</text>
-                    <text x="275" y="190" font-size="12" fill="#ff9800">K = ? cm</text>
-                </svg>`
-            },
-            {
-                question: "Segitiga ABC sebangun dengan segitiga PQR dengan perbandingan sisi 3:4. Jika luas segitiga ABC = 27 cm², berapakah luas segitiga PQR?",
-                options: ["36 cm²", "48 cm²", "54 cm²", "64 cm²"],
-                correct: 1,
-                explanation: "Perbandingan luas = (3:4)² = 9:16 → Luas PQR = 27 × 16/9 = 48 cm²",
-                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
-                    <polygon points="80,150 130,70 180,150" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
-                    <text x="125" y="65" font-size="12" fill="#9c27b0">A</text>
-                    <text x="185" y="160" font-size="12" fill="#9c27b0">B</text>
-                    <text x="75" y="160" font-size="12" fill="#9c27b0">C</text>
-                    <text x="120" y="120" font-size="12" fill="#9c27b0">27 cm²</text>
-                    
-                    <polygon points="240,150 310,50 380,150" fill="#e0f2f1" stroke="#009688" stroke-width="2"/>
-                    <text x="305" y="45" font-size="12" fill="#009688">P</text>
-                    <text x="385" y="160" font-size="12" fill="#009688">Q</text>
-                    <text x="235" y="160" font-size="12" fill="#009688">R</text>
-                    <text x="300" y="120" font-size="12" fill="#009688">? cm²</text>
-                    
-                    <text x="160" y="180" font-size="14" fill="#333">Perbandingan sisi = 3:4</text>
-                </svg>`
-            },
-            {
-                question: "Dua segitiga sebangun memiliki sisi terpanjang 12 cm dan 18 cm. Jika tinggi segitiga pertama 8 cm, berapakah tinggi segitiga kedua?",
-                options: ["10 cm", "12 cm", "14 cm", "16 cm"],
-                correct: 1,
-                explanation: "Perbandingan sisi = 12:18 = 2:3. Tinggi kedua = 8 × 3/2 = 12 cm",
-                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
-                    <polygon points="50,150 110,70 170,150" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
-                    <line x1="110" y1="70" x2="110" y2="150" stroke="#f44336" stroke-width="1" stroke-dasharray="3,3"/>
-                    <text x="105" y="65" font-size="12" fill="#f44336">A</text>
-                    <text x="175" y="160" font-size="12" fill="#f44336">B</text>
-                    <text x="45" y="160" font-size="12" fill="#f44336">C</text>
-                    <text x="85" y="110" font-size="10" fill="#f44336">8 cm</text>
-                    <text x="100" y="170" font-size="10" fill="#f44336">12 cm</text>
-                    
-                    <polygon points="220,150 310,50 400,150" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
-                    <line x1="310" y1="50" x2="310" y2="150" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,3"/>
-                    <text x="305" y="45" font-size="12" fill="#4caf50">P</text>
-                    <text x="405" y="160" font-size="12" fill="#4caf50">Q</text>
-                    <text x="215" y="160" font-size="12" fill="#4caf50">R</text>
-                    <text x="285" y="100" font-size="10" fill="#4caf50">? cm</text>
-                    <text x="300" y="170" font-size="10" fill="#4caf50">18 cm</text>
-                </svg>`
-            },
-            {
-                question: "Persegi ABCD sebangun dengan persegi PQRS. Jika diagonal AC = 8√2 cm dan diagonal PR = 12√2 cm, berapakah perbandingan luas kedua persegi?",
-                options: ["2:3", "4:9", "8:18", "16:36"],
-                correct: 1,
-                explanation: "Perbandingan diagonal = 8√2:12√2 = 2:3. Perbandingan luas = (2:3)² = 4:9",
-                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
-                    <rect x="60" y="80" width="80" height="80" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
-                    <line x1="60" y1="80" x2="140" y2="160" stroke="#2196f3" stroke-width="2"/>
-                    <text x="55" y="75" font-size="12" fill="#2196f3">A</text>
-                    <text x="145" y="75" font-size="12" fill="#2196f3">B</text>
-                    <text x="145" y="175" font-size="12" fill="#2196f3">C</text>
-                    <text x="55" y="175" font-size="12" fill="#2196f3">D</text>
-                    <text x="85" y="115" font-size="10" fill="#2196f3">8√2 cm</text>
-                    
-                    <rect x="220" y="60" width="120" height="120" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
-                    <line x1="220" y1="60" x2="340" y2="180" stroke="#ff9800" stroke-width="2"/>
-                    <text x="215" y="55" font-size="12" fill="#ff9800">P</text>
-                    <text x="345" y="55" font-size="12" fill="#ff9800">Q</text>
-                    <text x="345" y="195" font-size="12" fill="#ff9800">R</text>
-                    <text x="215" y="195" font-size="12" fill="#ff9800">S</text>
-                    <text x="265" y="125" font-size="10" fill="#ff9800">12√2 cm</text>
-                </svg>`
-            }
-        ];
-        
-        // Audio Functions
-        function toggleMusic() {
-            const music = document.getElementById('backgroundMusic');
-            const toggle = document.getElementById('musicToggle');
-            const visualizer = document.getElementById('musicVisualizer');
-            
-            if (musicEnabled) {
-                music.pause();
-                toggle.innerHTML = '🔇 Musik: OFF';
-                toggle.className = 'mt-2 bg-gray-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-gray-600 transition-colors flex items-center';
-                visualizer.style.display = 'none';
-                musicEnabled = false;
-            } else {
-                music.play().catch(e => console.log('Audio play failed:', e));
-                toggle.innerHTML = '🎵 Musik: ON <div class="music-visualizer ml-2" id="musicVisualizer"><div class="music-bar"></div><div class="music-bar"></div><div class="music-bar"></div><div class="music-bar"></div></div>';
-                toggle.className = 'mt-2 bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-colors flex items-center';
-                musicEnabled = true;
-            }
-        }
-        
-        function playSound(soundId) {
-            if (musicEnabled) {
-                const sound = document.getElementById(soundId);
-                sound.currentTime = 0;
-                sound.play().catch(e => console.log('Sound play failed:', e));
-            }
-        }
-        
-        // Screen Management
-        function showScreen(screenId) {
-            const screens = ['openingScreen', 'roleSelection', 'playerLogin', 'hostLogin', 'hostDashboard', 'materialScreen', 'gameScreen', 'leaderboardScreen'];
-            screens.forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById(screenId).classList.remove('hidden');
-        }
-        
-        function showOpeningScreen() {
-            showScreen('openingScreen');
-            // Stop background music when returning to menu
-            document.getElementById('backgroundMusic').pause();
-        }
-        
-        function showRoleSelection() {
-            showScreen('roleSelection');
-        }
-        
-        function showPlayerLogin() {
-            showScreen('playerLogin');
-        }
-        
-        function showHostLogin() {
-            showScreen('hostLogin');
-        }
-        
-        function showMaterial() {
-            showScreen('materialScreen');
-        }
-        
-        // Host Functions
-        function loginHost() {
-            const password = document.getElementById('hostPassword').value;
-            if (password === 'ethomath2024') {
-                showScreen('hostDashboard');
-                updateHostDashboard();
-            } else {
-                alert('Password host salah!');
-            }
-        }
-        
-        function updateHostDashboard() {
-            document.getElementById('activePlayersCount').textContent = hostStats.activePlayersCount;
-            document.getElementById('gamesPlayedCount').textContent = hostStats.gamesPlayedCount;
-            document.getElementById('averageScore').textContent = hostStats.gamesPlayedCount > 0 ? 
-                Math.round(hostStats.totalScore / hostStats.gamesPlayedCount) : 0;
-            
-            const hostLeaderboard = document.getElementById('hostLeaderboard');
-            if (leaderboard.length === 0) {
-                hostLeaderboard.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada data pemain</p>';
-            } else {
-                hostLeaderboard.innerHTML = leaderboard.map((player, index) => `
-                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
-                        <div class="flex items-center space-x-4">
-                            <span class="text-2xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'}</span>
-                            <div>
-                                <p class="font-semibold text-gray-800">${player.name}</p>
-                                <p class="text-sm text-gray-600">${new Date(player.date).toLocaleDateString('id-ID')}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xl font-bold text-purple-600">${player.score}</p>
-                            <p class="text-sm text-gray-500">${player.score}/500 poin</p>
+    <!-- Player Join Screen -->
+    <div id="playerJoinScreen" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 text-center card-shadow max-w-md w-full">
+            <button onclick="showOpening()" class="mb-6 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
+                ← Kembali
+            </button>
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Bergabung ke Game</h2>
+            <div class="mb-6">
+                <input type="text" id="playerName" placeholder="Masukkan nama Anda" 
+                       class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none text-center">
+            </div>
+            <div class="mb-6 bg-gray-100 rounded-lg p-4">
+                <p class="text-sm text-gray-600 mb-2">Pemain Online:</p>
+                <p class="text-2xl font-bold text-blue-600" id="playerCount">0/40</p>
+            </div>
+            <button onclick="joinGame()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-xl font-medium transition-colors">
+                🚀 Bergabung
+            </button>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="hidden min-h-screen p-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Game Header -->
+            <div class="bg-white rounded-xl p-4 mb-6 card-shadow">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="font-bold text-gray-800">Soal <span id="currentQuestion">1</span>/5</h3>
+                        <p class="text-sm text-gray-600">Pemain: <span id="gamePlayerName"></span></p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-2xl font-bold text-blue-600" id="timer">10:00</div>
+                        <p class="text-sm text-gray-600">Sisa Waktu</p>
+                    </div>
+                </div>
+                <!-- Progress Bar -->
+                <div class="w-full bg-gray-200 rounded-full h-3 mb-2">
+                    <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-purple-600 h-3 rounded-full transition-all duration-500 ease-out" style="width: 20%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>Progress</span>
+                    <span id="progressText">1 dari 5 soal</span>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div class="bg-white rounded-xl p-8 card-shadow">
+                <!-- Question Header with Icon -->
+                <div class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-2xl p-8 mb-6 text-white shadow-2xl border-3 border-white">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="w-20 h-20 bg-white bg-opacity-30 rounded-full flex items-center justify-center shadow-xl animate-pulse">
+                            <span class="text-4xl" id="questionIcon">📐</span>
                         </div>
                     </div>
-                `).join('');
+                    <h2 class="text-2xl font-bold text-center mb-4 drop-shadow-lg" id="questionText"></h2>
+                </div>
+
+                <!-- Question Image/Visual -->
+                <div id="questionImageContainer" class="mb-6 text-center bg-gray-50 rounded-xl p-6">
+                    <div id="questionImage" class="text-6xl mb-4"></div>
+                    <div id="questionDiagram" class="hidden"></div>
+                </div>
+                
+                <div class="space-y-4" id="answerOptions">
+                    <!-- Options will be inserted here -->
+                </div>
+
+                <!-- Basketball Animation Area - Moved below answer options -->
+                <div id="basketballAnimation" class="basketball-container hidden mt-8">
+                    <div class="basketball-court">
+                        <div class="court-floor"></div>
+                        <div class="court-lines"></div>
+                        <div class="basketball-hoop">
+                            <div class="hoop-pole"></div>
+                            <div class="hoop-backboard">
+                                <div class="backboard-square"></div>
+                            </div>
+                            <div class="hoop-rim">
+                                <div class="rim-front"></div>
+                                <div class="rim-back"></div>
+                            </div>
+                            <div class="hoop-net">
+                                <div class="net-strand" style="left: 5px;"></div>
+                                <div class="net-strand" style="left: 15px;"></div>
+                                <div class="net-strand" style="left: 25px;"></div>
+                                <div class="net-strand" style="left: 35px;"></div>
+                            </div>
+                        </div>
+                        <div class="player" id="basketballPlayer">
+                            <div class="player-shadow"></div>
+                            <div class="player-legs">
+                                <div class="player-leg left"></div>
+                                <div class="player-leg right"></div>
+                            </div>
+                            <div class="player-body">
+                                <div class="jersey-number">7</div>
+                            </div>
+                            <div class="player-head">
+                                <div class="player-face">
+                                    <div class="eye left"></div>
+                                    <div class="eye right"></div>
+                                    <div class="mouth"></div>
+                                </div>
+                                <div class="player-hair"></div>
+                            </div>
+                            <div class="player-arms">
+                                <div class="player-arm left">
+                                    <div class="hand"></div>
+                                </div>
+                                <div class="player-arm right">
+                                    <div class="hand"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="basketball" id="basketball">
+                            <div class="ball-lines">
+                                <div class="ball-line horizontal"></div>
+                                <div class="ball-line vertical"></div>
+                                <div class="ball-line curve1"></div>
+                                <div class="ball-line curve2"></div>
+                            </div>
+                            <div class="ball-shadow"></div>
+                        </div>
+                        <div class="score-effect" id="scoreEffect">
+                            <div class="score-text">+20</div>
+                            <div class="score-stars">
+                                <div class="star">⭐</div>
+                                <div class="star">⭐</div>
+                                <div class="star">⭐</div>
+                            </div>
+                        </div>
+                        <div class="miss-effect" id="missEffect">
+                            <div class="miss-text">MISS!</div>
+                            <div class="miss-icons">
+                                <div class="miss-icon">😞</div>
+                                <div class="miss-icon">💔</div>
+                                <div class="miss-icon">😔</div>
+                            </div>
+                        </div>
+                        <div class="success-celebration" id="successCelebration">
+                            <div class="celebration-text">🎉 PERFECT SHOT! 🎉</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Auto-advance message (shown after answering) -->
+                <div id="autoAdvanceMessage" class="mt-8 text-center hidden">
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <div class="flex items-center justify-center space-x-2 text-blue-700">
+                            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-700"></div>
+                            <span class="font-medium">Memuat soal berikutnya...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Screen -->
+    <div id="leaderboardScreen" class="hidden min-h-screen p-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-3xl p-8 card-shadow">
+                <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">🏆 Leaderboard</h2>
+                
+                <div class="mb-8">
+                    <div class="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl p-6 text-center text-white mb-6">
+                        <h3 class="text-xl font-bold mb-2">Selamat!</h3>
+                        <p>Game telah selesai. Berikut adalah hasil akhir:</p>
+                    </div>
+                </div>
+
+                <div id="leaderboardList" class="space-y-3 mb-8">
+                    <!-- Leaderboard will be populated here -->
+                </div>
+
+                <div class="text-center space-y-4">
+                    <button onclick="resetGame()" class="bg-blue-500 hover:bg-blue-600 text-white py-3 px-8 rounded-xl font-medium transition-colors">
+                        🔄 Main Lagi
+                    </button>
+                    <button onclick="showOpening()" class="bg-gray-500 hover:bg-gray-600 text-white py-3 px-8 rounded-xl font-medium transition-colors">
+                        🏠 Kembali ke Menu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Host Login Screen -->
+    <div id="hostLoginScreen" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 text-center card-shadow max-w-md w-full">
+            <button onclick="showOpening()" class="mb-6 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
+                ← Kembali
+            </button>
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">🔐 Login Host</h2>
+            <div class="mb-6">
+                <input type="password" id="hostPassword" placeholder="Masukkan password host" 
+                       class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-center">
+            </div>
+            <button onclick="loginHost()" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 px-6 rounded-xl font-medium transition-colors">
+                🚪 Masuk
+            </button>
+            <p class="text-xs text-gray-500 mt-4">Password: admin123</p>
+        </div>
+    </div>
+
+    <!-- Host Panel Screen -->
+    <div id="hostPanelScreen" class="hidden min-h-screen p-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="bg-white rounded-xl p-6 mb-6 card-shadow">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-800">👨‍💼 Panel Host</h2>
+                    <div class="flex space-x-4">
+                        <button onclick="startGameAsHost()" class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg font-medium">
+                            ▶️ Mulai Game
+                        </button>
+                        <button onclick="showOpening()" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg">
+                            🚪 Keluar
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Host Menu Tabs -->
+            <div class="bg-white rounded-xl p-6 mb-6 card-shadow">
+                <div class="flex space-x-4 border-b border-gray-200">
+                    <button id="statsTab" class="px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600">
+                        📊 Statistik Live
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Tab -->
+            <div id="hostStatsTab" class="grid lg:grid-cols-2 gap-6">
+                <!-- Live Stats -->
+                <div class="bg-white rounded-xl p-6 card-shadow">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">📊 Statistik Live</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-blue-50 rounded-lg p-4 text-center">
+                            <p class="text-2xl font-bold text-blue-600" id="hostPlayerCount">0</p>
+                            <p class="text-sm text-gray-600">Pemain Online</p>
+                        </div>
+                        <div class="bg-green-50 rounded-lg p-4 text-center">
+                            <p class="text-2xl font-bold text-green-600" id="hostGameTime">10:00</p>
+                            <p class="text-sm text-gray-600">Sisa Waktu</p>
+                        </div>
+                    </div>
+                    <div style="height: 300px;">
+                        <canvas id="liveScoreChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Player List -->
+                <div class="bg-white rounded-xl p-6 card-shadow">
+                    <h3 class="text-xl font-bold mb-4 text-gray-800">👥 Daftar Pemain</h3>
+                    <div id="hostPlayerList" class="space-y-2 max-h-96 overflow-y-auto">
+                        <!-- Player list will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            currentScreen: 'opening',
+            players: [],
+            currentPlayer: null,
+            currentQuestionIndex: 0,
+            gameStartTime: null,
+            gameTimer: null,
+            hostChart: null,
+            musicEnabled: true,
+            soundEnabled: true,
+            backgroundMusic: null
+        };
+
+        // YouTube Player Variables
+        let youtubePlayer = null;
+        let isYouTubeReady = false;
+        
+        // YouTube API Ready Callback
+        function onYouTubeIframeAPIReady() {
+            youtubePlayer = new YT.Player('youtubePlayer', {
+                height: '1',
+                width: '1',
+                videoId: 'jfKfPfyJRdk', // Relaxing Indonesian Traditional Music
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'loop': 1,
+                    'playlist': 'jfKfPfyJRdk'
+                },
+                events: {
+                    'onReady': function(event) {
+                        isYouTubeReady = true;
+                        event.target.setVolume(15); // Set low volume
+                        if (gameState.musicEnabled && gameState.currentScreen === 'game') {
+                            event.target.playVideo();
+                        }
+                    },
+                    'onStateChange': function(event) {
+                        if (event.data === YT.PlayerState.ENDED) {
+                            event.target.playVideo(); // Loop the video
+                        }
+                    }
+                }
+            });
+        }
+
+        // Audio Management
+        function initAudio() {
+            gameState.backgroundMusic = document.getElementById('backgroundMusic');
+            
+            // Create a more energetic background music using Web Audio API as fallback
+            if (typeof(AudioContext) !== "undefined" || typeof(webkitAudioContext) !== "undefined") {
+                createBackgroundMusic();
             }
         }
-        
-        // Timer Functions
-        function startGameTimer() {
-            timeRemaining = 900; // Reset to 15 minutes
-            updateTimerDisplay();
-            
-            gameTimer = setInterval(() => {
-                timeRemaining--;
-                updateTimerDisplay();
+
+        function createBackgroundMusic() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                let isPlaying = false;
                 
-                // Change timer color when time is running low
-                const timerElement = document.getElementById('gameTimer');
-                if (timeRemaining <= 300) { // 5 minutes left
-                    timerElement.className = 'text-2xl font-bold text-red-600 animate-pulse';
-                } else if (timeRemaining <= 600) { // 10 minutes left
-                    timerElement.className = 'text-2xl font-bold text-orange-600';
+                function playTone(frequency, duration, volume = 0.08, type = 'sine') {
+                    if (!gameState.musicEnabled || !gameState.soundEnabled) return;
+                    
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+                    oscillator.type = type;
+                    
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+                    
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + duration);
                 }
                 
-                if (timeRemaining <= 0) {
-                    clearInterval(gameTimer);
-                    endGameByTimeout();
+                function playChord(frequencies, duration, volume = 0.04) {
+                    frequencies.forEach(freq => {
+                        playTone(freq, duration, volume, 'triangle');
+                    });
+                }
+                
+                function playBackgroundLoop() {
+                    if (!gameState.musicEnabled || gameState.currentScreen !== 'game') return;
+                    
+                    // Upbeat and cheerful melody inspired by traditional Indonesian music
+                    const melody = [
+                        // Main melody - cheerful and energetic
+                        {freq: 659.25, dur: 0.4, vol: 0.06}, // E5
+                        {freq: 783.99, dur: 0.4, vol: 0.06}, // G5
+                        {freq: 880.00, dur: 0.4, vol: 0.06}, // A5
+                        {freq: 783.99, dur: 0.4, vol: 0.06}, // G5
+                        {freq: 659.25, dur: 0.6, vol: 0.06}, // E5
+                        {freq: 587.33, dur: 0.4, vol: 0.06}, // D5
+                        {freq: 659.25, dur: 0.4, vol: 0.06}, // E5
+                        {freq: 523.25, dur: 0.8, vol: 0.06}, // C5
+                        
+                        // Second phrase - more uplifting
+                        {freq: 783.99, dur: 0.4, vol: 0.06}, // G5
+                        {freq: 880.00, dur: 0.4, vol: 0.06}, // A5
+                        {freq: 987.77, dur: 0.4, vol: 0.06}, // B5
+                        {freq: 1046.50, dur: 0.6, vol: 0.06}, // C6
+                        {freq: 987.77, dur: 0.4, vol: 0.06}, // B5
+                        {freq: 880.00, dur: 0.4, vol: 0.06}, // A5
+                        {freq: 783.99, dur: 0.6, vol: 0.06}, // G5
+                        {freq: 659.25, dur: 0.8, vol: 0.06}, // E5
+                    ];
+                    
+                    // Bass line for rhythm
+                    const bassLine = [
+                        {freq: 261.63, dur: 0.8}, // C4
+                        {freq: 293.66, dur: 0.8}, // D4
+                        {freq: 329.63, dur: 0.8}, // E4
+                        {freq: 293.66, dur: 0.8}, // D4
+                        {freq: 261.63, dur: 0.8}, // C4
+                        {freq: 246.94, dur: 0.8}, // B3
+                        {freq: 261.63, dur: 0.8}, // C4
+                        {freq: 196.00, dur: 0.8}, // G3
+                    ];
+                    
+                    let noteIndex = 0;
+                    let bassIndex = 0;
+                    
+                    function playNextNote() {
+                        if (!gameState.musicEnabled || gameState.currentScreen !== 'game') return;
+                        
+                        const note = melody[noteIndex];
+                        const bass = bassLine[bassIndex];
+                        
+                        // Play melody
+                        playTone(note.freq, note.dur, note.vol || 0.06, 'triangle');
+                        
+                        // Play bass every other note for rhythm
+                        if (noteIndex % 2 === 0) {
+                            playTone(bass.freq, bass.dur, 0.03, 'sine');
+                            bassIndex = (bassIndex + 1) % bassLine.length;
+                        }
+                        
+                        // Add some percussion-like sounds for rhythm
+                        if (noteIndex % 4 === 0) {
+                            setTimeout(() => {
+                                playTone(1000, 0.1, 0.02, 'square'); // High hat
+                            }, note.dur * 500);
+                        }
+                        
+                        noteIndex = (noteIndex + 1) % melody.length;
+                        setTimeout(playNextNote, note.dur * 1000);
+                    }
+                    
+                    playNextNote();
+                }
+                
+                gameState.playBackgroundMusic = playBackgroundLoop;
+                
+            } catch (error) {
+                console.log('Web Audio API not supported, using fallback');
+            }
+        }
+
+        function toggleMusic() {
+            gameState.musicEnabled = !gameState.musicEnabled;
+            const btn = document.getElementById('musicToggle');
+            
+            if (gameState.musicEnabled) {
+                btn.textContent = '🎵';
+                btn.classList.remove('muted');
+                if (gameState.currentScreen === 'game') {
+                    if (isYouTubeReady && youtubePlayer) {
+                        youtubePlayer.playVideo();
+                    } else if (gameState.playBackgroundMusic) {
+                        gameState.playBackgroundMusic();
+                    }
+                }
+            } else {
+                btn.textContent = '🔇';
+                btn.classList.add('muted');
+                if (isYouTubeReady && youtubePlayer) {
+                    youtubePlayer.pauseVideo();
+                }
+            }
+        }
+
+        function toggleVolume() {
+            gameState.soundEnabled = !gameState.soundEnabled;
+            const btn = document.getElementById('volumeToggle');
+            
+            if (gameState.soundEnabled) {
+                btn.textContent = '🔊';
+                btn.classList.remove('muted');
+            } else {
+                btn.textContent = '🔇';
+                btn.classList.add('muted');
+            }
+        }
+
+        function playSuccessSound() {
+            if (!gameState.soundEnabled) return;
+            
+            try {
+                // Create success sound effect
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Play ascending notes for success
+                const frequencies = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                frequencies.forEach((freq, index) => {
+                    setTimeout(() => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                        oscillator.type = 'sine';
+                        
+                        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                        gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.05);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 0.3);
+                    }, index * 100);
+                });
+            } catch (error) {
+                console.log('Could not play success sound');
+            }
+        }
+
+        function playMissSound() {
+            if (!gameState.soundEnabled) return;
+            
+            try {
+                // Create miss sound effect
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Play descending notes for miss
+                const frequencies = [400, 350, 300, 250]; // Descending sad notes
+                frequencies.forEach((freq, index) => {
+                    setTimeout(() => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                        oscillator.type = 'sawtooth';
+                        
+                        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                        gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.05);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 0.4);
+                    }, index * 150);
+                });
+            } catch (error) {
+                console.log('Could not play miss sound');
+            }
+        }
+
+        // Questions Data
+        const questions = [
+            {
+                question: "Dua segitiga dikatakan sebangun jika...",
+                icon: "📐",
+                image: "📐",
+                diagram: `
+                    <div class="flex justify-center items-center space-x-8">
+                        <div class="text-center">
+                            <div style="width: 0; height: 0; border-left: 40px solid transparent; border-right: 40px solid transparent; border-bottom: 60px solid #3b82f6; margin: 0 auto;"></div>
+                            <p class="mt-2 text-sm font-medium">Segitiga ABC</p>
+                        </div>
+                        <div class="text-4xl text-blue-500">~</div>
+                        <div class="text-center">
+                            <div style="width: 0; height: 0; border-left: 30px solid transparent; border-right: 30px solid transparent; border-bottom: 45px solid #10b981; margin: 0 auto;"></div>
+                            <p class="mt-2 text-sm font-medium">Segitiga DEF</p>
+                        </div>
+                    </div>
+                `,
+                options: {
+                    a: "Memiliki luas yang sama",
+                    b: "Sudut-sudut bersesuaian sama besar dan perbandingan sisi bersesuaian sama"
+                },
+                correct: "b"
+            },
+            {
+                question: "Perhatikan gambar berikut! Jika kedua segitiga sebangun, tentukan nilai x:",
+                icon: "📏",
+                image: "https://lh3.googleusercontent.com/d/1twkoCo04vePhKNFXn33SKaHj_-8D5iaf",
+                diagram: `
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-2xl border-3 border-white shadow-xl">
+                        <div class="bg-white rounded-xl p-4 shadow-lg">
+                            <img src="https://lh3.googleusercontent.com/d/1twkoCo04vePhKNFXn33SKaHj_-8D5iaf" 
+                                 alt="Diagram segitiga sebangun" 
+                                 class="max-w-full h-auto mx-auto rounded-xl shadow-lg max-h-64 object-contain"
+                                 onload="this.style.opacity='1'; this.nextElementSibling.style.display='none';"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                 style="opacity: 0; transition: opacity 0.5s ease;">
+                            <div class="text-center p-8 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl border-2 border-yellow-300">
+                                <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-purple-600 mx-auto mb-4"></div>
+                                <p class="text-gray-700 font-medium">Memuat gambar soal...</p>
+                                <div class="hidden">
+                                    <div class="text-8xl mb-4">📐</div>
+                                    <p class="text-gray-700 font-bold text-lg">Diagram Segitiga Sebangun</p>
+                                    <p class="text-gray-600 mt-2">Dua segitiga dengan sisi-sisi yang diketahui untuk mencari nilai x</p>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-center mt-4 text-purple-700 font-medium">💡 Gunakan perbandingan sisi yang bersesuaian!</p>
+                    </div>
+                `,
+                options: {
+                    a: "x = 6 cm",
+                    b: "x = 8 cm"
+                },
+                correct: "a"
+            },
+            {
+                question: "Persegi dengan sisi 6 cm sebangun dengan persegi yang memiliki sisi...",
+                icon: "⬜",
+                image: "⬜",
+                diagram: `
+                    <div class="flex justify-center items-center space-x-6">
+                        <div class="text-center">
+                            <div class="w-16 h-16 bg-blue-400 border-2 border-blue-600 mx-auto"></div>
+                            <p class="mt-2 text-sm font-medium">6 cm × 6 cm</p>
+                        </div>
+                        <div class="text-4xl text-blue-500">~</div>
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-green-400 border-2 border-green-600 mx-auto"></div>
+                            <p class="mt-2 text-sm font-medium">? cm × ? cm</p>
+                        </div>
+                        <div class="text-4xl text-blue-500">~</div>
+                        <div class="text-center">
+                            <div class="w-20 h-20 bg-purple-400 border-2 border-purple-600 mx-auto"></div>
+                            <p class="mt-2 text-sm font-medium">? cm × ? cm</p>
+                        </div>
+                    </div>
+                `,
+                options: {
+                    a: "Hanya 12 cm",
+                    b: "Semua ukuran sisi (3 cm, 9 cm, 12 cm, dll)"
+                },
+                correct: "b"
+            },
+            {
+                question: "Faktor skala kesebangunan antara dua bangun yang sebangun adalah 1:4. Jika luas bangun pertama 9 cm², maka luas bangun kedua adalah...",
+                icon: "📊",
+                image: "📊",
+                diagram: `
+                    <div class="flex justify-center items-center space-x-8">
+                        <div class="text-center">
+                            <div class="w-12 h-12 bg-red-400 border-2 border-red-600 mx-auto"></div>
+                            <p class="mt-2 text-sm font-medium">Bangun 1</p>
+                            <p class="text-xs text-gray-600">Luas = 9 cm²</p>
+                            <p class="text-xs text-blue-600">Skala = 1</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl text-blue-500">:</div>
+                            <p class="text-sm font-medium">1 : 4</p>
+                        </div>
+                        <div class="text-center">
+                            <div class="w-24 h-24 bg-red-400 border-2 border-red-600 mx-auto"></div>
+                            <p class="mt-2 text-sm font-medium">Bangun 2</p>
+                            <p class="text-xs text-gray-600">Luas = ? cm²</p>
+                            <p class="text-xs text-blue-600">Skala = 4</p>
+                        </div>
+                    </div>
+                `,
+                options: {
+                    a: "36 cm²",
+                    b: "144 cm²"
+                },
+                correct: "b"
+            },
+            {
+                question: "Manakah pasangan bangun yang PASTI sebangun?",
+                icon: "🔍",
+                image: "🔍",
+                diagram: `
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="text-center p-4 bg-red-50 rounded-lg">
+                            <div class="flex justify-center space-x-2 mb-2">
+                                <div style="width: 0; height: 0; border-left: 20px solid transparent; border-right: 20px solid transparent; border-bottom: 30px solid #ef4444;"></div>
+                                <div style="width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-bottom: 25px solid #ef4444;"></div>
+                            </div>
+                            <p class="text-sm font-medium">Dua Segitiga Siku-siku</p>
+                            <p class="text-xs text-red-600">Belum tentu sebangun</p>
+                        </div>
+                        <div class="text-center p-4 bg-green-50 rounded-lg">
+                            <div class="flex justify-center space-x-2 mb-2">
+                                <div class="w-8 h-8 bg-green-500 rounded-full"></div>
+                                <div class="w-6 h-6 bg-green-500 rounded-full"></div>
+                            </div>
+                            <p class="text-sm font-medium">Dua Lingkaran</p>
+                            <p class="text-xs text-green-600">Pasti sebangun</p>
+                        </div>
+                    </div>
+                `,
+                options: {
+                    a: "Dua segitiga siku-siku",
+                    b: "Dua lingkaran dengan jari-jari berbeda"
+                },
+                correct: "b"
+            }
+        ];
+
+        // Screen Navigation Functions
+        function showOpening() {
+            hideAllScreens();
+            document.getElementById('openingScreen').classList.remove('hidden');
+            gameState.currentScreen = 'opening';
+        }
+
+        function showMaterial() {
+            hideAllScreens();
+            document.getElementById('materialScreen').classList.remove('hidden');
+            gameState.currentScreen = 'material';
+        }
+
+        function showPlayerJoin() {
+            hideAllScreens();
+            document.getElementById('playerJoinScreen').classList.remove('hidden');
+            gameState.currentScreen = 'playerJoin';
+            updatePlayerCount();
+        }
+
+        function showHostLogin() {
+            hideAllScreens();
+            document.getElementById('hostLoginScreen').classList.remove('hidden');
+            gameState.currentScreen = 'hostLogin';
+        }
+
+        function hideAllScreens() {
+            const screens = ['openingScreen', 'materialScreen', 'playerJoinScreen', 'gameScreen', 'leaderboardScreen', 'hostLoginScreen', 'hostPanelScreen'];
+            screens.forEach(screen => {
+                document.getElementById(screen).classList.add('hidden');
+            });
+        }
+
+        // Player Management
+        function updatePlayerCount() {
+            const count = gameState.players.length;
+            document.getElementById('playerCount').textContent = `${count}/40`;
+            if (document.getElementById('hostPlayerCount')) {
+                document.getElementById('hostPlayerCount').textContent = count;
+            }
+            updateHostPlayerList();
+        }
+
+        function joinGame() {
+            const nameInput = document.getElementById('playerName');
+            const name = nameInput.value.trim();
+            
+            if (!name) {
+                alert('Silakan masukkan nama Anda!');
+                return;
+            }
+
+            if (gameState.players.length >= 40) {
+                alert('Maaf, game sudah penuh (maksimal 40 pemain)');
+                return;
+            }
+
+            if (gameState.players.find(p => p.name === name)) {
+                alert('Nama sudah digunakan, silakan pilih nama lain!');
+                return;
+            }
+
+            const player = {
+                id: Date.now(),
+                name: name,
+                score: 0,
+                answers: [],
+                joinTime: new Date()
+            };
+
+            gameState.players.push(player);
+            gameState.currentPlayer = player;
+            
+            startGame();
+        }
+
+        // Game Logic
+        function startGame() {
+            hideAllScreens();
+            document.getElementById('gameScreen').classList.remove('hidden');
+            gameState.currentScreen = 'game';
+            
+            document.getElementById('gamePlayerName').textContent = gameState.currentPlayer.name;
+            gameState.currentQuestionIndex = 0;
+            gameState.gameStartTime = Date.now();
+            
+            startGameTimer();
+            showQuestion();
+            updatePlayerCount();
+            
+            // Start background music
+            if (gameState.musicEnabled) {
+                setTimeout(() => {
+                    if (isYouTubeReady && youtubePlayer) {
+                        youtubePlayer.playVideo();
+                    } else if (gameState.playBackgroundMusic) {
+                        gameState.playBackgroundMusic();
+                    }
+                }, 1000);
+            }
+        }
+
+        function startGameTimer() {
+            const duration = 10 * 60 * 1000; // 10 minutes
+            
+            gameState.gameTimer = setInterval(() => {
+                const elapsed = Date.now() - gameState.gameStartTime;
+                const remaining = Math.max(0, duration - elapsed);
+                
+                const minutes = Math.floor(remaining / 60000);
+                const seconds = Math.floor((remaining % 60000) / 1000);
+                
+                const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                document.getElementById('timer').textContent = timeString;
+                
+                if (document.getElementById('hostGameTime')) {
+                    document.getElementById('hostGameTime').textContent = timeString;
+                }
+                
+                if (remaining === 0) {
+                    endGame();
                 }
             }, 1000);
         }
-        
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeRemaining / 60);
-            const seconds = timeRemaining % 60;
-            const timerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            document.getElementById('gameTimer').textContent = timerText;
+
+        function updateProgressBar() {
+            const current = gameState.currentQuestionIndex + 1;
+            const total = questions.length;
+            const percentage = (current / total) * 100;
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressText').textContent = `${current} dari ${total} soal`;
         }
-        
-        function stopGameTimer() {
-            if (gameTimer) {
-                clearInterval(gameTimer);
-                gameTimer = null;
-            }
-        }
-        
-        function endGameByTimeout() {
-            const status = document.getElementById('gameStatus');
-            status.textContent = '⏰ Waktu habis! Game berakhir otomatis.';
-            status.className = 'absolute top-4 left-4 bg-red-100 bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-red-600 shadow-lg';
-            
-            // Disable all buttons
-            const buttons = document.querySelectorAll('#questionOptions button');
-            buttons.forEach(btn => btn.disabled = true);
-            
-            setTimeout(() => {
-                endGame();
-            }, 2000);
-        }
-        
-        // Game Functions
-        function startGame() {
-            const playerName = document.getElementById('playerName').value.trim();
-            if (!playerName) {
-                alert('Silakan masukkan nama Anda terlebih dahulu!');
-                return;
-            }
-            
-            currentPlayer = playerName;
-            currentQuestion = 0;
-            currentScore = 0;
-            
-            // Update host stats
-            hostStats.activePlayersCount++;
-            hostStats.gamesPlayedCount++;
-            localStorage.setItem('ethomath_host_stats', JSON.stringify(hostStats));
-            
-            // Shuffle questions
-            gameQuestions = [...questionsDB].sort(() => Math.random() - 0.5).slice(0, 5);
-            
-            document.getElementById('currentPlayerName').textContent = currentPlayer;
-            document.getElementById('currentScore').textContent = currentScore;
-            
-            showScreen('gameScreen');
-            startGameTimer(); // Start the 15-minute timer
-            showQuestion();
-            resetBasketballCourt();
-            
-            // Start background music
-            if (musicEnabled) {
-                const music = document.getElementById('backgroundMusic');
-                music.play().catch(e => console.log('Background music failed to play:', e));
-            }
-        }
-        
-        function resetBasketballCourt() {
-            // Reset basketball
-            const ball = document.getElementById('currentBall');
-            ball.className = 'basketball';
-            ball.style.left = '80px';
-            ball.style.top = '150px';
-            ball.style.opacity = '1';
-            
-            // Reset player
-            const player = document.getElementById('currentPlayer');
-            player.className = 'player';
-            
-            // Reset SWISH effect
-            const swishEffect = document.getElementById('swishEffect');
-            swishEffect.style.animation = 'none';
-            
-            // Update current player for this question
-            updateCurrentPlayer();
-        }
-        
-        function updateCurrentPlayer() {
-            const playerData = basketballPlayers[currentQuestion];
-            const playerAvatar = document.getElementById('currentPlayerAvatar');
-            const playerNameElement = document.getElementById('currentPlayerName');
-            const progressPlayerName = document.getElementById('progressPlayerName');
-            
-            playerAvatar.style.background = playerData.gradient;
-            playerAvatar.textContent = playerData.avatar;
-            playerNameElement.textContent = playerData.name;
-            progressPlayerName.textContent = playerData.name;
-        }
-        
+
         function showQuestion() {
-            if (currentQuestion >= 5) {
-                endGame();
-                return;
+            const question = questions[gameState.currentQuestionIndex];
+            
+            document.getElementById('currentQuestion').textContent = gameState.currentQuestionIndex + 1;
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('questionIcon').textContent = question.icon || question.image;
+            
+            // Update progress bar
+            updateProgressBar();
+            
+            // Handle question image/diagram
+            const imageContainer = document.getElementById('questionImageContainer');
+            const questionImage = document.getElementById('questionImage');
+            const questionDiagram = document.getElementById('questionDiagram');
+            
+            if (question.diagram) {
+                questionImage.style.display = 'none';
+                questionDiagram.style.display = 'block';
+                questionDiagram.innerHTML = question.diagram;
+            } else if (question.image && (question.image.startsWith('http') || question.image.startsWith('data:'))) {
+                // Display uploaded image or URL image
+                questionImage.style.display = 'none';
+                questionDiagram.style.display = 'block';
+                questionDiagram.innerHTML = `
+                    <div class="bg-white p-4 rounded-lg border-2 border-gray-200">
+                        <div class="relative">
+                            <img src="${question.image}" 
+                                 alt="Gambar soal" 
+                                 class="max-w-full h-auto mx-auto rounded-lg shadow-md max-h-64 object-contain"
+                                 onload="this.style.opacity='1'; this.nextElementSibling.style.display='none';"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                                 style="opacity: 0; transition: opacity 0.3s ease;">
+                            <div class="text-center p-8 bg-gray-100 rounded-lg">
+                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                                <p class="text-gray-600">Memuat gambar...</p>
+                                <div class="hidden">
+                                    <div class="text-6xl mb-4">${question.icon || '📐'}</div>
+                                    <p class="text-gray-600">Gambar tidak dapat dimuat</p>
+                                    <p class="text-sm text-gray-500 mt-2">Menggunakan icon sebagai pengganti</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add timeout fallback for slow loading images
+                setTimeout(() => {
+                    const img = questionDiagram.querySelector('img');
+                    const fallback = questionDiagram.querySelector('.hidden');
+                    const loading = questionDiagram.querySelector('.animate-spin').parentElement;
+                    
+                    if (img && img.style.opacity === '0') {
+                        img.style.display = 'none';
+                        loading.style.display = 'none';
+                        fallback.classList.remove('hidden');
+                        fallback.style.display = 'block';
+                    }
+                }, 8000); // 8 second timeout
+                
+            } else {
+                // Display emoji/icon
+                questionImage.style.display = 'block';
+                questionDiagram.style.display = 'none';
+                questionImage.textContent = question.image || question.icon || '📐';
             }
             
-            const question = gameQuestions[currentQuestion];
-            const playerData = basketballPlayers[currentQuestion];
+            // Hide basketball animation
+            document.getElementById('basketballAnimation').classList.add('hidden');
             
-            document.getElementById('questionNumber').textContent = currentQuestion + 1;
-            document.getElementById('questionText').textContent = question.question;
-            document.getElementById('progressQuestionNumber').textContent = currentQuestion + 1;
+            const optionsContainer = document.getElementById('answerOptions');
+            optionsContainer.innerHTML = '';
             
-            // Display diagram
-            const diagramContainer = document.getElementById('questionDiagram');
-            diagramContainer.innerHTML = question.diagram || '';
+            Object.entries(question.options).forEach(([key, value]) => {
+                const button = document.createElement('button');
+                button.className = 'w-full p-6 text-left border-3 border-white rounded-2xl hover:border-pink-400 hover:bg-gradient-to-r hover:from-pink-50 hover:to-purple-50 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl bg-gradient-to-r from-white to-blue-50 shadow-xl';
+                button.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="w-14 h-14 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-xl animate-pulse">
+                            ${key.toUpperCase()}
+                        </div>
+                        <div class="flex-1 text-gray-800 font-bold text-xl">${value}</div>
+                        <div class="text-3xl opacity-70">🎯</div>
+                    </div>
+                `;
+                button.onclick = () => selectAnswer(key, button);
+                button.disabled = false;
+                optionsContainer.appendChild(button);
+            });
             
-            const optionsContainer = document.getElementById('questionOptions');
-            optionsContainer.innerHTML = question.options.map((option, index) => `
-                <button onclick="answerQuestion(${index})" class="p-4 bg-blue-50 hover:bg-blue-100 rounded-xl text-left transition-colors border-2 border-transparent hover:border-blue-300">
-                    <span class="font-semibold text-blue-600">${String.fromCharCode(65 + index)}.</span> ${option}
-                </button>
-            `).join('');
-            
-            document.getElementById('gameStatus').textContent = `🏀 ${playerData.name} siap menembak!`;
-            document.getElementById('gameStatus').className = 'absolute top-4 left-4 bg-white bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-gray-700 shadow-lg';
-            
-            // Update current player display
-            updateCurrentPlayer();
+            document.getElementById('nextButton').disabled = true;
         }
-        
-        function answerQuestion(selectedIndex) {
-            const question = gameQuestions[currentQuestion];
-            const playerData = basketballPlayers[currentQuestion];
-            const status = document.getElementById('gameStatus');
+
+        function selectAnswer(answer, buttonElement) {
+            // Disable all buttons to prevent multiple selections
+            document.querySelectorAll('#answerOptions button').forEach(btn => {
+                btn.disabled = true;
+            });
             
-            // Disable all option buttons
-            const buttons = document.querySelectorAll('#questionOptions button');
-            buttons.forEach(btn => btn.disabled = true);
+            // Mark selected answer
+            const question = questions[gameState.currentQuestionIndex];
+            const isCorrect = answer === question.correct;
             
-            // Get current ball and player
-            const ball = document.getElementById('currentBall');
-            const player = document.getElementById('currentPlayer');
-            const swishEffect = document.getElementById('swishEffect');
+            // Remove previous selections and show immediate feedback
+            document.querySelectorAll('#answerOptions button').forEach(btn => {
+                btn.classList.remove('border-blue-500', 'bg-blue-50', 'border-green-500', 'bg-green-50', 'border-red-500', 'bg-red-50');
+                btn.classList.add('border-gray-300', 'opacity-60');
+            });
+            
+            // Highlight selected answer
+            if (isCorrect) {
+                buttonElement.classList.remove('opacity-60');
+                buttonElement.classList.add('border-green-500', 'bg-green-50', 'shadow-lg', 'transform', 'scale-105');
+                buttonElement.innerHTML = buttonElement.innerHTML.replace('🔵', '✅');
+            } else {
+                buttonElement.classList.remove('opacity-60');
+                buttonElement.classList.add('border-red-500', 'bg-red-50', 'shadow-lg');
+                buttonElement.innerHTML = buttonElement.innerHTML.replace('🔵', '❌');
+                
+                // Show correct answer
+                document.querySelectorAll('#answerOptions button').forEach(btn => {
+                    const optionKey = btn.textContent.trim().charAt(0).toLowerCase();
+                    if (optionKey === question.correct) {
+                        btn.classList.remove('opacity-60');
+                        btn.classList.add('border-green-500', 'bg-green-50', 'shadow-lg', 'transform', 'scale-105');
+                        btn.innerHTML = btn.innerHTML.replace('🔵', '✅');
+                    }
+                });
+            }
+            
+            // Update score and save answer
+            if (isCorrect) {
+                gameState.currentPlayer.score += 20;
+            }
+            
+            gameState.currentPlayer.answers.push({
+                questionIndex: gameState.currentQuestionIndex,
+                answer: answer,
+                correct: isCorrect
+            });
+            
+            // Show basketball animation
+            playBasketballAnimation(isCorrect, () => {
+                // Show auto-advance message
+                document.getElementById('autoAdvanceMessage').classList.remove('hidden');
+                
+                // Auto-advance to next question after 2 seconds
+                setTimeout(() => {
+                    document.getElementById('autoAdvanceMessage').classList.add('hidden');
+                    nextQuestion();
+                }, 2000);
+                
+                updateHostChart();
+            });
+        }
+
+        function playBasketballAnimation(isCorrect, callback) {
+            const animationContainer = document.getElementById('basketballAnimation');
+            const player = document.getElementById('basketballPlayer');
+            const basketball = document.getElementById('basketball');
+            const ballShadow = basketball.querySelector('.ball-shadow');
+            const scoreEffect = document.getElementById('scoreEffect');
+            const missEffect = document.getElementById('missEffect');
+            const successCelebration = document.getElementById('successCelebration');
+            const hoopRim = document.querySelector('.hoop-rim');
+            
+            // Show animation container
+            animationContainer.classList.remove('hidden');
+            
+            // Reset positions and states
+            player.classList.remove('shooting', 'celebration', 'disappointment');
+            scoreEffect.style.opacity = '0';
+            scoreEffect.style.transform = 'translateY(20px)';
+            missEffect.style.opacity = '0';
+            missEffect.style.transform = 'translateY(20px)';
+            successCelebration.style.opacity = '0';
+            successCelebration.style.transform = 'translateY(20px)';
+            
+            // Reset ball position and remove bounce classes
+            basketball.style.left = '90px';
+            basketball.style.bottom = '100px';
+            basketball.style.right = 'auto';
+            basketball.style.transform = 'rotate(0deg) scale(1)';
+            basketball.classList.remove('ball-bounce-1', 'ball-bounce-2', 'ball-bounce-3');
+            
+            // Reset rim shake
+            if (hoopRim) {
+                hoopRim.classList.remove('rim-shake');
+            }
             
             // Start shooting animation
-            ball.classList.add('shooting');
-            player.classList.add('shooting');
-            
             setTimeout(() => {
-                if (selectedIndex === question.correct) {
-                    // Correct answer - shot scored
-                    ball.classList.remove('shooting');
-                    ball.classList.add('scored');
-                    player.classList.remove('shooting');
-                    player.classList.add('celebrating');
-                    
-                    // Show SWISH effect
-                    swishEffect.style.animation = 'swishText 2s ease-out';
-                    
-                    // Play correct sound
-                    playSound('correctSound');
-                    
-                    status.textContent = `🎉 SWISH! ${playerData.name} berhasil mencetak poin!`;
-                    status.className = 'absolute top-4 left-4 bg-green-100 bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-green-600 shadow-lg';
-                    currentScore += 100;
-                    document.getElementById('currentScore').textContent = currentScore;
-                } else {
-                    // Wrong answer - shot missed
-                    ball.classList.remove('shooting');
-                    ball.classList.add('missed');
-                    player.classList.remove('shooting');
-                    player.classList.add('disappointed');
-                    
-                    // Play wrong sound
-                    playSound('wrongSound');
-                    
-                    status.textContent = `❌ Miss! ${playerData.name} gagal mencetak poin!`;
-                    status.className = 'absolute top-4 left-4 bg-red-100 bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-red-600 shadow-lg';
-                }
-            }, 2500);
-            
-            // Move to next question after animation
-            setTimeout(() => {
-                currentQuestion++;
-                if (currentQuestion < 5) {
-                    resetBasketballCourt();
-                    showQuestion();
-                } else {
-                    endGame();
-                }
-            }, 4500);
+                player.classList.add('shooting');
+                
+                // Realistic ball trajectory animation
+                setTimeout(() => {
+                    animateBasketballThrow(basketball, ballShadow, isCorrect, () => {
+                        if (isCorrect) {
+                            // Success effects
+                            playSuccessSound();
+                            
+                            setTimeout(() => {
+                                scoreEffect.style.opacity = '1';
+                                scoreEffect.style.transform = 'translateY(0)';
+                                successCelebration.style.opacity = '1';
+                                successCelebration.style.transform = 'translateY(0)';
+                            }, 200);
+                        } else {
+                            // Miss effects
+                            playMissSound();
+                            
+                            // Shake the rim
+                            if (hoopRim) {
+                                hoopRim.classList.add('rim-shake');
+                            }
+                            
+                            // Show miss effect
+                            setTimeout(() => {
+                                missEffect.style.opacity = '1';
+                                missEffect.style.transform = 'translateY(0)';
+                            }, 300);
+                            
+                            // Add bounce animations to the ball
+                            setTimeout(() => {
+                                basketball.classList.add('ball-bounce-1');
+                            }, 100);
+                            setTimeout(() => {
+                                basketball.classList.remove('ball-bounce-1');
+                                basketball.classList.add('ball-bounce-2');
+                            }, 700);
+                            setTimeout(() => {
+                                basketball.classList.remove('ball-bounce-2');
+                                basketball.classList.add('ball-bounce-3');
+                            }, 1100);
+                        }
+                        
+                        // Player reaction
+                        setTimeout(() => {
+                            player.classList.remove('shooting');
+                            if (isCorrect) {
+                                player.classList.add('celebration');
+                            } else {
+                                player.classList.add('disappointment');
+                            }
+                        }, 300);
+                        
+                        // Hide animation and call callback
+                        setTimeout(() => {
+                            animationContainer.classList.add('hidden');
+                            callback();
+                        }, 2500);
+                    });
+                }, 400);
+                
+            }, 600);
         }
-        
+
+        function animateBasketballThrow(ball, shadow, isCorrect, onComplete) {
+            const startX = 90;
+            const startY = 100;
+            const hoopCenterX = 340; // Center of the hoop
+            const hoopCenterY = 125; // Center of the hoop
+            const rimY = 115; // Rim level
+            const peakY = 220; // Height of the arc
+            
+            let progress = 0;
+            const duration = 1200; // Animation duration in ms
+            const startTime = Date.now();
+            
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                progress = Math.min(elapsed / duration, 1);
+                
+                let x, y;
+                
+                if (isCorrect) {
+                    // Perfect shot - ball goes directly into hoop center
+                    x = startX + (hoopCenterX - startX) * progress;
+                    
+                    // Perfect parabolic arc that peaks and comes down into the hoop
+                    const t = progress;
+                    y = startY + 4 * (peakY - startY) * t * (1 - t) + (hoopCenterY - startY) * t;
+                    
+                    // Adjust trajectory in final phase to ensure it goes into hoop
+                    if (progress > 0.8) {
+                        const finalPhase = (progress - 0.8) / 0.2;
+                        x = hoopCenterX - 5 + finalPhase * 5; // Slight adjustment to center
+                        y = rimY + 10 - finalPhase * 15; // Goes down into hoop
+                    }
+                } else {
+                    // Missed shot - ball hits rim and bounces
+                    const missX = hoopCenterX + 25; // Hits front rim
+                    const missY = rimY + 5;
+                    
+                    x = startX + (missX - startX) * progress;
+                    
+                    const t = progress;
+                    y = startY + 4 * (peakY - startY) * t * (1 - t) + (missY - startY) * t;
+                }
+                
+                // Ball rotation based on distance traveled
+                const rotation = progress * (isCorrect ? 720 : 540);
+                
+                // Ball scaling for depth perception
+                const scale = 1 - 0.2 * Math.sin(Math.PI * progress);
+                
+                // Apply transformations
+                ball.style.left = x + 'px';
+                ball.style.bottom = y + 'px';
+                ball.style.transform = `rotate(${rotation}deg) scale(${scale})`;
+                
+                // Shadow animation - moves horizontally and changes size
+                if (shadow) {
+                    const shadowSize = 25 - 8 * Math.sin(Math.PI * progress);
+                    const shadowOpacity = 0.4 - 0.15 * Math.sin(Math.PI * progress);
+                    
+                    shadow.style.left = '50%';
+                    shadow.style.transform = 'translateX(-50%)';
+                    shadow.style.width = shadowSize + 'px';
+                    shadow.style.background = `radial-gradient(ellipse, rgba(0,0,0,${shadowOpacity}), transparent)`;
+                }
+                
+                // Continue animation or finish
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Final position adjustments
+                    if (isCorrect) {
+                        // Ball goes through hoop and falls down inside
+                        setTimeout(() => {
+                            ball.style.left = hoopCenterX + 'px';
+                            ball.style.bottom = (hoopCenterY - 20) + 'px';
+                            ball.style.transform = `rotate(${rotation + 180}deg) scale(0.7)`;
+                        }, 100);
+                        setTimeout(() => {
+                            ball.style.left = (hoopCenterX - 2) + 'px';
+                            ball.style.bottom = (hoopCenterY - 35) + 'px';
+                            ball.style.transform = `rotate(${rotation + 270}deg) scale(0.6)`;
+                        }, 250);
+                        setTimeout(() => {
+                            ball.style.left = (hoopCenterX + 1) + 'px';
+                            ball.style.bottom = (hoopCenterY - 45) + 'px';
+                            ball.style.transform = `rotate(${rotation + 360}deg) scale(0.5)`;
+                        }, 400);
+                        
+                        // Make net sway animation more pronounced for successful shots
+                        const netStrands = document.querySelectorAll('.net-strand');
+                        netStrands.forEach((strand, index) => {
+                            strand.style.animation = 'netSwaySuccess 1s ease-out';
+                            strand.style.animationDelay = (index * 0.1) + 's';
+                        });
+                        
+                    } else {
+                        // Ball bounces off rim realistically
+                        setTimeout(() => {
+                            ball.style.left = (hoopCenterX - 20) + 'px';
+                            ball.style.bottom = '95px';
+                            ball.style.transform = `rotate(${rotation + 180}deg) scale(0.9)`;
+                        }, 100);
+                        setTimeout(() => {
+                            ball.style.left = (hoopCenterX - 45) + 'px';
+                            ball.style.bottom = '65px';
+                            ball.style.transform = `rotate(${rotation + 270}deg) scale(1)`;
+                        }, 300);
+                        setTimeout(() => {
+                            ball.style.left = (hoopCenterX - 60) + 'px';
+                            ball.style.bottom = '45px';
+                            ball.style.transform = `rotate(${rotation + 360}deg) scale(1.1)`;
+                        }, 500);
+                    }
+                    
+                    onComplete();
+                }
+            }
+            
+            animate();
+        }
+
+        function nextQuestion() {
+            gameState.currentQuestionIndex++;
+            
+            if (gameState.currentQuestionIndex >= questions.length) {
+                endGame();
+            } else {
+                showQuestion();
+            }
+        }
+
         function endGame() {
-            // Stop the timer and music
-            stopGameTimer();
-            document.getElementById('backgroundMusic').pause();
+            if (gameState.gameTimer) {
+                clearInterval(gameState.gameTimer);
+            }
             
-            // Update host stats
-            hostStats.totalScore += currentScore;
-            hostStats.activePlayersCount = Math.max(0, hostStats.activePlayersCount - 1);
-            localStorage.setItem('ethomath_host_stats', JSON.stringify(hostStats));
-            
-            // Add to leaderboard
-            const playerData = {
-                name: currentPlayer,
-                score: currentScore,
-                date: new Date().toISOString()
-            };
-            
-            leaderboard.push(playerData);
-            leaderboard.sort((a, b) => b.score - a.score);
-            leaderboard = leaderboard.slice(0, 30); // Keep top 30
-            localStorage.setItem('ethomath_leaderboard', JSON.stringify(leaderboard));
+            hideAllScreens();
+            document.getElementById('leaderboardScreen').classList.remove('hidden');
+            gameState.currentScreen = 'leaderboard';
             
             showLeaderboard();
         }
-        
-        function showLeaderboard() {
-            showScreen('leaderboardScreen');
-            
-            const leaderboardList = document.getElementById('leaderboardList');
-            if (leaderboard.length === 0) {
-                leaderboardList.innerHTML = '<p class="text-gray-500">Belum ada skor yang tercatat</p>';
+
+        function getRewardMessage(score) {
+            if (score >= 90) {
+                return {
+                    title: "🌟 LUAR BIASA! 🌟",
+                    message: "Kamu adalah Master Kesebangunan! Pemahaman matematikamu sangat menakjubkan!",
+                    reward: "🏆 Gelar: Ahli Matematika Pontianak",
+                    color: "from-purple-500 via-pink-500 to-red-500",
+                    icon: "🎯",
+                    animation: "animate-bounce"
+                };
+            } else if (score >= 80) {
+                return {
+                    title: "⭐ HEBAT SEKALI! ⭐",
+                    message: "Prestasi yang membanggakan! Kamu benar-benar memahami konsep kesebangunan!",
+                    reward: "🥇 Gelar: Juara Matematika",
+                    color: "from-yellow-400 via-orange-500 to-red-500",
+                    icon: "🔥",
+                    animation: "animate-pulse"
+                };
+            } else if (score >= 60) {
+                return {
+                    title: "👏 BAGUS BANGET! 👏",
+                    message: "Kerja keras kamu membuahkan hasil! Terus tingkatkan lagi ya!",
+                    reward: "🥈 Gelar: Pelajar Berprestasi",
+                    color: "from-blue-500 via-purple-500 to-pink-500",
+                    icon: "💪",
+                    animation: "animate-pulse"
+                };
+            } else if (score >= 40) {
+                return {
+                    title: "😊 TERUS SEMANGAT! 😊",
+                    message: "Kamu sudah di jalan yang benar! Sedikit lagi pasti bisa lebih baik!",
+                    reward: "🥉 Gelar: Pejuang Matematika",
+                    color: "from-green-400 via-blue-500 to-purple-500",
+                    icon: "🌱",
+                    animation: "animate-bounce"
+                };
             } else {
-                leaderboardList.innerHTML = leaderboard.slice(0, 10).map((player, index) => `
-                    <div class="flex items-center justify-between p-4 ${player.name === currentPlayer ? 'bg-yellow-50 border-2 border-yellow-300' : 'bg-gray-50'} rounded-xl">
-                        <div class="flex items-center space-x-4">
-                            <span class="text-2xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'}</span>
-                            <div>
-                                <p class="font-semibold text-gray-800">${player.name} ${player.name === currentPlayer ? '(Anda)' : ''}</p>
-                                <p class="text-sm text-gray-600">${new Date(player.date).toLocaleDateString('id-ID')}</p>
-                            </div>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-xl font-bold text-purple-600">${player.score}</p>
-                            <p class="text-sm text-gray-500">${player.score}/500 poin</p>
-                        </div>
-                    </div>
-                `).join('');
+                return {
+                    title: "💪 JANGAN MENYERAH! 💪",
+                    message: "Setiap ahli pernah menjadi pemula. Ayo coba lagi dan pasti bisa!",
+                    reward: "🌟 Gelar: Pemberani Belajar",
+                    color: "from-pink-400 via-red-500 to-yellow-500",
+                    icon: "🚀",
+                    animation: "animate-bounce"
+                };
             }
         }
-        
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            showOpeningScreen();
+
+        function showLeaderboard() {
+            const sortedPlayers = [...gameState.players].sort((a, b) => b.score - a.score);
+            const leaderboardList = document.getElementById('leaderboardList');
             
-            // Set up audio elements with error handling
-            const music = document.getElementById('backgroundMusic');
-            music.addEventListener('error', function(e) {
-                console.log('Background music failed to load');
-                musicEnabled = false;
+            leaderboardList.innerHTML = '';
+            
+            // Show personal reward message for current player
+            if (gameState.currentPlayer) {
+                const playerScore = gameState.currentPlayer.score;
+                const reward = getRewardMessage(playerScore);
+                
+                const rewardDiv = document.createElement('div');
+                rewardDiv.className = `mb-8 p-6 rounded-2xl bg-gradient-to-r ${reward.color} text-white text-center transform ${reward.animation} shadow-2xl border-4 border-white reward-glow`;
+                rewardDiv.innerHTML = `
+                    <div class="text-6xl mb-4 reward-sparkle">${reward.icon}</div>
+                    <h3 class="text-2xl font-bold mb-3">${reward.title}</h3>
+                    <p class="text-lg mb-4 leading-relaxed">${reward.message}</p>
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 mb-4 reward-float">
+                        <p class="text-xl font-bold">${reward.reward}</p>
+                    </div>
+                    <div class="flex justify-center items-center space-x-4 text-2xl">
+                        <span class="animate-spin reward-sparkle">⭐</span>
+                        <span class="text-3xl font-bold">${playerScore} POIN</span>
+                        <span class="animate-spin reward-sparkle">⭐</span>
+                    </div>
+                    <div class="mt-4 flex justify-center space-x-2">
+                        ${Array.from({length: Math.min(5, Math.floor(playerScore/20))}, () => '🌟').join('')}
+                        ${Array.from({length: Math.max(0, 5 - Math.floor(playerScore/20))}, () => '⭐').join('')}
+                    </div>
+                `;
+                leaderboardList.appendChild(rewardDiv);
+            }
+            
+            // Add motivational quote section
+            const quotes = [
+                "\"Matematika adalah bahasa yang digunakan Tuhan untuk menulis alam semesta\" - Galileo",
+                "\"Dalam matematika, kamu tidak memahami sesuatu. Kamu hanya terbiasa dengannya\" - John von Neumann",
+                "\"Matematika adalah musik akal\" - James Joseph Sylvester",
+                "\"Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan\" - Colin Powell"
+            ];
+            
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            const quoteDiv = document.createElement('div');
+            quoteDiv.className = 'mb-6 p-4 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl border-2 border-indigo-200 reward-float';
+            quoteDiv.innerHTML = `
+                <div class="text-center">
+                    <div class="text-3xl mb-2 reward-sparkle">💭</div>
+                    <p class="text-gray-700 italic font-medium">${randomQuote}</p>
+                </div>
+            `;
+            leaderboardList.appendChild(quoteDiv);
+            
+            // Show leaderboard title
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'mb-4 text-center';
+            titleDiv.innerHTML = `
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">🏆 Papan Peringkat 🏆</h3>
+                <p class="text-gray-600">Hasil semua pemain yang telah menyelesaikan game</p>
+            `;
+            leaderboardList.appendChild(titleDiv);
+            
+            sortedPlayers.forEach((player, index) => {
+                const div = document.createElement('div');
+                const playerReward = getRewardMessage(player.score);
+                
+                div.className = `flex items-center justify-between p-4 rounded-xl mb-3 transform hover:scale-105 transition-all duration-300 shadow-lg ${
+                    index === 0 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-4 border-yellow-300 reward-glow' :
+                    index === 1 ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white border-4 border-gray-300' :
+                    index === 2 ? 'bg-gradient-to-r from-orange-400 to-orange-600 text-white border-4 border-orange-300' :
+                    'bg-gradient-to-r from-blue-100 to-purple-100 border-2 border-blue-200'
+                }`;
+                
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                const isCurrentPlayer = player.id === gameState.currentPlayer?.id;
+                
+                div.innerHTML = `
+                    <div class="flex items-center space-x-4">
+                        <div class="text-center">
+                            <div class="text-3xl ${index < 3 ? 'reward-sparkle' : ''}">${medal}</div>
+                            ${index < 3 ? '<div class="text-xs opacity-75">TOP 3</div>' : ''}
+                        </div>
+                        <div>
+                            <p class="font-bold text-lg ${isCurrentPlayer ? 'animate-pulse' : ''}">${player.name} ${isCurrentPlayer ? '👤' : ''}</p>
+                            <p class="text-sm opacity-75">${player.answers.filter(a => a.correct).length}/5 benar</p>
+                            <div class="flex items-center space-x-1 mt-1">
+                                ${Array.from({length: Math.min(5, Math.floor(player.score/20))}, () => '⭐').join('')}
+                                ${Array.from({length: Math.max(0, 5 - Math.floor(player.score/20))}, () => '☆').join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-2xl font-bold">${player.score}</p>
+                        <p class="text-sm opacity-75">poin</p>
+                        <div class="text-xs opacity-75">${playerReward.reward.split(': ')[1]}</div>
+                    </div>
+                `;
+                
+                leaderboardList.appendChild(div);
             });
             
-            // Auto-enable music controls when user interacts
-            document.addEventListener('click', function() {
-                if (musicEnabled && music.paused) {
-                    music.play().catch(e => console.log('Auto-play prevented'));
-                }
-            }, { once: true });
-        });
-    </script>
-    </div> <!-- Close content wrapper -->
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972f41f9563ceb9d',t:'MTc1NTgzMzA3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
-</html>
+            // Add encouragement section
+            const encouragementDiv = document.createElement('div');
+            encouragementDiv.className = 'mt-8 p-6 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-2xl text-white text-center reward-float';
+            encouragementDiv.innerHTML = `
+                <div class="text-4xl mb-3 reward-sparkle">🎉</div>
+                <h3 class="text-xl font-bold mb-2">Selamat untuk Semua Pemain!</h3>
+                <p class="mb-4">Kalian semua adalah pemenang karena sudah berani belajar matematika!</p>
+                <div class="flex justify-center space-x-4 text-2xl">
+                    <span class="reward-sparkle">🌟</span>
+                    <span class="reward-sparkle">🎯</span>
+                    <span class="reward-sparkle">🏆</span>
+                    <span class="reward-sparkle">💪</span>
+                    <span class="reward-sparkle">🚀</span>
+                </div>
+            `;
+            leaderboardList.appendChild(encouragementDiv);
+        }
+
+        function resetGame() {
+            gameState.currentQuestionIndex = 0;
+            gameState.currentPlayer.score = 0;
+            gameState.currentPlayer.answers = [];
+            startGame();
+        }
+
+        // Host Functions
+        function loginHost() {
+            const password = document.getElementById('hostPassword').value;
+            if (password === 'admin123') {
+                hideAllScreens();
+                document.getElementById('hostPanelScreen').classList.remove('hidden');
+                gameState.currentScreen = 'hostPanel';
+                initHostPanel();
+            } else {
+                alert('Password salah!');
+            }
+        }
+
+        function initHostPanel() {
+            updatePlayerCount();
+            initHostChart();
+            updateHostChart();
+        }
+
+        function startGameAsHost() {
+            if (gameState.players.length === 0) {
+                alert('Belum ada pemain yang bergabung!');
+                return;
+            }
+            
+            // Start game for all players
+            gameState.gameStartTime = Date.now();
+            startGameTimer();
+            updateHostChart();
+        }
+
+        function updateHostPlayerList() {
+            const hostPlayerList = document.getElementById('hostPlayerList');
+            if (!hostPlayerList) return;
+            
+            hostPlayerList.innerHTML = '';
+            
+            if (gameState.players.length === 0) {
+                hostPlayerList.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <div class="text-4xl mb-2">👥</div>
+                        <p>Belum ada pemain yang bergabung</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort players by score (highest first)
+            const sortedPlayers = [...gameState.players].sort((a, b) => b.score - a.score);
+            
+            sortedPlayers.forEach((player, index) => {
+                const div = document.createElement('div');
+                const rankIcon = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                const correctAnswers = player.answers.filter(a => a.correct).length;
+                const totalAnswers = player.answers.length;
+                
+                div.className = `flex items-center justify-between p-3 rounded-lg transition-all hover:shadow-md ${
+                    index === 0 ? 'bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200' :
+                    index === 1 ? 'bg-gradient-to-r from-gray-50 to-gray-100 border border-gray-200' :
+                    index === 2 ? 'bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200' :
+                    'bg-gray-50'
+                }`;
+                
+                div.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="text-2xl">${rankIcon}</div>
+                        <div>
+                            <p class="font-medium text-gray-800">${player.name}</p>
+                            <p class="text-sm text-gray-600">Bergabung: ${player.joinTime.toLocaleTimeString()}</p>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <div class="w-16 bg-gray-200 rounded-full h-2">
+                                    <div class="bg-blue-500 h-2 rounded-full transition-all duration-300" 
+                                         style="width: ${(totalAnswers / 5) * 100}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-500">${totalAnswers}/5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xl font-bold text-blue-600">${player.score}</p>
+                        <p class="text-sm text-gray-600">poin</p>
+                        <p class="text-xs text-green-600">${correctAnswers} benar</p>
+                    </div>
+                `;
+                hostPlayerList.appendChild(div);
+            });
+        }
+
+        function initHostChart() {
+            const ctx = document.getElementById('liveScoreChart');
+            if (!ctx) return;
+            
+            if (gameState.hostChart) {
+                gameState.hostChart.destroy();
+            }
+            
+            gameState.hostChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['🔴 Rendah (0-20)', '🟡 Cukup (21-40)', '🔵 Baik (41-60)', '🟢 Sangat Baik (61-80)', '🟣 Sempurna (81-100)'],
+                    datasets: [{
+                        label: 'Jumlah Pemain',
+                        data: [0, 0, 0, 0, 0],
+                        backgroundColor: [
+                            'rgba(239, 68, 68, 0.9)',
+                            'rgba(245, 158, 11, 0.9)',
+                            'rgba(59, 130, 246, 0.9)',
+                            'rgba(16, 185, 129, 0.9)',
+                            'rgba(139, 92, 246, 0.9)'
+                        ],
+                        borderColor: [
