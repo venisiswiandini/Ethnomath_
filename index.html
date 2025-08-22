@@ -310,7 +310,111 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 min-h-screen">
+<body class="min-h-screen relative">
+    <!-- Background SVG -->
+    <div class="fixed inset-0 z-0">
+        <svg width="100%" height="100%" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" class="w-full h-full object-cover">
+            <!-- Sky Gradient -->
+            <defs>
+                <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+                    <stop offset="70%" style="stop-color:#FFE4B5;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#FFA500;stop-opacity:1" />
+                </linearGradient>
+                <linearGradient id="riverGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" style="stop-color:#4682B4;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#2F4F4F;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            
+            <!-- Sky -->
+            <rect width="1200" height="800" fill="url(#skyGradient)"/>
+            
+            <!-- Mountains/Hills in background -->
+            <path d="M0,300 Q200,250 400,280 T800,260 L1200,280 L1200,800 L0,800 Z" fill="#228B22" opacity="0.3"/>
+            
+            <!-- Traditional Pontianak Houses -->
+            <!-- House 1 -->
+            <g>
+                <!-- House base -->
+                <rect x="100" y="400" width="200" height="150" fill="#D2691E" stroke="#A0522D" stroke-width="2"/>
+                <!-- Roof -->
+                <polygon points="80,400 200,300 320,400" fill="#B22222" stroke="#800000" stroke-width="2"/>
+                <!-- Door -->
+                <rect x="140" y="480" width="30" height="70" fill="#654321"/>
+                <!-- Windows -->
+                <rect x="180" y="430" width="40" height="40" fill="#87CEEB" stroke="#000" stroke-width="1"/>
+                <rect x="120" y="430" width="40" height="40" fill="#87CEEB" stroke="#000" stroke-width="1"/>
+                <!-- Stilts/Pillars -->
+                <rect x="120" y="550" width="8" height="50" fill="#8B4513"/>
+                <rect x="160" y="550" width="8" height="50" fill="#8B4513"/>
+                <rect x="200" y="550" width="8" height="50" fill="#8B4513"/>
+                <rect x="240" y="550" width="8" height="50" fill="#8B4513"/>
+            </g>
+            
+            <!-- House 2 -->
+            <g>
+                <rect x="400" y="380" width="180" height="170" fill="#DEB887" stroke="#A0522D" stroke-width="2"/>
+                <polygon points="380,380 490,280 600,380" fill="#B22222" stroke="#800000" stroke-width="2"/>
+                <rect x="440" y="460" width="25" height="60" fill="#654321"/>
+                <rect x="500" y="410" width="35" height="35" fill="#87CEEB" stroke="#000" stroke-width="1"/>
+                <rect x="540" y="450" width="35" height="35" fill="#87CEEB" stroke="#000" stroke-width="1"/>
+                <!-- Stilts -->
+                <rect x="420" y="550" width="8" height="50" fill="#8B4513"/>
+                <rect x="460" y="550" width="8" height="50" fill="#8B4513"/>
+                <rect x="500" y="550" width="8" height="50" fill="#8B4513"/>
+                <rect x="540" y="550" width="8" height="50" fill="#8B4513"/>
+            </g>
+            
+            <!-- House 3 -->
+            <g>
+                <rect x="700" y="420" width="160" height="130" fill="#F4A460" stroke="#A0522D" stroke-width="2"/>
+                <polygon points="680,420 780,320 880,420" fill="#B22222" stroke="#800000" stroke-width="2"/>
+                <rect x="730" y="480" width="25" height="50" fill="#654321"/>
+                <rect x="800" y="450" width="30" height="30" fill="#87CEEB" stroke="#000" stroke-width="1"/>
+                <!-- Stilts -->
+                <rect x="720" y="550" width="8" height="50" fill="#8B4513"/>
+                <rect x="760" y="550" width="8" height="50" fill="#8B4513"/>
+                <rect x="820" y="550" width="8" height="50" fill="#8B4513"/>
+            </g>
+            
+            <!-- Trees and vegetation -->
+            <ellipse cx="150" cy="380" rx="30" ry="50" fill="#006400"/>
+            <ellipse cx="350" cy="370" rx="25" ry="45" fill="#228B22"/>
+            <ellipse cx="650" cy="390" rx="35" ry="55" fill="#006400"/>
+            <ellipse cx="950" cy="380" rx="30" ry="50" fill="#228B22"/>
+            <ellipse cx="50" cy="400" rx="20" ry="40" fill="#006400"/>
+            <ellipse cx="1100" cy="390" rx="25" ry="45" fill="#228B22"/>
+            
+            <!-- Ground/Grass -->
+            <rect x="0" y="600" width="1200" height="50" fill="#228B22"/>
+            
+            <!-- Kapuas River -->
+            <path d="M0,650 Q300,630 600,650 T1200,650 L1200,800 L0,800 Z" fill="url(#riverGradient)"/>
+            
+            <!-- River reflections -->
+            <ellipse cx="200" cy="720" rx="80" ry="15" fill="#87CEEB" opacity="0.3"/>
+            <ellipse cx="490" cy="710" rx="90" ry="12" fill="#87CEEB" opacity="0.3"/>
+            <ellipse cx="780" cy="725" rx="70" ry="10" fill="#87CEEB" opacity="0.3"/>
+            
+            <!-- Boats on river -->
+            <ellipse cx="300" cy="680" rx="25" ry="8" fill="#8B4513"/>
+            <ellipse cx="800" cy="690" rx="30" ry="10" fill="#654321"/>
+            
+            <!-- Clouds -->
+            <ellipse cx="200" cy="100" rx="40" ry="25" fill="#FFFFFF" opacity="0.8"/>
+            <ellipse cx="220" cy="90" rx="35" ry="20" fill="#FFFFFF" opacity="0.8"/>
+            <ellipse cx="600" cy="80" rx="50" ry="30" fill="#FFFFFF" opacity="0.7"/>
+            <ellipse cx="630" cy="70" rx="40" ry="25" fill="#FFFFFF" opacity="0.7"/>
+            <ellipse cx="1000" cy="120" rx="45" ry="28" fill="#FFFFFF" opacity="0.6"/>
+        </svg>
+        
+        <!-- Dark overlay for better text readability -->
+        <div class="absolute inset-0 bg-black bg-opacity-30"></div>
+    </div>
+    
+    <!-- Content wrapper -->
+    <div class="relative z-10">
     <!-- Audio Elements -->
     <audio id="backgroundMusic" loop preload="auto" volume="0.3">
         <!-- Menggunakan link audio yang dapat diakses -->
@@ -1176,5 +1280,6 @@
             }, { once: true });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972f2ec3c1cdf93c',t:'MTc1NTgzMjI4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+    </div> <!-- Close content wrapper -->
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972f41f9563ceb9d',t:'MTc1NTgzMzA3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
