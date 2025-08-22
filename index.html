@@ -4,13 +4,13 @@ import { getAuth, signInWithCustomToken, signInAnonymously } from 'firebase/auth
 import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
 import { BookOpen, Play, UserCircle, Crown, Lock, Globe } from 'lucide-react';
 
-// Pastikan untuk menggunakan variabel global yang disediakan oleh environment Canvas
+//Pastikan untuk menggunakan variabel global yang disediakan oleh environment Canvas
 const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
 const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 
-// Data pertanyaan statis dengan gambar placeholder.
-// Anda bisa mengubah URL gambar di sini.
+//Data pertanyaan statis dengan gambar placeholder.
+//Anda bisa mengubah URL gambar di sini.
 const questionData = [
   {
     question: "Dua persegi panjang ini sebangun. Tentukan nilai X.",
