@@ -1,610 +1,1180 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { initializeApp } from 'firebase/app';
-import { getAuth, signInWithCustomToken, signInAnonymously } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
-import { BookOpen, Play, UserCircle, Crown, Lock, Globe } from 'lucide-react';
-
-//Pastikan untuk menggunakan variabel global yang disediakan oleh environment Canvas
-const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
-const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-
-//Data pertanyaan statis dengan gambar placeholder.
-//Anda bisa mengubah URL gambar di sini.
-const questionData = [
-  {
-    question: "Dua persegi panjang ini sebangun. Tentukan nilai X.",
-    imageUrl: "https://placehold.co/400x200/505050/FFFFFF?text=Persegi+Panjang+A+%0A(Sisi+2,4)+%0APersegi+Panjang+B+%0A(Sisi+3,X)",
-    answer: 6,
-    choices: [4, 6, 8, 10]
-  },
-  {
-    question: "Segitiga ABC kongruen dengan segitiga PQR. Jika panjang sisi AC adalah 8 cm, berapa panjang sisi PR?",
-    imageUrl: "https://placehold.co/400x200/3498DB/FFFFFF?text=Segitiga+ABC+%0A(Sisi+AC=8)+%0ASegitiga+PQR+%0A(Sisi+PR=?)",
-    answer: 8,
-    choices: [6, 8, 10, 12]
-  },
-  {
-    question: "Dua trapesium ini sebangun. Jika panjang sisi terpanjang trapesium kecil adalah 12 cm, berapa panjang sisi terpanjang trapesium besar?",
-    imageUrl: "https://placehold.co/400x200/F39C12/FFFFFF?text=Trapesium+%0AKecil+dan+Besar",
-    answer: 24,
-    choices: [18, 20, 24, 30]
-  },
-  {
-    question: "Kedua bangun ini sebangun. Tentukan nilai Y.",
-    imageUrl: "https://placehold.co/400x200/E74C3C/FFFFFF?text=Bangun+A+%0A(Sisi+5,10)+%0ABangun+B+%0A(Sisi+15,Y)",
-    answer: 30,
-    choices: [15, 20, 25, 30]
-  },
-];
-
-// Komponen utama aplikasi
-const App = () => {
-  const [db, setDb] = useState(null);
-  const [auth, setAuth] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [username, setUsername] = useState('');
-  const [screen, setScreen] = useState('profile');
-  const [question, setQuestion] = useState(null);
-  const [score, setScore] = useState(0);
-  const [leaderboard, setLeaderboard] = useState([]);
-  const [isGameEnded, setIsGameEnded] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [lastAnswer, setLastAnswer] = useState(null);
-  const [isHost, setIsHost] = useState(false);
-  const [gameId, setGameId] = useState('');
-  const [playerList, setPlayerList] = useState([]);
-  const [gameState, setGameState] = useState(null);
-
-  const gameStartTimeRef = useRef(null);
-
-  // Inisialisasi Firebase dan otentikasi
-  useEffect(() => {
-    const initializeFirebase = async () => {
-      try {
-        const firebaseApp = initializeApp(firebaseConfig);
-        const authInstance = getAuth(firebaseApp);
-        const dbInstance = getFirestore(firebaseApp);
-        setAuth(authInstance);
-        setDb(dbInstance);
-
-        if (initialAuthToken) {
-          await signInWithCustomToken(authInstance, initialAuthToken);
-        } else {
-          await signInAnonymously(authInstance);
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EthoMath - Game Kuis Kesebangunan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
         }
-
-        const unsubscribe = authInstance.onAuthStateChanged(user => {
-          if (user) {
-            setUserId(user.uid);
-            console.log('User signed in with UID:', user.uid);
-          }
-        });
-
-        return () => unsubscribe();
-      } catch (error) {
-        console.error('Error initializing Firebase:', error);
-      }
-    };
-
-    if (Object.keys(firebaseConfig).length > 0) {
-      initializeFirebase();
-    }
-  }, []);
-
-  // Memuat data pengguna dan leaderboard
-  useEffect(() => {
-    if (db && userId) {
-      const loadUserData = async () => {
-        const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/data/profile`);
-        try {
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists()) {
-            setUsername(userDoc.data().username);
-          }
-        } catch (error) {
-          console.error('Error loading user data:', error);
+        
+        .basketball {
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(45deg, #ff8c00, #ffa500);
+            border-radius: 50%;
+            position: absolute;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.4);
+            transition: all 0.8s ease;
+            z-index: 10;
+            border: 2px solid #8b4513;
         }
-      };
-
-      loadUserData();
-
-      // Mendengarkan perubahan pada leaderboard secara real-time
-      const leaderboardQuery = query(collection(db, `artifacts/${appId}/public/data/leaderboard`));
-      const unsubscribeLeaderboard = onSnapshot(leaderboardQuery, (snapshot) => {
-        const leaderboardData = [];
-        snapshot.forEach((doc) => {
-          leaderboardData.push(doc.data());
-        });
-        leaderboardData.sort((a, b) => b.score - a.score || a.time - b.time);
-        setLeaderboard(leaderboardData);
-      }, (error) => {
-        console.error('Error fetching leaderboard:', error);
-      });
-
-      return () => unsubscribeLeaderboard();
-    }
-  }, [db, userId]);
-
-  // Handler untuk menyimpan username
-  const handleSaveUsername = async () => {
-    if (!username.trim() || !db || !userId) {
-      alert('Nama pengguna tidak boleh kosong!');
-      return;
-    }
-    const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/data/profile`);
-    try {
-      await setDoc(userDocRef, { username, userId });
-      setScreen('menu');
-    } catch (error) {
-      console.error('Error saving username:', error);
-    }
-  };
-
-  // Logika host
-  const startHostGame = async () => {
-    setIsHost(true);
-    setGameId(userId);
-    const hostGameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, userId);
-    await setDoc(hostGameDocRef, {
-      status: 'waiting',
-      currentQuestionIndex: -1,
-      players: [{ id: userId, username: username }],
-    });
-    setScreen('host-lobby');
-  };
-
-  const startPlayerGame = async () => {
-    if (!gameId.trim()) {
-      alert('Masukkan ID Game Host!');
-      return;
-    }
-    const gameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
-    const gameDoc = await getDoc(gameDocRef);
-    if (gameDoc.exists() && gameDoc.data().players.length < 30) {
-      await updateDoc(gameDocRef, {
-        players: [...gameDoc.data().players, { id: userId, username: username }],
-      });
-      setScreen('player-lobby');
-    } else {
-      alert('ID Game tidak valid atau sudah penuh.');
-      setGameId('');
-    }
-  };
-
-  // Logika pemain dan host
-  useEffect(() => {
-    if (db && gameId) {
-      const gameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
-      const unsubscribe = onSnapshot(gameDocRef, (doc) => {
-        if (doc.exists()) {
-          const state = doc.data();
-          setGameState(state);
-          setPlayerList(state.players);
-
-          if (isHost && state.status === 'ended') {
-            endGame();
-          }
-
-          if (!isHost && state.status === 'started') {
-            const newIndex = state.currentQuestionIndex;
-            if (newIndex >= 0 && newIndex < questionData.length) {
-              setCurrentQuestionIndex(newIndex);
-              setQuestion(questionData[newIndex]);
-              setScreen('game');
-            } else if (newIndex >= questionData.length) {
-              endGame();
-            }
-          }
-        } else if (!isHost) {
-          // Game ended by host
-          alert('Game telah berakhir. Kembali ke menu.');
-          setScreen('menu');
+        
+        .basketball::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: 100%;
+            background: #8b4513;
         }
-      });
-      return () => unsubscribe();
-    }
-  }, [db, gameId, isHost]);
-
-  // Handler untuk memulai permainan dari sisi host
-  const handleHostStartGame = async () => {
-    gameStartTimeRef.current = Date.now();
-    const hostGameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
-    await updateDoc(hostGameDocRef, {
-      status: 'started',
-      currentQuestionIndex: 0,
-    });
-    setScreen('game');
-  };
-
-  // Handler untuk memajukan pertanyaan dari sisi host
-  const handleNextQuestion = async () => {
-    const nextIndex = currentQuestionIndex + 1;
-    if (nextIndex < questionData.length) {
-      const hostGameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
-      await updateDoc(hostGameDocRef, { currentQuestionIndex: nextIndex });
-      setCurrentQuestionIndex(nextIndex);
-      setQuestion(questionData[nextIndex]);
-    } else {
-      handleHostEndGame();
-    }
-  };
-
-  // Handler untuk mengakhiri game dari sisi host
-  const handleHostEndGame = async () => {
-    const hostGameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
-    await deleteDoc(hostGameDocRef);
-    endGame();
-  };
-
-  // Menangani jawaban pemain
-  const handleAnswer = (choice) => {
-    const isAnswerCorrect = choice === question.answer;
-    setIsCorrect(isAnswerCorrect);
-    setLastAnswer(choice);
-
-    if (isAnswerCorrect) {
-      setScore(score + 10);
-    } else {
-      setScore(score > 0 ? score - 5 : 0);
-    }
-  };
-
-  // Mengakhiri game dan menyimpan skor
-  const endGame = async () => {
-    setIsGameEnded(true);
-    const timeTaken = Math.round((Date.now() - gameStartTimeRef.current) / 1000);
+        
+        .basketball::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 2px;
+            background: #8b4513;
+        }
+        
+        .basketball.shooting {
+            animation: basketShoot 2.5s ease-in-out;
+        }
+        
+        .basketball.scored {
+            animation: basketScore 1.5s ease-out;
+        }
+        
+        .basketball.missed {
+            animation: basketMiss 2s ease-out;
+        }
+        
+        @keyframes basketShoot {
+            0% { transform: translateY(0) translateX(0) scale(1) rotate(0deg); }
+            30% { transform: translateY(-120px) translateX(120px) scale(0.9) rotate(180deg); }
+            60% { transform: translateY(-160px) translateX(240px) scale(0.8) rotate(360deg); }
+            80% { transform: translateY(-140px) translateX(320px) scale(0.9) rotate(540deg); }
+            100% { transform: translateY(-130px) translateX(380px) scale(1) rotate(720deg); }
+        }
+        
+        @keyframes basketScore {
+            0% { transform: translateY(-130px) translateX(380px) scale(1); }
+            20% { transform: translateY(-125px) translateX(385px) scale(0.9); background: linear-gradient(45deg, #32cd32, #00ff00); }
+            40% { transform: translateY(-120px) translateX(390px) scale(0.8); }
+            60% { transform: translateY(-100px) translateX(395px) scale(0.7); }
+            80% { transform: translateY(-60px) translateX(400px) scale(0.6); }
+            100% { transform: translateY(20px) translateX(405px) scale(0.4); opacity: 0; }
+        }
+        
+        @keyframes basketMiss {
+            0% { transform: translateY(-130px) scale(1) rotate(720deg); }
+            30% { transform: translateY(-120px) translateX(420px) scale(0.9) rotate(900deg); }
+            60% { transform: translateY(-80px) translateX(450px) scale(0.8) rotate(1080deg); }
+            100% { transform: translateY(150px) translateX(480px) scale(0.5) rotate(1260deg); opacity: 0; }
+        }
+        
+        .player {
+            width: 70px;
+            height: 90px;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .player-avatar {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 5px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.3);
+            border: 3px solid #fff;
+        }
+        
+        .player-name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-align: center;
+            color: #1f2937;
+            background: rgba(255,255,255,0.95);
+            padding: 3px 8px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .player.shooting .player-avatar {
+            animation: playerShoot 0.8s ease-out;
+        }
+        
+        .player.celebrating .player-avatar {
+            animation: playerCelebrate 1.5s ease-out;
+        }
+        
+        .player.disappointed .player-avatar {
+            animation: playerDisappointed 1s ease-out;
+        }
+        
+        @keyframes playerShoot {
+            0% { transform: scale(1) translateY(0); }
+            40% { transform: scale(1.1) translateY(-15px); }
+            70% { transform: scale(1.05) translateY(-8px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+        
+        @keyframes playerCelebrate {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-10deg) translateY(-10px); }
+            50% { transform: scale(1.3) rotate(10deg) translateY(-15px); }
+            75% { transform: scale(1.2) rotate(-5deg) translateY(-10px); }
+            100% { transform: scale(1) rotate(0deg) translateY(0); }
+        }
+        
+        @keyframes playerDisappointed {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.9) translateY(8px); }
+            100% { transform: scale(1) translateY(0); }
+        }
+        
+        .basketball-court {
+            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 50%, #ffd700 100%);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid #8b4513;
+        }
+        
+        .basketball-court::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%), 
+                        linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.3;
+        }
+        
+        .basketball-hoop {
+            position: absolute;
+            width: 80px;
+            height: 60px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .hoop-rim {
+            width: 60px;
+            height: 8px;
+            background: linear-gradient(to bottom, #ff4500, #ff6347);
+            border-radius: 50px;
+            border: 2px solid #8b0000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .hoop-net {
+            width: 50px;
+            height: 40px;
+            border-left: 2px solid #fff;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            border-radius: 0 0 25px 25px;
+            position: relative;
+            margin-top: -2px;
+        }
+        
+        .hoop-net::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: #fff;
+        }
+        
+        .hoop-backboard {
+            width: 70px;
+            height: 50px;
+            background: linear-gradient(to bottom, #f0f0f0, #d0d0d0);
+            border: 3px solid #333;
+            border-radius: 5px;
+            position: absolute;
+            top: -25px;
+            right: -5px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .hoop-backboard::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 25px;
+            height: 18px;
+            border: 2px solid #ff4500;
+            border-radius: 3px;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .celebration {
+            animation: celebration 2s ease-in-out;
+        }
+        
+        @keyframes celebration {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+        
+        .swish-effect {
+            position: absolute;
+            top: 120px;
+            right: 70px;
+            color: #32cd32;
+            font-size: 2rem;
+            font-weight: bold;
+            opacity: 0;
+            animation: swishText 2s ease-out;
+            z-index: 20;
+        }
+        
+        @keyframes swishText {
+            0% { opacity: 0; transform: scale(0.5) translateY(20px); }
+            30% { opacity: 1; transform: scale(1.2) translateY(-10px); }
+            70% { opacity: 1; transform: scale(1) translateY(-20px); }
+            100% { opacity: 0; transform: scale(0.8) translateY(-40px); }
+        }
+        
+        .music-visualizer {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            margin-left: 8px;
+        }
+        
+        .music-bar {
+            width: 3px;
+            height: 12px;
+            background: #fff;
+            border-radius: 2px;
+            animation: musicBounce 1s ease-in-out infinite;
+        }
+        
+        .music-bar:nth-child(2) { animation-delay: 0.1s; }
+        .music-bar:nth-child(3) { animation-delay: 0.2s; }
+        .music-bar:nth-child(4) { animation-delay: 0.3s; }
+        
+        @keyframes musicBounce {
+            0%, 100% { transform: scaleY(0.3); }
+            50% { transform: scaleY(1); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-orange-400 via-red-500 to-pink-500 min-h-screen">
+    <!-- Audio Elements -->
+    <audio id="backgroundMusic" loop preload="auto" volume="0.3">
+        <!-- Menggunakan link audio yang dapat diakses -->
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+        <source src="https://actions.google.com/sounds/v1/alarms/bugle_tune.ogg" type="audio/ogg">
+        <!-- Fallback untuk musik game -->
+        <source src="https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-one/zapsplat_multimedia_game_sound_bright_positive_musical_tone_001_19735.mp3" type="audio/mpeg">
+    </audio>
     
-    if (db && userId) {
-      const leaderboardDocRef = doc(db, `artifacts/${appId}/public/data/leaderboard`, userId);
-      try {
-        await setDoc(leaderboardDocRef, {
-          username: username,
-          score: score,
-          time: timeTaken,
-          userId: userId
-        }, { merge: true });
-        console.log('Score saved to leaderboard.');
-      } catch (error) {
-        console.error('Error saving score:', error);
-      }
-    }
-    setScreen('leaderboard');
-  };
-
-  // Tampilan layar
-  const renderScreen = () => {
-    switch (screen) {
-      case 'profile':
-        return (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center transform transition-all hover:scale-105 duration-300">
-              <h1 className="text-3xl font-bold mb-4 text-purple-600">Selamat Datang!</h1>
-              <p className="mb-6 text-gray-600">Mari perkenalkan diri Anda.</p>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-semibold mb-2" htmlFor="username">Nama Pembuat Game</label>
-                <input
-                  type="text"
-                  id="username"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Masukkan nama Anda..."
-                  maxLength={20}
-                />
-              </div>
-              <p className="text-sm text-gray-500 mb-6">
-                Ini adalah game kuis tentang Kesebangunan.
-              </p>
-              <button
-                onClick={handleSaveUsername}
-                className="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-purple-700 transition-all transform hover:scale-105"
-              >
-                Lanjutkan
-              </button>
-            </div>
-          </div>
-        );
-
-      case 'menu':
-        return (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center transform transition-all duration-300">
-              <h1 className="text-3xl font-bold mb-6 text-purple-600">Menu Utama</h1>
-              <p className="text-lg mb-8 text-gray-700">Selamat datang, <span className="font-semibold text-purple-600">{username}</span>!</p>
-              <div className="space-y-4">
-                <button
-                  onClick={() => setScreen('materials')}
-                  className="w-full flex items-center justify-center bg-blue-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-all transform hover:scale-105"
-                >
-                  <BookOpen className="mr-2" size={20} /> Materi
-                </button>
-                <button
-                  onClick={() => setScreen('role-selection')}
-                  className="w-full flex items-center justify-center bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-green-600 transition-all transform hover:scale-105"
-                >
-                  <Play className="mr-2" size={20} /> Mulai Game
-                </button>
-                <button
-                  onClick={() => setScreen('leaderboard')}
-                  className="w-full flex items-center justify-center bg-yellow-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-yellow-600 transition-all transform hover:scale-105"
-                >
-                  <Crown className="mr-2" size={20} /> Lihat Leaderboard
-                </button>
-                <button
-                  onClick={() => setScreen('profile')}
-                  className="w-full flex items-center justify-center bg-gray-400 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-gray-500 transition-all transform hover:scale-105"
-                >
-                  <UserCircle className="mr-2" size={20} /> Ganti Nama
-                </button>
-              </div>
-              <div className="mt-6 text-xs text-gray-400">
-                <p>ID Pengguna: {userId}</p>
-                <p>Bagikan ID ini untuk teman Anda bergabung di leaderboard</p>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'role-selection':
-        return (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center transform transition-all duration-300">
-              <h1 className="text-3xl font-bold mb-6 text-purple-600">Pilih Peran</h1>
-              <div className="space-y-4 mb-6">
-                <button
-                  onClick={startHostGame}
-                  className="w-full flex items-center justify-center bg-purple-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-purple-700 transition-all transform hover:scale-105"
-                >
-                  <Lock className="mr-2" size={20} /> Mulai sebagai Host
-                </button>
-                <div className="relative flex items-center py-2">
-                  <div className="flex-grow border-t border-gray-400"></div>
-                  <span className="flex-shrink mx-4 text-gray-400 text-sm">ATAU</span>
-                  <div className="flex-grow border-t border-gray-400"></div>
+    <audio id="correctSound" preload="auto" volume="0.5">
+        <source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" type="audio/ogg">
+        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
+    </audio>
+    
+    <audio id="wrongSound" preload="auto" volume="0.4">
+        <source src="https://actions.google.com/sounds/v1/cartoon/cartoon_boing.ogg" type="audio/ogg">
+        <source src="https://www.soundjay.com/misc/sounds/fail-buzzer-02.wav" type="audio/wav">
+    </audio>
+    
+    <!-- Opening Screen -->
+    <div id="openingScreen" class="min-h-screen flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-2xl w-full text-center fade-in">
+            <div class="mb-8">
+                <div class="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 flex items-center justify-center">
+                    <span class="text-6xl">🎓</span>
                 </div>
-                <div>
-                  <input
-                    type="text"
-                    id="game-id"
-                    className="w-full px-4 py-2 mb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-                    value={gameId}
-                    onChange={(e) => setGameId(e.target.value)}
-                    placeholder="Masukkan ID Game Host"
-                  />
-                  <button
-                    onClick={startPlayerGame}
-                    className="w-full flex items-center justify-center bg-blue-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-all transform hover:scale-105"
-                  >
-                    <Globe className="mr-2" size={20} /> Gabung sebagai Pemain
-                  </button>
-                </div>
-              </div>
-              <button
-                onClick={() => setScreen('menu')}
-                className="w-full bg-gray-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-gray-600 transition-all transform hover:scale-105"
-              >
-                Kembali
-              </button>
+                <h1 class="text-4xl font-bold text-gray-800 mb-2">EthoMath</h1>
+                <p class="text-xl text-gray-600 mb-6">Game Kuis Matematika Kesebangunan</p>
             </div>
-          </div>
-        );
-
-      case 'host-lobby':
-        return (
-          <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 p-4 pt-10">
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center transform transition-all duration-300">
-              <h1 className="text-3xl font-bold mb-4 text-purple-600">Lobi Host</h1>
-              <p className="text-lg text-gray-700 mb-2">ID Game Anda:</p>
-              <p className="text-3xl font-extrabold text-blue-600 mb-6">{userId}</p>
-              <p className="text-gray-600 mb-4">Bagikan ID ini kepada teman-teman Anda untuk bergabung.</p>
-              <h2 className="text-2xl font-bold mb-4 text-gray-800">Pemain yang Bergabung ({playerList.length})</h2>
-              <ul className="space-y-2 mb-6">
-                {playerList.map((player) => (
-                  <li key={player.id} className="p-3 bg-gray-100 rounded-lg shadow-sm text-gray-700">
-                    {player.username}
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={handleHostStartGame}
-                disabled={playerList.length < 1}
-                className="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-all transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed"
-              >
-                Mulai Permainan
-              </button>
-            </div>
-          </div>
-        );
-
-      case 'player-lobby':
-        return (
-          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center transform transition-all duration-300">
-              <h1 className="text-3xl font-bold mb-4 text-blue-600">Menunggu Host...</h1>
-              <p className="text-gray-600 mb-6">
-                Anda telah bergabung di game dengan ID: <span className="font-bold text-blue-600">{gameId}</span>
-              </p>
-              <p className="text-gray-700 mb-8">
-                Host akan segera memulai permainan. Mohon bersabar.
-              </p>
-              <div className="text-center text-gray-500 text-sm">
-                <p>Pemain yang bergabung:</p>
-                <ul className="list-disc list-inside mt-2">
-                  {playerList.map(p => <li key={p.id}>{p.username}</li>)}
-                </ul>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'materials':
-        return (
-          <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 p-4 pt-10">
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl text-center transform transition-all duration-300">
-              <h1 className="text-3xl font-bold mb-4 text-blue-600">Materi Pemahaman</h1>
-              <p className="text-gray-700 mb-6">
-                Ini adalah penjelasan singkat tentang Kesebangunan dan Kekongruenan.
-              </p>
-              <div className="space-y-6 text-left">
-                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
-                  <h2 className="text-xl font-bold text-blue-600">Kesebangunan (Similarity)</h2>
-                  <p className="text-gray-600 mt-1">
-                    Dua bangun datar dikatakan sebangun jika memiliki:
-                  </p>
-                  <ul className="list-disc list-inside mt-2 text-gray-600">
-                    <li>Pasangan sudut yang bersesuaian sama besar.</li>
-                    <li>Panjang sisi-sisi yang bersesuaian memiliki perbandingan yang sama.</li>
-                  </ul>
-                </div>
-                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
-                  <h2 className="text-xl font-bold text-green-600">Kekongruenan (Congruence)</h2>
-                  <p className="text-gray-600 mt-1">
-                    Dua bangun datar dikatakan kongruen jika keduanya memiliki bentuk dan ukuran yang sama persis.
-                  </p>
-                  <ul className="list-disc list-inside mt-2 text-gray-600">
-                    <li>Pasangan sudut yang bersesuaian sama besar.</li>
-                    <li>Panjang sisi-sisi yang bersesuaian sama panjang.</li>
-                  </ul>
-                </div>
-              </div>
-              <button
-                onClick={() => setScreen('menu')}
-                className="mt-8 bg-gray-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-gray-600 transition-all transform hover:scale-105"
-              >
-                Kembali ke Menu
-              </button>
-            </div>
-          </div>
-        );
-
-      case 'game':
-        if (isHost) {
-          return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-              <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center transform transition-all duration-300">
-                <h2 className="text-2xl font-bold mb-2 text-purple-600">Soal ke-{currentQuestionIndex + 1}</h2>
-                <div className="mb-6 flex flex-col items-center">
-                  {question && question.imageUrl && (
-                    <img src={question.imageUrl} alt="Ilustrasi Soal" className="rounded-lg mb-4 max-w-full h-auto" />
-                  )}
-                  <p className="text-xl font-extrabold text-gray-800 mb-4">{question?.question}</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {question?.choices.map((choice, index) => (
-                    <div key={index} className="p-4 rounded-lg font-semibold text-lg bg-gray-200 text-gray-800">
-                      {choice}
+            
+            <div class="bg-gray-50 rounded-2xl p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">👨‍🏫 Profil Pembuat</h2>
+                <div class="flex items-center justify-center space-x-4">
+                    <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                        <span class="text-2xl text-white">👨‍💻</span>
                     </div>
-                  ))}
-                </div>
-                <div className="mt-8">
-                  <p className="text-green-600 font-bold text-xl mb-4">Jawaban Benar: {question?.answer}</p>
-                  <button
-                    onClick={handleNextQuestion}
-                    className="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-all transform hover:scale-105"
-                  >
-                    {currentQuestionIndex + 1 < questionData.length ? "Pertanyaan Berikutnya" : "Akhiri Permainan"}
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        } else {
-          // Player's game view
-          if (!question) {
-            return <div className="flex items-center justify-center min-h-screen bg-gray-100">Menunggu host...</div>;
-          }
-          return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
-              <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center transform transition-all duration-300">
-                <h2 className="text-2xl font-bold mb-2 text-purple-600">Soal ke-{currentQuestionIndex + 1}</h2>
-                <p className="text-gray-600 text-sm mb-4">Skor: {score}</p>
-                <div className="mb-6 flex flex-col items-center">
-                  {question.imageUrl && (
-                    <img src={question.imageUrl} alt="Ilustrasi Soal" className="rounded-lg mb-4 max-w-full h-auto" />
-                  )}
-                  <p className="text-xl font-extrabold text-gray-800 mb-4">{question.question}</p>
-                  <p className="text-gray-500 text-sm">Pilih jawaban yang benar.</p>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  {question.choices.map((choice, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleAnswer(choice)}
-                      className={`
-                        p-4 rounded-lg font-semibold text-lg
-                        ${isCorrect === true && choice === lastAnswer ? 'bg-green-500 text-white shadow-lg' :
-                          isCorrect === false && choice === lastAnswer ? 'bg-red-500 text-white shadow-lg' :
-                          'bg-gray-200 text-gray-800 hover:bg-gray-300'}
-                        transition-all duration-300 transform hover:scale-105
-                      `}
-                      disabled={isCorrect !== null}
-                    >
-                      {choice}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          );
-        }
-
-      case 'leaderboard':
-        return (
-          <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 p-4 pt-10">
-            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center transform transition-all duration-300">
-              <h1 className="text-3xl font-bold mb-6 text-yellow-600 flex items-center justify-center">
-                <Crown className="mr-2" size={32} /> Leaderboard
-              </h1>
-              <ul className="space-y-3">
-                {leaderboard.map((entry, index) => (
-                  <li
-                    key={index}
-                    className={`
-                      flex items-center justify-between p-4 rounded-lg font-semibold shadow-md
-                      ${index === 0 ? 'bg-yellow-400 text-white' :
-                        index === 1 ? 'bg-gray-300 text-gray-800' :
-                        index === 2 ? 'bg-amber-700 text-white' :
-                        'bg-gray-100 text-gray-700'}
-                      transition-colors duration-200
-                    `}
-                  >
-                    <div className="flex items-center">
-                      <span className="font-extrabold text-xl w-8 text-left">{index + 1}.</span>
-                      <span className="ml-2">{entry.username}</span>
+                    <div class="text-left">
+                        <h3 class="font-semibold text-gray-800">Guru Matematika</h3>
+                        <p class="text-gray-600">Spesialis Geometri & Kesebangunan</p>
+                        <p class="text-sm text-gray-500">Pengalaman 10+ tahun mengajar</p>
                     </div>
-                    <div className="text-right">
-                      <span className="text-lg font-bold">{entry.score} poin</span>
-                      <span className="block text-xs font-normal">Waktu: {entry.time}s</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-              <button
-                onClick={() => setScreen('menu')}
-                className="mt-8 bg-purple-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-all transform hover:scale-105"
-              >
-                Kembali ke Menu
-              </button>
+                </div>
             </div>
-          </div>
-        );
-
-      default:
-        return null;
-    }
-  };
-
-  return (
-    <div className="bg-gray-100 font-sans antialiased text-gray-900">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-      `}</style>
-      {renderScreen()}
+            
+            <div class="space-y-4">
+                <button onclick="showMaterial()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    📚 Pelajari Materi Kesebangunan
+                </button>
+                <button onclick="showRoleSelection()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    🎮 Mulai Bermain
+                </button>
+            </div>
+        </div>
     </div>
-  );
-};
+    
+    <!-- Role Selection Screen -->
+    <div id="roleSelection" class="min-h-screen flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center fade-in">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Pilih Peran Anda</h2>
+            <div class="space-y-4">
+                <button onclick="showPlayerLogin()" class="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    👨‍🎓 Masuk sebagai Pemain
+                </button>
+                <button onclick="showHostLogin()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    👨‍🏫 Masuk sebagai Host
+                </button>
+                <button onclick="showOpeningScreen()" class="w-full bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
+                    ← Kembali
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Player Login Screen -->
+    <div id="playerLogin" class="min-h-screen flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center fade-in">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Masuk sebagai Pemain</h2>
+            <div class="space-y-4">
+                <input type="text" id="playerName" placeholder="Masukkan nama Anda" class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-purple-500 focus:outline-none text-lg">
+                <button onclick="startGame()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    🎮 Mulai Game
+                </button>
+                <button onclick="showRoleSelection()" class="w-full bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
+                    ← Kembali
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Host Login Screen -->
+    <div id="hostLogin" class="min-h-screen flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center fade-in">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Panel Host</h2>
+            <div class="space-y-4">
+                <input type="password" id="hostPassword" placeholder="Masukkan password host" class="w-full p-4 border-2 border-gray-300 rounded-xl focus:border-orange-500 focus:outline-none text-lg">
+                <button onclick="loginHost()" class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                    🔑 Masuk sebagai Host
+                </button>
+                <button onclick="showRoleSelection()" class="w-full bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
+                    ← Kembali
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Host Dashboard -->
+    <div id="hostDashboard" class="min-h-screen p-4 hidden">
+        <div class="max-w-6xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-6">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">🎯 Dashboard Host EthoMath</h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="bg-blue-50 p-6 rounded-2xl">
+                        <h3 class="text-xl font-semibold text-blue-800 mb-2">👥 Pemain Aktif</h3>
+                        <p class="text-3xl font-bold text-blue-600" id="activePlayersCount">0</p>
+                    </div>
+                    <div class="bg-green-50 p-6 rounded-2xl">
+                        <h3 class="text-xl font-semibold text-green-800 mb-2">🎮 Game Dimainkan</h3>
+                        <p class="text-3xl font-bold text-green-600" id="gamesPlayedCount">0</p>
+                    </div>
+                    <div class="bg-purple-50 p-6 rounded-2xl">
+                        <h3 class="text-xl font-semibold text-purple-800 mb-2">⭐ Rata-rata Skor</h3>
+                        <p class="text-3xl font-bold text-purple-600" id="averageScore">0</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-3xl shadow-2xl p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">📊 Leaderboard Real-time</h3>
+                <div id="hostLeaderboard" class="space-y-3">
+                    <p class="text-gray-500 text-center py-8">Belum ada data pemain</p>
+                </div>
+            </div>
+            
+            <div class="mt-6 text-center">
+                <button onclick="showRoleSelection()" class="bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
+                    ← Kembali ke Menu
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Material Screen -->
+    <div id="materialScreen" class="min-h-screen p-4 hidden">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 fade-in">
+                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">📐 Materi Kesebangunan</h2>
+                
+                <div class="space-y-8">
+                    <div class="bg-blue-50 p-6 rounded-2xl">
+                        <h3 class="text-2xl font-semibold text-blue-800 mb-4">🔍 Apa itu Kesebangunan?</h3>
+                        <p class="text-gray-700 leading-relaxed mb-4">
+                            Kesebangunan adalah konsep dalam geometri dimana dua bangun datar memiliki bentuk yang sama tetapi ukurannya berbeda. 
+                            Bangun-bangun yang sebangun memiliki sudut-sudut yang bersesuaian sama besar dan sisi-sisi yang bersesuaian sebanding.
+                        </p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-6 rounded-2xl">
+                        <h3 class="text-2xl font-semibold text-green-800 mb-4">📏 Ciri-ciri Bangun Sebangun</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
+                            <li>Sudut-sudut yang bersesuaian sama besar</li>
+                            <li>Sisi-sisi yang bersesuaian sebanding</li>
+                            <li>Perbandingan sisi-sisi yang bersesuaian sama (skala)</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-50 p-6 rounded-2xl">
+                        <h3 class="text-2xl font-semibold text-purple-800 mb-4">🧮 Contoh Soal</h3>
+                        <div class="bg-white p-4 rounded-xl">
+                            <p class="text-gray-700 mb-2">
+                                <strong>Soal:</strong> Segitiga ABC sebangun dengan segitiga DEF. Jika AB = 6 cm, BC = 8 cm, dan DE = 9 cm, 
+                                berapakah panjang EF?
+                            </p>
+                            <p class="text-gray-700">
+                                <strong>Jawab:</strong> Karena sebangun, maka AB/DE = BC/EF<br>
+                                6/9 = 8/EF<br>
+                                EF = (8 × 9)/6 = 12 cm
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <button onclick="showOpeningScreen()" class="bg-gradient-to-r from-purple-500 to-pink-500 text-white py-4 px-8 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        ← Kembali ke Menu Utama
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Screen -->
+    <div id="gameScreen" class="min-h-screen p-4 hidden">
+        <div class="max-w-6xl mx-auto">
+            <!-- Game Header -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 mb-6 flex justify-between items-center">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800">🎮 EthoMath Game</h2>
+                    <p class="text-gray-600">Pemain: <span id="currentPlayerName" class="font-semibold"></span></p>
+                    <button onclick="toggleMusic()" id="musicToggle" class="mt-2 bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-colors flex items-center">
+                        🎵 Musik: ON
+                        <div class="music-visualizer ml-2" id="musicVisualizer">
+                            <div class="music-bar"></div>
+                            <div class="music-bar"></div>
+                            <div class="music-bar"></div>
+                            <div class="music-bar"></div>
+                        </div>
+                    </button>
+                </div>
+                <div class="text-center">
+                    <p class="text-lg font-semibold text-red-600">⏰ Waktu Tersisa</p>
+                    <p class="text-2xl font-bold text-red-600" id="gameTimer">15:00</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-lg font-semibold text-purple-600">Soal <span id="questionNumber">1</span>/5</p>
+                    <p class="text-2xl font-bold text-green-600">Skor: <span id="currentScore">0</span></p>
+                </div>
+            </div>
+            
+            <!-- Question Area -->
+            <div class="bg-white rounded-3xl shadow-2xl p-8 mb-6">
+                <div id="questionArea" class="mb-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4" id="questionText"></h3>
+                    <div id="questionDiagram" class="flex justify-center mb-6"></div>
+                    <div id="questionOptions" class="grid grid-cols-2 gap-4"></div>
+                </div>
+            </div>
+            
+            <!-- Game Field -->
+            <div class="bg-white rounded-3xl shadow-2xl p-6 mb-6">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">🏀 Arena Basket EthoMath</h3>
+                <div class="basketball-court relative" style="height: 300px;">
+                    <!-- Single Basketball Hoop (centered) -->
+                    <div class="basketball-hoop" style="top: 120px; right: 50px;">
+                        <div class="hoop-backboard"></div>
+                        <div class="hoop-rim"></div>
+                        <div class="hoop-net"></div>
+                    </div>
+                    
+                    <!-- Single Basketball -->
+                    <div id="currentBall" class="basketball" style="left: 80px; top: 150px;"></div>
+                    
+                    <!-- Current Player -->
+                    <div id="currentPlayer" class="player" style="left: 150px; top: 130px;">
+                        <div id="currentPlayerAvatar" class="player-avatar" style="background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);">🏀</div>
+                        <div id="currentPlayerName" class="player-name">Alex</div>
+                    </div>
+                    
+                    <!-- SWISH Effect -->
+                    <div id="swishEffect" class="swish-effect">SWISH! 🎯</div>
+                    
+                    <!-- Game Status -->
+                    <div id="gameStatus" class="absolute top-4 left-4 bg-white bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-gray-700 shadow-lg">
+                        🏀 Pilih jawaban untuk menembak!
+                    </div>
+                    
+                    <!-- Question Progress -->
+                    <div id="questionProgress" class="absolute bottom-4 left-4 bg-white bg-opacity-90 px-4 py-2 rounded-xl text-sm font-semibold text-gray-600 shadow-lg">
+                        Pemain: <span id="progressPlayerName">Alex</span> | Soal <span id="progressQuestionNumber">1</span>/5
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button onclick="showOpeningScreen()" class="bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
+                    🏠 Kembali ke Menu
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Leaderboard Screen -->
+    <div id="leaderboardScreen" class="min-h-screen p-4 hidden">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 text-center fade-in">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">🏆 Leaderboard</h2>
+                <p class="text-gray-600 mb-8">Skor Tertinggi EthoMath</p>
+                
+                <div id="leaderboardList" class="space-y-4 mb-8">
+                    <!-- Leaderboard akan diisi oleh JavaScript -->
+                </div>
+                
+                <div class="space-y-4">
+                    <button onclick="startGame()" class="w-full bg-gradient-to-r from-green-500 to-blue-500 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        🔄 Main Lagi
+                    </button>
+                    <button onclick="showOpeningScreen()" class="w-full bg-gray-500 text-white py-3 px-6 rounded-xl font-semibold hover:bg-gray-600 transition-colors">
+                        🏠 Menu Utama
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-export default App;
+    <script>
+        // Game State
+        let currentPlayer = '';
+        let currentQuestion = 0;
+        let currentScore = 0;
+        let gameQuestions = [];
+        let leaderboard = JSON.parse(localStorage.getItem('ethomath_leaderboard') || '[]');
+        let hostStats = JSON.parse(localStorage.getItem('ethomath_host_stats') || '{"activePlayersCount": 0, "gamesPlayedCount": 0, "totalScore": 0}');
+        let gameTimer = null;
+        let timeRemaining = 900; // 15 minutes in seconds
+        let musicEnabled = true;
+        
+        // Basketball Players Data (1 player per question)
+        const basketballPlayers = [
+            { name: "Alex", avatar: "🏀", gradient: "linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)" },
+            { name: "Maya", avatar: "⛹️‍♀️", gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)" },
+            { name: "Rio", avatar: "⛹️‍♂️", gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)" },
+            { name: "Luna", avatar: "🏀", gradient: "linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)" },
+            { name: "Dani", avatar: "⛹️‍♂️", gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)" }
+        ];
+        
+        // Questions Database
+        const questionsDB = [
+            {
+                question: "Segitiga ABC sebangun dengan segitiga DEF. Jika AB = 6 cm, BC = 8 cm, dan DE = 9 cm, berapakah panjang EF?",
+                options: ["10 cm", "12 cm", "14 cm", "16 cm"],
+                correct: 1,
+                explanation: "Karena sebangun: AB/DE = BC/EF → 6/9 = 8/EF → EF = 12 cm",
+                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
+                    <polygon points="50,150 150,50 200,150" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+                    <text x="100" y="40" font-size="14" fill="#1976d2" font-weight="bold">A</text>
+                    <text x="210" y="160" font-size="14" fill="#1976d2" font-weight="bold">B</text>
+                    <text x="40" y="160" font-size="14" fill="#1976d2" font-weight="bold">C</text>
+                    <text x="100" y="90" font-size="12" fill="#1976d2">6 cm</text>
+                    <text x="180" y="110" font-size="12" fill="#1976d2">8 cm</text>
+                    
+                    <polygon points="250,150 350,50 400,150" fill="#fff3e0" stroke="#f57c00" stroke-width="2"/>
+                    <text x="300" y="40" font-size="14" fill="#f57c00" font-weight="bold">D</text>
+                    <text x="410" y="160" font-size="14" fill="#f57c00" font-weight="bold">E</text>
+                    <text x="240" y="160" font-size="14" fill="#f57c00" font-weight="bold">F</text>
+                    <text x="300" y="90" font-size="12" fill="#f57c00">9 cm</text>
+                    <text x="380" y="110" font-size="12" fill="#f57c00">EF = ?</text>
+                </svg>`
+            },
+            {
+                question: "Dua persegi panjang sebangun memiliki perbandingan sisi 2:3. Jika luas persegi panjang kecil 8 cm², berapakah luas persegi panjang besar?",
+                options: ["12 cm²", "16 cm²", "18 cm²", "24 cm²"],
+                correct: 2,
+                explanation: "Perbandingan luas = (2:3)² = 4:9 → Luas besar = 8 × 9/4 = 18 cm²",
+                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
+                    <rect x="50" y="80" width="80" height="60" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
+                    <text x="90" y="75" font-size="12" fill="#4caf50">Kecil</text>
+                    <text x="85" y="115" font-size="12" fill="#4caf50">8 cm²</text>
+                    
+                    <rect x="200" y="60" width="120" height="90" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+                    <text x="255" y="55" font-size="12" fill="#ff9800">Besar</text>
+                    <text x="250" y="110" font-size="12" fill="#ff9800">? cm²</text>
+                    
+                    <text x="160" y="180" font-size="14" fill="#333">Perbandingan sisi = 2:3</text>
+                </svg>`
+            },
+            {
+                question: "Trapesium ABCD sebangun dengan trapesium PQRS. Jika AB = 4 cm, CD = 8 cm, dan PQ = 6 cm, berapakah panjang RS?",
+                options: ["10 cm", "12 cm", "14 cm", "16 cm"],
+                correct: 1,
+                explanation: "Perbandingan sisi = 4:6 = 2:3 → RS = 8 × 3/2 = 12 cm",
+                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
+                    <polygon points="70,150 130,150 110,80 90,80" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
+                    <text x="85" y="75" font-size="12" fill="#9c27b0">A</text>
+                    <text x="115" y="75" font-size="12" fill="#9c27b0">B</text>
+                    <text x="135" y="160" font-size="12" fill="#9c27b0">C</text>
+                    <text x="65" y="160" font-size="12" fill="#9c27b0">D</text>
+                    <text x="95" y="70" font-size="10" fill="#9c27b0">4 cm</text>
+                    <text x="95" y="170" font-size="10" fill="#9c27b0">8 cm</text>
+                    
+                    <polygon points="220,150 310,150 280,80 250,80" fill="#e0f2f1" stroke="#009688" stroke-width="2"/>
+                    <text x="245" y="75" font-size="12" fill="#009688">P</text>
+                    <text x="285" y="75" font-size="12" fill="#009688">Q</text>
+                    <text x="315" y="160" font-size="12" fill="#009688">R</text>
+                    <text x="215" y="160" font-size="12" fill="#009688">S</text>
+                    <text x="260" y="70" font-size="10" fill="#009688">6 cm</text>
+                    <text x="260" y="170" font-size="10" fill="#009688">RS = ?</text>
+                </svg>`
+            },
+            {
+                question: "Segitiga siku-siku ABC dengan siku-siku di C sebangun dengan segitiga DEF. Jika AC = 3 cm, BC = 4 cm, dan DE = 10 cm, berapakah keliling segitiga DEF?",
+                options: ["24 cm", "30 cm", "36 cm", "40 cm"],
+                correct: 1,
+                explanation: "AB = 5 cm (teorema Pythagoras). Skala = 10:5 = 2:1. Keliling DEF = 2 × (3+4+5) = 24 cm",
+                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
+                    <polygon points="50,150 50,90 110,150" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+                    <text x="45" y="85" font-size="12" fill="#f44336">A</text>
+                    <text x="45" y="165" font-size="12" fill="#f44336">C</text>
+                    <text x="115" y="165" font-size="12" fill="#f44336">B</text>
+                    <text x="25" y="120" font-size="10" fill="#f44336">3 cm</text>
+                    <text x="75" y="170" font-size="10" fill="#f44336">4 cm</text>
+                    <rect x="45" y="145" width="10" height="10" fill="none" stroke="#f44336" stroke-width="1"/>
+                    
+                    <polygon points="220,150 220,30 340,150" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
+                    <text x="215" y="25" font-size="12" fill="#4caf50">D</text>
+                    <text x="215" y="165" font-size="12" fill="#4caf50">F</text>
+                    <text x="345" y="165" font-size="12" fill="#4caf50">E</text>
+                    <text x="270" y="95" font-size="10" fill="#4caf50">10 cm</text>
+                    <rect x="215" y="145" width="10" height="10" fill="none" stroke="#4caf50" stroke-width="1"/>
+                </svg>`
+            },
+            {
+                question: "Dua lingkaran sebangun memiliki jari-jari 5 cm dan 15 cm. Jika keliling lingkaran kecil 31,4 cm, berapakah keliling lingkaran besar?",
+                options: ["62,8 cm", "78,5 cm", "94,2 cm", "125,6 cm"],
+                correct: 2,
+                explanation: "Perbandingan jari-jari = 5:15 = 1:3. Keliling besar = 31,4 × 3 = 94,2 cm",
+                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
+                    <circle cx="120" cy="100" r="40" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+                    <line x1="120" y1="100" x2="160" y2="100" stroke="#2196f3" stroke-width="2"/>
+                    <text x="135" y="105" font-size="10" fill="#2196f3">5 cm</text>
+                    <text x="100" y="180" font-size="12" fill="#2196f3">K = 31,4 cm</text>
+                    
+                    <circle cx="300" cy="100" r="80" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+                    <line x1="300" y1="100" x2="380" y2="100" stroke="#ff9800" stroke-width="2"/>
+                    <text x="335" y="105" font-size="10" fill="#ff9800">15 cm</text>
+                    <text x="275" y="190" font-size="12" fill="#ff9800">K = ? cm</text>
+                </svg>`
+            },
+            {
+                question: "Segitiga ABC sebangun dengan segitiga PQR dengan perbandingan sisi 3:4. Jika luas segitiga ABC = 27 cm², berapakah luas segitiga PQR?",
+                options: ["36 cm²", "48 cm²", "54 cm²", "64 cm²"],
+                correct: 1,
+                explanation: "Perbandingan luas = (3:4)² = 9:16 → Luas PQR = 27 × 16/9 = 48 cm²",
+                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
+                    <polygon points="80,150 130,70 180,150" fill="#f3e5f5" stroke="#9c27b0" stroke-width="2"/>
+                    <text x="125" y="65" font-size="12" fill="#9c27b0">A</text>
+                    <text x="185" y="160" font-size="12" fill="#9c27b0">B</text>
+                    <text x="75" y="160" font-size="12" fill="#9c27b0">C</text>
+                    <text x="120" y="120" font-size="12" fill="#9c27b0">27 cm²</text>
+                    
+                    <polygon points="240,150 310,50 380,150" fill="#e0f2f1" stroke="#009688" stroke-width="2"/>
+                    <text x="305" y="45" font-size="12" fill="#009688">P</text>
+                    <text x="385" y="160" font-size="12" fill="#009688">Q</text>
+                    <text x="235" y="160" font-size="12" fill="#009688">R</text>
+                    <text x="300" y="120" font-size="12" fill="#009688">? cm²</text>
+                    
+                    <text x="160" y="180" font-size="14" fill="#333">Perbandingan sisi = 3:4</text>
+                </svg>`
+            },
+            {
+                question: "Dua segitiga sebangun memiliki sisi terpanjang 12 cm dan 18 cm. Jika tinggi segitiga pertama 8 cm, berapakah tinggi segitiga kedua?",
+                options: ["10 cm", "12 cm", "14 cm", "16 cm"],
+                correct: 1,
+                explanation: "Perbandingan sisi = 12:18 = 2:3. Tinggi kedua = 8 × 3/2 = 12 cm",
+                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
+                    <polygon points="50,150 110,70 170,150" fill="#ffebee" stroke="#f44336" stroke-width="2"/>
+                    <line x1="110" y1="70" x2="110" y2="150" stroke="#f44336" stroke-width="1" stroke-dasharray="3,3"/>
+                    <text x="105" y="65" font-size="12" fill="#f44336">A</text>
+                    <text x="175" y="160" font-size="12" fill="#f44336">B</text>
+                    <text x="45" y="160" font-size="12" fill="#f44336">C</text>
+                    <text x="85" y="110" font-size="10" fill="#f44336">8 cm</text>
+                    <text x="100" y="170" font-size="10" fill="#f44336">12 cm</text>
+                    
+                    <polygon points="220,150 310,50 400,150" fill="#e8f5e8" stroke="#4caf50" stroke-width="2"/>
+                    <line x1="310" y1="50" x2="310" y2="150" stroke="#4caf50" stroke-width="1" stroke-dasharray="3,3"/>
+                    <text x="305" y="45" font-size="12" fill="#4caf50">P</text>
+                    <text x="405" y="160" font-size="12" fill="#4caf50">Q</text>
+                    <text x="215" y="160" font-size="12" fill="#4caf50">R</text>
+                    <text x="285" y="100" font-size="10" fill="#4caf50">? cm</text>
+                    <text x="300" y="170" font-size="10" fill="#4caf50">18 cm</text>
+                </svg>`
+            },
+            {
+                question: "Persegi ABCD sebangun dengan persegi PQRS. Jika diagonal AC = 8√2 cm dan diagonal PR = 12√2 cm, berapakah perbandingan luas kedua persegi?",
+                options: ["2:3", "4:9", "8:18", "16:36"],
+                correct: 1,
+                explanation: "Perbandingan diagonal = 8√2:12√2 = 2:3. Perbandingan luas = (2:3)² = 4:9",
+                diagram: `<svg width="400" height="200" viewBox="0 0 400 200">
+                    <rect x="60" y="80" width="80" height="80" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+                    <line x1="60" y1="80" x2="140" y2="160" stroke="#2196f3" stroke-width="2"/>
+                    <text x="55" y="75" font-size="12" fill="#2196f3">A</text>
+                    <text x="145" y="75" font-size="12" fill="#2196f3">B</text>
+                    <text x="145" y="175" font-size="12" fill="#2196f3">C</text>
+                    <text x="55" y="175" font-size="12" fill="#2196f3">D</text>
+                    <text x="85" y="115" font-size="10" fill="#2196f3">8√2 cm</text>
+                    
+                    <rect x="220" y="60" width="120" height="120" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+                    <line x1="220" y1="60" x2="340" y2="180" stroke="#ff9800" stroke-width="2"/>
+                    <text x="215" y="55" font-size="12" fill="#ff9800">P</text>
+                    <text x="345" y="55" font-size="12" fill="#ff9800">Q</text>
+                    <text x="345" y="195" font-size="12" fill="#ff9800">R</text>
+                    <text x="215" y="195" font-size="12" fill="#ff9800">S</text>
+                    <text x="265" y="125" font-size="10" fill="#ff9800">12√2 cm</text>
+                </svg>`
+            }
+        ];
+        
+        // Audio Functions
+        function toggleMusic() {
+            const music = document.getElementById('backgroundMusic');
+            const toggle = document.getElementById('musicToggle');
+            const visualizer = document.getElementById('musicVisualizer');
+            
+            if (musicEnabled) {
+                music.pause();
+                toggle.innerHTML = '🔇 Musik: OFF';
+                toggle.className = 'mt-2 bg-gray-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-gray-600 transition-colors flex items-center';
+                visualizer.style.display = 'none';
+                musicEnabled = false;
+            } else {
+                music.play().catch(e => console.log('Audio play failed:', e));
+                toggle.innerHTML = '🎵 Musik: ON <div class="music-visualizer ml-2" id="musicVisualizer"><div class="music-bar"></div><div class="music-bar"></div><div class="music-bar"></div><div class="music-bar"></div></div>';
+                toggle.className = 'mt-2 bg-blue-500 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-600 transition-colors flex items-center';
+                musicEnabled = true;
+            }
+        }
+        
+        function playSound(soundId) {
+            if (musicEnabled) {
+                const sound = document.getElementById(soundId);
+                sound.currentTime = 0;
+                sound.play().catch(e => console.log('Sound play failed:', e));
+            }
+        }
+        
+        // Screen Management
+        function showScreen(screenId) {
+            const screens = ['openingScreen', 'roleSelection', 'playerLogin', 'hostLogin', 'hostDashboard', 'materialScreen', 'gameScreen', 'leaderboardScreen'];
+            screens.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(screenId).classList.remove('hidden');
+        }
+        
+        function showOpeningScreen() {
+            showScreen('openingScreen');
+            // Stop background music when returning to menu
+            document.getElementById('backgroundMusic').pause();
+        }
+        
+        function showRoleSelection() {
+            showScreen('roleSelection');
+        }
+        
+        function showPlayerLogin() {
+            showScreen('playerLogin');
+        }
+        
+        function showHostLogin() {
+            showScreen('hostLogin');
+        }
+        
+        function showMaterial() {
+            showScreen('materialScreen');
+        }
+        
+        // Host Functions
+        function loginHost() {
+            const password = document.getElementById('hostPassword').value;
+            if (password === 'ethomath2024') {
+                showScreen('hostDashboard');
+                updateHostDashboard();
+            } else {
+                alert('Password host salah!');
+            }
+        }
+        
+        function updateHostDashboard() {
+            document.getElementById('activePlayersCount').textContent = hostStats.activePlayersCount;
+            document.getElementById('gamesPlayedCount').textContent = hostStats.gamesPlayedCount;
+            document.getElementById('averageScore').textContent = hostStats.gamesPlayedCount > 0 ? 
+                Math.round(hostStats.totalScore / hostStats.gamesPlayedCount) : 0;
+            
+            const hostLeaderboard = document.getElementById('hostLeaderboard');
+            if (leaderboard.length === 0) {
+                hostLeaderboard.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada data pemain</p>';
+            } else {
+                hostLeaderboard.innerHTML = leaderboard.map((player, index) => `
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-2xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'}</span>
+                            <div>
+                                <p class="font-semibold text-gray-800">${player.name}</p>
+                                <p class="text-sm text-gray-600">${new Date(player.date).toLocaleDateString('id-ID')}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-purple-600">${player.score}</p>
+                            <p class="text-sm text-gray-500">${player.score}/500 poin</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // Timer Functions
+        function startGameTimer() {
+            timeRemaining = 900; // Reset to 15 minutes
+            updateTimerDisplay();
+            
+            gameTimer = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                // Change timer color when time is running low
+                const timerElement = document.getElementById('gameTimer');
+                if (timeRemaining <= 300) { // 5 minutes left
+                    timerElement.className = 'text-2xl font-bold text-red-600 animate-pulse';
+                } else if (timeRemaining <= 600) { // 10 minutes left
+                    timerElement.className = 'text-2xl font-bold text-orange-600';
+                }
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(gameTimer);
+                    endGameByTimeout();
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const timerText = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('gameTimer').textContent = timerText;
+        }
+        
+        function stopGameTimer() {
+            if (gameTimer) {
+                clearInterval(gameTimer);
+                gameTimer = null;
+            }
+        }
+        
+        function endGameByTimeout() {
+            const status = document.getElementById('gameStatus');
+            status.textContent = '⏰ Waktu habis! Game berakhir otomatis.';
+            status.className = 'absolute top-4 left-4 bg-red-100 bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-red-600 shadow-lg';
+            
+            // Disable all buttons
+            const buttons = document.querySelectorAll('#questionOptions button');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            setTimeout(() => {
+                endGame();
+            }, 2000);
+        }
+        
+        // Game Functions
+        function startGame() {
+            const playerName = document.getElementById('playerName').value.trim();
+            if (!playerName) {
+                alert('Silakan masukkan nama Anda terlebih dahulu!');
+                return;
+            }
+            
+            currentPlayer = playerName;
+            currentQuestion = 0;
+            currentScore = 0;
+            
+            // Update host stats
+            hostStats.activePlayersCount++;
+            hostStats.gamesPlayedCount++;
+            localStorage.setItem('ethomath_host_stats', JSON.stringify(hostStats));
+            
+            // Shuffle questions
+            gameQuestions = [...questionsDB].sort(() => Math.random() - 0.5).slice(0, 5);
+            
+            document.getElementById('currentPlayerName').textContent = currentPlayer;
+            document.getElementById('currentScore').textContent = currentScore;
+            
+            showScreen('gameScreen');
+            startGameTimer(); // Start the 15-minute timer
+            showQuestion();
+            resetBasketballCourt();
+            
+            // Start background music
+            if (musicEnabled) {
+                const music = document.getElementById('backgroundMusic');
+                music.play().catch(e => console.log('Background music failed to play:', e));
+            }
+        }
+        
+        function resetBasketballCourt() {
+            // Reset basketball
+            const ball = document.getElementById('currentBall');
+            ball.className = 'basketball';
+            ball.style.left = '80px';
+            ball.style.top = '150px';
+            ball.style.opacity = '1';
+            
+            // Reset player
+            const player = document.getElementById('currentPlayer');
+            player.className = 'player';
+            
+            // Reset SWISH effect
+            const swishEffect = document.getElementById('swishEffect');
+            swishEffect.style.animation = 'none';
+            
+            // Update current player for this question
+            updateCurrentPlayer();
+        }
+        
+        function updateCurrentPlayer() {
+            const playerData = basketballPlayers[currentQuestion];
+            const playerAvatar = document.getElementById('currentPlayerAvatar');
+            const playerNameElement = document.getElementById('currentPlayerName');
+            const progressPlayerName = document.getElementById('progressPlayerName');
+            
+            playerAvatar.style.background = playerData.gradient;
+            playerAvatar.textContent = playerData.avatar;
+            playerNameElement.textContent = playerData.name;
+            progressPlayerName.textContent = playerData.name;
+        }
+        
+        function showQuestion() {
+            if (currentQuestion >= 5) {
+                endGame();
+                return;
+            }
+            
+            const question = gameQuestions[currentQuestion];
+            const playerData = basketballPlayers[currentQuestion];
+            
+            document.getElementById('questionNumber').textContent = currentQuestion + 1;
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('progressQuestionNumber').textContent = currentQuestion + 1;
+            
+            // Display diagram
+            const diagramContainer = document.getElementById('questionDiagram');
+            diagramContainer.innerHTML = question.diagram || '';
+            
+            const optionsContainer = document.getElementById('questionOptions');
+            optionsContainer.innerHTML = question.options.map((option, index) => `
+                <button onclick="answerQuestion(${index})" class="p-4 bg-blue-50 hover:bg-blue-100 rounded-xl text-left transition-colors border-2 border-transparent hover:border-blue-300">
+                    <span class="font-semibold text-blue-600">${String.fromCharCode(65 + index)}.</span> ${option}
+                </button>
+            `).join('');
+            
+            document.getElementById('gameStatus').textContent = `🏀 ${playerData.name} siap menembak!`;
+            document.getElementById('gameStatus').className = 'absolute top-4 left-4 bg-white bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-gray-700 shadow-lg';
+            
+            // Update current player display
+            updateCurrentPlayer();
+        }
+        
+        function answerQuestion(selectedIndex) {
+            const question = gameQuestions[currentQuestion];
+            const playerData = basketballPlayers[currentQuestion];
+            const status = document.getElementById('gameStatus');
+            
+            // Disable all option buttons
+            const buttons = document.querySelectorAll('#questionOptions button');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            // Get current ball and player
+            const ball = document.getElementById('currentBall');
+            const player = document.getElementById('currentPlayer');
+            const swishEffect = document.getElementById('swishEffect');
+            
+            // Start shooting animation
+            ball.classList.add('shooting');
+            player.classList.add('shooting');
+            
+            setTimeout(() => {
+                if (selectedIndex === question.correct) {
+                    // Correct answer - shot scored
+                    ball.classList.remove('shooting');
+                    ball.classList.add('scored');
+                    player.classList.remove('shooting');
+                    player.classList.add('celebrating');
+                    
+                    // Show SWISH effect
+                    swishEffect.style.animation = 'swishText 2s ease-out';
+                    
+                    // Play correct sound
+                    playSound('correctSound');
+                    
+                    status.textContent = `🎉 SWISH! ${playerData.name} berhasil mencetak poin!`;
+                    status.className = 'absolute top-4 left-4 bg-green-100 bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-green-600 shadow-lg';
+                    currentScore += 100;
+                    document.getElementById('currentScore').textContent = currentScore;
+                } else {
+                    // Wrong answer - shot missed
+                    ball.classList.remove('shooting');
+                    ball.classList.add('missed');
+                    player.classList.remove('shooting');
+                    player.classList.add('disappointed');
+                    
+                    // Play wrong sound
+                    playSound('wrongSound');
+                    
+                    status.textContent = `❌ Miss! ${playerData.name} gagal mencetak poin!`;
+                    status.className = 'absolute top-4 left-4 bg-red-100 bg-opacity-90 px-4 py-2 rounded-xl text-lg font-semibold text-red-600 shadow-lg';
+                }
+            }, 2500);
+            
+            // Move to next question after animation
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < 5) {
+                    resetBasketballCourt();
+                    showQuestion();
+                } else {
+                    endGame();
+                }
+            }, 4500);
+        }
+        
+        function endGame() {
+            // Stop the timer and music
+            stopGameTimer();
+            document.getElementById('backgroundMusic').pause();
+            
+            // Update host stats
+            hostStats.totalScore += currentScore;
+            hostStats.activePlayersCount = Math.max(0, hostStats.activePlayersCount - 1);
+            localStorage.setItem('ethomath_host_stats', JSON.stringify(hostStats));
+            
+            // Add to leaderboard
+            const playerData = {
+                name: currentPlayer,
+                score: currentScore,
+                date: new Date().toISOString()
+            };
+            
+            leaderboard.push(playerData);
+            leaderboard.sort((a, b) => b.score - a.score);
+            leaderboard = leaderboard.slice(0, 30); // Keep top 30
+            localStorage.setItem('ethomath_leaderboard', JSON.stringify(leaderboard));
+            
+            showLeaderboard();
+        }
+        
+        function showLeaderboard() {
+            showScreen('leaderboardScreen');
+            
+            const leaderboardList = document.getElementById('leaderboardList');
+            if (leaderboard.length === 0) {
+                leaderboardList.innerHTML = '<p class="text-gray-500">Belum ada skor yang tercatat</p>';
+            } else {
+                leaderboardList.innerHTML = leaderboard.slice(0, 10).map((player, index) => `
+                    <div class="flex items-center justify-between p-4 ${player.name === currentPlayer ? 'bg-yellow-50 border-2 border-yellow-300' : 'bg-gray-50'} rounded-xl">
+                        <div class="flex items-center space-x-4">
+                            <span class="text-2xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'}</span>
+                            <div>
+                                <p class="font-semibold text-gray-800">${player.name} ${player.name === currentPlayer ? '(Anda)' : ''}</p>
+                                <p class="text-sm text-gray-600">${new Date(player.date).toLocaleDateString('id-ID')}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xl font-bold text-purple-600">${player.score}</p>
+                            <p class="text-sm text-gray-500">${player.score}/500 poin</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showOpeningScreen();
+            
+            // Set up audio elements with error handling
+            const music = document.getElementById('backgroundMusic');
+            music.addEventListener('error', function(e) {
+                console.log('Background music failed to load');
+                musicEnabled = false;
+            });
+            
+            // Auto-enable music controls when user interacts
+            document.addEventListener('click', function() {
+                if (musicEnabled && music.paused) {
+                    music.play().catch(e => console.log('Auto-play prevented'));
+                }
+            }, { once: true });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'972f2ec3c1cdf93c',t:'MTc1NTgzMjI4NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
