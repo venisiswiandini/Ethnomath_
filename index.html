@@ -1,0 +1,610 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { initializeApp } from 'firebase/app';
+import { getAuth, signInWithCustomToken, signInAnonymously } from 'firebase/auth';
+import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, updateDoc, deleteDoc } from 'firebase/firestore';
+import { BookOpen, Play, UserCircle, Crown, Lock, Globe } from 'lucide-react';
+
+// Pastikan untuk menggunakan variabel global yang disediakan oleh environment Canvas
+const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+
+// Data pertanyaan statis dengan gambar placeholder.
+// Anda bisa mengubah URL gambar di sini.
+const questionData = [
+  {
+    question: "Dua persegi panjang ini sebangun. Tentukan nilai X.",
+    imageUrl: "https://placehold.co/400x200/505050/FFFFFF?text=Persegi+Panjang+A+%0A(Sisi+2,4)+%0APersegi+Panjang+B+%0A(Sisi+3,X)",
+    answer: 6,
+    choices: [4, 6, 8, 10]
+  },
+  {
+    question: "Segitiga ABC kongruen dengan segitiga PQR. Jika panjang sisi AC adalah 8 cm, berapa panjang sisi PR?",
+    imageUrl: "https://placehold.co/400x200/3498DB/FFFFFF?text=Segitiga+ABC+%0A(Sisi+AC=8)+%0ASegitiga+PQR+%0A(Sisi+PR=?)",
+    answer: 8,
+    choices: [6, 8, 10, 12]
+  },
+  {
+    question: "Dua trapesium ini sebangun. Jika panjang sisi terpanjang trapesium kecil adalah 12 cm, berapa panjang sisi terpanjang trapesium besar?",
+    imageUrl: "https://placehold.co/400x200/F39C12/FFFFFF?text=Trapesium+%0AKecil+dan+Besar",
+    answer: 24,
+    choices: [18, 20, 24, 30]
+  },
+  {
+    question: "Kedua bangun ini sebangun. Tentukan nilai Y.",
+    imageUrl: "https://placehold.co/400x200/E74C3C/FFFFFF?text=Bangun+A+%0A(Sisi+5,10)+%0ABangun+B+%0A(Sisi+15,Y)",
+    answer: 30,
+    choices: [15, 20, 25, 30]
+  },
+];
+
+// Komponen utama aplikasi
+const App = () => {
+  const [db, setDb] = useState(null);
+  const [auth, setAuth] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState('');
+  const [screen, setScreen] = useState('profile');
+  const [question, setQuestion] = useState(null);
+  const [score, setScore] = useState(0);
+  const [leaderboard, setLeaderboard] = useState([]);
+  const [isGameEnded, setIsGameEnded] = useState(false);
+  const [isCorrect, setIsCorrect] = useState(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [lastAnswer, setLastAnswer] = useState(null);
+  const [isHost, setIsHost] = useState(false);
+  const [gameId, setGameId] = useState('');
+  const [playerList, setPlayerList] = useState([]);
+  const [gameState, setGameState] = useState(null);
+
+  const gameStartTimeRef = useRef(null);
+
+  // Inisialisasi Firebase dan otentikasi
+  useEffect(() => {
+    const initializeFirebase = async () => {
+      try {
+        const firebaseApp = initializeApp(firebaseConfig);
+        const authInstance = getAuth(firebaseApp);
+        const dbInstance = getFirestore(firebaseApp);
+        setAuth(authInstance);
+        setDb(dbInstance);
+
+        if (initialAuthToken) {
+          await signInWithCustomToken(authInstance, initialAuthToken);
+        } else {
+          await signInAnonymously(authInstance);
+        }
+
+        const unsubscribe = authInstance.onAuthStateChanged(user => {
+          if (user) {
+            setUserId(user.uid);
+            console.log('User signed in with UID:', user.uid);
+          }
+        });
+
+        return () => unsubscribe();
+      } catch (error) {
+        console.error('Error initializing Firebase:', error);
+      }
+    };
+
+    if (Object.keys(firebaseConfig).length > 0) {
+      initializeFirebase();
+    }
+  }, []);
+
+  // Memuat data pengguna dan leaderboard
+  useEffect(() => {
+    if (db && userId) {
+      const loadUserData = async () => {
+        const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/data/profile`);
+        try {
+          const userDoc = await getDoc(userDocRef);
+          if (userDoc.exists()) {
+            setUsername(userDoc.data().username);
+          }
+        } catch (error) {
+          console.error('Error loading user data:', error);
+        }
+      };
+
+      loadUserData();
+
+      // Mendengarkan perubahan pada leaderboard secara real-time
+      const leaderboardQuery = query(collection(db, `artifacts/${appId}/public/data/leaderboard`));
+      const unsubscribeLeaderboard = onSnapshot(leaderboardQuery, (snapshot) => {
+        const leaderboardData = [];
+        snapshot.forEach((doc) => {
+          leaderboardData.push(doc.data());
+        });
+        leaderboardData.sort((a, b) => b.score - a.score || a.time - b.time);
+        setLeaderboard(leaderboardData);
+      }, (error) => {
+        console.error('Error fetching leaderboard:', error);
+      });
+
+      return () => unsubscribeLeaderboard();
+    }
+  }, [db, userId]);
+
+  // Handler untuk menyimpan username
+  const handleSaveUsername = async () => {
+    if (!username.trim() || !db || !userId) {
+      alert('Nama pengguna tidak boleh kosong!');
+      return;
+    }
+    const userDocRef = doc(db, `artifacts/${appId}/users/${userId}/data/profile`);
+    try {
+      await setDoc(userDocRef, { username, userId });
+      setScreen('menu');
+    } catch (error) {
+      console.error('Error saving username:', error);
+    }
+  };
+
+  // Logika host
+  const startHostGame = async () => {
+    setIsHost(true);
+    setGameId(userId);
+    const hostGameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, userId);
+    await setDoc(hostGameDocRef, {
+      status: 'waiting',
+      currentQuestionIndex: -1,
+      players: [{ id: userId, username: username }],
+    });
+    setScreen('host-lobby');
+  };
+
+  const startPlayerGame = async () => {
+    if (!gameId.trim()) {
+      alert('Masukkan ID Game Host!');
+      return;
+    }
+    const gameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
+    const gameDoc = await getDoc(gameDocRef);
+    if (gameDoc.exists() && gameDoc.data().players.length < 30) {
+      await updateDoc(gameDocRef, {
+        players: [...gameDoc.data().players, { id: userId, username: username }],
+      });
+      setScreen('player-lobby');
+    } else {
+      alert('ID Game tidak valid atau sudah penuh.');
+      setGameId('');
+    }
+  };
+
+  // Logika pemain dan host
+  useEffect(() => {
+    if (db && gameId) {
+      const gameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
+      const unsubscribe = onSnapshot(gameDocRef, (doc) => {
+        if (doc.exists()) {
+          const state = doc.data();
+          setGameState(state);
+          setPlayerList(state.players);
+
+          if (isHost && state.status === 'ended') {
+            endGame();
+          }
+
+          if (!isHost && state.status === 'started') {
+            const newIndex = state.currentQuestionIndex;
+            if (newIndex >= 0 && newIndex < questionData.length) {
+              setCurrentQuestionIndex(newIndex);
+              setQuestion(questionData[newIndex]);
+              setScreen('game');
+            } else if (newIndex >= questionData.length) {
+              endGame();
+            }
+          }
+        } else if (!isHost) {
+          // Game ended by host
+          alert('Game telah berakhir. Kembali ke menu.');
+          setScreen('menu');
+        }
+      });
+      return () => unsubscribe();
+    }
+  }, [db, gameId, isHost]);
+
+  // Handler untuk memulai permainan dari sisi host
+  const handleHostStartGame = async () => {
+    gameStartTimeRef.current = Date.now();
+    const hostGameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
+    await updateDoc(hostGameDocRef, {
+      status: 'started',
+      currentQuestionIndex: 0,
+    });
+    setScreen('game');
+  };
+
+  // Handler untuk memajukan pertanyaan dari sisi host
+  const handleNextQuestion = async () => {
+    const nextIndex = currentQuestionIndex + 1;
+    if (nextIndex < questionData.length) {
+      const hostGameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
+      await updateDoc(hostGameDocRef, { currentQuestionIndex: nextIndex });
+      setCurrentQuestionIndex(nextIndex);
+      setQuestion(questionData[nextIndex]);
+    } else {
+      handleHostEndGame();
+    }
+  };
+
+  // Handler untuk mengakhiri game dari sisi host
+  const handleHostEndGame = async () => {
+    const hostGameDocRef = doc(db, `artifacts/${appId}/public/data/game-state`, gameId);
+    await deleteDoc(hostGameDocRef);
+    endGame();
+  };
+
+  // Menangani jawaban pemain
+  const handleAnswer = (choice) => {
+    const isAnswerCorrect = choice === question.answer;
+    setIsCorrect(isAnswerCorrect);
+    setLastAnswer(choice);
+
+    if (isAnswerCorrect) {
+      setScore(score + 10);
+    } else {
+      setScore(score > 0 ? score - 5 : 0);
+    }
+  };
+
+  // Mengakhiri game dan menyimpan skor
+  const endGame = async () => {
+    setIsGameEnded(true);
+    const timeTaken = Math.round((Date.now() - gameStartTimeRef.current) / 1000);
+    
+    if (db && userId) {
+      const leaderboardDocRef = doc(db, `artifacts/${appId}/public/data/leaderboard`, userId);
+      try {
+        await setDoc(leaderboardDocRef, {
+          username: username,
+          score: score,
+          time: timeTaken,
+          userId: userId
+        }, { merge: true });
+        console.log('Score saved to leaderboard.');
+      } catch (error) {
+        console.error('Error saving score:', error);
+      }
+    }
+    setScreen('leaderboard');
+  };
+
+  // Tampilan layar
+  const renderScreen = () => {
+    switch (screen) {
+      case 'profile':
+        return (
+          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center transform transition-all hover:scale-105 duration-300">
+              <h1 className="text-3xl font-bold mb-4 text-purple-600">Selamat Datang!</h1>
+              <p className="mb-6 text-gray-600">Mari perkenalkan diri Anda.</p>
+              <div className="mb-4">
+                <label className="block text-gray-700 font-semibold mb-2" htmlFor="username">Nama Pembuat Game</label>
+                <input
+                  type="text"
+                  id="username"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 transition-colors"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="Masukkan nama Anda..."
+                  maxLength={20}
+                />
+              </div>
+              <p className="text-sm text-gray-500 mb-6">
+                Ini adalah game kuis tentang Kesebangunan.
+              </p>
+              <button
+                onClick={handleSaveUsername}
+                className="w-full bg-purple-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-purple-700 transition-all transform hover:scale-105"
+              >
+                Lanjutkan
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'menu':
+        return (
+          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center transform transition-all duration-300">
+              <h1 className="text-3xl font-bold mb-6 text-purple-600">Menu Utama</h1>
+              <p className="text-lg mb-8 text-gray-700">Selamat datang, <span className="font-semibold text-purple-600">{username}</span>!</p>
+              <div className="space-y-4">
+                <button
+                  onClick={() => setScreen('materials')}
+                  className="w-full flex items-center justify-center bg-blue-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-all transform hover:scale-105"
+                >
+                  <BookOpen className="mr-2" size={20} /> Materi
+                </button>
+                <button
+                  onClick={() => setScreen('role-selection')}
+                  className="w-full flex items-center justify-center bg-green-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-green-600 transition-all transform hover:scale-105"
+                >
+                  <Play className="mr-2" size={20} /> Mulai Game
+                </button>
+                <button
+                  onClick={() => setScreen('leaderboard')}
+                  className="w-full flex items-center justify-center bg-yellow-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-yellow-600 transition-all transform hover:scale-105"
+                >
+                  <Crown className="mr-2" size={20} /> Lihat Leaderboard
+                </button>
+                <button
+                  onClick={() => setScreen('profile')}
+                  className="w-full flex items-center justify-center bg-gray-400 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-gray-500 transition-all transform hover:scale-105"
+                >
+                  <UserCircle className="mr-2" size={20} /> Ganti Nama
+                </button>
+              </div>
+              <div className="mt-6 text-xs text-gray-400">
+                <p>ID Pengguna: {userId}</p>
+                <p>Bagikan ID ini untuk teman Anda bergabung di leaderboard</p>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'role-selection':
+        return (
+          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center transform transition-all duration-300">
+              <h1 className="text-3xl font-bold mb-6 text-purple-600">Pilih Peran</h1>
+              <div className="space-y-4 mb-6">
+                <button
+                  onClick={startHostGame}
+                  className="w-full flex items-center justify-center bg-purple-600 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-purple-700 transition-all transform hover:scale-105"
+                >
+                  <Lock className="mr-2" size={20} /> Mulai sebagai Host
+                </button>
+                <div className="relative flex items-center py-2">
+                  <div className="flex-grow border-t border-gray-400"></div>
+                  <span className="flex-shrink mx-4 text-gray-400 text-sm">ATAU</span>
+                  <div className="flex-grow border-t border-gray-400"></div>
+                </div>
+                <div>
+                  <input
+                    type="text"
+                    id="game-id"
+                    className="w-full px-4 py-2 mb-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                    value={gameId}
+                    onChange={(e) => setGameId(e.target.value)}
+                    placeholder="Masukkan ID Game Host"
+                  />
+                  <button
+                    onClick={startPlayerGame}
+                    className="w-full flex items-center justify-center bg-blue-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-blue-600 transition-all transform hover:scale-105"
+                  >
+                    <Globe className="mr-2" size={20} /> Gabung sebagai Pemain
+                  </button>
+                </div>
+              </div>
+              <button
+                onClick={() => setScreen('menu')}
+                className="w-full bg-gray-500 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:bg-gray-600 transition-all transform hover:scale-105"
+              >
+                Kembali
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'host-lobby':
+        return (
+          <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 p-4 pt-10">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center transform transition-all duration-300">
+              <h1 className="text-3xl font-bold mb-4 text-purple-600">Lobi Host</h1>
+              <p className="text-lg text-gray-700 mb-2">ID Game Anda:</p>
+              <p className="text-3xl font-extrabold text-blue-600 mb-6">{userId}</p>
+              <p className="text-gray-600 mb-4">Bagikan ID ini kepada teman-teman Anda untuk bergabung.</p>
+              <h2 className="text-2xl font-bold mb-4 text-gray-800">Pemain yang Bergabung ({playerList.length})</h2>
+              <ul className="space-y-2 mb-6">
+                {playerList.map((player) => (
+                  <li key={player.id} className="p-3 bg-gray-100 rounded-lg shadow-sm text-gray-700">
+                    {player.username}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={handleHostStartGame}
+                disabled={playerList.length < 1}
+                className="w-full bg-green-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-green-600 transition-all transform hover:scale-105 disabled:bg-gray-400 disabled:cursor-not-allowed"
+              >
+                Mulai Permainan
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'player-lobby':
+        return (
+          <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm text-center transform transition-all duration-300">
+              <h1 className="text-3xl font-bold mb-4 text-blue-600">Menunggu Host...</h1>
+              <p className="text-gray-600 mb-6">
+                Anda telah bergabung di game dengan ID: <span className="font-bold text-blue-600">{gameId}</span>
+              </p>
+              <p className="text-gray-700 mb-8">
+                Host akan segera memulai permainan. Mohon bersabar.
+              </p>
+              <div className="text-center text-gray-500 text-sm">
+                <p>Pemain yang bergabung:</p>
+                <ul className="list-disc list-inside mt-2">
+                  {playerList.map(p => <li key={p.id}>{p.username}</li>)}
+                </ul>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 'materials':
+        return (
+          <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 p-4 pt-10">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-2xl text-center transform transition-all duration-300">
+              <h1 className="text-3xl font-bold mb-4 text-blue-600">Materi Pemahaman</h1>
+              <p className="text-gray-700 mb-6">
+                Ini adalah penjelasan singkat tentang Kesebangunan dan Kekongruenan.
+              </p>
+              <div className="space-y-6 text-left">
+                <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <h2 className="text-xl font-bold text-blue-600">Kesebangunan (Similarity)</h2>
+                  <p className="text-gray-600 mt-1">
+                    Dua bangun datar dikatakan sebangun jika memiliki:
+                  </p>
+                  <ul className="list-disc list-inside mt-2 text-gray-600">
+                    <li>Pasangan sudut yang bersesuaian sama besar.</li>
+                    <li>Panjang sisi-sisi yang bersesuaian memiliki perbandingan yang sama.</li>
+                  </ul>
+                </div>
+                <div className="p-4 bg-green-50 rounded-lg border border-green-200">
+                  <h2 className="text-xl font-bold text-green-600">Kekongruenan (Congruence)</h2>
+                  <p className="text-gray-600 mt-1">
+                    Dua bangun datar dikatakan kongruen jika keduanya memiliki bentuk dan ukuran yang sama persis.
+                  </p>
+                  <ul className="list-disc list-inside mt-2 text-gray-600">
+                    <li>Pasangan sudut yang bersesuaian sama besar.</li>
+                    <li>Panjang sisi-sisi yang bersesuaian sama panjang.</li>
+                  </ul>
+                </div>
+              </div>
+              <button
+                onClick={() => setScreen('menu')}
+                className="mt-8 bg-gray-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-gray-600 transition-all transform hover:scale-105"
+              >
+                Kembali ke Menu
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'game':
+        if (isHost) {
+          return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+              <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center transform transition-all duration-300">
+                <h2 className="text-2xl font-bold mb-2 text-purple-600">Soal ke-{currentQuestionIndex + 1}</h2>
+                <div className="mb-6 flex flex-col items-center">
+                  {question && question.imageUrl && (
+                    <img src={question.imageUrl} alt="Ilustrasi Soal" className="rounded-lg mb-4 max-w-full h-auto" />
+                  )}
+                  <p className="text-xl font-extrabold text-gray-800 mb-4">{question?.question}</p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  {question?.choices.map((choice, index) => (
+                    <div key={index} className="p-4 rounded-lg font-semibold text-lg bg-gray-200 text-gray-800">
+                      {choice}
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-8">
+                  <p className="text-green-600 font-bold text-xl mb-4">Jawaban Benar: {question?.answer}</p>
+                  <button
+                    onClick={handleNextQuestion}
+                    className="w-full bg-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-blue-600 transition-all transform hover:scale-105"
+                  >
+                    {currentQuestionIndex + 1 < questionData.length ? "Pertanyaan Berikutnya" : "Akhiri Permainan"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        } else {
+          // Player's game view
+          if (!question) {
+            return <div className="flex items-center justify-center min-h-screen bg-gray-100">Menunggu host...</div>;
+          }
+          return (
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+              <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center transform transition-all duration-300">
+                <h2 className="text-2xl font-bold mb-2 text-purple-600">Soal ke-{currentQuestionIndex + 1}</h2>
+                <p className="text-gray-600 text-sm mb-4">Skor: {score}</p>
+                <div className="mb-6 flex flex-col items-center">
+                  {question.imageUrl && (
+                    <img src={question.imageUrl} alt="Ilustrasi Soal" className="rounded-lg mb-4 max-w-full h-auto" />
+                  )}
+                  <p className="text-xl font-extrabold text-gray-800 mb-4">{question.question}</p>
+                  <p className="text-gray-500 text-sm">Pilih jawaban yang benar.</p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  {question.choices.map((choice, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleAnswer(choice)}
+                      className={`
+                        p-4 rounded-lg font-semibold text-lg
+                        ${isCorrect === true && choice === lastAnswer ? 'bg-green-500 text-white shadow-lg' :
+                          isCorrect === false && choice === lastAnswer ? 'bg-red-500 text-white shadow-lg' :
+                          'bg-gray-200 text-gray-800 hover:bg-gray-300'}
+                        transition-all duration-300 transform hover:scale-105
+                      `}
+                      disabled={isCorrect !== null}
+                    >
+                      {choice}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          );
+        }
+
+      case 'leaderboard':
+        return (
+          <div className="flex flex-col items-center justify-start min-h-screen bg-gray-100 p-4 pt-10">
+            <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-lg text-center transform transition-all duration-300">
+              <h1 className="text-3xl font-bold mb-6 text-yellow-600 flex items-center justify-center">
+                <Crown className="mr-2" size={32} /> Leaderboard
+              </h1>
+              <ul className="space-y-3">
+                {leaderboard.map((entry, index) => (
+                  <li
+                    key={index}
+                    className={`
+                      flex items-center justify-between p-4 rounded-lg font-semibold shadow-md
+                      ${index === 0 ? 'bg-yellow-400 text-white' :
+                        index === 1 ? 'bg-gray-300 text-gray-800' :
+                        index === 2 ? 'bg-amber-700 text-white' :
+                        'bg-gray-100 text-gray-700'}
+                      transition-colors duration-200
+                    `}
+                  >
+                    <div className="flex items-center">
+                      <span className="font-extrabold text-xl w-8 text-left">{index + 1}.</span>
+                      <span className="ml-2">{entry.username}</span>
+                    </div>
+                    <div className="text-right">
+                      <span className="text-lg font-bold">{entry.score} poin</span>
+                      <span className="block text-xs font-normal">Waktu: {entry.time}s</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => setScreen('menu')}
+                className="mt-8 bg-purple-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:bg-purple-700 transition-all transform hover:scale-105"
+              >
+                Kembali ke Menu
+              </button>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="bg-gray-100 font-sans antialiased text-gray-900">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+      `}</style>
+      {renderScreen()}
+    </div>
+  );
+};
+
+export default App;
