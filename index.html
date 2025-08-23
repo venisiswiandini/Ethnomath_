@@ -6,59 +6,11 @@
     <title>Ethnomath - Game Kesebangunan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            position: relative;
-            overflow-x: hidden;
-        }
-        
-        .gradient-bg { 
-            background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 25%, #45B7D1 50%, #96CEB4 75%, #FFEAA7 100%);
-            position: relative;
-            min-height: 100vh;
-        }
-        
-        .gradient-bg::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%2387CEEB;stop-opacity:1" /><stop offset="50%" style="stop-color:%23B0E0E6;stop-opacity:1" /><stop offset="100%" style="stop-color:%23E0F6FF;stop-opacity:1" /></linearGradient><linearGradient id="riverGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:%234682B4;stop-opacity:1" /><stop offset="50%" style="stop-color:%235F9EA0;stop-opacity:1" /><stop offset="100%" style="stop-color:%234682B4;stop-opacity:1" /></linearGradient><linearGradient id="roofGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23D2691E;stop-opacity:1" /><stop offset="100%" style="stop-color:%23A0522D;stop-opacity:1" /></linearGradient><linearGradient id="wallGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23F4A460;stop-opacity:1" /><stop offset="100%" style="stop-color:%23DEB887;stop-opacity:1" /></linearGradient><linearGradient id="bridgeGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23708090;stop-opacity:1" /><stop offset="100%" style="stop-color:%23556B2F;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23skyGrad)"/><ellipse cx="150" cy="80" rx="70" ry="30" fill="white" opacity="0.9"/><ellipse cx="400" cy="60" rx="90" ry="35" fill="white" opacity="0.8"/><ellipse cx="800" cy="90" rx="60" ry="25" fill="white" opacity="0.85"/><ellipse cx="1000" cy="70" rx="80" ry="30" fill="white" opacity="0.8"/><rect x="0" y="650" width="1200" height="150" fill="url(%23riverGrad)" opacity="0.8"/><path d="M0 650 Q300 640 600 650 Q900 660 1200 650 L1200 800 L0 800 Z" fill="url(%23riverGrad)" opacity="0.6"/><rect x="200" y="620" width="800" height="8" fill="url(%23bridgeGrad)" rx="4"/><rect x="180" y="615" width="20" height="40" fill="url(%23bridgeGrad)"/><rect x="1000" y="615" width="20" height="40" fill="url(%23bridgeGrad)"/><rect x="400" y="610" width="15" height="50" fill="url(%23bridgeGrad)"/><rect x="600" y="610" width="15" height="50" fill="url(%23bridgeGrad)"/><rect x="800" y="610" width="15" height="50" fill="url(%23bridgeGrad)"/><path d="M150 400 L350 380 L380 320 L360 300 L340 290 L160 290 L140 300 L120 320 Z" fill="url(%23roofGrad)"/><path d="M160 380 L340 380 L340 500 L160 500 Z" fill="url(%23wallGrad)"/><rect x="170" y="400" width="12" height="100" fill="%23654321"/><rect x="200" y="400" width="12" height="100" fill="%23654321"/><rect x="230" y="400" width="12" height="100" fill="%23654321"/><rect x="300" y="400" width="12" height="100" fill="%23654321"/><rect x="320" y="400" width="12" height="100" fill="%23654321"/><rect x="190" y="420" width="60" height="80" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="270" y="430" width="50" height="70" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><path d="M600 420 L800 400 L830 340 L810 320 L790 310 L610 310 L590 320 L570 340 Z" fill="url(%23roofGrad)"/><path d="M610 400 L790 400 L790 520 L610 520 Z" fill="url(%23wallGrad)"/><rect x="620" y="420" width="12" height="100" fill="%23654321"/><rect x="650" y="420" width="12" height="100" fill="%23654321"/><rect x="680" y="420" width="12" height="100" fill="%23654321"/><rect x="750" y="420" width="12" height="100" fill="%23654321"/><rect x="770" y="420" width="12" height="100" fill="%23654321"/><rect x="640" y="440" width="70" height="80" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="720" y="450" width="50" height="70" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><ellipse cx="100" cy="550" rx="40" ry="60" fill="%2332CD32"/><ellipse cx="120" cy="540" rx="35" ry="55" fill="%2328A745"/><ellipse cx="80" cy="560" rx="30" ry="50" fill="%2334CE57"/><ellipse cx="500" cy="570" rx="45" ry="65" fill="%2332CD32"/><ellipse cx="520" cy="560" rx="40" ry="60" fill="%2328A745"/><ellipse cx="480" cy="580" rx="35" ry="55" fill="%2334CE57"/><ellipse cx="900" cy="540" rx="50" ry="70" fill="%2332CD32"/><ellipse cx="920" cy="530" rx="45" ry="65" fill="%2328A745"/><ellipse cx="880" cy="550" rx="40" ry="60" fill="%2334CE57"/><ellipse cx="1100" cy="560" rx="40" ry="60" fill="%2332CD32"/><ellipse cx="1120" cy="550" rx="35" ry="55" fill="%2328A745"/><path d="M400 350 Q450 330 500 350 Q550 370 600 350 Q650 330 700 350" stroke="%23FFD700" stroke-width="3" fill="none" opacity="0.9"/><circle cx="420" cy="360" r="6" fill="%23FFD700" opacity="0.8"/><circle cx="480" cy="365" r="5" fill="%23FFD700" opacity="0.8"/><circle cx="580" cy="355" r="7" fill="%23FFD700" opacity="0.8"/><circle cx="680" cy="362" r="5" fill="%23FFD700" opacity="0.8"/><rect x="50" y="600" width="100" height="50" rx="25" fill="%2332CD32" opacity="0.7"/><rect x="300" y="620" width="80" height="40" rx="20" fill="%2328A745" opacity="0.7"/><rect x="1000" y="610" width="120" height="45" rx="22" fill="%2334CE57" opacity="0.7"/></svg>');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            opacity: 0.4;
-            z-index: -2;
-            pointer-events: none;
-        }
-        
-        .gradient-bg::after {
-            content: '';
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(to top, 
-                rgba(139, 69, 19, 0.3) 0%, 
-                rgba(160, 82, 45, 0.2) 30%, 
-                rgba(210, 180, 140, 0.1) 60%, 
-                transparent 100%);
-            z-index: -1;
-            pointer-events: none;
-        }
-        .card-shadow { 
-            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3), 0 5px 15px rgba(78, 205, 196, 0.2); 
-            border: 3px solid rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            border-radius: 25px;
-        }
+        body { font-family: 'Poppins', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-shadow { box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .pulse-animation { animation: pulse 2s infinite; }
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
@@ -215,15 +167,6 @@
         @keyframes netSway {
             0%, 100% { transform: rotate(0deg); }
             50% { transform: rotate(2deg); }
-        }
-        
-        @keyframes netSwaySuccess {
-            0% { transform: rotate(0deg); }
-            20% { transform: rotate(8deg) scale(1.1); }
-            40% { transform: rotate(-6deg) scale(1.05); }
-            60% { transform: rotate(4deg) scale(1.02); }
-            80% { transform: rotate(-2deg) scale(1.01); }
-            100% { transform: rotate(0deg) scale(1); }
         }
         
         .player {
@@ -403,7 +346,7 @@
             border-radius: 50%;
             left: 90px;
             bottom: 100px;
-            transition: none;
+            transition: all 1.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             z-index: 10;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
@@ -466,7 +409,7 @@
             height: 8px;
             background: radial-gradient(ellipse, rgba(0,0,0,0.4), transparent);
             border-radius: 50%;
-            transition: none;
+            transition: all 1.8s ease;
         }
         
         .score-effect {
@@ -523,7 +466,17 @@
             transform: rotate(-30deg);
         }
         
-
+        .ball-success {
+            right: 78px !important;
+            bottom: 125px !important;
+            transform: rotate(720deg) scale(0.7);
+        }
+        
+        .ball-miss {
+            right: 20px !important;
+            bottom: 50px !important;
+            transform: rotate(360deg);
+        }
         
         .celebration {
             animation: celebrate 1s ease-in-out;
@@ -543,242 +496,33 @@
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(5px) rotate(2deg); }
         }
-        
-        /* Miss Animation Effects */
-        .miss-effect {
-            position: absolute;
-            top: 80px;
-            right: 120px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.8s ease;
-            z-index: 15;
-        }
-        
-        .miss-text {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ff4444;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            margin-bottom: 5px;
-            animation: shake 0.5s ease-in-out;
-        }
-        
-        .miss-icons {
-            display: flex;
-            justify-content: center;
-            gap: 5px;
-        }
-        
-        .miss-icon {
-            font-size: 16px;
-            animation: bounce 0.6s ease-in-out infinite alternate;
-        }
-        
-        .miss-icon:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        
-        .miss-icon:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
-        }
-        
-        @keyframes bounce {
-            0% { transform: translateY(0) scale(1); }
-            100% { transform: translateY(-10px) scale(1.2); }
-        }
-        
-        /* Rim shake animation for misses */
-        .rim-shake {
-            animation: rimShake 0.8s ease-in-out;
-        }
-        
-        @keyframes rimShake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
-            20%, 40%, 60%, 80% { transform: translateX(2px); }
-        }
-        
-        /* Ball bounce effects */
-        .ball-bounce-1 {
-            animation: ballBounce1 0.6s ease-out;
-        }
-        
-        .ball-bounce-2 {
-            animation: ballBounce2 0.4s ease-out;
-        }
-        
-        .ball-bounce-3 {
-            animation: ballBounce3 0.3s ease-out;
-        }
-        
-        @keyframes ballBounce1 {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(180deg) scale(1.1); }
-            100% { transform: rotate(360deg) scale(0.95); }
-        }
-        
-        @keyframes ballBounce2 {
-            0% { transform: rotate(0deg) scale(0.95); }
-            50% { transform: rotate(90deg) scale(1.05); }
-            100% { transform: rotate(180deg) scale(0.9); }
-        }
-        
-        @keyframes ballBounce3 {
-            0% { transform: rotate(0deg) scale(0.9); }
-            50% { transform: rotate(45deg) scale(1); }
-            100% { transform: rotate(90deg) scale(0.85); }
-        }
-        
-        /* Success celebration effects */
-        .success-celebration {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            z-index: 20;
-        }
-        
-        .celebration-text {
-            font-size: 28px;
-            font-weight: bold;
-            color: #00ff00;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            animation: celebrationPulse 1s ease-in-out;
-        }
-        
-        @keyframes celebrationPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-        
-        /* Audio controls */
-        .audio-controls {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 10px;
-        }
-        
-        .audio-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 2px solid rgba(218, 165, 32, 0.5);
-            background: linear-gradient(135deg, #D2691E 0%, #8B4513 100%);
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
-        }
-        
-        .audio-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
-            background: linear-gradient(135deg, #F4A460 0%, #D2691E 100%);
-        }
-        
-        .audio-btn.muted {
-            background: linear-gradient(135deg, #CD853F 0%, #A0522D 100%);
-            border-color: rgba(160, 82, 45, 0.5);
-        }
-
-        /* Reward Animation Styles */
-        .reward-sparkle {
-            animation: sparkle 2s ease-in-out infinite;
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
-            50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
-        }
-        
-        .reward-float {
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .reward-glow {
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-        
-        @keyframes glow {
-            from { box-shadow: 0 0 20px rgba(255, 215, 0, 0.5); }
-            to { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.6); }
-        }
     </style>
 </head>
 <body class="gradient-bg min-h-screen">
-    <!-- Audio Controls -->
-    <div class="audio-controls">
-        <button id="musicToggle" class="audio-btn" onclick="toggleMusic()" title="Toggle Background Music">
-            🎵
-        </button>
-        <button id="volumeToggle" class="audio-btn" onclick="toggleVolume()" title="Toggle Volume">
-            🔊
-        </button>
-    </div>
-    
-    <!-- Host Panel Button (Bottom Right Corner) -->
-    <div class="fixed bottom-4 right-4 z-50">
-        <button onclick="showHostLogin()" class="w-12 h-12 bg-gradient-to-r from-orange-700 to-red-800 hover:from-orange-800 hover:to-red-900 text-white rounded-full font-medium transition-all duration-300 shadow-lg border-2 border-orange-400 hover:scale-110" title="Panel Host">
-            👨‍💼
-        </button>
-    </div>
-    
-    <!-- Background Music -->
-    <audio id="backgroundMusic" loop autoplay>
-        <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.wav" type="audio/wav">
-        <!-- Fallback to a more accessible background music -->
-    </audio>
-    
-    <!-- YouTube Background Music (Hidden) -->
-    <div id="youtubePlayer" style="display: none;"></div>
-    
-    <!-- Sound Effects -->
-    <audio id="successSound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
-    </audio>
-    
-    <audio id="missSound" preload="auto">
-        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm1QIBAAAAABAAEARKwAAIhYAQACABAAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
-    </audio>
     <!-- Opening Screen -->
     <div id="openingScreen" class="min-h-screen flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl p-8 text-center card-shadow max-w-md w-full">
             <div class="mb-6">
-                <div class="w-24 h-24 bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-white shadow-2xl animate-pulse">
-                    <span class="text-white text-3xl font-bold">📐</span>
+                <div class="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <span class="text-white text-2xl font-bold">📐</span>
                 </div>
-                <h1 class="text-4xl font-bold text-white mb-2 drop-shadow-lg">Ethnomath</h1>
-                <p class="text-white text-lg mb-4 drop-shadow-md">Game Kuis Kesebangunan</p>
-                <div class="bg-gradient-to-r from-blue-400 to-purple-500 rounded-xl p-4 mb-6 border-2 border-white shadow-lg">
-                    <p class="text-sm text-white font-medium">Dibuat oleh:</p>
-                    <p class="text-xl font-bold text-yellow-200">Veni Siswiandini</p>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Ethnomath</h1>
+                <p class="text-gray-600 mb-4">Game Kuis Kesebangunan</p>
+                <div class="bg-gray-100 rounded-lg p-4 mb-6">
+                    <p class="text-sm text-gray-700 font-medium">Dibuat oleh:</p>
+                    <p class="text-lg font-bold text-purple-600">Veni Siswiandini</p>
                 </div>
             </div>
             <div class="space-y-3">
-                <button onclick="showMaterial()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white py-4 px-6 rounded-2xl font-bold transition-all duration-300 shadow-xl border-3 border-white transform hover:scale-105 hover:shadow-2xl">
+                <button onclick="showMaterial()" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-xl font-medium transition-colors">
                     📚 Lihat Materi
                 </button>
-                <button onclick="showPlayerJoin()" class="w-full bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white py-4 px-6 rounded-2xl font-bold transition-all duration-300 shadow-xl border-3 border-white transform hover:scale-105 hover:shadow-2xl">
+                <button onclick="showPlayerJoin()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-6 rounded-xl font-medium transition-colors">
                     🎮 Mulai Bermain
                 </button>
-
+                <button onclick="showHostLogin()" class="w-full bg-purple-500 hover:bg-purple-600 text-white py-3 px-6 rounded-xl font-medium transition-colors">
+                    👨‍💼 Panel Host
+                </button>
             </div>
         </div>
     </div>
@@ -790,82 +534,82 @@
                 <button onclick="showOpening()" class="mb-6 bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
                     ← Kembali
                 </button>
-                <h2 class="text-4xl font-bold text-center mb-8 text-white drop-shadow-lg">📐 Materi Kesebangunan</h2>
+                <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">📐 Materi Kesebangunan</h2>
                 
                 <div class="grid md:grid-cols-1 gap-6 mb-6">
-                    <div class="bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl p-6 border-3 border-white shadow-xl">
-                        <h3 class="text-2xl font-bold mb-4 text-purple-800">📐 Definisi Kesebangunan</h3>
-                        <div class="bg-gradient-to-r from-white to-blue-50 rounded-xl p-4 mb-4 border-2 border-blue-200 shadow-lg">
-                            <p class="text-gray-800 mb-3 text-lg"><strong>Kesebangunan</strong> adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama.</p>
-                            <p class="font-bold text-purple-700 mb-2 text-lg">Dua bangun dikatakan sebangun jika:</p>
-                            <ul class="list-disc list-inside text-gray-700 space-y-2 ml-4 text-lg">
+                    <div class="bg-blue-50 rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-blue-800">📐 Definisi Kesebangunan</h3>
+                        <div class="bg-white rounded-lg p-4 mb-4">
+                            <p class="text-gray-700 mb-3"><strong>Kesebangunan</strong> adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama.</p>
+                            <p class="font-medium text-blue-700 mb-2">Dua bangun dikatakan sebangun jika:</p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4">
                                 <li><strong>Bentuknya sama</strong> (sudut-sudut yang bersesuaian sama besar)</li>
                                 <li><strong>Perbandingan panjang sisi-sisi yang bersesuaian sama</strong></li>
                             </ul>
                         </div>
                         
-                        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-4 mb-4 border-2 border-orange-300 shadow-lg">
-                            <p class="font-bold text-orange-800 mb-2 text-lg">🔢 Rumus Perbandingan Sisi:</p>
-                            <div class="text-center bg-white rounded-xl p-4 font-mono text-xl border-2 border-orange-200 shadow-md">
-                                <span class="text-red-600 font-bold">sisi 1</span>/<span class="text-blue-600 font-bold">sisi 1'</span> = <span class="text-red-600 font-bold">sisi 2</span>/<span class="text-blue-600 font-bold">sisi 2'</span> = ...
+                        <div class="bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg p-4 mb-4">
+                            <p class="font-medium text-blue-800 mb-2">🔢 Rumus Perbandingan Sisi:</p>
+                            <div class="text-center bg-white rounded p-3 font-mono text-lg">
+                                <span class="text-blue-600">sisi 1</span>/<span class="text-green-600">sisi 1'</span> = <span class="text-blue-600">sisi 2</span>/<span class="text-green-600">sisi 2'</span> = ...
                             </div>
                         </div>
                         
-                        <div class="bg-gradient-to-r from-green-100 to-teal-100 rounded-xl p-4 border-2 border-green-300 shadow-lg">
-                            <p class="font-bold text-green-800 mb-2 text-lg">📝 Simbol Kesebangunan:</p>
-                            <div class="text-center bg-white rounded-xl p-4 border-2 border-green-200 shadow-md">
-                                <span class="text-2xl font-mono font-bold text-purple-600">∆ABC ~ ∆DEF</span>
-                                <p class="text-lg text-gray-700 mt-2 font-medium">artinya segitiga ABC sebangun dengan segitiga DEF</p>
+                        <div class="bg-white rounded-lg p-4">
+                            <p class="font-medium text-blue-700 mb-2">📝 Simbol Kesebangunan:</p>
+                            <div class="text-center bg-gray-50 rounded p-3">
+                                <span class="text-xl font-mono">∆ABC ~ ∆DEF</span>
+                                <p class="text-sm text-gray-600 mt-1">artinya segitiga ABC sebangun dengan segitiga DEF</p>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-gradient-to-br from-cyan-100 to-blue-100 rounded-2xl p-6 border-3 border-white shadow-xl">
-                        <h3 class="text-2xl font-bold mb-4 text-blue-800">💡 Contoh Soal Singkat</h3>
-                        <div class="bg-gradient-to-r from-white to-cyan-50 rounded-xl p-4 space-y-3 border-2 border-cyan-200 shadow-lg">
-                            <div class="bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl p-3 border-2 border-green-300 shadow-md">
-                                <p class="text-lg font-bold text-green-800">Soal:</p>
-                                <p class="text-gray-800 text-lg">∆PQR sebangun dengan ∆XYZ. Panjang PQ = 4 cm, QR = 6 cm, dan XY = 6 cm. Tentukan panjang YZ.</p>
+                    <div class="bg-green-50 rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-green-800">💡 Contoh Soal Singkat</h3>
+                        <div class="bg-white rounded-lg p-4 space-y-3">
+                            <div class="bg-green-100 rounded p-3">
+                                <p class="text-sm font-medium text-green-800">Soal:</p>
+                                <p class="text-gray-700">∆PQR sebangun dengan ∆XYZ. Panjang PQ = 4 cm, QR = 6 cm, dan XY = 6 cm. Tentukan panjang YZ.</p>
                             </div>
                             
-                            <div class="bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl p-3 border-2 border-yellow-300 shadow-md">
-                                <p class="text-lg font-bold text-orange-800">Penyelesaian:</p>
-                                <div class="font-mono text-lg space-y-1 text-gray-800">
+                            <div class="bg-blue-100 rounded p-3">
+                                <p class="text-sm font-medium text-blue-800">Penyelesaian:</p>
+                                <div class="font-mono text-sm space-y-1">
                                     <p>PQ/XY = QR/YZ</p>
                                     <p>4/6 = 6/YZ</p>
                                     <p>YZ = (6 × 6)/4</p>
-                                    <p class="font-bold text-red-600 text-xl">YZ = 9 cm</p>
+                                    <p class="font-bold text-blue-600">YZ = 9 cm</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="bg-gradient-to-br from-green-100 to-teal-100 rounded-2xl p-6 border-3 border-white shadow-xl">
-                        <h3 class="text-2xl font-bold mb-4 text-teal-800">Contoh Kesebangunan</h3>
-                        <div class="bg-gradient-to-r from-white to-green-50 rounded-xl p-4 text-center border-2 border-green-200 shadow-lg">
+                    <div class="bg-green-50 rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-green-800">Contoh Kesebangunan</h3>
+                        <div class="bg-white rounded-lg p-4 text-center">
                             <div class="flex justify-center items-center space-x-4 mb-4">
-                                <div class="w-16 h-16 bg-gradient-to-r from-blue-400 to-purple-500 transform rotate-45 shadow-lg"></div>
-                                <span class="text-4xl text-pink-500 font-bold">~</span>
-                                <div class="w-12 h-12 bg-gradient-to-r from-blue-400 to-purple-500 transform rotate-45 shadow-lg"></div>
+                                <div class="w-12 h-12 bg-blue-400 transform rotate-45"></div>
+                                <span class="text-2xl">~</span>
+                                <div class="w-8 h-8 bg-blue-400 transform rotate-45"></div>
                             </div>
-                            <p class="text-lg text-gray-800 font-medium">Kedua persegi ini sebangun karena memiliki bentuk sama dengan perbandingan sisi 3:2</p>
+                            <p class="text-sm text-gray-600">Kedua persegi ini sebangun karena memiliki bentuk sama dengan perbandingan sisi 3:2</p>
                         </div>
                     </div>
                     
-                    <div class="bg-gradient-to-br from-purple-100 to-pink-100 rounded-2xl p-6 border-3 border-white shadow-xl">
-                        <h3 class="text-2xl font-bold mb-4 text-purple-800">Rumus Perbandingan</h3>
-                        <div class="bg-gradient-to-r from-white to-purple-50 rounded-xl p-4 border-2 border-purple-200 shadow-lg">
-                            <p class="font-bold text-purple-700 mb-2 text-lg">Jika segitiga ABC ~ segitiga DEF:</p>
-                            <p class="text-center text-xl font-mono bg-gradient-to-r from-yellow-100 to-orange-100 p-3 rounded-xl border-2 border-yellow-300 shadow-md font-bold text-purple-800">AB/DE = BC/EF = AC/DF = k</p>
-                            <p class="text-lg text-gray-700 mt-2 font-medium">k = faktor skala kesebangunan</p>
+                    <div class="bg-purple-50 rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-purple-800">Rumus Perbandingan</h3>
+                        <div class="bg-white rounded-lg p-4">
+                            <p class="font-medium text-purple-700 mb-2">Jika segitiga ABC ~ segitiga DEF:</p>
+                            <p class="text-center text-lg font-mono bg-gray-100 p-2 rounded">AB/DE = BC/EF = AC/DF = k</p>
+                            <p class="text-sm text-gray-600 mt-2">k = faktor skala kesebangunan</p>
                         </div>
                     </div>
                     
-                    <div class="bg-gradient-to-br from-orange-100 to-red-100 rounded-2xl p-6 border-3 border-white shadow-xl">
-                        <h3 class="text-2xl font-bold mb-4 text-red-800">Tips Mengerjakan Soal</h3>
-                        <ul class="list-disc list-inside text-gray-800 space-y-3 text-lg font-medium">
+                    <div class="bg-orange-50 rounded-xl p-6">
+                        <h3 class="text-xl font-bold mb-4 text-orange-800">Tips Mengerjakan Soal</h3>
+                        <ul class="list-disc list-inside text-gray-700 space-y-2">
                             <li>Identifikasi sisi-sisi yang bersesuaian</li>
                             <li>Hitung perbandingan sisi</li>
                             <li>Periksa apakah perbandingannya sama</li>
@@ -875,8 +619,8 @@
                 </div>
                 
                 <div class="text-center mt-8">
-                    <button onclick="showPlayerJoin()" class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-600 text-white py-4 px-10 rounded-2xl font-bold text-xl transition-all duration-300 pulse-animation shadow-2xl border-3 border-white transform hover:scale-110">
-                        Siap Bermain! 🎮✨
+                    <button onclick="showPlayerJoin()" class="bg-green-500 hover:bg-green-600 text-white py-3 px-8 rounded-xl font-medium transition-colors pulse-animation">
+                        Siap Bermain! 🎮
                     </button>
                 </div>
             </div>
@@ -932,13 +676,13 @@
             <!-- Question Card -->
             <div class="bg-white rounded-xl p-8 card-shadow">
                 <!-- Question Header with Icon -->
-                <div class="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-2xl p-8 mb-6 text-white shadow-2xl border-3 border-white">
-                    <div class="flex items-center justify-center mb-6">
-                        <div class="w-20 h-20 bg-white bg-opacity-30 rounded-full flex items-center justify-center shadow-xl animate-pulse">
-                            <span class="text-4xl" id="questionIcon">📐</span>
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl p-6 mb-6 text-white">
+                    <div class="flex items-center justify-center mb-4">
+                        <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <span class="text-3xl" id="questionIcon">📐</span>
                         </div>
                     </div>
-                    <h2 class="text-2xl font-bold text-center mb-4 drop-shadow-lg" id="questionText"></h2>
+                    <h2 class="text-xl font-bold text-center mb-4" id="questionText"></h2>
                 </div>
 
                 <!-- Question Image/Visual -->
@@ -1014,17 +758,6 @@
                                 <div class="star">⭐</div>
                                 <div class="star">⭐</div>
                             </div>
-                        </div>
-                        <div class="miss-effect" id="missEffect">
-                            <div class="miss-text">MISS!</div>
-                            <div class="miss-icons">
-                                <div class="miss-icon">😞</div>
-                                <div class="miss-icon">💔</div>
-                                <div class="miss-icon">😔</div>
-                            </div>
-                        </div>
-                        <div class="success-celebration" id="successCelebration">
-                            <div class="celebration-text">🎉 PERFECT SHOT! 🎉</div>
                         </div>
                     </div>
                 </div>
@@ -1109,8 +842,11 @@
             <!-- Host Menu Tabs -->
             <div class="bg-white rounded-xl p-6 mb-6 card-shadow">
                 <div class="flex space-x-4 border-b border-gray-200">
-                    <button id="statsTab" class="px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600">
+                    <button onclick="showHostTab('stats')" id="statsTab" class="px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600">
                         📊 Statistik Live
+                    </button>
+                    <button onclick="showHostTab('questions')" id="questionsTab" class="px-4 py-2 font-medium text-gray-600 hover:text-blue-600">
+                        📝 Kelola Soal
                     </button>
                 </div>
             </div>
@@ -1144,7 +880,29 @@
                 </div>
             </div>
 
+            <!-- Questions Management Tab -->
+            <div id="hostQuestionsTab" class="hidden">
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <!-- Question List -->
+                    <div class="bg-white rounded-xl p-6 card-shadow">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">📋 Daftar Soal</h3>
+                        <div id="questionsList" class="space-y-2 max-h-96 overflow-y-auto">
+                            <!-- Questions list will be populated here -->
+                        </div>
+                        <button onclick="addNewQuestion()" class="w-full mt-4 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium">
+                            ➕ Tambah Soal Baru
+                        </button>
+                    </div>
 
+                    <!-- Question Editor -->
+                    <div class="lg:col-span-2 bg-white rounded-xl p-6 card-shadow">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">✏️ Edit Soal</h3>
+                        <div id="questionEditor" class="space-y-4">
+                            <p class="text-gray-500 text-center py-8">Pilih soal dari daftar untuk mengedit</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -1157,269 +915,8 @@
             currentQuestionIndex: 0,
             gameStartTime: null,
             gameTimer: null,
-            hostChart: null,
-            musicEnabled: true,
-            soundEnabled: true,
-            backgroundMusic: null
+            hostChart: null
         };
-
-        // YouTube Player Variables
-        let youtubePlayer = null;
-        let isYouTubeReady = false;
-        
-        // YouTube API Ready Callback
-        function onYouTubeIframeAPIReady() {
-            youtubePlayer = new YT.Player('youtubePlayer', {
-                height: '1',
-                width: '1',
-                videoId: 'jfKfPfyJRdk', // Relaxing Indonesian Traditional Music
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'disablekb': 1,
-                    'fs': 0,
-                    'modestbranding': 1,
-                    'rel': 0,
-                    'showinfo': 0,
-                    'loop': 1,
-                    'playlist': 'jfKfPfyJRdk'
-                },
-                events: {
-                    'onReady': function(event) {
-                        isYouTubeReady = true;
-                        event.target.setVolume(15); // Set low volume
-                        if (gameState.musicEnabled && gameState.currentScreen === 'game') {
-                            event.target.playVideo();
-                        }
-                    },
-                    'onStateChange': function(event) {
-                        if (event.data === YT.PlayerState.ENDED) {
-                            event.target.playVideo(); // Loop the video
-                        }
-                    }
-                }
-            });
-        }
-
-        // Audio Management
-        function initAudio() {
-            gameState.backgroundMusic = document.getElementById('backgroundMusic');
-            
-            // Create a more energetic background music using Web Audio API as fallback
-            if (typeof(AudioContext) !== "undefined" || typeof(webkitAudioContext) !== "undefined") {
-                createBackgroundMusic();
-            }
-        }
-
-        function createBackgroundMusic() {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                let isPlaying = false;
-                
-                function playTone(frequency, duration, volume = 0.08, type = 'sine') {
-                    if (!gameState.musicEnabled || !gameState.soundEnabled) return;
-                    
-                    const oscillator = audioContext.createOscillator();
-                    const gainNode = audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(audioContext.destination);
-                    
-                    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-                    oscillator.type = type;
-                    
-                    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-                    gainNode.gain.linearRampToValueAtTime(volume, audioContext.currentTime + 0.05);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
-                    
-                    oscillator.start(audioContext.currentTime);
-                    oscillator.stop(audioContext.currentTime + duration);
-                }
-                
-                function playChord(frequencies, duration, volume = 0.04) {
-                    frequencies.forEach(freq => {
-                        playTone(freq, duration, volume, 'triangle');
-                    });
-                }
-                
-                function playBackgroundLoop() {
-                    if (!gameState.musicEnabled || gameState.currentScreen !== 'game') return;
-                    
-                    // Upbeat and cheerful melody inspired by traditional Indonesian music
-                    const melody = [
-                        // Main melody - cheerful and energetic
-                        {freq: 659.25, dur: 0.4, vol: 0.06}, // E5
-                        {freq: 783.99, dur: 0.4, vol: 0.06}, // G5
-                        {freq: 880.00, dur: 0.4, vol: 0.06}, // A5
-                        {freq: 783.99, dur: 0.4, vol: 0.06}, // G5
-                        {freq: 659.25, dur: 0.6, vol: 0.06}, // E5
-                        {freq: 587.33, dur: 0.4, vol: 0.06}, // D5
-                        {freq: 659.25, dur: 0.4, vol: 0.06}, // E5
-                        {freq: 523.25, dur: 0.8, vol: 0.06}, // C5
-                        
-                        // Second phrase - more uplifting
-                        {freq: 783.99, dur: 0.4, vol: 0.06}, // G5
-                        {freq: 880.00, dur: 0.4, vol: 0.06}, // A5
-                        {freq: 987.77, dur: 0.4, vol: 0.06}, // B5
-                        {freq: 1046.50, dur: 0.6, vol: 0.06}, // C6
-                        {freq: 987.77, dur: 0.4, vol: 0.06}, // B5
-                        {freq: 880.00, dur: 0.4, vol: 0.06}, // A5
-                        {freq: 783.99, dur: 0.6, vol: 0.06}, // G5
-                        {freq: 659.25, dur: 0.8, vol: 0.06}, // E5
-                    ];
-                    
-                    // Bass line for rhythm
-                    const bassLine = [
-                        {freq: 261.63, dur: 0.8}, // C4
-                        {freq: 293.66, dur: 0.8}, // D4
-                        {freq: 329.63, dur: 0.8}, // E4
-                        {freq: 293.66, dur: 0.8}, // D4
-                        {freq: 261.63, dur: 0.8}, // C4
-                        {freq: 246.94, dur: 0.8}, // B3
-                        {freq: 261.63, dur: 0.8}, // C4
-                        {freq: 196.00, dur: 0.8}, // G3
-                    ];
-                    
-                    let noteIndex = 0;
-                    let bassIndex = 0;
-                    
-                    function playNextNote() {
-                        if (!gameState.musicEnabled || gameState.currentScreen !== 'game') return;
-                        
-                        const note = melody[noteIndex];
-                        const bass = bassLine[bassIndex];
-                        
-                        // Play melody
-                        playTone(note.freq, note.dur, note.vol || 0.06, 'triangle');
-                        
-                        // Play bass every other note for rhythm
-                        if (noteIndex % 2 === 0) {
-                            playTone(bass.freq, bass.dur, 0.03, 'sine');
-                            bassIndex = (bassIndex + 1) % bassLine.length;
-                        }
-                        
-                        // Add some percussion-like sounds for rhythm
-                        if (noteIndex % 4 === 0) {
-                            setTimeout(() => {
-                                playTone(1000, 0.1, 0.02, 'square'); // High hat
-                            }, note.dur * 500);
-                        }
-                        
-                        noteIndex = (noteIndex + 1) % melody.length;
-                        setTimeout(playNextNote, note.dur * 1000);
-                    }
-                    
-                    playNextNote();
-                }
-                
-                gameState.playBackgroundMusic = playBackgroundLoop;
-                
-            } catch (error) {
-                console.log('Web Audio API not supported, using fallback');
-            }
-        }
-
-        function toggleMusic() {
-            gameState.musicEnabled = !gameState.musicEnabled;
-            const btn = document.getElementById('musicToggle');
-            
-            if (gameState.musicEnabled) {
-                btn.textContent = '🎵';
-                btn.classList.remove('muted');
-                if (gameState.currentScreen === 'game') {
-                    if (isYouTubeReady && youtubePlayer) {
-                        youtubePlayer.playVideo();
-                    } else if (gameState.playBackgroundMusic) {
-                        gameState.playBackgroundMusic();
-                    }
-                }
-            } else {
-                btn.textContent = '🔇';
-                btn.classList.add('muted');
-                if (isYouTubeReady && youtubePlayer) {
-                    youtubePlayer.pauseVideo();
-                }
-            }
-        }
-
-        function toggleVolume() {
-            gameState.soundEnabled = !gameState.soundEnabled;
-            const btn = document.getElementById('volumeToggle');
-            
-            if (gameState.soundEnabled) {
-                btn.textContent = '🔊';
-                btn.classList.remove('muted');
-            } else {
-                btn.textContent = '🔇';
-                btn.classList.add('muted');
-            }
-        }
-
-        function playSuccessSound() {
-            if (!gameState.soundEnabled) return;
-            
-            try {
-                // Create success sound effect
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // Play ascending notes for success
-                const frequencies = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-                frequencies.forEach((freq, index) => {
-                    setTimeout(() => {
-                        const oscillator = audioContext.createOscillator();
-                        const gainNode = audioContext.createGain();
-                        
-                        oscillator.connect(gainNode);
-                        gainNode.connect(audioContext.destination);
-                        
-                        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
-                        oscillator.type = 'sine';
-                        
-                        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-                        gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.05);
-                        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.3);
-                        
-                        oscillator.start(audioContext.currentTime);
-                        oscillator.stop(audioContext.currentTime + 0.3);
-                    }, index * 100);
-                });
-            } catch (error) {
-                console.log('Could not play success sound');
-            }
-        }
-
-        function playMissSound() {
-            if (!gameState.soundEnabled) return;
-            
-            try {
-                // Create miss sound effect
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                // Play descending notes for miss
-                const frequencies = [400, 350, 300, 250]; // Descending sad notes
-                frequencies.forEach((freq, index) => {
-                    setTimeout(() => {
-                        const oscillator = audioContext.createOscillator();
-                        const gainNode = audioContext.createGain();
-                        
-                        oscillator.connect(gainNode);
-                        gainNode.connect(audioContext.destination);
-                        
-                        oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
-                        oscillator.type = 'sawtooth';
-                        
-                        gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-                        gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.05);
-                        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.4);
-                        
-                        oscillator.start(audioContext.currentTime);
-                        oscillator.stop(audioContext.currentTime + 0.4);
-                    }, index * 150);
-                });
-            } catch (error) {
-                console.log('Could not play miss sound');
-            }
-        }
 
         // Questions Data
         const questions = [
@@ -1449,27 +946,17 @@
             {
                 question: "Perhatikan gambar berikut! Jika kedua segitiga sebangun, tentukan nilai x:",
                 icon: "📏",
-                image: "https://lh3.googleusercontent.com/d/1twkoCo04vePhKNFXn33SKaHj_-8D5iaf",
+                image: "https://drive.google.com/uc?export=view&id=1twkoCo04vePhKNFXn33SKaHj_-8D5iaf",
                 diagram: `
-                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-6 rounded-2xl border-3 border-white shadow-xl">
-                        <div class="bg-white rounded-xl p-4 shadow-lg">
-                            <img src="https://lh3.googleusercontent.com/d/1twkoCo04vePhKNFXn33SKaHj_-8D5iaf" 
-                                 alt="Diagram segitiga sebangun" 
-                                 class="max-w-full h-auto mx-auto rounded-xl shadow-lg max-h-64 object-contain"
-                                 onload="this.style.opacity='1'; this.nextElementSibling.style.display='none';"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-                                 style="opacity: 0; transition: opacity 0.5s ease;">
-                            <div class="text-center p-8 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl border-2 border-yellow-300">
-                                <div class="animate-spin rounded-full h-12 w-12 border-b-4 border-purple-600 mx-auto mb-4"></div>
-                                <p class="text-gray-700 font-medium">Memuat gambar soal...</p>
-                                <div class="hidden">
-                                    <div class="text-8xl mb-4">📐</div>
-                                    <p class="text-gray-700 font-bold text-lg">Diagram Segitiga Sebangun</p>
-                                    <p class="text-gray-600 mt-2">Dua segitiga dengan sisi-sisi yang diketahui untuk mencari nilai x</p>
-                                </div>
-                            </div>
+                    <div class="bg-white p-4 rounded-lg border-2 border-gray-200">
+                        <img src="https://drive.google.com/uc?export=view&id=1twkoCo04vePhKNFXn33SKaHj_-8D5iaf" 
+                             alt="Diagram segitiga sebangun" 
+                             class="max-w-full h-auto mx-auto rounded-lg shadow-md"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="display: none;" class="text-center p-8 bg-gray-100 rounded-lg">
+                            <div class="text-6xl mb-4">📐</div>
+                            <p class="text-gray-600">Diagram segitiga sebangun dengan sisi-sisi yang diketahui</p>
                         </div>
-                        <p class="text-center mt-4 text-purple-700 font-medium">💡 Gunakan perbandingan sisi yang bersesuaian!</p>
                     </div>
                 `,
                 options: {
@@ -1657,17 +1144,6 @@
             startGameTimer();
             showQuestion();
             updatePlayerCount();
-            
-            // Start background music
-            if (gameState.musicEnabled) {
-                setTimeout(() => {
-                    if (isYouTubeReady && youtubePlayer) {
-                        youtubePlayer.playVideo();
-                    } else if (gameState.playBackgroundMusic) {
-                        gameState.playBackgroundMusic();
-                    }
-                }, 1000);
-            }
         }
 
         function startGameTimer() {
@@ -1776,14 +1252,14 @@
             
             Object.entries(question.options).forEach(([key, value]) => {
                 const button = document.createElement('button');
-                button.className = 'w-full p-6 text-left border-3 border-white rounded-2xl hover:border-pink-400 hover:bg-gradient-to-r hover:from-pink-50 hover:to-purple-50 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl bg-gradient-to-r from-white to-blue-50 shadow-xl';
+                button.className = 'w-full p-6 text-left border-2 border-gray-300 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:shadow-lg';
                 button.innerHTML = `
                     <div class="flex items-center space-x-4">
-                        <div class="w-14 h-14 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-xl animate-pulse">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
                             ${key.toUpperCase()}
                         </div>
-                        <div class="flex-1 text-gray-800 font-bold text-xl">${value}</div>
-                        <div class="text-3xl opacity-70">🎯</div>
+                        <div class="flex-1 text-gray-800 font-medium text-lg">${value}</div>
+                        <div class="text-2xl opacity-50">🔵</div>
                     </div>
                 `;
                 button.onclick = () => selectAnswer(key, button);
@@ -1861,222 +1337,69 @@
             const animationContainer = document.getElementById('basketballAnimation');
             const player = document.getElementById('basketballPlayer');
             const basketball = document.getElementById('basketball');
-            const ballShadow = basketball.querySelector('.ball-shadow');
             const scoreEffect = document.getElementById('scoreEffect');
-            const missEffect = document.getElementById('missEffect');
-            const successCelebration = document.getElementById('successCelebration');
-            const hoopRim = document.querySelector('.hoop-rim');
             
             // Show animation container
             animationContainer.classList.remove('hidden');
             
             // Reset positions and states
             player.classList.remove('shooting', 'celebration', 'disappointment');
+            basketball.classList.remove('ball-success', 'ball-miss');
             scoreEffect.style.opacity = '0';
             scoreEffect.style.transform = 'translateY(20px)';
-            missEffect.style.opacity = '0';
-            missEffect.style.transform = 'translateY(20px)';
-            successCelebration.style.opacity = '0';
-            successCelebration.style.transform = 'translateY(20px)';
             
-            // Reset ball position and remove bounce classes
+            // Reset ball position
             basketball.style.left = '90px';
             basketball.style.bottom = '100px';
-            basketball.style.right = 'auto';
-            basketball.style.transform = 'rotate(0deg) scale(1)';
-            basketball.classList.remove('ball-bounce-1', 'ball-bounce-2', 'ball-bounce-3');
-            
-            // Reset rim shake
-            if (hoopRim) {
-                hoopRim.classList.remove('rim-shake');
-            }
+            basketball.style.transform = 'rotate(0deg)';
             
             // Start shooting animation
             setTimeout(() => {
                 player.classList.add('shooting');
                 
-                // Realistic ball trajectory animation
+                // Animate ball trajectory
                 setTimeout(() => {
-                    animateBasketballThrow(basketball, ballShadow, isCorrect, () => {
-                        if (isCorrect) {
-                            // Success effects
-                            playSuccessSound();
-                            
-                            setTimeout(() => {
-                                scoreEffect.style.opacity = '1';
-                                scoreEffect.style.transform = 'translateY(0)';
-                                successCelebration.style.opacity = '1';
-                                successCelebration.style.transform = 'translateY(0)';
-                            }, 200);
-                        } else {
-                            // Miss effects
-                            playMissSound();
-                            
-                            // Shake the rim
-                            if (hoopRim) {
-                                hoopRim.classList.add('rim-shake');
-                            }
-                            
-                            // Show miss effect
-                            setTimeout(() => {
-                                missEffect.style.opacity = '1';
-                                missEffect.style.transform = 'translateY(0)';
-                            }, 300);
-                            
-                            // Add bounce animations to the ball
-                            setTimeout(() => {
-                                basketball.classList.add('ball-bounce-1');
-                            }, 100);
-                            setTimeout(() => {
-                                basketball.classList.remove('ball-bounce-1');
-                                basketball.classList.add('ball-bounce-2');
-                            }, 700);
-                            setTimeout(() => {
-                                basketball.classList.remove('ball-bounce-2');
-                                basketball.classList.add('ball-bounce-3');
-                            }, 1100);
-                        }
+                    if (isCorrect) {
+                        // Successful shot - ball goes perfectly into hoop center
+                        basketball.style.right = '78px';
+                        basketball.style.bottom = '125px';
+                        basketball.style.transform = 'rotate(720deg) scale(0.7)';
+                        basketball.style.left = 'auto';
                         
-                        // Player reaction
+                        // Show score effect
+                        setTimeout(() => {
+                            scoreEffect.style.opacity = '1';
+                            scoreEffect.style.transform = 'translateY(0)';
+                        }, 800);
+                        
+                        // Player celebration
                         setTimeout(() => {
                             player.classList.remove('shooting');
-                            if (isCorrect) {
-                                player.classList.add('celebration');
-                            } else {
-                                player.classList.add('disappointment');
-                            }
-                        }, 300);
-                        
-                        // Hide animation and call callback
-                        setTimeout(() => {
-                            animationContainer.classList.add('hidden');
-                            callback();
-                        }, 2500);
-                    });
-                }, 400);
-                
-            }, 600);
-        }
-
-        function animateBasketballThrow(ball, shadow, isCorrect, onComplete) {
-            const startX = 90;
-            const startY = 100;
-            const hoopCenterX = 340; // Center of the hoop
-            const hoopCenterY = 125; // Center of the hoop
-            const rimY = 115; // Rim level
-            const peakY = 220; // Height of the arc
-            
-            let progress = 0;
-            const duration = 1200; // Animation duration in ms
-            const startTime = Date.now();
-            
-            function animate() {
-                const elapsed = Date.now() - startTime;
-                progress = Math.min(elapsed / duration, 1);
-                
-                let x, y;
-                
-                if (isCorrect) {
-                    // Perfect shot - ball goes directly into hoop center
-                    x = startX + (hoopCenterX - startX) * progress;
-                    
-                    // Perfect parabolic arc that peaks and comes down into the hoop
-                    const t = progress;
-                    y = startY + 4 * (peakY - startY) * t * (1 - t) + (hoopCenterY - startY) * t;
-                    
-                    // Adjust trajectory in final phase to ensure it goes into hoop
-                    if (progress > 0.8) {
-                        const finalPhase = (progress - 0.8) / 0.2;
-                        x = hoopCenterX - 5 + finalPhase * 5; // Slight adjustment to center
-                        y = rimY + 10 - finalPhase * 15; // Goes down into hoop
-                    }
-                } else {
-                    // Missed shot - ball hits rim and bounces
-                    const missX = hoopCenterX + 25; // Hits front rim
-                    const missY = rimY + 5;
-                    
-                    x = startX + (missX - startX) * progress;
-                    
-                    const t = progress;
-                    y = startY + 4 * (peakY - startY) * t * (1 - t) + (missY - startY) * t;
-                }
-                
-                // Ball rotation based on distance traveled
-                const rotation = progress * (isCorrect ? 720 : 540);
-                
-                // Ball scaling for depth perception
-                const scale = 1 - 0.2 * Math.sin(Math.PI * progress);
-                
-                // Apply transformations
-                ball.style.left = x + 'px';
-                ball.style.bottom = y + 'px';
-                ball.style.transform = `rotate(${rotation}deg) scale(${scale})`;
-                
-                // Shadow animation - moves horizontally and changes size
-                if (shadow) {
-                    const shadowSize = 25 - 8 * Math.sin(Math.PI * progress);
-                    const shadowOpacity = 0.4 - 0.15 * Math.sin(Math.PI * progress);
-                    
-                    shadow.style.left = '50%';
-                    shadow.style.transform = 'translateX(-50%)';
-                    shadow.style.width = shadowSize + 'px';
-                    shadow.style.background = `radial-gradient(ellipse, rgba(0,0,0,${shadowOpacity}), transparent)`;
-                }
-                
-                // Continue animation or finish
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    // Final position adjustments
-                    if (isCorrect) {
-                        // Ball goes through hoop and falls down inside
-                        setTimeout(() => {
-                            ball.style.left = hoopCenterX + 'px';
-                            ball.style.bottom = (hoopCenterY - 20) + 'px';
-                            ball.style.transform = `rotate(${rotation + 180}deg) scale(0.7)`;
-                        }, 100);
-                        setTimeout(() => {
-                            ball.style.left = (hoopCenterX - 2) + 'px';
-                            ball.style.bottom = (hoopCenterY - 35) + 'px';
-                            ball.style.transform = `rotate(${rotation + 270}deg) scale(0.6)`;
-                        }, 250);
-                        setTimeout(() => {
-                            ball.style.left = (hoopCenterX + 1) + 'px';
-                            ball.style.bottom = (hoopCenterY - 45) + 'px';
-                            ball.style.transform = `rotate(${rotation + 360}deg) scale(0.5)`;
-                        }, 400);
-                        
-                        // Make net sway animation more pronounced for successful shots
-                        const netStrands = document.querySelectorAll('.net-strand');
-                        netStrands.forEach((strand, index) => {
-                            strand.style.animation = 'netSwaySuccess 1s ease-out';
-                            strand.style.animationDelay = (index * 0.1) + 's';
-                        });
+                            player.classList.add('celebration');
+                        }, 1000);
                         
                     } else {
-                        // Ball bounces off rim realistically
+                        // Missed shot - ball bounces off rim
+                        basketball.style.right = '30px';
+                        basketball.style.bottom = '60px';
+                        basketball.style.transform = 'rotate(360deg)';
+                        basketball.style.left = 'auto';
+                        
+                        // Player disappointment
                         setTimeout(() => {
-                            ball.style.left = (hoopCenterX - 20) + 'px';
-                            ball.style.bottom = '95px';
-                            ball.style.transform = `rotate(${rotation + 180}deg) scale(0.9)`;
-                        }, 100);
-                        setTimeout(() => {
-                            ball.style.left = (hoopCenterX - 45) + 'px';
-                            ball.style.bottom = '65px';
-                            ball.style.transform = `rotate(${rotation + 270}deg) scale(1)`;
-                        }, 300);
-                        setTimeout(() => {
-                            ball.style.left = (hoopCenterX - 60) + 'px';
-                            ball.style.bottom = '45px';
-                            ball.style.transform = `rotate(${rotation + 360}deg) scale(1.1)`;
-                        }, 500);
+                            player.classList.remove('shooting');
+                            player.classList.add('disappointment');
+                        }, 1000);
                     }
-                    
-                    onComplete();
-                }
-            }
-            
-            animate();
+                }, 400);
+                
+                // Hide animation and call callback
+                setTimeout(() => {
+                    animationContainer.classList.add('hidden');
+                    callback();
+                }, 3000);
+                
+            }, 600);
         }
 
         function nextQuestion() {
@@ -2101,171 +1424,39 @@
             showLeaderboard();
         }
 
-        function getRewardMessage(score) {
-            if (score >= 90) {
-                return {
-                    title: "🌟 LUAR BIASA! 🌟",
-                    message: "Kamu adalah Master Kesebangunan! Pemahaman matematikamu sangat menakjubkan!",
-                    reward: "🏆 Gelar: Ahli Matematika Pontianak",
-                    color: "from-purple-500 via-pink-500 to-red-500",
-                    icon: "🎯",
-                    animation: "animate-bounce"
-                };
-            } else if (score >= 80) {
-                return {
-                    title: "⭐ HEBAT SEKALI! ⭐",
-                    message: "Prestasi yang membanggakan! Kamu benar-benar memahami konsep kesebangunan!",
-                    reward: "🥇 Gelar: Juara Matematika",
-                    color: "from-yellow-400 via-orange-500 to-red-500",
-                    icon: "🔥",
-                    animation: "animate-pulse"
-                };
-            } else if (score >= 60) {
-                return {
-                    title: "👏 BAGUS BANGET! 👏",
-                    message: "Kerja keras kamu membuahkan hasil! Terus tingkatkan lagi ya!",
-                    reward: "🥈 Gelar: Pelajar Berprestasi",
-                    color: "from-blue-500 via-purple-500 to-pink-500",
-                    icon: "💪",
-                    animation: "animate-pulse"
-                };
-            } else if (score >= 40) {
-                return {
-                    title: "😊 TERUS SEMANGAT! 😊",
-                    message: "Kamu sudah di jalan yang benar! Sedikit lagi pasti bisa lebih baik!",
-                    reward: "🥉 Gelar: Pejuang Matematika",
-                    color: "from-green-400 via-blue-500 to-purple-500",
-                    icon: "🌱",
-                    animation: "animate-bounce"
-                };
-            } else {
-                return {
-                    title: "💪 JANGAN MENYERAH! 💪",
-                    message: "Setiap ahli pernah menjadi pemula. Ayo coba lagi dan pasti bisa!",
-                    reward: "🌟 Gelar: Pemberani Belajar",
-                    color: "from-pink-400 via-red-500 to-yellow-500",
-                    icon: "🚀",
-                    animation: "animate-bounce"
-                };
-            }
-        }
-
         function showLeaderboard() {
             const sortedPlayers = [...gameState.players].sort((a, b) => b.score - a.score);
             const leaderboardList = document.getElementById('leaderboardList');
             
             leaderboardList.innerHTML = '';
             
-            // Show personal reward message for current player
-            if (gameState.currentPlayer) {
-                const playerScore = gameState.currentPlayer.score;
-                const reward = getRewardMessage(playerScore);
-                
-                const rewardDiv = document.createElement('div');
-                rewardDiv.className = `mb-8 p-6 rounded-2xl bg-gradient-to-r ${reward.color} text-white text-center transform ${reward.animation} shadow-2xl border-4 border-white reward-glow`;
-                rewardDiv.innerHTML = `
-                    <div class="text-6xl mb-4 reward-sparkle">${reward.icon}</div>
-                    <h3 class="text-2xl font-bold mb-3">${reward.title}</h3>
-                    <p class="text-lg mb-4 leading-relaxed">${reward.message}</p>
-                    <div class="bg-white bg-opacity-20 rounded-xl p-4 mb-4 reward-float">
-                        <p class="text-xl font-bold">${reward.reward}</p>
-                    </div>
-                    <div class="flex justify-center items-center space-x-4 text-2xl">
-                        <span class="animate-spin reward-sparkle">⭐</span>
-                        <span class="text-3xl font-bold">${playerScore} POIN</span>
-                        <span class="animate-spin reward-sparkle">⭐</span>
-                    </div>
-                    <div class="mt-4 flex justify-center space-x-2">
-                        ${Array.from({length: Math.min(5, Math.floor(playerScore/20))}, () => '🌟').join('')}
-                        ${Array.from({length: Math.max(0, 5 - Math.floor(playerScore/20))}, () => '⭐').join('')}
-                    </div>
-                `;
-                leaderboardList.appendChild(rewardDiv);
-            }
-            
-            // Add motivational quote section
-            const quotes = [
-                "\"Matematika adalah bahasa yang digunakan Tuhan untuk menulis alam semesta\" - Galileo",
-                "\"Dalam matematika, kamu tidak memahami sesuatu. Kamu hanya terbiasa dengannya\" - John von Neumann",
-                "\"Matematika adalah musik akal\" - James Joseph Sylvester",
-                "\"Kesuksesan adalah hasil dari persiapan, kerja keras, dan belajar dari kegagalan\" - Colin Powell"
-            ];
-            
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            const quoteDiv = document.createElement('div');
-            quoteDiv.className = 'mb-6 p-4 bg-gradient-to-r from-indigo-100 to-purple-100 rounded-xl border-2 border-indigo-200 reward-float';
-            quoteDiv.innerHTML = `
-                <div class="text-center">
-                    <div class="text-3xl mb-2 reward-sparkle">💭</div>
-                    <p class="text-gray-700 italic font-medium">${randomQuote}</p>
-                </div>
-            `;
-            leaderboardList.appendChild(quoteDiv);
-            
-            // Show leaderboard title
-            const titleDiv = document.createElement('div');
-            titleDiv.className = 'mb-4 text-center';
-            titleDiv.innerHTML = `
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">🏆 Papan Peringkat 🏆</h3>
-                <p class="text-gray-600">Hasil semua pemain yang telah menyelesaikan game</p>
-            `;
-            leaderboardList.appendChild(titleDiv);
-            
             sortedPlayers.forEach((player, index) => {
                 const div = document.createElement('div');
-                const playerReward = getRewardMessage(player.score);
-                
-                div.className = `flex items-center justify-between p-4 rounded-xl mb-3 transform hover:scale-105 transition-all duration-300 shadow-lg ${
-                    index === 0 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-4 border-yellow-300 reward-glow' :
-                    index === 1 ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white border-4 border-gray-300' :
-                    index === 2 ? 'bg-gradient-to-r from-orange-400 to-orange-600 text-white border-4 border-orange-300' :
-                    'bg-gradient-to-r from-blue-100 to-purple-100 border-2 border-blue-200'
+                div.className = `flex items-center justify-between p-4 rounded-xl ${
+                    index === 0 ? 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white' :
+                    index === 1 ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white' :
+                    index === 2 ? 'bg-gradient-to-r from-orange-400 to-orange-600 text-white' :
+                    'bg-gray-100'
                 }`;
                 
                 const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
-                const isCurrentPlayer = player.id === gameState.currentPlayer?.id;
                 
                 div.innerHTML = `
                     <div class="flex items-center space-x-4">
-                        <div class="text-center">
-                            <div class="text-3xl ${index < 3 ? 'reward-sparkle' : ''}">${medal}</div>
-                            ${index < 3 ? '<div class="text-xs opacity-75">TOP 3</div>' : ''}
-                        </div>
+                        <span class="text-2xl">${medal}</span>
                         <div>
-                            <p class="font-bold text-lg ${isCurrentPlayer ? 'animate-pulse' : ''}">${player.name} ${isCurrentPlayer ? '👤' : ''}</p>
+                            <p class="font-bold">${player.name}</p>
                             <p class="text-sm opacity-75">${player.answers.filter(a => a.correct).length}/5 benar</p>
-                            <div class="flex items-center space-x-1 mt-1">
-                                ${Array.from({length: Math.min(5, Math.floor(player.score/20))}, () => '⭐').join('')}
-                                ${Array.from({length: Math.max(0, 5 - Math.floor(player.score/20))}, () => '☆').join('')}
-                            </div>
                         </div>
                     </div>
                     <div class="text-right">
                         <p class="text-2xl font-bold">${player.score}</p>
                         <p class="text-sm opacity-75">poin</p>
-                        <div class="text-xs opacity-75">${playerReward.reward.split(': ')[1]}</div>
                     </div>
                 `;
                 
                 leaderboardList.appendChild(div);
             });
-            
-            // Add encouragement section
-            const encouragementDiv = document.createElement('div');
-            encouragementDiv.className = 'mt-8 p-6 bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 rounded-2xl text-white text-center reward-float';
-            encouragementDiv.innerHTML = `
-                <div class="text-4xl mb-3 reward-sparkle">🎉</div>
-                <h3 class="text-xl font-bold mb-2">Selamat untuk Semua Pemain!</h3>
-                <p class="mb-4">Kalian semua adalah pemenang karena sudah berani belajar matematika!</p>
-                <div class="flex justify-center space-x-4 text-2xl">
-                    <span class="reward-sparkle">🌟</span>
-                    <span class="reward-sparkle">🎯</span>
-                    <span class="reward-sparkle">🏆</span>
-                    <span class="reward-sparkle">💪</span>
-                    <span class="reward-sparkle">🚀</span>
-                </div>
-            `;
-            leaderboardList.appendChild(encouragementDiv);
         }
 
         function resetGame() {
@@ -2291,7 +1482,380 @@
         function initHostPanel() {
             updatePlayerCount();
             initHostChart();
-            updateHostChart();
+            showHostTab('stats');
+            populateQuestionsList();
+        }
+
+        function showHostTab(tabName) {
+            // Update tab buttons
+            const statsTab = document.getElementById('statsTab');
+            const questionsTab = document.getElementById('questionsTab');
+            
+            statsTab.className = 'px-4 py-2 font-medium text-gray-600 hover:text-blue-600';
+            questionsTab.className = 'px-4 py-2 font-medium text-gray-600 hover:text-blue-600';
+            
+            // Hide all tab contents
+            const statsTabContent = document.getElementById('hostStatsTab');
+            const questionsTabContent = document.getElementById('hostQuestionsTab');
+            
+            statsTabContent.classList.add('hidden');
+            questionsTabContent.classList.add('hidden');
+            
+            if (tabName === 'stats') {
+                statsTab.className = 'px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600';
+                statsTabContent.classList.remove('hidden');
+                updateHostChart();
+            } else if (tabName === 'questions') {
+                questionsTab.className = 'px-4 py-2 font-medium text-blue-600 border-b-2 border-blue-600';
+                questionsTabContent.classList.remove('hidden');
+                populateQuestionsList();
+            }
+        }
+
+        function populateQuestionsList() {
+            const questionsList = document.getElementById('questionsList');
+            questionsList.innerHTML = '';
+            
+            questions.forEach((question, index) => {
+                const div = document.createElement('div');
+                div.className = 'p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors';
+                div.onclick = () => editQuestion(index);
+                
+                const shortQuestion = question.question.length > 50 ? 
+                    question.question.substring(0, 50) + '...' : 
+                    question.question;
+                
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="font-medium text-sm">${index + 1}. ${shortQuestion}</p>
+                            <p class="text-xs text-gray-500">${question.icon} • 2 pilihan</p>
+                        </div>
+                        <button onclick="deleteQuestion(${index}); event.stopPropagation();" 
+                                class="text-red-500 hover:text-red-700 text-sm">
+                            🗑️
+                        </button>
+                    </div>
+                `;
+                
+                questionsList.appendChild(div);
+            });
+        }
+
+        function editQuestion(index) {
+            const question = questions[index];
+            const editor = document.getElementById('questionEditor');
+            
+            editor.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Icon Soal</label>
+                        <input type="text" id="editIcon" value="${question.icon}" 
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                               placeholder="Contoh: 📐, 📏, ⬜">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pertanyaan</label>
+                        <textarea id="editQuestion" rows="3" 
+                                  class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                                  placeholder="Masukkan pertanyaan...">${question.question}</textarea>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Gambar Pendukung</label>
+                        <div class="space-y-3">
+                            <input type="file" id="editImageFile" accept="image/*" 
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                                   onchange="handleImageUpload(this, 'editImagePreview')">
+                            <input type="url" id="editImageUrl" value="${question.image && question.image.startsWith('http') ? question.image : ''}" 
+                                   class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                                   placeholder="Contoh: https://i.imgur.com/gambar.jpg"
+                                   oninput="debouncePreview(this.value, 'editImagePreview')"
+                                   onpaste="setTimeout(() => debouncePreview(this.value, 'editImagePreview'), 100)">
+                            <div class="mt-2 text-xs text-gray-500">
+                                <p><strong>Tips URL gambar yang berfungsi:</strong></p>
+                                <p>• Direct link ke file gambar (berakhiran .jpg, .png, .gif)</p>
+                                <p>• Contoh: https://i.imgur.com/abc123.jpg</p>
+                                <p>• Hindari link Google Drive atau Dropbox</p>
+                            </div>
+                            <div id="editImagePreview" class="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
+                                ${question.image.startsWith('http') ? 
+                                    `<img src="${question.image}" alt="Preview" class="max-w-full h-32 mx-auto object-contain rounded">` :
+                                    `<div class="text-4xl mb-2">${question.image}</div><p class="text-gray-500">Preview gambar akan muncul di sini</p>`
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pilihan A</label>
+                        <input type="text" id="editOptionA" value="${question.options.a}" 
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                               placeholder="Masukkan pilihan A...">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Pilihan B</label>
+                        <input type="text" id="editOptionB" value="${question.options.b}" 
+                               class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none"
+                               placeholder="Masukkan pilihan B...">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Jawaban Benar</label>
+                        <select id="editCorrect" class="w-full p-3 border border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none">
+                            <option value="a" ${question.correct === 'a' ? 'selected' : ''}>A</option>
+                            <option value="b" ${question.correct === 'b' ? 'selected' : ''}>B</option>
+                        </select>
+                    </div>
+                    
+                    <div class="flex space-x-4 pt-4">
+                        <button onclick="saveQuestion(${index})" 
+                                class="flex-1 bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-lg font-medium">
+                            💾 Simpan Perubahan
+                        </button>
+                        <button onclick="cancelEdit()" 
+                                class="flex-1 bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded-lg font-medium">
+                            ❌ Batal
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function addNewQuestion() {
+            const newQuestion = {
+                question: "Pertanyaan baru...",
+                icon: "❓",
+                image: "❓",
+                diagram: "",
+                options: {
+                    a: "Pilihan A",
+                    b: "Pilihan B"
+                },
+                correct: "a"
+            };
+            
+            questions.push(newQuestion);
+            populateQuestionsList();
+            editQuestion(questions.length - 1);
+        }
+
+        function deleteQuestion(index) {
+            if (confirm('Apakah Anda yakin ingin menghapus soal ini?')) {
+                questions.splice(index, 1);
+                populateQuestionsList();
+                document.getElementById('questionEditor').innerHTML = '<p class="text-gray-500 text-center py-8">Pilih soal dari daftar untuk mengedit</p>';
+            }
+        }
+
+        function handleImageUpload(input, previewId) {
+            const file = input.files[0];
+            const preview = document.getElementById(previewId);
+            
+            if (file) {
+                // Validate file type
+                const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+                if (!validTypes.includes(file.type)) {
+                    alert('Format file tidak didukung. Gunakan JPG, PNG, GIF, atau WebP.');
+                    input.value = '';
+                    return;
+                }
+                
+                // Validate file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    alert('Ukuran file terlalu besar. Maksimal 5MB.');
+                    input.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview" class="max-w-full h-32 mx-auto object-contain rounded shadow-md">
+                        <p class="text-sm text-green-600 mt-2">✅ ${file.name} (${(file.size/1024).toFixed(1)} KB)</p>
+                    `;
+                    
+                    // Clear URL input when file is uploaded
+                    const urlInput = document.getElementById('editImageUrl');
+                    if (urlInput) urlInput.value = '';
+                };
+                reader.onerror = function() {
+                    alert('Gagal membaca file. Silakan coba lagi.');
+                    input.value = '';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Debounce function to prevent too many preview requests
+        let previewTimeout;
+        function debouncePreview(url, previewId) {
+            clearTimeout(previewTimeout);
+            previewTimeout = setTimeout(() => {
+                previewImageUrl(url, previewId);
+            }, 500); // Wait 500ms after user stops typing
+        }
+
+        function previewImageUrl(url, previewId) {
+            const preview = document.getElementById(previewId);
+            
+            if (!url.trim()) {
+                preview.innerHTML = `
+                    <div class="text-4xl mb-2">🖼️</div>
+                    <p class="text-gray-500">Preview gambar akan muncul di sini</p>
+                `;
+                return;
+            }
+            
+            // Validate URL format
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                preview.innerHTML = `
+                    <div class="text-4xl mb-2">⚠️</div>
+                    <p class="text-orange-500 text-sm">URL harus dimulai dengan http:// atau https://</p>
+                `;
+                return;
+            }
+            
+            // Show loading state
+            preview.innerHTML = `
+                <div class="text-4xl mb-2">⏳</div>
+                <p class="text-gray-500">Memuat gambar...</p>
+            `;
+            
+            // Create image element to test URL
+            const img = new Image();
+            
+            // Set timeout for loading
+            const timeout = setTimeout(() => {
+                preview.innerHTML = `
+                    <div class="text-4xl mb-2">⏰</div>
+                    <p class="text-orange-500 text-sm">Gambar membutuhkan waktu lama untuk dimuat.<br>
+                    Periksa koneksi internet atau coba URL lain.</p>
+                `;
+            }, 10000); // 10 second timeout
+            
+            img.onload = function() {
+                clearTimeout(timeout);
+                preview.innerHTML = `
+                    <img src="${url}" alt="Preview" class="max-w-full h-32 mx-auto object-contain rounded shadow-md">
+                    <p class="text-sm text-blue-600 mt-2">✅ Gambar berhasil dimuat dari URL</p>
+                `;
+                
+                // Clear file input when URL is used
+                const fileInput = document.getElementById('editImageFile');
+                if (fileInput) fileInput.value = '';
+            };
+            
+            img.onerror = function() {
+                clearTimeout(timeout);
+                preview.innerHTML = `
+                    <div class="text-4xl mb-2">❌</div>
+                    <p class="text-red-500 text-sm">URL gambar tidak dapat diakses. Kemungkinan penyebab:<br>
+                    • URL tidak valid atau rusak<br>
+                    • Server gambar memblokir akses eksternal<br>
+                    • Koneksi internet bermasalah<br><br>
+                    <strong>Tips:</strong> Gunakan layanan hosting gambar seperti:<br>
+                    • imgur.com<br>
+                    • postimg.cc<br>
+                    • atau upload file langsung</p>
+                `;
+            };
+            
+            // Don't use crossorigin to avoid CORS issues
+            img.src = url;
+        }
+
+        function saveQuestion(index) {
+            const icon = document.getElementById('editIcon').value.trim();
+            const questionText = document.getElementById('editQuestion').value.trim();
+            const optionA = document.getElementById('editOptionA').value.trim();
+            const optionB = document.getElementById('editOptionB').value.trim();
+            const correct = document.getElementById('editCorrect').value;
+            
+            // Get image source
+            let imageSource = document.getElementById('editImageUrl').value.trim();
+            const imageFile = document.getElementById('editImageFile').files[0];
+            
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imageSource = e.target.result;
+                    updateQuestionData();
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                updateQuestionData();
+            }
+            
+            function updateQuestionData() {
+                if (!questionText || !optionA || !optionB) {
+                    alert('Harap isi semua field yang diperlukan!');
+                    return;
+                }
+                
+                // Preserve existing diagram if no new image is provided
+                const existingQuestion = questions[index];
+                
+                // Determine final image source
+                let finalImageSource = imageSource || icon || "❓";
+                
+                // If it's a URL, validate it
+                if (imageSource && imageSource.startsWith('http')) {
+                    // Test the URL before saving
+                    const testImg = new Image();
+                    const timeout = setTimeout(() => {
+                        if (confirm('URL gambar membutuhkan waktu lama untuk dimuat. Apakah Anda tetap ingin menyimpan dengan URL ini?')) {
+                            saveQuestionData(finalImageSource);
+                        }
+                    }, 5000);
+                    
+                    testImg.onload = function() {
+                        clearTimeout(timeout);
+                        // URL is valid, proceed with save
+                        saveQuestionData(finalImageSource);
+                    };
+                    testImg.onerror = function() {
+                        clearTimeout(timeout);
+                        if (confirm('URL gambar tidak dapat diakses. Apakah Anda tetap ingin menyimpan soal dengan URL ini? (Gambar mungkin tidak tampil saat kuis)')) {
+                            saveQuestionData(finalImageSource);
+                        } else {
+                            finalImageSource = icon || "❓";
+                            saveQuestionData(finalImageSource);
+                        }
+                    };
+                    // Don't use crossOrigin to avoid CORS issues
+                    testImg.src = imageSource;
+                } else {
+                    // Not a URL or is base64, save directly
+                    saveQuestionData(finalImageSource);
+                }
+                
+                function saveQuestionData(finalImage) {
+                    questions[index] = {
+                        question: questionText,
+                        icon: icon || "❓",
+                        image: finalImage,
+                        diagram: existingQuestion ? existingQuestion.diagram : "",
+                        options: {
+                            a: optionA,
+                            b: optionB
+                        },
+                        correct: correct
+                    };
+                    
+                    populateQuestionsList();
+                    alert('Soal berhasil disimpan!');
+                    
+                    // Clear the editor
+                    document.getElementById('questionEditor').innerHTML = '<p class="text-gray-500 text-center py-8">Pilih soal dari daftar untuk mengedit</p>';
+                }
+            }
+        }
+
+        function cancelEdit() {
+            document.getElementById('questionEditor').innerHTML = '<p class="text-gray-500 text-center py-8">Pilih soal dari daftar untuk mengedit</p>';
         }
 
         function startGameAsHost() {
@@ -2386,3 +1950,80 @@
                             'rgba(139, 92, 246, 0.9)'
                         ],
                         borderColor: [
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(139, 92, 246, 1)'
+                        ],
+                        borderWidth: 3,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '📊 Distribusi Skor Pemain',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            },
+                            color: '#374151'
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = total > 0 ? ((context.parsed / total) * 100).toFixed(1) : 0;
+                                    return `${context.label}: ${context.parsed} pemain (${percentage}%)`;
+                                }
+                            }
+                        }
+                    },
+                    animation: {
+                        animateRotate: true,
+                        animateScale: true,
+                        duration: 1000
+                    }
+                }
+            });
+        }
+
+        function updateHostChart() {
+            if (!gameState.hostChart) return;
+            
+            const scoreRanges = [0, 0, 0, 0, 0];
+            
+            gameState.players.forEach(player => {
+                const score = player.score;
+                if (score <= 20) scoreRanges[0]++;
+                else if (score <= 40) scoreRanges[1]++;
+                else if (score <= 60) scoreRanges[2]++;
+                else if (score <= 80) scoreRanges[3]++;
+                else scoreRanges[4]++;
+            });
+            
+            gameState.hostChart.data.datasets[0].data = scoreRanges;
+            gameState.hostChart.update();
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showOpening();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'973401e885e8f8fe',t:'MTc1NTg4Mjg3Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
