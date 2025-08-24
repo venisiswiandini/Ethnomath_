@@ -6,44 +6,85 @@
     <title>🏀 Ethnomath - Game Kesebangunan</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Poppins:wght@300;400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;600;700&family=Pacifico&display=swap');
         
         body {
             font-family: 'Poppins', sans-serif;
             background: 
-                linear-gradient(rgba(0,0,0,0.2), rgba(255,69,0,0.3)),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23FF1493;stop-opacity:1" /><stop offset="30%" style="stop-color:%23FF4500;stop-opacity:1" /><stop offset="60%" style="stop-color:%23FFD700;stop-opacity:1" /><stop offset="100%" style="stop-color:%23FF6347;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23sky)"/><g transform="translate(80,350)"><rect x="0" y="120" width="240" height="180" fill="%23FF4500" stroke="%23FF1493" stroke-width="4" rx="8"/><polygon points="0,120 40,60 120,20 200,60 240,120" fill="%23DC143C" stroke="%23B22222" stroke-width="3"/><rect x="20" y="180" width="50" height="100" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="140" y="160" width="80" height="80" fill="%2300BFFF" stroke="%230080FF" stroke-width="3"/><rect x="10" y="100" width="220" height="20" fill="%23FF8C00" stroke="%23FF4500" stroke-width="2"/><rect x="100" y="40" width="40" height="80" fill="%23DC143C" stroke="%23B22222" stroke-width="2"/><rect x="0" y="300" width="240" height="40" fill="%23FF6347" stroke="%23FF4500" stroke-width="2"/><rect x="80" y="200" width="80" height="100" fill="%23FFD700" stroke="%23FF8C00" stroke-width="2"/></g><g transform="translate(380,380)"><rect x="0" y="100" width="200" height="160" fill="%23FF6347" stroke="%23FF4500" stroke-width="4" rx="6"/><polygon points="0,100 30,50 100,15 170,50 200,100" fill="%23FF1493" stroke="%23DC143C" stroke-width="3"/><rect x="15" y="160" width="40" height="90" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="120" y="140" width="60" height="60" fill="%2300BFFF" stroke="%230080FF" stroke-width="3"/><rect x="5" y="85" width="190" height="15" fill="%23FF8C00" stroke="%23FF4500" stroke-width="2"/><rect x="85" y="35" width="30" height="65" fill="%23DC143C" stroke="%23B22222" stroke-width="2"/><rect x="0" y="260" width="200" height="30" fill="%23FF6347" stroke="%23FF4500" stroke-width="2"/></g><g transform="translate(680,360)"><rect x="0" y="120" width="260" height="200" fill="%23FFD700" stroke="%23FF8C00" stroke-width="4" rx="10"/><polygon points="0,120 50,50 130,10 210,50 260,120" fill="%23DC143C" stroke="%23B22222" stroke-width="3"/><rect x="25" y="190" width="55" height="110" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="150" y="165" width="85" height="85" fill="%2300BFFF" stroke="%230080FF" stroke-width="3"/><rect x="10" y="100" width="240" height="20" fill="%23FF8C00" stroke="%23FF4500" stroke-width="2"/><rect x="110" y="30" width="40" height="90" fill="%23DC143C" stroke="%23B22222" stroke-width="2"/><rect x="0" y="320" width="260" height="50" fill="%23FF6347" stroke="%23FF4500" stroke-width="2"/><rect x="90" y="180" width="100" height="140" fill="%23FFD700" stroke="%23FF8C00" stroke-width="2"/></g><g fill="%2300FF00"><ellipse cx="50" cy="600" rx="30" ry="80"/><ellipse cx="350" cy="580" rx="25" ry="70"/><ellipse cx="650" cy="620" rx="35" ry="90"/><ellipse cx="950" cy="590" rx="28" ry="75"/></g><g fill="%2332CD32"><circle cx="50" cy="520" r="40"/><circle cx="350" cy="510" r="35"/><circle cx="650" cy="530" r="45"/><circle cx="950" cy="515" r="38"/></g></svg>'),
-                linear-gradient(45deg, #FF1493 0%, #FF4500 25%, #FFD700 50%, #00BFFF 75%, #32CD32 100%);
-            background-size: cover, cover, 400% 400%;
-            background-position: center, center, 0% 50%;
-            animation: gradientShift 15s ease infinite;
+                linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.1)),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23B8860B;stop-opacity:1" /><stop offset="30%" style="stop-color:%23CD853F;stop-opacity:1" /><stop offset="60%" style="stop-color:%23D2691E;stop-opacity:1" /><stop offset="100%" style="stop-color:%23A0522D;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23sky)"/><g transform="translate(80,350)"><rect x="0" y="120" width="240" height="180" fill="%23CD853F" stroke="%23B8860B" stroke-width="4" rx="8"/><polygon points="0,120 40,60 120,20 200,60 240,120" fill="%23A0522D" stroke="%23654321" stroke-width="3"/><rect x="20" y="180" width="50" height="100" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="140" y="160" width="80" height="80" fill="%235F9EA0" stroke="%23708090" stroke-width="3"/><rect x="10" y="100" width="220" height="20" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/><rect x="100" y="40" width="40" height="80" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="0" y="300" width="240" height="40" fill="%23CD853F" stroke="%23B8860B" stroke-width="2"/><rect x="80" y="200" width="80" height="100" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/></g><g transform="translate(380,380)"><rect x="0" y="100" width="200" height="160" fill="%23CD853F" stroke="%23B8860B" stroke-width="4" rx="6"/><polygon points="0,100 30,50 100,15 170,50 200,100" fill="%23A0522D" stroke="%23654321" stroke-width="3"/><rect x="15" y="160" width="40" height="90" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="120" y="140" width="60" height="60" fill="%235F9EA0" stroke="%23708090" stroke-width="3"/><rect x="5" y="85" width="190" height="15" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/><rect x="85" y="35" width="30" height="65" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="0" y="260" width="200" height="30" fill="%23CD853F" stroke="%23B8860B" stroke-width="2"/></g><g transform="translate(680,360)"><rect x="0" y="120" width="260" height="200" fill="%23D2691E" stroke="%23CD853F" stroke-width="4" rx="10"/><polygon points="0,120 50,50 130,10 210,50 260,120" fill="%23A0522D" stroke="%23654321" stroke-width="3"/><rect x="25" y="190" width="55" height="110" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="150" y="165" width="85" height="85" fill="%235F9EA0" stroke="%23708090" stroke-width="3"/><rect x="10" y="100" width="240" height="20" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/><rect x="110" y="30" width="40" height="90" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="0" y="320" width="260" height="50" fill="%23CD853F" stroke="%23B8860B" stroke-width="2"/><rect x="90" y="180" width="100" height="140" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/></g><g fill="%23228B22"><ellipse cx="50" cy="600" rx="30" ry="80"/><ellipse cx="350" cy="580" rx="25" ry="70"/><ellipse cx="650" cy="620" rx="35" ry="90"/><ellipse cx="950" cy="590" rx="28" ry="75"/></g><g fill="%23556B2F"><circle cx="50" cy="520" r="40"/><circle cx="350" cy="510" r="35"/><circle cx="650" cy="530" r="45"/><circle cx="950" cy="515" r="38"/></g></svg>');
+            background-size: cover, cover;
+            background-position: center, center;
             min-height: 100vh;
             overflow-x: hidden;
         }
         
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        
         .game-title {
             font-family: 'Fredoka One', cursive;
-            background: linear-gradient(45deg, #FF1493, #FF4500, #FFD700, #00BFFF, #32CD32, #FF6347, #9932CC);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: titleGradient 3s ease infinite;
+            color: rgba(255, 255, 255, 0.9);
         }
         
-        @keyframes titleGradient {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        /* Enhanced Game Elements */
+        .enhanced-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .enhanced-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0.2), rgba(255,255,255,0.4), rgba(255,255,255,0.3), rgba(255,255,255,0.2));
+            border-radius: inherit;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+        
+        @keyframes borderGlow {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        
+        .floating-emojis {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .floating-emoji {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatEmoji 8s linear infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes floatEmoji {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
         
         .basketball-court {
-            background: linear-gradient(135deg, #FF4500, #FF1493, #FFD700, #00BFFF);
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.15), rgba(255,255,255,0.2), rgba(255,255,255,0.1));
             position: relative;
             overflow: hidden;
         }
@@ -112,6 +153,51 @@
             50% { opacity: 1; transform: scale(1) rotate(180deg); }
         }
         
+        @keyframes fireworkExplode {
+            0% { 
+                opacity: 1; 
+                transform: scale(0) rotate(0deg); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.5) rotate(180deg); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: scale(2) rotate(360deg) translateY(-50px); 
+            }
+        }
+        
+        @keyframes celebrationTextFloat {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.5) translateY(0px); 
+            }
+            20% { 
+                opacity: 1; 
+                transform: scale(1.2) translateY(-20px); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: scale(0.8) translateY(-80px); 
+            }
+        }
+        
+        @keyframes missEffectFloat {
+            0% { 
+                opacity: 0; 
+                transform: scale(0.8) translateY(0px); 
+            }
+            30% { 
+                opacity: 1; 
+                transform: scale(1.1) translateY(-10px); 
+            }
+            100% { 
+                opacity: 0; 
+                transform: scale(0.9) translateY(-40px); 
+            }
+        }
+        
         .bounce-in { animation: bounceIn 0.8s ease-out; }
         .celebrate { animation: celebrate 1s ease-in-out; }
         .miss { animation: miss 0.8s ease-in-out; }
@@ -120,46 +206,46 @@
         .sparkle { animation: sparkle 1s ease-in-out infinite; }
         
         .glass-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border: 3px solid rgba(255, 20, 147, 0.5);
-            box-shadow: 0 25px 45px rgba(255, 69, 0, 0.6);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
         .neon-button {
-            background: linear-gradient(45deg, #FF1493, #FF4500, #FFD700);
-            box-shadow: 0 0 25px rgba(255, 20, 147, 0.8);
+            background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.3), rgba(255,255,255,0.25));
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
         }
         
         .neon-button:hover {
-            box-shadow: 0 0 40px rgba(255, 69, 0, 1);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
             transform: translateY(-3px) scale(1.05);
         }
         
         .option-button {
-            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.2));
-            backdrop-filter: blur(10px);
-            border: 3px solid rgba(255, 20, 147, 0.4);
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.15));
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
         }
         
         .option-button:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 35px rgba(255, 69, 0, 0.4);
-            border-color: rgba(255, 20, 147, 0.8);
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-color: rgba(255, 255, 255, 0.5);
         }
         
         .correct-answer {
-            background: linear-gradient(135deg, #00FF00, #32CD32) !important;
-            border-color: #00FF00 !important;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8) !important;
+            background: linear-gradient(135deg, #10b981, #059669) !important;
+            border-color: #10b981 !important;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.8) !important;
         }
         
         .wrong-answer {
-            background: linear-gradient(135deg, #FF1493, #DC143C) !important;
-            border-color: #FF1493 !important;
-            box-shadow: 0 0 30px rgba(255, 20, 147, 0.8) !important;
+            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+            border-color: #ef4444 !important;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.8) !important;
         }
         
         .floating {
@@ -214,20 +300,6 @@
             100% { transform: translateY(-100px) rotate(360deg); }
         }
         
-        .rainbow-text {
-            background: linear-gradient(45deg, #FF1493, #FF4500, #FFD700, #00BFFF, #32CD32, #FF6347, #9932CC, #FF1493);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: rainbowShift 3s ease infinite;
-        }
-        
-        @keyframes rainbowShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
         .card-hover {
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
@@ -263,7 +335,7 @@
 </head>
 <body class="min-h-screen">
     
-    <!-- Floating Background Shapes -->
+    <!-- Enhanced Floating Background Shapes -->
     <div class="floating-shapes">
         <div class="shape text-6xl" style="left: 10%; animation-delay: 0s;">🌟</div>
         <div class="shape text-5xl" style="left: 20%; animation-delay: 2s;">🎨</div>
@@ -285,12 +357,26 @@
         <div class="shape text-4xl" style="left: 95%; animation-delay: 15s;">✨</div>
     </div>
     
+    <!-- Floating Emojis -->
+    <div class="floating-emojis">
+        <div class="floating-emoji" style="left: 5%; animation-delay: 0s;">🎓</div>
+        <div class="floating-emoji" style="left: 15%; animation-delay: 1s;">📚</div>
+        <div class="floating-emoji" style="left: 25%; animation-delay: 2s;">🧮</div>
+        <div class="floating-emoji" style="left: 35%; animation-delay: 3s;">📐</div>
+        <div class="floating-emoji" style="left: 45%; animation-delay: 4s;">📏</div>
+        <div class="floating-emoji" style="left: 55%; animation-delay: 5s;">🔢</div>
+        <div class="floating-emoji" style="left: 65%; animation-delay: 6s;">🎯</div>
+        <div class="floating-emoji" style="left: 75%; animation-delay: 7s;">🏆</div>
+        <div class="floating-emoji" style="left: 85%; animation-delay: 8s;">⭐</div>
+        <div class="floating-emoji" style="left: 95%; animation-delay: 9s;">🌟</div>
+    </div>
+    
     <!-- Host Dashboard Button (Only visible on home page) -->
     <button id="hostButton" onclick="showHostLogin()" class="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
         </svg>
-        <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+        <div class="absolute bottom-full right-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
             Host Dashboard
         </div>
     </button>
@@ -299,10 +385,10 @@
     <div id="hostLoginModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
         <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in">
             <div class="text-6xl mb-4 text-center">🔐</div>
-            <h3 class="text-3xl font-bold text-white mb-6 text-center">Host Login</h3>
+            <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center">Host Login</h3>
             <input type="password" id="hostPassword" placeholder="Masukkan password host..." 
                    class="w-full px-6 py-4 rounded-full text-lg font-semibold text-gray-800 bg-white/90 backdrop-blur-sm border-2 border-white/30 focus:border-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30 transition-all duration-300 mb-4">
-            <p class="text-gray-300 text-sm mb-6 text-center">Password: <span class="text-yellow-300 font-bold">admin123</span></p>
+            <p class="text-gray-700 text-sm mb-6 text-center">Password: <span class="text-red-600 font-bold">admin123</span></p>
             <div class="flex space-x-4">
                 <button onclick="hideHostLogin()" class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
                     ❌ Batal
@@ -317,36 +403,37 @@
     <!-- Home Page -->
     <div id="homePage" class="min-h-screen flex items-center justify-center mobile-friendly">
         <div class="max-w-4xl mx-auto text-center w-full">
-            <div class="glass-card rounded-3xl p-4 md:p-8 shadow-2xl bounce-in card-hover">
+            <div class="glass-card rounded-3xl p-4 md:p-8 shadow-2xl bounce-in card-hover enhanced-card">
                 <!-- Fun Header with Emojis -->
                 <div class="mb-6">
                     <div class="text-4xl md:text-6xl mb-2">🎮🌈📐✨</div>
-                    <h1 class="title-responsive font-bold rainbow-text mb-4">🏀 ETHNOMATH</h1>
-                    <h2 class="text-responsive text-gray-800 font-bold mb-4 floating">Game Kesebangunan Super Seru!</h2>
+                    <h1 class="title-responsive font-bold text-gray-800 mb-2">🏀 ETHNOMATH by Veni Siswiandini</h1>
+                    
+                    <h2 class="text-responsive text-gray-900 font-bold mb-4 floating">Game Kesebangunan Super Seru!</h2>
                     <div class="text-2xl md:text-3xl mb-4">🎯🎪🚀🎊</div>
                 </div>
                 
                 <!-- Fun Stats Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-6">
-                    <div class="glass-card rounded-2xl p-3 card-hover">
+                    <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
                         <div class="text-2xl md:text-3xl">🎲</div>
                         <div class="text-sm md:text-base text-blue-600 font-bold">5 Soal</div>
-                        <div class="text-xs text-gray-700">Seru!</div>
+                        <div class="text-xs text-gray-900 font-semibold">Seru!</div>
                     </div>
-                    <div class="glass-card rounded-2xl p-3 card-hover">
+                    <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
                         <div class="text-2xl md:text-3xl">⏰</div>
                         <div class="text-sm md:text-base text-green-600 font-bold">10 Menit</div>
-                        <div class="text-xs text-gray-700">Waktu</div>
+                        <div class="text-xs text-gray-900 font-semibold">Waktu</div>
                     </div>
-                    <div class="glass-card rounded-2xl p-3 card-hover">
+                    <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
                         <div class="text-2xl md:text-3xl">🏆</div>
                         <div class="text-sm md:text-base text-yellow-600 font-bold">100 Poin</div>
-                        <div class="text-xs text-gray-700">Maksimal</div>
+                        <div class="text-xs text-gray-900 font-semibold">Maksimal</div>
                     </div>
-                    <div class="glass-card rounded-2xl p-3 card-hover">
+                    <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
                         <div class="text-2xl md:text-3xl">🎨</div>
                         <div class="text-sm md:text-base text-purple-600 font-bold">Animasi</div>
-                        <div class="text-xs text-gray-700">Keren!</div>
+                        <div class="text-xs text-gray-900 font-semibold">Keren!</div>
                     </div>
                 </div>
                 
@@ -361,7 +448,7 @@
                 </div>
                 
                 <!-- Fun Footer -->
-                <div class="mt-6 text-sm md:text-base text-gray-700 font-semibold">
+                <div class="mt-6 text-sm md:text-base text-gray-900 font-bold">
                     <div class="mb-2">🌟 Belajar Matematika Jadi Menyenangkan! 🌟</div>
                     <div class="flex justify-center space-x-2 text-2xl">
                         <span class="animate-bounce">🎉</span>
@@ -375,25 +462,22 @@
         </div>
     </div>
                 
-                <!-- Name Input Modal (Hidden by default) -->
-                <div id="nameInputModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-                    <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in">
-                        <div class="text-6xl mb-4 text-center">👤</div>
-                        <h3 class="text-3xl font-bold text-gray-800 mb-6 text-center">Siapa Nama Kamu?</h3>
-                        <input type="text" id="playerName" placeholder="Tulis nama kamu di sini..." 
-                               class="w-full px-6 py-4 rounded-full text-lg font-semibold text-gray-800 bg-white/90 backdrop-blur-sm border-2 border-white/30 focus:border-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30 transition-all duration-300 mb-4"
-                               maxlength="20">
-                        <p class="text-gray-600 text-sm mb-6 text-center">Nama akan ditampilkan di papan skor! ✨</p>
-                        <div class="flex space-x-4">
-                            <button onclick="hideNameInput()" class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
-                                ❌ Batal
-                            </button>
-                            <button onclick="startGameWithName()" class="flex-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
-                                🎮 Mulai!
-                            </button>
-                        </div>
-                    </div>
-                </div>
+    <!-- Name Input Modal (Hidden by default) -->
+    <div id="nameInputModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in">
+            <div class="text-6xl mb-4 text-center">👤</div>
+            <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center">Siapa Nama Kamu?</h3>
+            <input type="text" id="playerName" placeholder="Tulis nama kamu di sini..." 
+                   class="w-full px-6 py-4 rounded-full text-lg font-semibold text-gray-900 bg-white/95 backdrop-blur-sm border-2 border-white/30 focus:border-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30 transition-all duration-300 mb-4"
+                   maxlength="20">
+            <p class="text-gray-800 text-sm mb-6 text-center font-semibold">Nama akan ditampilkan di papan skor! ✨</p>
+            <div class="flex space-x-4">
+                <button onclick="hideNameInput()" class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                    ❌ Batal
+                </button>
+                <button onclick="startGameWithName()" class="flex-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                    🎮 Mulai!
+                </button>
             </div>
         </div>
     </div>
@@ -405,7 +489,7 @@
                 <div class="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8 space-y-4 md:space-y-0">
                     <div class="text-center md:text-left">
                         <div class="text-4xl md:text-6xl mb-2">📚🌈✨</div>
-                        <h1 class="title-responsive font-bold rainbow-text">Materi Kesebangunan</h1>
+                        <h1 class="title-responsive font-bold text-gray-800">Materi Kesebangunan</h1>
                         <div class="text-2xl md:text-3xl mt-2">🎯📐🎨</div>
                     </div>
                     <button onclick="showHome()" class="bg-gradient-to-r from-red-400 via-pink-500 to-purple-500 hover:from-red-500 hover:via-pink-600 hover:to-purple-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
@@ -420,21 +504,21 @@
                             <div class="text-4xl md:text-5xl mb-2">🔍✨</div>
                             <div class="text-2xl">🎯🌟🎨</div>
                         </div>
-                        <h2 class="text-2xl md:text-3xl font-bold rainbow-text mb-4 text-center">KESEBANGUNAN</h2>
-                        <p class="text-gray-800 leading-relaxed text-lg mb-4">
-                            <strong class="text-red-600">Kesebangunan</strong> adalah hubungan dua bangun yang memiliki 
-                            <strong class="text-red-600">bentuk sama</strong> tetapi <strong class="text-red-600">ukuran belum tentu sama</strong>.
+                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 text-center">KESEBANGUNAN</h2>
+                        <p class="text-gray-900 leading-relaxed text-lg mb-4 font-semibold">
+                            <strong class="text-red-700">Kesebangunan</strong> adalah hubungan dua bangun yang memiliki 
+                            <strong class="text-red-700">bentuk sama</strong> tetapi <strong class="text-red-700">ukuran belum tentu sama</strong>.
                         </p>
                         
                         <div class="mt-6">
                             <h3 class="text-xl font-bold text-blue-600 mb-3">Dua bangun dikatakan sebangun jika:</h3>
-                            <ul class="text-gray-800 space-y-2 ml-4">
+                            <ul class="text-gray-900 space-y-2 ml-4 font-semibold">
                                 <li class="flex items-start">
-                                    <span class="text-red-500 mr-2">•</span>
+                                    <span class="text-red-600 mr-2 font-bold">•</span>
                                     <span>Bentuknya sama (sudut-sudut yang bersesuaian sama besar).</span>
                                 </li>
                                 <li class="flex items-start">
-                                    <span class="text-red-500 mr-2">•</span>
+                                    <span class="text-red-600 mr-2 font-bold">•</span>
                                     <span>Perbandingan panjang sisi-sisi yang bersesuaian sama.</span>
                                 </li>
                             </ul>
@@ -460,9 +544,9 @@
                         <div class="text-4xl mb-4">📏</div>
                         <h3 class="text-2xl font-bold text-green-600 mb-4">Rumus Perbandingan Sisi:</h3>
                         <div class="bg-gradient-to-r from-yellow-300 to-orange-300 rounded-xl p-6 text-center border-3 border-orange-500">
-                            <div class="text-2xl font-bold text-gray-800 mb-2">
-                                <span class="text-red-600">sisi 1</span> / <span class="text-red-600">sisi 1'</span> = 
-                                <span class="text-red-600">sisi 2</span> / <span class="text-red-600">sisi 2'</span> = ⋯
+                            <div class="text-2xl font-bold text-gray-900 mb-2">
+                                <span class="text-red-800">sisi 1</span> / <span class="text-red-800">sisi 1'</span> = 
+                                <span class="text-red-800">sisi 2</span> / <span class="text-red-800">sisi 2'</span> = ⋯
                             </div>
                         </div>
                     </div>
@@ -472,8 +556,8 @@
                         <div class="text-4xl mb-4">🔤</div>
                         <h3 class="text-2xl font-bold text-pink-600 mb-4">Simbol Kesebangunan:</h3>
                         <div class="bg-gradient-to-r from-pink-300 to-red-300 rounded-xl p-6 text-center border-3 border-pink-500">
-                            <div class="text-3xl font-bold text-gray-800 mb-2">∆ABC ~ ∆DEF</div>
-                            <p class="text-gray-700">yang artinya segitiga ABC sebangun dengan segitiga DEF.</p>
+                            <div class="text-3xl font-bold text-gray-900 mb-2">∆ABC ~ ∆DEF</div>
+                            <p class="text-gray-900 font-semibold">yang artinya segitiga ABC sebangun dengan segitiga DEF.</p>
                         </div>
                     </div>
 
@@ -483,19 +567,19 @@
                         <h3 class="text-2xl font-bold text-orange-600 mb-4">Contoh Soal Singkat:</h3>
                         
                         <div class="bg-gradient-to-r from-orange-200 to-yellow-200 rounded-xl p-6 mb-4 border-3 border-orange-400">
-                            <p class="text-gray-800 mb-4">
-                                <strong class="text-orange-600">Soal:</strong><br>
+                            <p class="text-gray-900 mb-4 font-semibold">
+                                <strong class="text-orange-700">Soal:</strong><br>
                                 ∆PQR sebangun dengan ∆XYZ. Panjang PQ = 4 cm, QR = 6 cm, dan XY = 6 cm. 
                                 Tentukan panjang YZ.
                             </p>
                             
                             <div class="border-l-4 border-blue-600 pl-4">
-                                <p class="text-blue-600 font-bold mb-2">Penyelesaian:</p>
-                                <div class="space-y-2 text-gray-800">
-                                    <p><span class="text-red-600">PQ/XY</span> = <span class="text-red-600">QR/YZ</span></p>
-                                    <p><span class="text-red-600">4/6</span> = <span class="text-red-600">6/YZ</span></p>
-                                    <p>YZ = <span class="text-red-600">(6×6)/4</span></p>
-                                    <p class="text-green-600 font-bold text-xl">YZ = 9 cm</p>
+                                <p class="text-blue-700 font-bold mb-2">Penyelesaian:</p>
+                                <div class="space-y-2 text-gray-900 font-semibold">
+                                    <p><span class="text-red-700">PQ/XY</span> = <span class="text-red-700">QR/YZ</span></p>
+                                    <p><span class="text-red-700">4/6</span> = <span class="text-red-700">6/YZ</span></p>
+                                    <p>YZ = <span class="text-red-700">(6×6)/4</span></p>
+                                    <p class="text-green-700 font-bold text-xl">YZ = 9 cm</p>
                                 </div>
                             </div>
                         </div>
@@ -515,12 +599,12 @@
     <div id="gamePage" class="hidden min-h-screen mobile-friendly">
         <div class="max-w-7xl mx-auto">
             <!-- Game Header -->
-            <div class="glass-card rounded-2xl p-3 md:p-4 mb-4 md:mb-6 card-hover bg-gradient-to-r from-purple-500/20 to-pink-500/20">
+            <div class="glass-card rounded-3xl p-4 md:p-6 mb-6 md:mb-8 card-hover">
                 <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                     <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
                         <div class="text-center">
                             <div class="text-2xl md:text-3xl mb-1">🎮🌈</div>
-                            <h2 class="text-xl md:text-2xl font-bold rainbow-text">ETHNOMATH QUIZ</h2>
+                            <h2 class="text-xl md:text-2xl font-bold text-gray-800">ETHNOMATH QUIZ</h2>
                         </div>
                         <div class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-3 md:px-4 py-2 rounded-full font-bold text-sm md:text-base">
                             🎯 Soal <span id="questionNumber">1</span>/5
@@ -529,18 +613,18 @@
                     <div class="flex items-center space-x-3 md:space-x-6">
                         <div class="text-center">
                             <div class="text-2xl">👤</div>
-                            <div class="text-sm md:text-lg font-bold text-cyan-400" id="playerNameDisplay">Pemain</div>
-                            <div class="text-xs text-gray-700">NAMA</div>
+                            <div class="text-sm md:text-lg font-bold text-cyan-300" id="playerNameDisplay">Pemain</div>
+                            <div class="text-xs text-white font-bold">NAMA</div>
                         </div>
                         <div class="text-center">
                             <div class="text-2xl">🏆</div>
-                            <div class="text-xl md:text-3xl font-bold text-green-500" id="currentScore">0</div>
-                            <div class="text-xs text-gray-700">SKOR</div>
+                            <div class="text-xl md:text-3xl font-bold text-green-400" id="currentScore">0</div>
+                            <div class="text-xs text-white font-bold">SKOR</div>
                         </div>
                         <div class="text-center">
                             <div class="text-2xl">⏰</div>
-                            <div class="text-lg md:text-2xl font-bold text-orange-500" id="timeRemaining">10:00</div>
-                            <div class="text-xs text-gray-700">WAKTU</div>
+                            <div class="text-lg md:text-2xl font-bold text-orange-400" id="timeRemaining">10:00</div>
+                            <div class="text-xs text-white font-bold">WAKTU</div>
                         </div>
                     </div>
                 </div>
@@ -548,7 +632,7 @@
 
             <div class="grid lg:grid-cols-2 gap-4 md:gap-8">
                 <!-- Basketball Animation -->
-                <div class="glass-card rounded-3xl p-3 md:p-6 card-hover bg-gradient-to-br from-orange-400/20 to-red-400/20">
+                <div class="glass-card rounded-3xl p-4 md:p-6 card-hover">
                     <div class="text-center mb-2">
                         <div class="text-2xl md:text-3xl">🏀🎯✨</div>
                     </div>
@@ -638,14 +722,14 @@
                 </div>
 
                 <!-- Question Panel -->
-                <div class="glass-card rounded-3xl p-3 md:p-6 card-hover bg-gradient-to-br from-blue-400/20 to-purple-400/20">
+                <div class="glass-card rounded-3xl p-4 md:p-6 card-hover">
                     <div class="text-center mb-4">
                         <div class="text-2xl md:text-3xl">🤔💭✨</div>
                     </div>
                     <div id="questionPanel" class="min-h-64 md:h-96 flex flex-col justify-between">
                         <div>
-                            <h3 class="text-xl md:text-3xl font-bold rainbow-text mb-4 md:mb-6 text-center" id="questionTitle">🤔 Soal 1</h3>
-                            <div class="glass-card rounded-2xl p-3 md:p-6 mb-4 md:mb-6 bg-gradient-to-r from-indigo-400/20 to-cyan-400/20">
+                            <h3 class="text-xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-6 text-center" id="questionTitle">🤔 Soal 1</h3>
+                            <div class="glass-card rounded-2xl p-4 md:p-6 mb-4 md:mb-6">
                                 <!-- Question Image -->
                                 <div id="questionImageContainer" class="mb-4 text-center">
                                     <img id="questionImage" src="" alt="Gambar soal" 
@@ -658,7 +742,7 @@
                                     </div>
                                 </div>
                                 <!-- Question Text -->
-                                <p class="text-gray-800 leading-relaxed text-lg font-semibold" id="questionText">
+                                <p class="text-gray-900 leading-relaxed text-lg font-bold" id="questionText">
                                     Dua segitiga ABC dan DEF sebangun. Jika AB = 6 cm, BC = 8 cm, dan DE = 9 cm, 
                                     maka panjang EF adalah...
                                 </p>
@@ -666,14 +750,14 @@
                         </div>
                         
                         <div class="space-y-3 md:space-y-4">
-                            <button id="optionA" onclick="selectAnswer('A')" class="option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-semibold text-base md:text-lg card-hover bg-gradient-to-r from-green-200 to-teal-200 border-2 border-green-500">
+                            <button id="optionA" onclick="selectAnswer('A')" class="option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-bold text-base md:text-lg card-hover">
                                 <div class="flex items-center space-x-3">
                                     <span class="text-2xl">🅰️</span>
                                     <span>12 cm</span>
                                     <span class="ml-auto text-xl">🎯</span>
                                 </div>
                             </button>
-                            <button id="optionB" onclick="selectAnswer('B')" class="option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-semibold text-base md:text-lg card-hover bg-gradient-to-r from-purple-200 to-pink-200 border-2 border-purple-500">
+                            <button id="optionB" onclick="selectAnswer('B')" class="option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-bold text-base md:text-lg card-hover">
                                 <div class="flex items-center space-x-3">
                                     <span class="text-2xl">🅱️</span>
                                     <span>10 cm</span>
@@ -684,9 +768,6 @@
                         
                         <div class="mt-6 text-center">
                             <div id="answerFeedback" class="text-2xl font-bold mb-4 opacity-0 transition-all duration-500"></div>
-                            <button id="nextButton" onclick="nextQuestion()" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-bold text-lg transition-all duration-300 opacity-0 transform hover:scale-105">
-                                Soal Berikutnya →
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -698,16 +779,19 @@
     <div id="hostDashboard" class="hidden min-h-screen p-4">
         <div class="max-w-7xl mx-auto">
             <div class="glass-card rounded-3xl p-8 shadow-2xl">
-                <div class="flex items-center justify-between mb-8">
-                    <h1 class="text-5xl font-bold text-gray-800 game-title">📊 Host Dashboard</h1>
-                    <button onclick="showHome()" class="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                <div class="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8 space-y-4 md:space-y-0">
+                    <div class="text-center md:text-left">
+                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800">📊 Host Dashboard</h1>
+                        <p class="text-sm md:text-base text-gray-600 mt-2">Panel kontrol untuk guru dan host</p>
+                    </div>
+                    <button onclick="showHome()" class="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 whitespace-nowrap">
                         ← Kembali
                     </button>
                 </div>
                 
                 <!-- QR Code Section for Students -->
                 <div class="glass-card rounded-3xl p-8 mb-8 text-center floating bg-gradient-to-br from-cyan-400/20 to-blue-400/20">
-                    <h3 class="text-4xl font-bold rainbow-text mb-6 flex items-center justify-center">
+                    <h3 class="text-4xl font-bold text-gray-800 mb-6 flex items-center justify-center">
                         📱 Scan QR Code untuk Bermain
                         <span class="ml-3 text-3xl">🎮</span>
                     </h3>
@@ -730,8 +814,6 @@
                         🎯 Siswa scan QR code ini untuk bermain!
                     </p>
                 </div>
-
-
 
                 <!-- Statistics Cards -->
                 <div class="grid md:grid-cols-4 gap-6 mb-8">
@@ -761,12 +843,17 @@
                 <div class="flex justify-center mb-8">
                     <!-- Score Distribution Chart -->
                     <div class="glass-card rounded-2xl p-6 floating bg-gradient-to-br from-purple-500/20 to-pink-500/20 max-w-2xl w-full">
-                        <h3 class="text-2xl font-bold rainbow-text mb-6 flex items-center justify-center">
+                        <h3 class="text-2xl font-bold text-white mb-6 flex items-center justify-center">
                             📈 Distribusi Skor Pemain
                             <span class="ml-2 text-lg">🎯</span>
                         </h3>
                         <div class="relative h-80 bg-gradient-to-br from-gray-900/50 to-gray-800/50 rounded-xl p-4 border-2 border-purple-400/30">
-                            <canvas id="scoreChart" class="w-full h-full rounded-lg"></canvas>
+                            <div id="scoreChart" class="w-full h-full rounded-lg flex items-center justify-center">
+                                <!-- Custom Chart Implementation -->
+                                <div id="chartContainer" class="w-full h-full">
+                                    <!-- Chart will be rendered here -->
+                                </div>
+                            </div>
                             <div class="absolute top-2 right-2 text-xs text-gray-300 bg-black/50 px-2 py-1 rounded">
                                 📊 Live Data
                             </div>
@@ -847,7 +934,7 @@
                     <div class="text-4xl md:text-6xl mb-2">✨🎈🎁</div>
                 </div>
                 
-                <h1 class="text-3xl md:text-5xl font-bold rainbow-text mb-4" id="resultTitle">LUAR BIASA!</h1>
+                <h1 class="text-3xl md:text-5xl font-bold text-gray-800 mb-4" id="resultTitle">LUAR BIASA!</h1>
                 <p class="text-xl md:text-3xl font-bold text-cyan-300 mb-4" id="resultPlayerName">Pemain</p>
                 <p class="text-lg md:text-2xl text-gray-200 mb-6 md:mb-8" id="resultMessage">Kamu telah menyelesaikan quiz!</p>
                 
@@ -869,10 +956,10 @@
                 </div>
                 
                 <div class="space-y-4">
-                    <button onclick="restartGame()" class="w-full bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 hover:from-green-500 hover:via-teal-600 hover:to-blue-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <button onclick="restartGame()" class="w-full bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 hover:from-green-500 hover:via-teal-600 hover:to-blue-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer">
                         🔄 Main Lagi Yuk! 🎮
                     </button>
-                    <button onclick="showHome()" class="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
+                    <button onclick="showHome()" class="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer">
                         🏠 Kembali ke Beranda 🌈
                     </button>
                 </div>
@@ -899,687 +986,27 @@
         <svg id="musicIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9v6l4-2V7l-4 2z"></path>
         </svg>
-        <div class="absolute bottom-full right-1/2 transform translate-x-1/2 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+        <div class="absolute bottom-full left-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
             <span id="musicTooltip">Matikan Musik</span>
         </div>
     </button>
 
     <script>
-        // Google Drive API Configuration for Cloud Storage
-        const GOOGLE_DRIVE_CONFIG = {
-            apiKey: 'AIzaSyBH8vQ9X4K5L2M3N6P7R8S9T0U1V2W3X4Y5', // Demo key - replace with real key
-            clientId: '123456789-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com', // Demo - replace with real
-            discoveryDoc: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
-            scopes: 'https://www.googleapis.com/auth/drive.file',
-            targetEmail: 'venisiswiandini00@gmail.com',
-            folderName: 'Ethnomath Game Data'
+        // Global Game State - accessible from HTML onclick handlers
+        window.gameState = {
+            currentPlayer: '',
+            currentQuestion: 0,
+            score: 0,
+            correctAnswers: 0,
+            timeRemaining: 600,
+            gameTimer: null,
+            isGameActive: false,
+            selectedAnswer: null,
+            answerSubmitted: false,
+            backgroundMusic: null,
+            isMusicPlaying: true
         };
 
-        // Cloud Storage State
-        let cloudStorage = {
-            isInitialized: false,
-            isSignedIn: false,
-            gapi: null,
-            folderId: null,
-            lastSync: null,
-            syncInProgress: false
-        };
-
-        // Initialize Google Drive API
-        async function initCloudStorage() {
-            try {
-                // Load Google API
-                if (!window.gapi) {
-                    await loadGoogleAPI();
-                }
-
-                await new Promise((resolve) => {
-                    gapi.load('client:auth2', resolve);
-                });
-
-                await gapi.client.init({
-                    apiKey: GOOGLE_DRIVE_CONFIG.apiKey,
-                    clientId: GOOGLE_DRIVE_CONFIG.clientId,
-                    discoveryDocs: [GOOGLE_DRIVE_CONFIG.discoveryDoc],
-                    scope: GOOGLE_DRIVE_CONFIG.scopes
-                });
-
-                cloudStorage.gapi = gapi;
-                cloudStorage.isInitialized = true;
-                
-                // Check if user is already signed in
-                const authInstance = gapi.auth2.getAuthInstance();
-                cloudStorage.isSignedIn = authInstance.isSignedIn.get();
-                
-                if (cloudStorage.isSignedIn) {
-                    await setupCloudFolder();
-                    console.log('✅ Cloud storage initialized and connected');
-                } else {
-                    // Auto sign in to cloud storage
-                    console.log('🔄 Auto-connecting to cloud storage...');
-                    await signInToCloud();
-                }
-
-                updateCloudStatus();
-                
-            } catch (error) {
-                console.warn('⚠️ Cloud storage initialization failed:', error);
-                // Continue with local storage as fallback
-                cloudStorage.isInitialized = false;
-            }
-        }
-
-        function loadGoogleAPI() {
-            return new Promise((resolve, reject) => {
-                if (window.gapi) {
-                    resolve();
-                    return;
-                }
-
-                const script = document.createElement('script');
-                script.src = 'https://apis.google.com/js/api.js';
-                script.onload = resolve;
-                script.onerror = reject;
-                document.head.appendChild(script);
-            });
-        }
-
-        async function signInToCloud() {
-            if (!cloudStorage.isInitialized) {
-                console.log('🔧 Cloud storage belum siap. Mencoba inisialisasi ulang...');
-                await initCloudStorage();
-                return;
-            }
-
-            try {
-                const authInstance = gapi.auth2.getAuthInstance();
-                await authInstance.signIn();
-                
-                cloudStorage.isSignedIn = true;
-                await setupCloudFolder();
-                
-                // Sync existing local data to cloud
-                await syncToCloud();
-                
-                console.log('✅ Berhasil terhubung ke cloud storage untuk venisiswiandini00@gmail.com');
-                updateCloudStatus();
-                
-            } catch (error) {
-                console.warn('Sign in failed, continuing with local storage:', error);
-                // Silently continue with local storage
-            }
-        }
-
-        async function setupCloudFolder() {
-            try {
-                // Search for existing folder
-                const response = await gapi.client.drive.files.list({
-                    q: `name='${GOOGLE_DRIVE_CONFIG.folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`,
-                    spaces: 'drive'
-                });
-
-                if (response.result.files.length > 0) {
-                    cloudStorage.folderId = response.result.files[0].id;
-                    console.log('📁 Found existing cloud folder:', cloudStorage.folderId);
-                } else {
-                    // Create new folder
-                    const folderResponse = await gapi.client.drive.files.create({
-                        resource: {
-                            name: GOOGLE_DRIVE_CONFIG.folderName,
-                            mimeType: 'application/vnd.google-apps.folder'
-                        }
-                    });
-                    
-                    cloudStorage.folderId = folderResponse.result.id;
-                    console.log('📁 Created new cloud folder:', cloudStorage.folderId);
-                }
-
-                // Share folder with target email
-                await shareWithTargetEmail();
-                
-            } catch (error) {
-                console.error('Failed to setup cloud folder:', error);
-                throw error;
-            }
-        }
-
-        async function shareWithTargetEmail() {
-            try {
-                await gapi.client.drive.permissions.create({
-                    fileId: cloudStorage.folderId,
-                    resource: {
-                        role: 'writer',
-                        type: 'user',
-                        emailAddress: GOOGLE_DRIVE_CONFIG.targetEmail
-                    }
-                });
-                console.log(`📧 Folder shared with ${GOOGLE_DRIVE_CONFIG.targetEmail}`);
-            } catch (error) {
-                console.warn('Failed to share folder:', error);
-                // Continue anyway - folder is still accessible to signed-in user
-            }
-        }
-
-        async function syncToCloud() {
-            if (!cloudStorage.isSignedIn || cloudStorage.syncInProgress) {
-                return;
-            }
-
-            try {
-                cloudStorage.syncInProgress = true;
-                updateCloudStatus();
-
-                const gameData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
-                    players: {},
-                    games: [],
-                    dailyStats: {}
-                };
-
-                const syncData = {
-                    gameData: gameData,
-                    lastSync: new Date().toISOString(),
-                    version: '1.0',
-                    source: 'Ethnomath Game'
-                };
-
-                const fileName = `ethnomath_data_${new Date().toISOString().split('T')[0]}.json`;
-                
-                // Check if file exists for today
-                const existingFiles = await gapi.client.drive.files.list({
-                    q: `name='${fileName}' and parents in '${cloudStorage.folderId}' and trashed=false`,
-                    spaces: 'drive'
-                });
-
-                const fileContent = JSON.stringify(syncData, null, 2);
-                const blob = new Blob([fileContent], { type: 'application/json' });
-
-                if (existingFiles.result.files.length > 0) {
-                    // Update existing file
-                    const fileId = existingFiles.result.files[0].id;
-                    
-                    const form = new FormData();
-                    form.append('metadata', new Blob([JSON.stringify({
-                        name: fileName
-                    })], { type: 'application/json' }));
-                    form.append('file', blob);
-
-                    await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`, {
-                        method: 'PATCH',
-                        headers: {
-                            'Authorization': `Bearer ${gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token}`
-                        },
-                        body: form
-                    });
-                } else {
-                    // Create new file
-                    const form = new FormData();
-                    form.append('metadata', new Blob([JSON.stringify({
-                        name: fileName,
-                        parents: [cloudStorage.folderId]
-                    })], { type: 'application/json' }));
-                    form.append('file', blob);
-
-                    await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                        method: 'POST',
-                        headers: {
-                            'Authorization': `Bearer ${gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token}`
-                        },
-                        body: form
-                    });
-                }
-
-                cloudStorage.lastSync = new Date();
-                console.log('☁️ Data synced to cloud successfully');
-                
-            } catch (error) {
-                console.error('Cloud sync failed:', error);
-            } finally {
-                cloudStorage.syncInProgress = false;
-                updateCloudStatus();
-            }
-        }
-
-        async function loadFromCloud() {
-            if (!cloudStorage.isSignedIn) {
-                return null;
-            }
-
-            try {
-                const today = new Date().toISOString().split('T')[0];
-                const fileName = `ethnomath_data_${today}.json`;
-                
-                const files = await gapi.client.drive.files.list({
-                    q: `name='${fileName}' and parents in '${cloudStorage.folderId}' and trashed=false`,
-                    spaces: 'drive'
-                });
-
-                if (files.result.files.length > 0) {
-                    const fileId = files.result.files[0].id;
-                    const response = await gapi.client.drive.files.get({
-                        fileId: fileId,
-                        alt: 'media'
-                    });
-
-                    const cloudData = JSON.parse(response.body);
-                    return cloudData.gameData;
-                }
-                
-                return null;
-            } catch (error) {
-                console.error('Failed to load from cloud:', error);
-                return null;
-            }
-        }
-
-        function updateCloudStatus() {
-            // Simplified cloud status update - no UI elements to update
-            console.log(`📊 Cloud Status: ${cloudStorage.isSignedIn ? 'Connected' : 'Local Only'}`);
-        }
-
-        // Enhanced Background Music Control with Malay Traditional Instrumental Music
-        let backgroundMusic = null;
-        let gameMusic = null;
-        let victoryMusic = null;
-        let musicStarted = false;
-        let musicPlaying = false;
-        let currentMusicType = 'background';
-        
-        function initBackgroundMusic() {
-            try {
-                createMalayInstrumentalMusic();
-            } catch (e) {
-                console.log('Audio not supported:', e);
-            }
-        }
-        
-        function createMalayInstrumentalMusic() {
-            // Convert Google Drive link to direct download link
-            const googleDriveId = '1Xm_jQ5Q-_ePeuzjDlps19wR8MBTq7iWn';
-            const directLink = `https://drive.google.com/uc?export=download&id=${googleDriveId}`;
-            
-            // Create background music audio element
-            backgroundMusic = new Audio();
-            backgroundMusic.src = directLink;
-            backgroundMusic.loop = true;
-            backgroundMusic.volume = 0.5; // Increased volume for more energy
-            backgroundMusic.preload = 'auto';
-            
-            // Add error handling for the audio
-            backgroundMusic.onerror = function() {
-                console.log('Failed to load Malay joget music from Google Drive, using fallback');
-                // Fallback to energetic joget-style music
-                createFallbackJogetMalayMusic();
-            };
-            
-            backgroundMusic.oncanplaythrough = function() {
-                console.log('Malay joget music loaded successfully');
-            };
-            
-            // Create game music (same music but more energetic)
-            gameMusic = new Audio();
-            gameMusic.src = directLink;
-            gameMusic.loop = true;
-            gameMusic.volume = 0.6; // Higher volume for game excitement
-            gameMusic.playbackRate = 1.2; // Faster tempo for joget energy
-            gameMusic.preload = 'auto';
-            
-            gameMusic.onerror = function() {
-                console.log('Failed to load game music, using background music');
-                gameMusic = backgroundMusic; // Use same as background if fails
-            };
-            
-            // Create victory music (same music but celebratory)
-            victoryMusic = new Audio();
-            victoryMusic.src = directLink;
-            victoryMusic.loop = false; // Play once for victory
-            victoryMusic.volume = 0.7; // Loudest for celebration
-            victoryMusic.playbackRate = 1.15; // Slightly faster for triumph
-            victoryMusic.preload = 'auto';
-            
-            victoryMusic.onerror = function() {
-                console.log('Failed to load victory music, using background music');
-                victoryMusic = backgroundMusic;
-            };
-            
-            // Add ended event for victory music to return to background
-            victoryMusic.onended = function() {
-                setTimeout(() => {
-                    if (backgroundMusic && musicPlaying) {
-                        backgroundMusic.play().catch(e => console.log('Failed to resume background music:', e));
-                        currentMusicType = 'background';
-                    }
-                }, 1000);
-            };
-            
-            // Override play/pause methods
-            const originalBgPlay = backgroundMusic.play;
-            const originalBgPause = backgroundMusic.pause;
-            
-            backgroundMusic.play = function() {
-                return originalBgPlay.call(this).then(() => {
-                    musicStarted = true;
-                    musicPlaying = true;
-                    currentMusicType = 'background';
-                    updateMusicButton();
-                    console.log('Malay instrumental background music started');
-                }).catch(e => {
-                    console.log('Failed to play background music:', e);
-                    // Try fallback music
-                    createFallbackMalayMusic();
-                });
-            };
-            
-            backgroundMusic.pause = function() {
-                originalBgPause.call(this);
-                musicPlaying = false;
-                updateMusicButton();
-            };
-            
-            // Game music methods
-            const originalGamePlay = gameMusic.play;
-            const originalGamePause = gameMusic.pause;
-            
-            gameMusic.play = function() {
-                if (backgroundMusic && !backgroundMusic.paused) {
-                    backgroundMusic.pause();
-                }
-                return originalGamePlay.call(this).then(() => {
-                    musicPlaying = true;
-                    currentMusicType = 'game';
-                    updateMusicButton();
-                    console.log('Malay instrumental game music started');
-                }).catch(e => {
-                    console.log('Failed to play game music:', e);
-                    // Fallback to background music
-                    if (backgroundMusic) {
-                        backgroundMusic.play();
-                    }
-                });
-            };
-            
-            gameMusic.pause = function() {
-                originalGamePause.call(this);
-                musicPlaying = false;
-                updateMusicButton();
-            };
-            
-            // Victory music methods
-            const originalVictoryPlay = victoryMusic.play;
-            
-            victoryMusic.play = function() {
-                if (backgroundMusic && !backgroundMusic.paused) {
-                    backgroundMusic.pause();
-                }
-                if (gameMusic && !gameMusic.paused) {
-                    gameMusic.pause();
-                }
-                return originalVictoryPlay.call(this).then(() => {
-                    musicPlaying = true;
-                    currentMusicType = 'victory';
-                    updateMusicButton();
-                    console.log('Malay instrumental victory music started');
-                }).catch(e => {
-                    console.log('Failed to play victory music:', e);
-                });
-            };
-            
-            victoryMusic.pause = function() {
-                this.pause();
-            };
-        }
-        
-        function createFallbackJogetMalayMusic() {
-            // Create energetic joget Malay music with rebana, saxophone, and choir
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                let isPlaying = false;
-                let currentLoop = null;
-                let rebanaLoop = null;
-                let choirLoop = null;
-                
-                // Energetic joget melody with saxophone-like sound
-                const jogetMelody = [
-                    // Main melody line (saxophone-style)
-                    { freq: 329.63, time: 0.0, duration: 0.3, volume: 0.25, type: 'sawtooth' }, // E4
-                    { freq: 392.00, time: 0.3, duration: 0.3, volume: 0.25, type: 'sawtooth' }, // G4
-                    { freq: 440.00, time: 0.6, duration: 0.4, volume: 0.3, type: 'sawtooth' }, // A4
-                    { freq: 523.25, time: 1.0, duration: 0.3, volume: 0.25, type: 'sawtooth' }, // C5
-                    { freq: 440.00, time: 1.3, duration: 0.3, volume: 0.25, type: 'sawtooth' }, // A4
-                    { freq: 392.00, time: 1.6, duration: 0.4, volume: 0.3, type: 'sawtooth' }, // G4
-                    { freq: 329.63, time: 2.0, duration: 0.3, volume: 0.25, type: 'sawtooth' }, // E4
-                    { freq: 293.66, time: 2.3, duration: 0.3, volume: 0.25, type: 'sawtooth' }, // D4
-                    { freq: 329.63, time: 2.6, duration: 0.4, volume: 0.3, type: 'sawtooth' }, // E4
-                    { freq: 392.00, time: 3.0, duration: 0.5, volume: 0.3, type: 'sawtooth' }, // G4
-                ];
-                
-                // Rebana rhythm pattern (percussion-like)
-                const rebanaPattern = [
-                    { freq: 80, time: 0.0, duration: 0.1, volume: 0.4, type: 'triangle' },
-                    { freq: 120, time: 0.25, duration: 0.05, volume: 0.3, type: 'square' },
-                    { freq: 80, time: 0.5, duration: 0.1, volume: 0.4, type: 'triangle' },
-                    { freq: 100, time: 0.625, duration: 0.05, volume: 0.25, type: 'square' },
-                    { freq: 120, time: 0.75, duration: 0.05, volume: 0.3, type: 'square' },
-                    { freq: 80, time: 1.0, duration: 0.1, volume: 0.4, type: 'triangle' },
-                    { freq: 120, time: 1.25, duration: 0.05, volume: 0.3, type: 'square' },
-                    { freq: 80, time: 1.5, duration: 0.1, volume: 0.4, type: 'triangle' },
-                    { freq: 100, time: 1.75, duration: 0.05, volume: 0.25, type: 'square' },
-                ];
-                
-                // Choir harmony (background vocals)
-                const choirHarmony = [
-                    { freq: 261.63, time: 0.0, duration: 1.0, volume: 0.15, type: 'sine' }, // C4
-                    { freq: 329.63, time: 0.0, duration: 1.0, volume: 0.12, type: 'sine' }, // E4
-                    { freq: 392.00, time: 1.0, duration: 1.0, volume: 0.15, type: 'sine' }, // G4
-                    { freq: 440.00, time: 1.0, duration: 1.0, volume: 0.12, type: 'sine' }, // A4
-                    { freq: 329.63, time: 2.0, duration: 1.0, volume: 0.15, type: 'sine' }, // E4
-                    { freq: 392.00, time: 2.0, duration: 1.0, volume: 0.12, type: 'sine' }, // G4
-                    { freq: 293.66, time: 3.0, duration: 1.0, volume: 0.15, type: 'sine' }, // D4
-                    { freq: 349.23, time: 3.0, duration: 1.0, volume: 0.12, type: 'sine' }, // F4
-                ];
-                
-                function playJogetInstrument(notes, instrumentName) {
-                    if (!isPlaying) return;
-                    
-                    notes.forEach(note => {
-                        setTimeout(() => {
-                            if (!isPlaying) return;
-                            
-                            const oscillator = audioContext.createOscillator();
-                            const gainNode = audioContext.createGain();
-                            const filterNode = audioContext.createBiquadFilter();
-                            const distortionNode = audioContext.createWaveShaper();
-                            
-                            oscillator.connect(filterNode);
-                            
-                            // Add distortion for saxophone-like sound
-                            if (note.type === 'sawtooth') {
-                                filterNode.connect(distortionNode);
-                                distortionNode.connect(gainNode);
-                                
-                                // Create distortion curve for saxophone warmth
-                                const samples = 44100;
-                                const curve = new Float32Array(samples);
-                                const deg = Math.PI / 180;
-                                for (let i = 0; i < samples; i++) {
-                                    const x = (i * 2) / samples - 1;
-                                    curve[i] = ((3 + 20) * x * 20 * deg) / (Math.PI + 20 * Math.abs(x));
-                                }
-                                distortionNode.curve = curve;
-                                distortionNode.oversample = '4x';
-                            } else {
-                                filterNode.connect(gainNode);
-                            }
-                            
-                            gainNode.connect(audioContext.destination);
-                            
-                            oscillator.frequency.value = note.freq;
-                            oscillator.type = note.type || 'sine';
-                            
-                            // Different filtering for different instruments
-                            if (instrumentName === 'rebana') {
-                                filterNode.type = 'highpass';
-                                filterNode.frequency.value = note.freq * 0.8;
-                                filterNode.Q.value = 5;
-                            } else if (instrumentName === 'saxophone') {
-                                filterNode.type = 'bandpass';
-                                filterNode.frequency.value = note.freq * 1.2;
-                                filterNode.Q.value = 3;
-                            } else { // choir
-                                filterNode.type = 'lowpass';
-                                filterNode.frequency.value = note.freq * 2;
-                                filterNode.Q.value = 1;
-                            }
-                            
-                            gainNode.gain.setValueAtTime(note.volume, audioContext.currentTime);
-                            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + note.duration);
-                            
-                            oscillator.start(audioContext.currentTime);
-                            oscillator.stop(audioContext.currentTime + note.duration);
-                        }, note.time * 1000);
-                    });
-                }
-                
-                function playJogetEnsemble() {
-                    if (!isPlaying) return;
-                    
-                    // Play all instruments together
-                    playJogetInstrument(jogetMelody, 'saxophone');
-                    playJogetInstrument(choirHarmony, 'choir');
-                    
-                    // Start rebana rhythm
-                    rebanaLoop = setInterval(() => {
-                        if (!isPlaying) return;
-                        playJogetInstrument(rebanaPattern, 'rebana');
-                    }, 2000); // Rebana every 2 seconds
-                    
-                    // Loop the main melody every 4 seconds for energetic feel
-                    currentLoop = setTimeout(() => {
-                        if (isPlaying) playJogetEnsemble();
-                    }, 4000);
-                }
-                
-                // Override background music with energetic joget fallback
-                backgroundMusic = {
-                    play: function() {
-                        if (!isPlaying && audioContext) {
-                            if (audioContext.state === 'suspended') {
-                                audioContext.resume();
-                            }
-                            isPlaying = true;
-                            playJogetEnsemble();
-                            musicStarted = true;
-                            musicPlaying = true;
-                            updateMusicButton();
-                            console.log('Fallback Joget Malay music started - Rebana, Saxophone & Choir!');
-                        }
-                        return Promise.resolve();
-                    },
-                    pause: function() {
-                        isPlaying = false;
-                        if (currentLoop) {
-                            clearTimeout(currentLoop);
-                            currentLoop = null;
-                        }
-                        if (rebanaLoop) {
-                            clearInterval(rebanaLoop);
-                            rebanaLoop = null;
-                        }
-                        if (choirLoop) {
-                            clearInterval(choirLoop);
-                            choirLoop = null;
-                        }
-                        musicPlaying = false;
-                        updateMusicButton();
-                    },
-                    volume: 0.5, // Higher volume for energetic feel
-                    loop: true
-                };
-                
-                // Set game and victory music to same energetic fallback
-                gameMusic = backgroundMusic;
-                victoryMusic = backgroundMusic;
-                
-            } catch (e) {
-                console.log('Fallback music creation failed:', e);
-            }
-        }
-        
-        function startBackgroundMusic() {
-            if (musicStarted) return;
-            
-            if (backgroundMusic && backgroundMusic.play) {
-                backgroundMusic.play();
-            }
-        }
-        
-        function switchToGameMusic() {
-            if (gameMusic && gameMusic.play) {
-                gameMusic.play();
-            }
-        }
-        
-        function switchToVictoryMusic() {
-            if (victoryMusic && victoryMusic.play) {
-                victoryMusic.play();
-            }
-        }
-        
-        function toggleMusic() {
-            if (!musicStarted) {
-                startBackgroundMusic();
-                return;
-            }
-            
-            if (musicPlaying) {
-                // Pause current music
-                if (backgroundMusic && backgroundMusic.pause) {
-                    backgroundMusic.pause();
-                }
-                if (gameMusic && gameMusic.pause) {
-                    gameMusic.pause();
-                }
-                if (victoryMusic && victoryMusic.pause) {
-                    victoryMusic.pause();
-                }
-                musicPlaying = false;
-            } else {
-                // Resume appropriate music based on current context
-                if (currentMusicType === 'game' && gameMusic && gameMusic.play) {
-                    gameMusic.play();
-                } else if (currentMusicType === 'victory' && victoryMusic && victoryMusic.play) {
-                    victoryMusic.play();
-                } else if (backgroundMusic && backgroundMusic.play) {
-                    backgroundMusic.play();
-                }
-                musicPlaying = true;
-            }
-            
-            updateMusicButton();
-            playClickSound();
-        }
-        
-        function updateMusicButton() {
-            const musicIcon = document.getElementById('musicIcon');
-            const musicTooltip = document.getElementById('musicTooltip');
-            
-            if (musicPlaying) {
-                // Music is playing - show pause icon
-                musicIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9v6l4-2V7l-4 2z"></path>';
-                musicTooltip.textContent = 'Matikan Musik';
-            } else {
-                // Music is paused - show play icon
-                musicIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15.414a2 2 0 001.414.586h10a2 2 0 001.414-.586l4-4a2 2 0 000-2.828l-4-4A2 2 0 0017 4H7a2 2 0 00-1.414.586l-4 4a2 2 0 000 2.828l4 4z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12l4-4 4 4"></path>';
-                musicTooltip.textContent = 'Nyalakan Musik';
-            }
-        }
-        
-        // Start music on first user interaction
-        document.addEventListener('click', function() {
-            if (!musicStarted) {
-                startBackgroundMusic();
-            }
-        });
-        
         // Question Pool - Ethnomath questions about Malay traditional architecture
         const questionPool = [
             {
@@ -1615,7 +1042,7 @@
                 explanation: "Karena sebangun, perbandingan sisi-sisi sama. 90/30 = 210/tinggi panel, maka tinggi panel = 210 × 30/90 = 70 cm."
             },
             {
-                question: "Pagar rumah adat Melayu di atas memiliki pola belah ketupat yang berwarna hitam dan hijau. Belah ketupat yang berwarna hitam sebangun dengan belah ketupat yang berwarna hijau. Diketahui: Panjang diagonal horizontal belah ketupat hitam = 20 cm, Panjang diagonal vertikal belah ketupat hitam = 24 cm, Panjang diagonal horizontal belah ketupat hijau = 15 cm. Berapa panjang diagonal vertikal belah ketupat hijau?",
+                question: "Perhatikan gambar berikut. Pagar rumah adat Melayu di atas memiliki pola belah ketupat yang berwarna hitam dan hijau. Belah ketupat yang berwarna hitam sebangun dengan belah ketupat yang berwarna hijau. Diketahui: Panjang diagonal horizontal belah ketupat hitam = 20 cm, Panjang diagonal vertikal belah ketupat hitam = 24 cm, Panjang diagonal horizontal belah ketupat hijau = 15 cm. Berapa panjang diagonal vertikal belah ketupat hijau?",
                 image: "https://imgur.com/7ZVdWRu.jpg",
                 optionA: "19 cm",
                 optionB: "18 cm",
@@ -1624,978 +1051,389 @@
             }
         ];
 
-        // Game State
-        let gameState = {
-            currentQuestion: 0,
-            score: 0,
-            correctAnswers: 0,
-            timeRemaining: 600,
-            gameTimer: null,
-            autoNextTimer: null,
-            questions: []
-        };
-
-        // Enhanced Sound Effects
-        const soundAudioContext = new (window.AudioContext || window.webkitAudioContext)();
-        
-        function playSound(frequency, duration, type = 'sine', volume = 0.3) {
-            const oscillator = soundAudioContext.createOscillator();
-            const gainNode = soundAudioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(soundAudioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = type;
-            
-            gainNode.gain.setValueAtTime(volume, soundAudioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, soundAudioContext.currentTime + duration);
-            
-            oscillator.start(soundAudioContext.currentTime);
-            oscillator.stop(soundAudioContext.currentTime + duration);
-        }
-
-        function playCorrectSound() {
-            // Energetic joget-style victory fanfare with rebana accent
-            playSound(523, 0.2, 'sawtooth', 0.4); // C5 - saxophone-like
-            playSound(80, 0.1, 'triangle', 0.3); // Rebana hit
-            setTimeout(() => {
-                playSound(659, 0.2, 'sawtooth', 0.4); // E5
-                playSound(120, 0.05, 'square', 0.25); // Rebana accent
-            }, 100);
-            setTimeout(() => {
-                playSound(784, 0.3, 'sawtooth', 0.4); // G5
-                playSound(80, 0.1, 'triangle', 0.3); // Rebana hit
-            }, 200);
-            setTimeout(() => {
-                playSound(1047, 0.4, 'sawtooth', 0.4); // C6 - triumphant
-                playSound(100, 0.1, 'square', 0.3); // Final rebana
-                // Add choir harmony
-                playSound(523, 0.4, 'sine', 0.2); // Choir C5
-                playSound(659, 0.4, 'sine', 0.15); // Choir E5
-            }, 300);
-        }
-
-        function playIncorrectSound() {
-            // Sad trombone effect
-            playSound(300, 0.3, 'sawtooth', 0.3);
-            setTimeout(() => playSound(250, 0.3, 'sawtooth', 0.3), 150);
-            setTimeout(() => playSound(200, 0.5, 'sawtooth', 0.3), 300);
-        }
-
-        function playClickSound() {
-            // Rebana-style click sound
-            playSound(120, 0.08, 'triangle', 0.25);
-            setTimeout(() => playSound(80, 0.05, 'square', 0.15), 30);
-        }
-
-        function playWhooshSound() {
-            // Saxophone-style swoosh with joget energy
-            for (let i = 0; i < 12; i++) {
-                setTimeout(() => {
-                    playSound(300 + i * 60, 0.06, 'sawtooth', 0.15); // Saxophone-like swoosh
-                    if (i % 3 === 0) {
-                        playSound(80, 0.03, 'triangle', 0.1); // Rebana accent
-                    }
-                }, i * 25);
-            }
-        }
-
-        // Navigation Functions
-        function showHome() {
+        // Navigation Functions - declared globally for HTML onclick access
+        window.showHome = function() {
             hideAllPages();
             document.getElementById('homePage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'block'; // Show host button only on home
-            
-            // Switch back to background music
-            if (backgroundMusic && musicPlaying) {
-                if (gameMusic && gameMusic.pause) gameMusic.pause();
-                if (victoryMusic && victoryMusic.pause) victoryMusic.pause();
-                backgroundMusic.play();
-                currentMusicType = 'background';
-            }
-            
-            playClickSound();
-        }
-
-        function showMaterial() {
-            hideAllPages();
-            document.getElementById('materialPage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none'; // Hide host button
-            playClickSound();
-        }
-
-        function hideAllPages() {
-            const pages = ['homePage', 'materialPage', 'gamePage', 'resultsPage', 'hostDashboard'];
-            pages.forEach(page => {
-                document.getElementById(page).classList.add('hidden');
-            });
-        }
-
-        // Host Login Functions
-        function showHostLogin() {
-            document.getElementById('hostLoginModal').classList.remove('hidden');
-            document.getElementById('hostPassword').focus();
-            playClickSound();
-        }
-
-        function hideHostLogin() {
-            document.getElementById('hostLoginModal').classList.add('hidden');
-            document.getElementById('hostPassword').value = '';
-            playClickSound();
-        }
-
-        function verifyHostPassword() {
-            const password = document.getElementById('hostPassword').value;
-            const correctPassword = 'admin123';
-            
-            if (password === correctPassword) {
-                hideHostLogin();
-                showHostDashboard();
-                playCorrectSound();
-            } else {
-                alert('❌ Password salah! Coba lagi.');
-                document.getElementById('hostPassword').value = '';
-                document.getElementById('hostPassword').focus();
-                playIncorrectSound();
-            }
-        }
-
-        // Host Dashboard Functions
-        function showHostDashboard() {
-            hideAllPages();
-            document.getElementById('hostDashboard').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none'; // Hide host button
-            loadDashboardData();
-            playClickSound();
-        }
-
-        // Enhanced Game Data Storage with Cloud Integration
-        let gameData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
-            players: {},
-            games: [],
-            dailyStats: {}
+            document.getElementById('hostButton').style.display = 'block';
         };
 
-        async function saveGameData() {
-            // Save to local storage first
-            localStorage.setItem('ethnomath_game_data', JSON.stringify(gameData));
-            
-            // Auto-sync to cloud if connected
-            if (cloudStorage.isSignedIn && !cloudStorage.syncInProgress) {
-                try {
-                    await syncToCloud();
-                } catch (error) {
-                    console.warn('Auto-sync to cloud failed:', error);
-                }
-            }
-        }
+        window.showMaterial = function() {
+            playSound('click');
+            hideAllPages();
+            document.getElementById('materialPage').classList.remove('hidden');
+            document.getElementById('hostButton').style.display = 'none';
+        };
 
-        async function recordGameResult(playerName, score, correctAnswers) {
-            const today = new Date().toISOString().split('T')[0];
-            const gameResult = {
-                playerName,
-                score,
-                correctAnswers,
-                date: today,
-                timestamp: new Date().toISOString()
-            };
-
-            // Update player data
-            if (!gameData.players[playerName]) {
-                gameData.players[playerName] = {
-                    name: playerName,
-                    scores: [],
-                    totalGames: 0,
-                    highestScore: 0,
-                    lastPlayed: today
-                };
-            }
-
-            const player = gameData.players[playerName];
-            player.scores.push(score);
-            player.totalGames++;
-            player.highestScore = Math.max(player.highestScore, score);
-            player.lastPlayed = today;
-
-            // Add to games history
-            gameData.games.push(gameResult);
-
-            // Update daily stats
-            if (!gameData.dailyStats[today]) {
-                gameData.dailyStats[today] = {
-                    totalGames: 0,
-                    totalScore: 0,
-                    players: new Set()
-                };
-            }
-
-            gameData.dailyStats[today].totalGames++;
-            gameData.dailyStats[today].totalScore += score;
-            gameData.dailyStats[today].players.add(playerName);
-
-            await saveGameData();
-        }
-
-        function loadDashboardData() {
-            // Calculate statistics
-            const players = Object.values(gameData.players);
-            const totalPlayers = players.length;
-            const totalGames = gameData.games.length;
-            const allScores = gameData.games.map(g => g.score);
-            const averageScore = allScores.length > 0 ? Math.round(allScores.reduce((a, b) => a + b, 0) / allScores.length) : 0;
-            const highestScore = allScores.length > 0 ? Math.max(...allScores) : 0;
-
-            // Update statistics cards
-            document.getElementById('totalPlayers').textContent = totalPlayers;
-            document.getElementById('totalGames').textContent = totalGames;
-            document.getElementById('averageScore').textContent = averageScore;
-            document.getElementById('highestScore').textContent = highestScore;
-
-            // Update leaderboard
-            updateLeaderboard();
-            
-            // Update charts
-            updateCharts();
-        }
-
-        function updateLeaderboard() {
-            const players = Object.values(gameData.players)
-                .sort((a, b) => b.highestScore - a.highestScore)
-                .slice(0, 10);
-
-            const tbody = document.getElementById('leaderboardTable');
-            tbody.innerHTML = '';
-
-            players.forEach((player, index) => {
-                const avgScore = Math.round(player.scores.reduce((a, b) => a + b, 0) / player.scores.length);
-                const row = document.createElement('tr');
-                row.className = 'border-b border-white/20 hover:bg-white/10 transition-colors';
-                
-                const rankEmoji = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
-                
-                row.innerHTML = `
-                    <td class="py-3 px-4 font-bold text-yellow-200">${rankEmoji}</td>
-                    <td class="py-3 px-4 font-semibold text-white">${player.name}</td>
-                    <td class="py-3 px-4 text-green-200 font-bold">${player.highestScore}</td>
-                    <td class="py-3 px-4 text-blue-200">${player.totalGames}</td>
-                    <td class="py-3 px-4 text-purple-200">${avgScore}</td>
-                    <td class="py-3 px-4 text-gray-200">${player.lastPlayed}</td>
-                `;
-                tbody.appendChild(row);
-            });
-
-            if (players.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400">Belum ada data pemain</td></tr>';
-            }
-        }
-
-        function updateCharts() {
-            // Score Distribution Chart
-            const scoreRanges = { '0-20': 0, '21-40': 0, '41-60': 0, '61-80': 0, '81-100': 0 };
-            gameData.games.forEach(game => {
-                if (game.score <= 20) scoreRanges['0-20']++;
-                else if (game.score <= 40) scoreRanges['21-40']++;
-                else if (game.score <= 60) scoreRanges['41-60']++;
-                else if (game.score <= 80) scoreRanges['61-80']++;
-                else scoreRanges['81-100']++;
-            });
-
-            drawBarChart('scoreChart', Object.keys(scoreRanges), Object.values(scoreRanges), 'Distribusi Skor Pemain');
-            
-            // Update additional stats
-            updateAdditionalStats();
-        }
-        
-        function drawLineChart(canvasId, labels, data, title) {
-            const canvas = document.getElementById(canvasId);
-            if (!canvas) return;
-            
-            const ctx = canvas.getContext('2d');
-            
-            // Set canvas size with device pixel ratio for crisp rendering
-            const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            
-            const width = rect.width;
-            const height = rect.height;
-            const padding = 60;
-            const chartWidth = width - 2 * padding;
-            const chartHeight = height - 2 * padding - 40;
-            
-            // Clear canvas with dark background
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, width, height);
-            
-            // Draw title
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 18px Poppins';
-            ctx.textAlign = 'center';
-            ctx.fillText(title, width / 2, 30);
-            
-            const maxValue = Math.max(...data, 100);
-            const minValue = Math.min(...data, 0);
-            const valueRange = maxValue - minValue || 1;
-            
-            // Draw grid lines
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i <= 5; i++) {
-                const y = padding + 40 + (chartHeight / 5) * i;
-                ctx.beginPath();
-                ctx.moveTo(padding, y);
-                ctx.lineTo(width - padding, y);
-                ctx.stroke();
-                
-                // Y-axis labels
-                const value = Math.round(maxValue - (valueRange / 5) * i);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                ctx.font = '12px Poppins';
-                ctx.textAlign = 'right';
-                ctx.fillText(value, padding - 10, y + 4);
-            }
-            
-            // Draw area under curve
-            if (data.some(d => d > 0)) {
-                const gradient = ctx.createLinearGradient(0, padding + 40, 0, padding + 40 + chartHeight);
-                gradient.addColorStop(0, 'rgba(74, 144, 226, 0.3)');
-                gradient.addColorStop(1, 'rgba(74, 144, 226, 0.05)');
-                
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.moveTo(padding, padding + 40 + chartHeight);
-                
-                data.forEach((value, index) => {
-                    const x = padding + (index / (labels.length - 1)) * chartWidth;
-                    const y = padding + 40 + chartHeight - ((value - minValue) / valueRange) * chartHeight;
-                    if (index === 0) ctx.lineTo(x, y);
-                    else ctx.lineTo(x, y);
-                });
-                
-                ctx.lineTo(padding + chartWidth, padding + 40 + chartHeight);
-                ctx.closePath();
-                ctx.fill();
-            }
-            
-            // Draw line
-            ctx.strokeStyle = '#4A90E2';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            
-            data.forEach((value, index) => {
-                const x = padding + (index / (labels.length - 1)) * chartWidth;
-                const y = padding + 40 + chartHeight - ((value - minValue) / valueRange) * chartHeight;
-                
-                if (index === 0) ctx.moveTo(x, y);
-                else ctx.lineTo(x, y);
-            });
-            ctx.stroke();
-            
-            // Draw points
-            data.forEach((value, index) => {
-                const x = padding + (index / (labels.length - 1)) * chartWidth;
-                const y = padding + 40 + chartHeight - ((value - minValue) / valueRange) * chartHeight;
-                
-                // Point shadow
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                ctx.beginPath();
-                ctx.arc(x + 1, y + 1, 6, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Main point
-                const pointGradient = ctx.createRadialGradient(x, y, 0, x, y, 6);
-                pointGradient.addColorStop(0, '#ffffff');
-                pointGradient.addColorStop(1, '#4A90E2');
-                ctx.fillStyle = pointGradient;
-                ctx.beginPath();
-                ctx.arc(x, y, 6, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Value label
-                if (value > 0) {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                    ctx.beginPath();
-                    ctx.roundRect(x - 15, y - 25, 30, 16, 8);
-                    ctx.fill();
-                    
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 11px Poppins';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(value, x, y - 12);
-                }
-                
-                // X-axis labels
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 11px Poppins';
-                ctx.textAlign = 'center';
-                ctx.fillText(labels[index], x, height - 10);
-            });
-            
-            // Add decorative elements
-            drawChartDecorations(ctx, width, height);
-        }
-        
-        function updateAdditionalStats() {
-            const games = gameData.games;
-            const today = new Date().toISOString().split('T')[0];
-            
-            // Calculate accuracy rate
-            const totalQuestions = games.length * 5; // 5 questions per game
-            const totalCorrect = games.reduce((sum, game) => sum + (game.correctAnswers || 0), 0);
-            const accuracyRate = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
-            document.getElementById('accuracyRate').textContent = accuracyRate + '%';
-            
-            // Active players today
-            const activeToday = games.filter(game => game.date === today).length;
-            document.getElementById('activeToday').textContent = activeToday;
-            
-            // Calculate streak record (consecutive correct answers)
-            let maxStreak = 0;
-            let currentStreak = 0;
-            games.forEach(game => {
-                if (game.correctAnswers === 5) {
-                    currentStreak++;
-                    maxStreak = Math.max(maxStreak, currentStreak);
-                } else {
-                    currentStreak = 0;
-                }
-            });
-            document.getElementById('streakRecord').textContent = maxStreak;
-        }
-
-        function drawBarChart(canvasId, labels, data, title) {
-            const canvas = document.getElementById(canvasId);
-            const ctx = canvas.getContext('2d');
-            
-            // Set canvas size with device pixel ratio for crisp rendering
-            const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.getBoundingClientRect();
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            
-            const width = rect.width;
-            const height = rect.height;
-            const padding = 60;
-            const chartWidth = width - 2 * padding;
-            const chartHeight = height - 2 * padding - 40; // Extra space for title
-            
-            // Clear canvas with dark background
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, width, height);
-            
-            // Draw title
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 18px Poppins';
-            ctx.textAlign = 'center';
-            ctx.fillText(title, width / 2, 30);
-            
-            // Find max value
-            const maxValue = Math.max(...data, 1);
-            
-            // Draw grid lines
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i <= 5; i++) {
-                const y = padding + 40 + (chartHeight / 5) * i;
-                ctx.beginPath();
-                ctx.moveTo(padding, y);
-                ctx.lineTo(width - padding, y);
-                ctx.stroke();
-                
-                // Draw y-axis labels
-                const value = Math.round(maxValue - (maxValue / 5) * i);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-                ctx.font = '12px Poppins';
-                ctx.textAlign = 'right';
-                ctx.fillText(value, padding - 10, y + 4);
-            }
-            
-            // Colorful gradients for each bar
-            const gradientColors = [
-                ['#FF6B6B', '#FF8E53'], // Red to Orange
-                ['#4ECDC4', '#44A08D'], // Teal to Green
-                ['#45B7D1', '#96C93D'], // Blue to Lime
-                ['#F093FB', '#F5576C'], // Purple to Pink
-                ['#FBD3E9', '#BB377D']  // Light Pink to Dark Pink
-            ];
-            
-            // Draw bars with animation effect
-            const barWidth = chartWidth / labels.length * 0.7;
-            const barSpacing = chartWidth / labels.length * 0.3;
-            
-            data.forEach((value, index) => {
-                const barHeight = (value / maxValue) * chartHeight;
-                const x = padding + index * (barWidth + barSpacing) + barSpacing / 2;
-                const y = padding + 40 + chartHeight - barHeight;
-                
-                // Create rainbow gradient for each bar
-                const gradient = ctx.createLinearGradient(0, y, 0, y + barHeight);
-                const colors = gradientColors[index % gradientColors.length];
-                gradient.addColorStop(0, colors[0]);
-                gradient.addColorStop(1, colors[1]);
-                
-                // Draw bar shadow
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-                ctx.fillRect(x + 3, y + 3, barWidth, barHeight);
-                
-                // Draw main bar with rounded corners
-                ctx.fillStyle = gradient;
-                ctx.beginPath();
-                ctx.roundRect(x, y, barWidth, barHeight, [8, 8, 0, 0]);
-                ctx.fill();
-                
-                // Add shine effect
-                const shineGradient = ctx.createLinearGradient(x, y, x + barWidth / 3, y);
-                shineGradient.addColorStop(0, 'rgba(255, 255, 255, 0.4)');
-                shineGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                ctx.fillStyle = shineGradient;
-                ctx.beginPath();
-                ctx.roundRect(x, y, barWidth / 3, barHeight, [8, 0, 0, 0]);
-                ctx.fill();
-                
-                // Draw value on top with background
-                if (value > 0) {
-                    ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-                    ctx.beginPath();
-                    ctx.roundRect(x + barWidth/2 - 20, y - 25, 40, 20, 10);
-                    ctx.fill();
-                    
-                    ctx.fillStyle = '#ffffff';
-                    ctx.font = 'bold 14px Poppins';
-                    ctx.textAlign = 'center';
-                    ctx.fillText(value, x + barWidth / 2, y - 10);
-                }
-                
-                // Draw label with background
-                const labelY = height - 25;
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
-                ctx.beginPath();
-                ctx.roundRect(x - 5, labelY - 15, barWidth + 10, 20, 10);
-                ctx.fill();
-                
-                ctx.fillStyle = '#ffffff';
-                ctx.font = 'bold 12px Poppins';
-                ctx.textAlign = 'center';
-                ctx.fillText(labels[index], x + barWidth / 2, labelY);
-            });
-            
-            // Add decorative elements
-            drawChartDecorations(ctx, width, height);
-        }
-        
-        function drawChartDecorations(ctx, width, height) {
-            // Draw corner decorations
-            const corners = [
-                {x: 20, y: 20}, {x: width - 20, y: 20},
-                {x: 20, y: height - 20}, {x: width - 20, y: height - 20}
-            ];
-            
-            corners.forEach((corner, index) => {
-                ctx.fillStyle = `hsl(${index * 90}, 70%, 60%)`;
-                ctx.beginPath();
-                ctx.arc(corner.x, corner.y, 4, 0, Math.PI * 2);
-                ctx.fill();
-                
-                // Add sparkle effect
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.beginPath();
-                ctx.arc(corner.x - 1, corner.y - 1, 1, 0, Math.PI * 2);
-                ctx.fill();
-            });
-            
-            // Draw border glow
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.roundRect(5, 5, width - 10, height - 10, 15);
-            ctx.stroke();
-        }
-
-
-
-        async function exportData() {
-            try {
-                // Show loading state
-                const exportBtn = document.getElementById('exportBtn');
-                const originalText = exportBtn.textContent;
-                exportBtn.textContent = '📥 Mengexport...';
-                exportBtn.disabled = true;
-                
-                // Try to get latest data from cloud first
-                let freshData;
-                if (cloudStorage.isSignedIn) {
-                    try {
-                        const cloudData = await loadFromCloud();
-                        if (cloudData) {
-                            freshData = cloudData;
-                            console.log('📥 Using cloud data for export');
-                        } else {
-                            freshData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
-                                players: {},
-                                games: [],
-                                dailyStats: {}
-                            };
-                            console.log('📱 Using local data for export');
-                        }
-                    } catch (error) {
-                        console.warn('Failed to load cloud data, using local:', error);
-                        freshData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
-                            players: {},
-                            games: [],
-                            dailyStats: {}
-                        };
-                    }
-                } else {
-                    freshData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
-                        players: {},
-                        games: [],
-                        dailyStats: {}
-                    };
-                }
-                
-                // Create formatted export data with comprehensive summary
-                const exportData = {
-                    exportInfo: {
-                        exportDate: new Date().toISOString(),
-                        exportTime: new Date().toLocaleString('id-ID'),
-                        version: '1.0',
-                        source: cloudStorage.isSignedIn ? 'Cloud Storage' : 'Local Storage',
-                        targetEmail: 'venisiswiandini00@gmail.com'
-                    },
-                    summary: {
-                        totalPlayers: Object.keys(freshData.players).length,
-                        totalGames: freshData.games.length,
-                        totalScores: freshData.games.reduce((sum, game) => sum + game.score, 0),
-                        averageScore: freshData.games.length > 0 ? Math.round(freshData.games.reduce((sum, game) => sum + game.score, 0) / freshData.games.length) : 0,
-                        highestScore: freshData.games.length > 0 ? Math.max(...freshData.games.map(g => g.score)) : 0,
-                        dateRange: freshData.games.length > 0 ? {
-                            earliest: freshData.games.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))[0]?.date || 'N/A',
-                            latest: freshData.games.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))[0]?.date || 'N/A'
-                        } : { earliest: 'N/A', latest: 'N/A' }
-                    },
-                    gameData: freshData
-                };
-                
-                const dataStr = JSON.stringify(exportData, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                
-                // Create and trigger download
-                const url = URL.createObjectURL(dataBlob);
-                const link = document.createElement('a');
-                const fileName = `ethnomath_data_${new Date().toISOString().split('T')[0]}.json`;
-                
-                link.href = url;
-                link.download = fileName;
-                link.style.display = 'none';
-                
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // Clean up URL
-                setTimeout(() => URL.revokeObjectURL(url), 1000);
-                
-                // Also sync to cloud if connected
-                if (cloudStorage.isSignedIn) {
-                    try {
-                        await syncToCloud();
-                        console.log('☁️ Data also synced to cloud during export');
-                    } catch (error) {
-                        console.warn('Cloud sync during export failed:', error);
-                    }
-                }
-                
-                // Reset button
-                setTimeout(() => {
-                    exportBtn.textContent = originalText;
-                    exportBtn.disabled = false;
-                }, 1000);
-                
-                // Success message
-                const stats = exportData.summary;
-                const sourceInfo = cloudStorage.isSignedIn ? '\n☁️ Data dari: Cloud Storage' : '\n💾 Data dari: Local Storage';
-                alert(`✅ Data berhasil diexport!${sourceInfo}\n\n📁 File: ${fileName}\n📊 Data yang diexport:\n• ${stats.totalPlayers} pemain\n• ${stats.totalGames} riwayat game\n• Skor tertinggi: ${stats.highestScore}\n• Rata-rata skor: ${stats.averageScore}\n\n📧 Target email: venisiswiandini00@gmail.com`);
-                playCorrectSound();
-                
-            } catch (error) {
-                console.error('Export error:', error);
-                
-                // Reset button on error
-                const exportBtn = document.getElementById('exportBtn');
-                exportBtn.textContent = '📥 Export Data';
-                exportBtn.disabled = false;
-                
-                alert('❌ Gagal export data: ' + error.message);
-                playIncorrectSound();
-            }
-        }
-
-        function clearAllData() {
-            // Get current data for confirmation
-            let currentData;
-            try {
-                currentData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || { players: {}, games: [], dailyStats: {} };
-            } catch (e) {
-                currentData = { players: {}, games: [], dailyStats: {} };
-            }
-            
-            const playerCount = Object.keys(currentData.players || {}).length;
-            const gameCount = (currentData.games || []).length;
-            
-            if (playerCount === 0 && gameCount === 0) {
-                alert('ℹ️ Papan peringkat sudah kosong!\n\nTidak ada data yang perlu dihapus.');
-                playClickSound();
-                return;
-            }
-            
-            const confirmMessage = `🏆 HAPUS PAPAN PERINGKAT\n\nAnda akan menghapus semua data papan peringkat:\n\n📊 Data yang akan dihapus:\n• ${playerCount} pemain terdaftar\n• ${gameCount} riwayat permainan\n• Semua skor dan statistik\n• Grafik dan analisis data\n\n⚠️ PERINGATAN: Tindakan ini tidak dapat dibatalkan!\n\nKetik "HAPUS" (huruf besar) untuk melanjutkan:`;
-            
-            const userInput = prompt(confirmMessage);
-            
-            if (userInput === 'HAPUS') {
-                try {
-                    // Show loading state
-                    const resetBtn = document.getElementById('clearBtn');
-                    if (!resetBtn) {
-                        console.error('Reset button not found');
-                        return;
-                    }
-                    
-                    const originalText = resetBtn.textContent;
-                    resetBtn.textContent = '🗑️ Menghapus...';
-                    resetBtn.disabled = true;
-                    
-                    // Clear data with multiple methods for reliability
-                    setTimeout(() => {
-                        let clearSuccess = false;
-                        let clearMethod = '';
-                        
-                        try {
-                            // Method 1: Remove specific key
-                            localStorage.removeItem('ethnomath_game_data');
-                            clearMethod = 'Penghapusan langsung';
-                            clearSuccess = true;
-                        } catch (e) {
-                            console.warn('Method 1 failed:', e);
-                        }
-                        
-                        try {
-                            // Method 2: Set to empty object
-                            localStorage.setItem('ethnomath_game_data', JSON.stringify({ players: {}, games: [], dailyStats: {} }));
-                            if (!clearSuccess) {
-                                clearMethod = 'Reset ke data kosong';
-                                clearSuccess = true;
-                            }
-                        } catch (e) {
-                            console.warn('Method 2 failed:', e);
-                        }
-                        
-                        // Reset global gameData object
-                        window.gameData = { 
-                            players: {}, 
-                            games: [], 
-                            dailyStats: {} 
-                        };
-                        
-                        // Save fresh empty data structure
-                        try {
-                            localStorage.setItem('ethnomath_game_data', JSON.stringify(window.gameData));
-                        } catch (e) {
-                            console.warn('Failed to save empty data:', e);
-                        }
-                        
-                        // Refresh dashboard immediately
-                        try {
-                            loadDashboardData();
-                        } catch (e) {
-                            console.warn('Failed to load dashboard:', e);
-                        }
-                        
-                        // Reset button
-                        resetBtn.textContent = originalText;
-                        resetBtn.disabled = false;
-                        
-                        // Verify clearing worked
-                        let verificationData;
-                        try {
-                            verificationData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || { players: {}, games: [], dailyStats: {} };
-                        } catch (e) {
-                            verificationData = { players: {}, games: [], dailyStats: {} };
-                        }
-                        
-                        const remainingPlayers = Object.keys(verificationData.players || {}).length;
-                        const remainingGames = (verificationData.games || []).length;
-                        
-                        if (remainingPlayers === 0 && remainingGames === 0) {
-                            // Success confirmation
-                            alert(`✅ PAPAN PERINGKAT BERHASIL DIHAPUS!\n\n🗑️ Data yang telah dihapus:\n• ${playerCount} pemain\n• ${gameCount} riwayat permainan\n• Semua skor dan statistik\n• Dashboard telah direset\n\n🎮 Sistem siap untuk pemain baru!\nMetode: ${clearMethod}`);
-                            playCorrectSound();
-                        } else {
-                            // Partial success
-                            alert(`⚠️ PENGHAPUSAN SELESAI!\n\n✅ Berhasil dihapus:\n• ${playerCount} pemain\n• ${gameCount} riwayat permainan\n\n📊 Sisa data: ${remainingPlayers} pemain, ${remainingGames} game\n\nJika masih ada data tersisa, coba refresh halaman.`);
-                            playCorrectSound();
-                            
-                            // Offer page reload
-                            setTimeout(() => {
-                                if (confirm('🔄 Refresh halaman untuk memastikan penghapusan sempurna?')) {
-                                    try {
-                                        location.reload();
-                                    } catch (e) {
-                                        alert('Gagal refresh otomatis. Silakan refresh manual (F5).');
-                                    }
-                                }
-                            }, 1000);
-                        }
-                        
-                    }, 800);
-                    
-                } catch (error) {
-                    console.error('Clear leaderboard error:', error);
-                    
-                    // Reset button on error
-                    const resetBtn = document.getElementById('clearBtn');
-                    if (resetBtn) {
-                        resetBtn.textContent = '🗑️ Hapus Papan Peringkat';
-                        resetBtn.disabled = false;
-                    }
-                    
-                    alert(`❌ Gagal menghapus papan peringkat!\n\nError: ${error.message}\n\n🔧 Solusi:\n1. Refresh halaman (F5)\n2. Coba lagi\n3. Restart browser jika masih bermasalah`);
-                    playIncorrectSound();
-                }
-            } else if (userInput !== null && userInput !== '') {
-                alert('❌ Penghapusan dibatalkan!\n\n⚠️ Anda harus mengetik "HAPUS" (huruf besar semua) dengan tepat.\n\n💡 Tips: Copy-paste kata "HAPUS" untuk memastikan penulisan benar.');
-                playIncorrectSound();
-            } else {
-                // User cancelled
-                alert('✅ Penghapusan dibatalkan.\n\nPapan peringkat tetap aman! 🏆');
-                playClickSound();
-            }
-        }
-
-        function refreshDashboard() {
-            try {
-                // Show loading state
-                const refreshBtn = document.getElementById('refreshBtn');
-                const originalText = refreshBtn.textContent;
-                refreshBtn.textContent = '🔄 Memuat...';
-                refreshBtn.disabled = true;
-                
-                // Reload data from localStorage
-                gameData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
-                    players: {},
-                    games: [],
-                    dailyStats: {}
-                };
-                
-                // Update dashboard with fresh data
-                loadDashboardData();
-                
-                // Reset button
-                setTimeout(() => {
-                    refreshBtn.textContent = originalText;
-                    refreshBtn.disabled = false;
-                }, 500);
-                
-                // Show success message with stats
-                const stats = {
-                    players: Object.keys(gameData.players).length,
-                    games: gameData.games.length,
-                    lastUpdate: new Date().toLocaleTimeString('id-ID')
-                };
-                
-                alert(`✅ Dashboard berhasil direfresh!\n\n📊 Data terkini:\n• ${stats.players} pemain\n• ${stats.games} riwayat game\n• Update: ${stats.lastUpdate}`);
-                playCorrectSound();
-                
-            } catch (error) {
-                console.error('Refresh error:', error);
-                
-                // Reset button on error
-                const refreshBtn = document.getElementById('refreshBtn');
-                refreshBtn.textContent = '🔄 Refresh';
-                refreshBtn.disabled = false;
-                
-                alert('❌ Gagal refresh dashboard: ' + error.message);
-                playIncorrectSound();
-            }
-        }
-
-        // Name Input Functions
-        function showNameInput() {
+        window.showNameInput = function() {
+            playSound('click');
             document.getElementById('nameInputModal').classList.remove('hidden');
             document.getElementById('playerName').focus();
-            playClickSound();
-        }
-        
-        function hideNameInput() {
+        };
+
+        window.hideNameInput = function() {
             document.getElementById('nameInputModal').classList.add('hidden');
-            playClickSound();
-        }
-        
-        function startGameWithName() {
+        };
+
+        window.showHostLogin = function() {
+            document.getElementById('hostLoginModal').classList.remove('hidden');
+            document.getElementById('hostPassword').focus();
+        };
+
+        window.hideHostLogin = function() {
+            document.getElementById('hostLoginModal').classList.add('hidden');
+            document.getElementById('hostPassword').value = '';
+        };
+
+        window.verifyHostPassword = function() {
+            const password = document.getElementById('hostPassword').value;
+            if (password === 'admin123') {
+                hideHostLogin();
+                showHostDashboard();
+            } else {
+                alert('Password salah! Coba lagi.');
+                document.getElementById('hostPassword').value = '';
+                document.getElementById('hostPassword').focus();
+            }
+        };
+
+        window.showHostDashboard = function() {
+            hideAllPages();
+            document.getElementById('hostDashboard').classList.remove('hidden');
+            document.getElementById('hostButton').style.display = 'none';
+            updateHostDashboard();
+        };
+
+        window.startGameWithName = function() {
             const playerName = document.getElementById('playerName').value.trim();
-            
-            if (!playerName) {
-                alert('🎮 Masukkan nama kamu dulu ya!');
+            if (playerName === '') {
+                alert('Masukkan nama kamu dulu ya! 😊');
                 document.getElementById('playerName').focus();
                 return;
             }
             
+            gameState.currentPlayer = playerName;
             hideNameInput();
-            startGame(playerName);
-        }
-        
-        // Shuffle questions function
-        function shuffleQuestions() {
-            // Create a copy of the question pool and shuffle it
-            const shuffled = [...questionPool];
-            for (let i = shuffled.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-            }
-            // Use all 5 questions in random order
-            gameState.questions = shuffled;
-        }
+            startGame();
+        };
 
-        // Game Functions
-        function startGame(playerName = null) {
-            if (!playerName) {
-                showNameInput();
-                return;
+        window.selectAnswer = function(answer) {
+            if (gameState.answerSubmitted) return;
+            
+            gameState.selectedAnswer = answer;
+            gameState.answerSubmitted = true;
+            
+            const question = questionPool[gameState.currentQuestion];
+            const isCorrect = answer === question.correct;
+            
+            // Disable all buttons
+            document.getElementById('optionA').disabled = true;
+            document.getElementById('optionB').disabled = true;
+            
+            // Show correct/incorrect styling
+            const selectedButton = document.getElementById(`option${answer}`);
+            const correctButton = document.getElementById(`option${question.correct}`);
+            const feedback = document.getElementById('answerFeedback');
+            
+            if (isCorrect) {
+                selectedButton.classList.add('correct-answer');
+                gameState.score += 20;
+                gameState.correctAnswers++;
+                
+                feedback.textContent = '🎉 Benar! Hebat!';
+                feedback.style.color = '#00FF00';
+                
+                // Play success sound effects
+                playSound('correct');
+                setTimeout(() => playSound('celebration'), 300);
+                
+                animateBasketballSuccess();
+            } else {
+                selectedButton.classList.add('wrong-answer');
+                correctButton.classList.add('correct-answer');
+                
+                feedback.textContent = '❌ Salah! Coba lagi ya!';
+                feedback.style.color = '#FF1493';
+                
+                // Play error sound effect
+                playSound('wrong');
+                
+                animateBasketballMiss();
             }
             
+            // Update score display
+            document.getElementById('currentScore').textContent = gameState.score;
+            feedback.style.opacity = '1';
+            
+            // Auto proceed to next question after 1.5 seconds
+            setTimeout(() => {
+                nextQuestion();
+            }, 1500);
+        };
+
+        window.restartGame = function() {
+            showNameInput();
+        };
+
+        window.toggleMusic = function() {
+            if (gameState.backgroundMusic) {
+                if (gameState.isMusicPlaying) {
+                    gameState.backgroundMusic.pause();
+                    gameState.isMusicPlaying = false;
+                    document.getElementById('musicIcon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>';
+                    document.getElementById('musicTooltip').textContent = 'Nyalakan Musik';
+                } else {
+                    gameState.backgroundMusic.play().catch(e => console.log('Music play error:', e));
+                    gameState.isMusicPlaying = true;
+                    document.getElementById('musicIcon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9v6l4-2V7l-4 2z"></path>';
+                    document.getElementById('musicTooltip').textContent = 'Matikan Musik';
+                }
+            }
+        };
+
+        // Helper Functions
+        function hideAllPages() {
+            const pages = ['homePage', 'materialPage', 'gamePage', 'hostDashboard', 'resultsPage'];
+            pages.forEach(pageId => {
+                document.getElementById(pageId).classList.add('hidden');
+            });
+        }
+
+        // Music and Sound Functions
+        function initializeMusic() {
+            try {
+                // Initialize background music with Joget Melayu from Google Drive
+                // Note: Replace this ID with your actual Google Drive file ID for Joget Melayu music
+                gameState.backgroundMusic = new Audio('https://drive.google.com/uc?export=download&id=1zbxpFgdT9u_cB4N3p13II-bQKoScc3Bh');
+                gameState.backgroundMusic.loop = true;
+                gameState.backgroundMusic.volume = 0.3;
+                
+                // Try to play music (will be blocked by browser policy until user interaction)
+                gameState.backgroundMusic.addEventListener('canplaythrough', () => {
+                    console.log('Background music loaded successfully');
+                });
+                
+                gameState.backgroundMusic.addEventListener('error', (e) => {
+                    console.log('Background music error:', e);
+                    // Fallback: create a simple melody using Web Audio API
+                    createFallbackMusic();
+                });
+                
+            } catch (error) {
+                console.log('Music initialization error:', error);
+                createFallbackMusic();
+            }
+        }
+
+        function createFallbackMusic() {
+            // Create a simple traditional melody using Web Audio API as fallback
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                let isPlaying = false;
+                
+                function playMelody() {
+                    if (isPlaying || !gameState.isMusicPlaying) return;
+                    isPlaying = true;
+                    
+                    // Traditional Malay-inspired melody notes (frequencies)
+                    const melody = [
+                        { freq: 523.25, duration: 0.5 }, // C5
+                        { freq: 587.33, duration: 0.5 }, // D5
+                        { freq: 659.25, duration: 0.5 }, // E5
+                        { freq: 698.46, duration: 0.5 }, // F5
+                        { freq: 783.99, duration: 0.5 }, // G5
+                        { freq: 659.25, duration: 0.5 }, // E5
+                        { freq: 587.33, duration: 0.5 }, // D5
+                        { freq: 523.25, duration: 1.0 }  // C5
+                    ];
+                    
+                    let currentTime = audioContext.currentTime;
+                    
+                    melody.forEach((note, index) => {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(note.freq, currentTime);
+                        oscillator.type = 'sine';
+                        
+                        gainNode.gain.setValueAtTime(0, currentTime);
+                        gainNode.gain.linearRampToValueAtTime(0.1, currentTime + 0.1);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, currentTime + note.duration);
+                        
+                        oscillator.start(currentTime);
+                        oscillator.stop(currentTime + note.duration);
+                        
+                        currentTime += note.duration;
+                    });
+                    
+                    setTimeout(() => {
+                        isPlaying = false;
+                        if (gameState.isMusicPlaying) {
+                            setTimeout(playMelody, 2000); // Repeat after 2 seconds
+                        }
+                    }, currentTime * 1000);
+                }
+                
+                // Override the background music object with fallback
+                gameState.backgroundMusic = {
+                    play: () => {
+                        gameState.isMusicPlaying = true;
+                        playMelody();
+                        return Promise.resolve();
+                    },
+                    pause: () => {
+                        gameState.isMusicPlaying = false;
+                    },
+                    volume: 0.3
+                };
+                
+            } catch (error) {
+                console.log('Fallback music creation error:', error);
+            }
+        }
+
+        function playSound(type) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                switch (type) {
+                    case 'correct':
+                        // Success sound - ascending notes
+                        playTone(audioContext, 523.25, 0.2); // C5
+                        setTimeout(() => playTone(audioContext, 659.25, 0.2), 100); // E5
+                        setTimeout(() => playTone(audioContext, 783.99, 0.3), 200); // G5
+                        break;
+                        
+                    case 'wrong':
+                        // Error sound - descending notes
+                        playTone(audioContext, 392.00, 0.3); // G4
+                        setTimeout(() => playTone(audioContext, 329.63, 0.4), 150); // E4
+                        break;
+                        
+                    case 'click':
+                        // Button click sound
+                        playTone(audioContext, 800, 0.1);
+                        break;
+                        
+                    case 'swoosh':
+                        // Basketball swoosh sound
+                        createSwooshSound(audioContext);
+                        break;
+                        
+                    case 'bounce':
+                        // Ball bounce sound
+                        playTone(audioContext, 200, 0.2);
+                        break;
+                        
+                    case 'celebration':
+                        // Celebration fanfare
+                        const celebrationNotes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                        celebrationNotes.forEach((freq, index) => {
+                            setTimeout(() => playTone(audioContext, freq, 0.3), index * 100);
+                        });
+                        break;
+                }
+            } catch (error) {
+                console.log('Sound effect error:', error);
+            }
+        }
+
+        function playTone(audioContext, frequency, duration) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.01);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function createSwooshSound(audioContext) {
+            // Create a swoosh sound using white noise and filtering
+            const bufferSize = audioContext.sampleRate * 0.5; // 0.5 seconds
+            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+            const output = buffer.getChannelData(0);
+            
+            // Generate white noise
+            for (let i = 0; i < bufferSize; i++) {
+                output[i] = Math.random() * 2 - 1;
+            }
+            
+            const whiteNoise = audioContext.createBufferSource();
+            whiteNoise.buffer = buffer;
+            
+            const filter = audioContext.createBiquadFilter();
+            filter.type = 'highpass';
+            filter.frequency.setValueAtTime(1000, audioContext.currentTime);
+            filter.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.5);
+            
+            const gainNode = audioContext.createGain();
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            whiteNoise.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            whiteNoise.start(audioContext.currentTime);
+            whiteNoise.stop(audioContext.currentTime + 0.5);
+        }
+
+        function startBackgroundMusic() {
+            if (gameState.backgroundMusic && gameState.isMusicPlaying) {
+                gameState.backgroundMusic.play().catch(e => {
+                    console.log('Background music play error:', e);
+                });
+            }
+        }
+
+        function startGame() {
+            hideAllPages();
+            document.getElementById('gamePage').classList.remove('hidden');
+            document.getElementById('hostButton').style.display = 'none';
+            
+            // Reset game state
             gameState.currentQuestion = 0;
             gameState.score = 0;
             gameState.correctAnswers = 0;
             gameState.timeRemaining = 600;
-            gameState.playerName = playerName;
-            gameState.autoNextTimer = null;
-
-            // Shuffle questions for variety
-            shuffleQuestions();
-
-            hideAllPages();
-            document.getElementById('gamePage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none'; // Hide host button
+            gameState.isGameActive = true;
+            gameState.selectedAnswer = null;
+            gameState.answerSubmitted = false;
             
-            // Update player name display in game
-            document.getElementById('playerNameDisplay').textContent = playerName;
+            // Update display
+            document.getElementById('playerNameDisplay').textContent = gameState.currentPlayer;
+            document.getElementById('currentScore').textContent = gameState.score;
             
-            // Switch to more intense game music
-            switchToGameMusic();
+            // Start background music
+            startBackgroundMusic();
             
+            // Start timer
             startGameTimer();
+            
+            // Load first question
             loadQuestion();
-            playClickSound();
         }
 
         function startGameTimer() {
+            if (gameState.gameTimer) {
+                clearInterval(gameState.gameTimer);
+            }
+            
             gameState.gameTimer = setInterval(() => {
                 gameState.timeRemaining--;
-                updateTimeDisplay();
+                updateTimerDisplay();
                 
                 if (gameState.timeRemaining <= 0) {
                     endGame();
@@ -2603,35 +1441,26 @@
             }, 1000);
         }
 
-        function updateTimeDisplay() {
+        function updateTimerDisplay() {
             const minutes = Math.floor(gameState.timeRemaining / 60);
             const seconds = gameState.timeRemaining % 60;
-            document.getElementById('timeRemaining').textContent = 
-                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timeRemaining').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function loadQuestion() {
-            const question = gameState.questions[gameState.currentQuestion];
+            if (gameState.currentQuestion >= questionPool.length) {
+                endGame();
+                return;
+            }
             
+            const question = questionPool[gameState.currentQuestion];
+            
+            // Update question display
             document.getElementById('questionNumber').textContent = gameState.currentQuestion + 1;
             document.getElementById('questionTitle').textContent = `🤔 Soal ${gameState.currentQuestion + 1}`;
             document.getElementById('questionText').textContent = question.question;
-            document.getElementById('optionA').innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <span class="text-2xl">🅰️</span>
-                    <span>${question.optionA}</span>
-                    <span class="ml-auto text-xl">🎯</span>
-                </div>
-            `;
-            document.getElementById('optionB').innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <span class="text-2xl">🅱️</span>
-                    <span>${question.optionB}</span>
-                    <span class="ml-auto text-xl">🎯</span>
-                </div>
-            `;
             
-            // Load question image if available
+            // Update question image
             const questionImage = document.getElementById('questionImage');
             const questionImageFallback = document.getElementById('questionImageFallback');
             
@@ -2644,338 +1473,707 @@
                 questionImageFallback.style.display = 'block';
             }
             
+            // Update options
+            document.getElementById('optionA').querySelector('span:nth-child(2)').textContent = question.optionA;
+            document.getElementById('optionB').querySelector('span:nth-child(2)').textContent = question.optionB;
+            
             // Reset button states
-            const buttons = ['optionA', 'optionB'];
-            buttons.forEach(id => {
-                const btn = document.getElementById(id);
-                if (id === 'optionA') {
-                    btn.className = 'option-button w-full text-white p-4 md:p-6 rounded-2xl text-left font-semibold text-base md:text-lg card-hover bg-gradient-to-r from-green-400/20 to-teal-400/20 border-2 border-green-400/30';
-                } else {
-                    btn.className = 'option-button w-full text-white p-4 md:p-6 rounded-2xl text-left font-semibold text-base md:text-lg card-hover bg-gradient-to-r from-purple-400/20 to-pink-400/20 border-2 border-purple-400/30';
-                }
-                btn.onclick = () => selectAnswer(id === 'optionA' ? 'A' : 'B');
-            });
+            resetAnswerButtons();
             
-            // Hide feedback and next button
-            document.getElementById('answerFeedback').classList.add('opacity-0');
-            document.getElementById('nextButton').classList.add('opacity-0');
-            
-            // Reset basketball animation
-            resetBasketballAnimation();
+            // Reset answer state
+            gameState.selectedAnswer = null;
+            gameState.answerSubmitted = false;
         }
 
-        function selectAnswer(answer) {
-            const question = gameState.questions[gameState.currentQuestion];
-            const isCorrect = answer === question.correct;
+        function resetAnswerButtons() {
+            const buttons = ['optionA', 'optionB'];
+            buttons.forEach(buttonId => {
+                const button = document.getElementById(buttonId);
+                button.classList.remove('correct-answer', 'wrong-answer');
+                button.disabled = false;
+            });
             
-            // Disable buttons
-            document.getElementById('optionA').onclick = null;
-            document.getElementById('optionB').onclick = null;
-            
-            // Show correct answer
-            const correctButton = document.getElementById(question.correct === 'A' ? 'optionA' : 'optionB');
-            const selectedButton = document.getElementById(answer === 'A' ? 'optionA' : 'optionB');
-            
-            correctButton.classList.add('correct-answer');
-            
-            if (!isCorrect) {
-                selectedButton.classList.add('wrong-answer');
-            }
-            
-            // Play animation and sound
-            if (isCorrect) {
-                playCorrectSound();
-                animateBasketballSuccess();
-                gameState.score += 20;
-                gameState.correctAnswers++;
-                document.getElementById('answerFeedback').innerHTML = '🎉 BENAR SEKALI! +20 poin';
-                document.getElementById('answerFeedback').className = 'text-2xl font-bold mb-4 text-green-400 transition-all duration-500';
-            } else {
-                playIncorrectSound();
-                animateBasketballMiss();
-                document.getElementById('answerFeedback').innerHTML = `❌ Oops! Jawaban yang benar: ${question.correct}`;
-                document.getElementById('answerFeedback').className = 'text-2xl font-bold mb-4 text-red-400 transition-all duration-500';
-            }
-            
-            // Update score display
-            document.getElementById('currentScore').textContent = gameState.score;
-            
-            // Show feedback
-            setTimeout(() => {
-                document.getElementById('answerFeedback').classList.remove('opacity-0');
-            }, 800);
-            
-            // Auto-advance to next question after 2.5 seconds
-            gameState.autoNextTimer = setTimeout(() => {
-                nextQuestion();
-            }, 2500);
+            document.getElementById('answerFeedback').style.opacity = '0';
         }
 
         function nextQuestion() {
             gameState.currentQuestion++;
             
-            if (gameState.currentQuestion >= gameState.questions.length) {
+            if (gameState.currentQuestion >= questionPool.length) {
                 endGame();
             } else {
                 loadQuestion();
             }
-            
-            playClickSound();
         }
 
         function endGame() {
-            clearInterval(gameState.gameTimer);
+            gameState.isGameActive = false;
             
-            // Clear auto-next timer if exists
-            if (gameState.autoNextTimer) {
-                clearTimeout(gameState.autoNextTimer);
-                gameState.autoNextTimer = null;
+            if (gameState.gameTimer) {
+                clearInterval(gameState.gameTimer);
+                gameState.gameTimer = null;
             }
             
-            // Record game result
-            recordGameResult(gameState.playerName, gameState.score, gameState.correctAnswers);
+            // Save game data
+            saveGameData();
             
+            // Show results
+            showResults();
+        }
+
+        function showResults() {
             hideAllPages();
             document.getElementById('resultsPage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none'; // Hide host button
             
-            // Update results display
-            document.getElementById('finalScore').textContent = gameState.score;
-            document.getElementById('correctAnswers').textContent = gameState.correctAnswers;
-            document.getElementById('resultPlayerName').textContent = gameState.playerName || 'Pemain';
+            // Calculate performance
+            const percentage = (gameState.correctAnswers / questionPool.length) * 100;
+            let resultTitle, resultIcon, resultMessage;
             
-            if (gameState.correctAnswers === gameState.questions.length) {
-                document.getElementById('resultIcon').textContent = '🏆';
-                document.getElementById('resultTitle').textContent = 'SEMPURNA!';
-                document.getElementById('resultMessage').textContent = `${gameState.playerName} adalah master kesebangunan! 🌟`;
-                createFireworks();
-                switchToVictoryMusic(); // Play victory music for perfect score
-            } else if (gameState.correctAnswers >= 3) {
-                document.getElementById('resultIcon').textContent = '🎉';
-                document.getElementById('resultTitle').textContent = 'HEBAT!';
-                document.getElementById('resultMessage').textContent = `Pemahaman ${gameState.playerName} tentang kesebangunan sudah bagus!`;
-                switchToVictoryMusic(); // Play victory music for good score
+            if (percentage >= 80) {
+                resultTitle = "LUAR BIASA! 🌟";
+                resultIcon = "🏆";
+                resultMessage = "Kamu adalah master kesebangunan!";
+            } else if (percentage >= 60) {
+                resultTitle = "BAGUS SEKALI! 👏";
+                resultIcon = "🥈";
+                resultMessage = "Pemahaman kamu sudah bagus!";
+            } else if (percentage >= 40) {
+                resultTitle = "TERUS BELAJAR! 💪";
+                resultIcon = "🥉";
+                resultMessage = "Kamu bisa lebih baik lagi!";
             } else {
-                document.getElementById('resultIcon').textContent = '📚';
-                document.getElementById('resultTitle').textContent = 'TERUS SEMANGAT!';
-                document.getElementById('resultMessage').textContent = `${gameState.playerName}, belajar lagi dan coba sekali lagi ya!`;
-                // Return to background music for lower scores
-                setTimeout(() => {
-                    if (backgroundMusic && backgroundMusic.play && musicPlaying) {
-                        if (gameMusic && gameMusic.pause) gameMusic.pause();
-                        backgroundMusic.play();
-                        currentMusicType = 'background';
-                    }
-                }, 1000);
+                resultTitle = "JANGAN MENYERAH! 🌈";
+                resultIcon = "📚";
+                resultMessage = "Ayo belajar lagi dan coba lagi!";
             }
-        }
-
-        function restartGame() {
-            startGame(gameState.playerName);
-        }
-
-        // Enhanced Animation Functions
-        function resetBasketballAnimation() {
-            const ball = document.getElementById('basketball');
-            const player = document.getElementById('basketballPlayer');
-            const scoreDisplay = document.getElementById('scoreDisplay');
             
-            ball.style.transform = 'translate(0, 0)';
-            ball.className = 'absolute bottom-28 left-28 ball';
-            player.className = 'absolute bottom-8 left-12 player';
-            scoreDisplay.classList.add('opacity-0');
-            
-            // Clear effects
-            document.getElementById('confettiContainer').innerHTML = '';
-            document.getElementById('sparkleContainer').innerHTML = '';
+            // Update result display
+            document.getElementById('resultTitle').textContent = resultTitle;
+            document.getElementById('resultIcon').textContent = resultIcon;
+            document.getElementById('resultPlayerName').textContent = gameState.currentPlayer;
+            document.getElementById('resultMessage').textContent = resultMessage;
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('correctAnswers').textContent = `${gameState.correctAnswers}/${questionPool.length}`;
         }
 
+        // Enhanced Basketball Animation Functions
         function animateBasketballSuccess() {
-            const ball = document.getElementById('basketball');
             const player = document.getElementById('basketballPlayer');
-            const scoreDisplay = document.getElementById('scoreDisplay');
-            
-            playWhooshSound();
-            
-            // Animate ball to basket with arc
-            ball.style.transition = 'all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            ball.style.transform = 'translate(280px, -220px) scale(0.8)';
-            player.classList.add('celebrate');
-            
-            setTimeout(() => {
-                ball.classList.add('ball-bounce');
-                scoreDisplay.textContent = '+20 🎯';
-                scoreDisplay.classList.remove('opacity-0');
-                scoreDisplay.classList.add('text-green-400', 'score-popup');
-                createSparkles();
-                createConfetti();
-            }, 800);
-            
-            setTimeout(() => {
-                ball.classList.remove('ball-bounce');
-                scoreDisplay.classList.add('opacity-0');
-                player.classList.remove('celebrate');
-            }, 3000);
-        }
-
-        function animateBasketballMiss() {
             const ball = document.getElementById('basketball');
-            const player = document.getElementById('basketballPlayer');
             const scoreDisplay = document.getElementById('scoreDisplay');
+            const court = document.querySelector('.basketball-court');
             
-            playWhooshSound();
+            // Create sound effect text and play swoosh sound
+            createSoundEffect('SWOOSH! 🎯', 'success');
+            playSound('swoosh');
             
-            // Animate ball missing the basket
-            ball.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            ball.style.transform = 'translate(350px, -150px) rotate(180deg)';
-            player.classList.add('miss');
+            // Enhanced success animation sequence
+            // Phase 1: Player jumps and shoots
+            player.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            player.style.transform = 'translateY(-25px) scale(1.15) rotate(-5deg)';
             
+            // Phase 2: Ball flies to basket with arc
             setTimeout(() => {
-                ball.classList.add('miss');
-                scoreDisplay.textContent = 'Miss! 😅';
-                scoreDisplay.classList.remove('opacity-0');
-                scoreDisplay.classList.add('text-red-400');
-            }, 600);
+                ball.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                ball.style.transform = 'translate(180px, -120px) scale(0.7) rotate(720deg)';
+                ball.style.filter = 'drop-shadow(0 8px 16px rgba(255,140,0,0.6))';
+            }, 200);
             
+            // Phase 3: Ball goes through hoop
             setTimeout(() => {
-                ball.classList.remove('miss');
-                scoreDisplay.classList.add('opacity-0');
-                player.classList.remove('miss');
+                ball.style.transition = 'all 0.4s ease-in';
+                ball.style.transform = 'translate(180px, -80px) scale(0.6) rotate(900deg)';
+                
+                // Score display with enhanced animation
+                if (scoreDisplay) {
+                    scoreDisplay.textContent = '+20 🏀';
+                    scoreDisplay.style.opacity = '1';
+                    scoreDisplay.style.transform = 'scale(2) translateY(-20px)';
+                    scoreDisplay.style.color = '#00FF00';
+                    scoreDisplay.style.textShadow = '0 0 20px #00FF00';
+                    scoreDisplay.style.animation = 'scorePopup 1s ease-out';
+                }
+                
+                // Create multiple confetti bursts
+                createEnhancedConfetti();
+                createFireworks();
+                
+                // Court celebration effect
+                court.style.background = 'linear-gradient(135deg, rgba(0,255,0,0.3), rgba(255,255,255,0.2), rgba(0,255,0,0.3))';
+                
+            }, 1000);
+            
+            // Phase 4: Player celebrates
+            setTimeout(() => {
+                player.style.transform = 'translateY(-15px) scale(1.2) rotate(10deg)';
+                player.style.filter = 'drop-shadow(0 12px 24px rgba(0,255,0,0.4))';
+                
+                // Add celebration text
+                createCelebrationText('HEBAT! 🌟');
+                
+            }, 1400);
+            
+            // Reset after full animation
+            setTimeout(() => {
+                resetBasketballAnimation(player, ball, scoreDisplay, court);
             }, 2500);
         }
 
-        function createSparkles() {
-            const container = document.getElementById('sparkleContainer');
-            const sparkles = ['✨', '⭐', '🌟', '💫'];
+        function animateBasketballMiss() {
+            const player = document.getElementById('basketballPlayer');
+            const ball = document.getElementById('basketball');
+            const court = document.querySelector('.basketball-court');
             
-            for (let i = 0; i < 8; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
-                sparkle.className = 'absolute text-2xl sparkle';
-                sparkle.style.left = Math.random() * 100 + '%';
-                sparkle.style.top = Math.random() * 100 + '%';
-                sparkle.style.animationDelay = Math.random() * 2 + 's';
-                container.appendChild(sparkle);
+            // Create sound effect text and play bounce sound
+            createSoundEffect('MISS! 😅', 'miss');
+            playSound('bounce');
+            
+            // Enhanced miss animation sequence
+            // Phase 1: Player attempts shot with less confidence
+            player.style.transition = 'all 0.5s ease-out';
+            player.style.transform = 'translateY(-15px) scale(1.05) rotate(-3deg)';
+            player.style.filter = 'drop-shadow(0 6px 12px rgba(255,0,0,0.3))';
+            
+            // Phase 2: Ball flies but misses the basket
+            setTimeout(() => {
+                ball.style.transition = 'all 1s cubic-bezier(0.55, 0.085, 0.68, 0.53)';
+                ball.style.transform = 'translate(220px, -60px) scale(0.8) rotate(450deg)';
+                ball.style.filter = 'drop-shadow(0 4px 8px rgba(255,0,0,0.4))';
+            }, 200);
+            
+            // Phase 3: Ball bounces off rim/backboard
+            setTimeout(() => {
+                ball.style.transition = 'all 0.6s ease-out';
+                ball.style.transform = 'translate(160px, -20px) scale(0.9) rotate(630deg)';
                 
-                setTimeout(() => sparkle.remove(), 3000);
-            }
+                // Court disappointment effect
+                court.style.background = 'linear-gradient(135deg, rgba(255,0,0,0.2), rgba(255,255,255,0.15), rgba(255,0,0,0.2))';
+                
+                // Add miss effect text
+                createMissEffect('Coba Lagi! 💪');
+                
+            }, 900);
+            
+            // Phase 4: Ball falls down
+            setTimeout(() => {
+                ball.style.transition = 'all 0.8s ease-in';
+                ball.style.transform = 'translate(140px, 20px) scale(1) rotate(720deg)';
+                
+                // Player shows disappointment then encouragement
+                player.style.transform = 'translateY(-5px) scale(0.95) rotate(2deg)';
+                
+            }, 1300);
+            
+            // Reset after animation
+            setTimeout(() => {
+                resetBasketballAnimation(player, ball, null, court);
+            }, 2200);
         }
 
-        function createConfetti() {
-            const container = document.getElementById('confettiContainer');
-            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff'];
+        function resetBasketballAnimation(player, ball, scoreDisplay, court) {
+            // Reset all elements to original state
+            player.style.transition = 'all 0.5s ease-out';
+            player.style.transform = '';
+            player.style.filter = '';
             
-            for (let i = 0; i < 15; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                container.appendChild(confetti);
-                
-                setTimeout(() => confetti.remove(), 4000);
+            ball.style.transition = 'all 0.5s ease-out';
+            ball.style.transform = '';
+            ball.style.filter = '';
+            
+            if (scoreDisplay) {
+                scoreDisplay.style.opacity = '0';
+                scoreDisplay.style.transform = '';
+                scoreDisplay.style.animation = '';
+                scoreDisplay.style.textShadow = '';
+            }
+            
+            // Reset court background
+            setTimeout(() => {
+                court.style.background = '';
+            }, 500);
+        }
+
+        function createSoundEffect(text, type) {
+            const court = document.querySelector('.basketball-court');
+            const soundEffect = document.createElement('div');
+            soundEffect.textContent = text;
+            soundEffect.style.cssText = `
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                font-size: 2rem;
+                font-weight: bold;
+                color: ${type === 'success' ? '#00FF00' : '#FF4444'};
+                text-shadow: 0 0 10px ${type === 'success' ? '#00FF00' : '#FF4444'};
+                animation: ${type === 'success' ? 'celebrationTextFloat' : 'missEffectFloat'} 2s ease-out forwards;
+                z-index: 10;
+                pointer-events: none;
+            `;
+            court.appendChild(soundEffect);
+            
+            setTimeout(() => {
+                if (soundEffect.parentNode) {
+                    soundEffect.remove();
+                }
+            }, 2000);
+        }
+
+        function createCelebrationText(text) {
+            const court = document.querySelector('.basketball-court');
+            const celebText = document.createElement('div');
+            celebText.textContent = text;
+            celebText.style.cssText = `
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 3rem;
+                font-weight: bold;
+                color: #FFD700;
+                text-shadow: 0 0 20px #FFD700;
+                animation: celebrationTextFloat 2s ease-out forwards;
+                z-index: 15;
+                pointer-events: none;
+            `;
+            court.appendChild(celebText);
+            
+            setTimeout(() => {
+                if (celebText.parentNode) {
+                    celebText.remove();
+                }
+            }, 2000);
+        }
+
+        function createMissEffect(text) {
+            const court = document.querySelector('.basketball-court');
+            const missText = document.createElement('div');
+            missText.textContent = text;
+            missText.style.cssText = `
+                position: absolute;
+                top: 60%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 2rem;
+                font-weight: bold;
+                color: #FF6B6B;
+                text-shadow: 0 0 15px #FF6B6B;
+                animation: missEffectFloat 2s ease-out forwards;
+                z-index: 15;
+                pointer-events: none;
+            `;
+            court.appendChild(missText);
+            
+            setTimeout(() => {
+                if (missText.parentNode) {
+                    missText.remove();
+                }
+            }, 2000);
+        }
+
+        function createEnhancedConfetti() {
+            const container = document.getElementById('confettiContainer');
+            if (!container) return;
+            
+            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98FB98'];
+            const shapes = ['🎉', '🎊', '⭐', '✨', '🌟', '💫', '🎈', '🎁'];
+            
+            // Create multiple waves of confetti
+            for (let wave = 0; wave < 3; wave++) {
+                setTimeout(() => {
+                    for (let i = 0; i < 15; i++) {
+                        const isEmoji = Math.random() > 0.6;
+                        const confetti = document.createElement('div');
+                        
+                        if (isEmoji) {
+                            confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                            confetti.style.fontSize = '1.5rem';
+                        } else {
+                            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                            confetti.style.width = Math.random() * 12 + 8 + 'px';
+                            confetti.style.height = Math.random() * 12 + 8 + 'px';
+                        }
+                        
+                        confetti.style.position = 'absolute';
+                        confetti.style.left = Math.random() * 100 + '%';
+                        confetti.style.top = Math.random() * 30 + '%';
+                        confetti.style.animation = `confetti ${2 + Math.random() * 2}s ease-out forwards`;
+                        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                        container.appendChild(confetti);
+                        
+                        setTimeout(() => {
+                            if (confetti.parentNode) {
+                                confetti.remove();
+                            }
+                        }, 4000);
+                    }
+                }, wave * 300);
             }
         }
 
         function createFireworks() {
-            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'];
+            const court = document.querySelector('.basketball-court');
+            const fireworkPositions = [
+                { x: '20%', y: '30%' },
+                { x: '80%', y: '25%' },
+                { x: '50%', y: '20%' },
+                { x: '30%', y: '40%' },
+                { x: '70%', y: '35%' }
+            ];
             
-            for (let i = 0; i < 5; i++) {
+            fireworkPositions.forEach((pos, index) => {
                 setTimeout(() => {
-                    createConfetti();
-                    createSparkles();
-                    playCorrectSound();
-                }, i * 500);
+                    const firework = document.createElement('div');
+                    firework.style.cssText = `
+                        position: absolute;
+                        left: ${pos.x};
+                        top: ${pos.y};
+                        width: 4px;
+                        height: 4px;
+                        background: radial-gradient(circle, #FFD700, #FF6B6B, #4ECDC4);
+                        border-radius: 50%;
+                        animation: fireworkExplode 1.5s ease-out forwards;
+                        z-index: 12;
+                    `;
+                    court.appendChild(firework);
+                    
+                    // Create sparkles around firework
+                    for (let i = 0; i < 8; i++) {
+                        const sparkle = document.createElement('div');
+                        sparkle.textContent = '✨';
+                        sparkle.style.cssText = `
+                            position: absolute;
+                            left: ${pos.x};
+                            top: ${pos.y};
+                            font-size: 1rem;
+                            animation: sparkle 1s ease-out infinite;
+                            animation-delay: ${i * 0.1}s;
+                            z-index: 11;
+                        `;
+                        court.appendChild(sparkle);
+                        
+                        setTimeout(() => {
+                            if (sparkle.parentNode) {
+                                sparkle.remove();
+                            }
+                        }, 1500);
+                    }
+                    
+                    setTimeout(() => {
+                        if (firework.parentNode) {
+                            firework.remove();
+                        }
+                    }, 1500);
+                }, index * 200);
+            });
+        }
+
+
+
+        // Data Management Functions
+        function loadGameData() {
+            try {
+                const data = localStorage.getItem('ethnomath_game_data');
+                if (data) {
+                    return JSON.parse(data);
+                }
+            } catch (error) {
+                console.log('Error loading data:', error);
+            }
+            return {
+                players: {},
+                games: [],
+                dailyStats: {}
+            };
+        }
+
+        function saveGameData() {
+            try {
+                const data = loadGameData();
+                const today = new Date().toISOString().split('T')[0];
+                
+                // Update player data
+                if (!data.players[gameState.currentPlayer]) {
+                    data.players[gameState.currentPlayer] = {
+                        name: gameState.currentPlayer,
+                        highestScore: 0,
+                        totalGames: 0,
+                        totalScore: 0,
+                        lastPlayed: today
+                    };
+                }
+                
+                const player = data.players[gameState.currentPlayer];
+                player.highestScore = Math.max(player.highestScore, gameState.score);
+                player.totalGames++;
+                player.totalScore += gameState.score;
+                player.lastPlayed = today;
+                
+                // Add game record
+                data.games.push({
+                    player: gameState.currentPlayer,
+                    score: gameState.score,
+                    correctAnswers: gameState.correctAnswers,
+                    totalQuestions: questionPool.length,
+                    date: new Date().toISOString(),
+                    timeSpent: 600 - gameState.timeRemaining
+                });
+                
+                localStorage.setItem('ethnomath_game_data', JSON.stringify(data));
+            } catch (error) {
+                console.log('Save game data error:', error);
             }
         }
 
-        // Initialize
+        // Host Dashboard Functions
+        function updateHostDashboard() {
+            const data = loadGameData();
+            
+            // Calculate statistics
+            const totalPlayers = Object.keys(data.players || {}).length;
+            const totalGames = (data.games || []).length;
+            const averageScore = totalGames > 0 ? Math.round(data.games.reduce((sum, game) => sum + (game.score || 0), 0) / totalGames) : 0;
+            const highestScore = data.games && data.games.length > 0 ? Math.max(...data.games.map(game => game.score || 0)) : 0;
+            
+            // Update dashboard stats
+            document.getElementById('totalPlayers').textContent = totalPlayers;
+            document.getElementById('totalGames').textContent = totalGames;
+            document.getElementById('averageScore').textContent = averageScore;
+            document.getElementById('highestScore').textContent = highestScore;
+            
+            // Calculate additional stats
+            const today = new Date().toISOString().split('T')[0];
+            const todayGames = (data.games || []).filter(game => game.date && game.date.startsWith(today));
+            const activeToday = new Set(todayGames.map(game => game.player)).size;
+            
+            const correctAnswers = (data.games || []).reduce((sum, game) => sum + (game.correctAnswers || 0), 0);
+            const totalQuestions = (data.games || []).reduce((sum, game) => sum + (game.totalQuestions || 0), 0);
+            const accuracyRate = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            
+            document.getElementById('activeToday').textContent = activeToday;
+            document.getElementById('accuracyRate').textContent = accuracyRate + '%';
+            document.getElementById('streakRecord').textContent = '5'; // Static for demo
+            
+            // Update leaderboard and chart
+            updateLeaderboard(data);
+            renderScoreChart(data);
+        }
+
+        function renderScoreChart(data) {
+            const chartContainer = document.getElementById('chartContainer');
+            if (!chartContainer) return;
+            
+            const games = data.games || [];
+            if (games.length === 0) {
+                chartContainer.innerHTML = `
+                    <div class="flex flex-col items-center justify-center h-full text-gray-400">
+                        <div class="text-6xl mb-4">📊</div>
+                        <p class="text-xl">Belum ada data untuk ditampilkan</p>
+                        <p class="text-sm mt-2">Grafik akan muncul setelah ada pemain yang bermain</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Group scores into ranges
+            const scoreRanges = {
+                '0-20': 0,
+                '21-40': 0,
+                '41-60': 0,
+                '61-80': 0,
+                '81-100': 0
+            };
+            
+            games.forEach(game => {
+                const score = game.score || 0;
+                if (score <= 20) scoreRanges['0-20']++;
+                else if (score <= 40) scoreRanges['21-40']++;
+                else if (score <= 60) scoreRanges['41-60']++;
+                else if (score <= 80) scoreRanges['61-80']++;
+                else scoreRanges['81-100']++;
+            });
+            
+            const maxCount = Math.max(...Object.values(scoreRanges));
+            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6'];
+            const emojis = ['😅', '😐', '🙂', '😊', '🤩'];
+            
+            let chartHTML = '<div class="flex items-end justify-center h-full space-x-4 px-4">';
+            
+            Object.entries(scoreRanges).forEach(([range, count], index) => {
+                const height = maxCount > 0 ? (count / maxCount) * 80 : 0;
+                const percentage = games.length > 0 ? Math.round((count / games.length) * 100) : 0;
+                
+                chartHTML += `
+                    <div class="flex flex-col items-center space-y-2">
+                        <div class="text-white text-sm font-bold">${count}</div>
+                        <div class="relative">
+                            <div class="w-12 bg-gradient-to-t from-${colors[index].replace('#', '')} to-${colors[index].replace('#', '')} rounded-t-lg transition-all duration-1000 ease-out" 
+                                 style="height: ${height}%; min-height: ${count > 0 ? '20px' : '2px'}; background: linear-gradient(to top, ${colors[index]}, ${colors[index]}aa);"></div>
+                        </div>
+                        <div class="text-2xl">${emojis[index]}</div>
+                        <div class="text-white text-xs font-bold text-center">
+                            <div>${range}</div>
+                            <div class="text-gray-300">${percentage}%</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            chartHTML += '</div>';
+            chartContainer.innerHTML = chartHTML;
+        }
+
+        function updateLeaderboard(data) {
+            const leaderboard = Object.values(data.players || {})
+                .sort((a, b) => (b.highestScore || 0) - (a.highestScore || 0))
+                .slice(0, 10);
+            
+            const tableBody = document.getElementById('leaderboardTable');
+            tableBody.innerHTML = '';
+            
+            leaderboard.forEach((player, index) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-white/10 hover:bg-white/5 transition-colors';
+                
+                const averageScore = (player.totalGames || 0) > 0 ? Math.round((player.totalScore || 0) / player.totalGames) : 0;
+                const lastPlayed = player.lastPlayed ? new Date(player.lastPlayed).toLocaleDateString('id-ID') : 'Tidak diketahui';
+                
+                row.innerHTML = `
+                    <td class="py-3 px-4">
+                        <span class="text-2xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'}</span>
+                        ${index + 1}
+                    </td>
+                    <td class="py-3 px-4 font-bold">${player.name || 'Pemain'}</td>
+                    <td class="py-3 px-4 text-yellow-400 font-bold">${player.highestScore || 0}</td>
+                    <td class="py-3 px-4">${player.totalGames || 0}</td>
+                    <td class="py-3 px-4">${averageScore}</td>
+                    <td class="py-3 px-4 text-sm">${lastPlayed}</td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            if (leaderboard.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="6" class="py-8 px-4 text-center text-gray-400">
+                        <div class="text-4xl mb-2">🎮</div>
+                        Belum ada pemain yang bermain
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            }
+        }
+
+        // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize cloud storage
-            setTimeout(() => {
-                initCloudStorage();
-            }, 500);
+            // Initialize the game
+            showHome();
             
-            // Initialize background music
-            setTimeout(() => {
-                initBackgroundMusic();
-            }, 1000);
+            // Initialize music system
+            initializeMusic();
             
-            // Add some initial sparkles to home page
-            setTimeout(createSparkles, 1000);
-            
-            // Add Enter key support for name input
+            // Host password input enter key
+            document.getElementById('hostPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    verifyHostPassword();
+                }
+            });
+
+            // Player name input enter key
             document.getElementById('playerName').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     startGameWithName();
                 }
             });
 
-            // Add Enter key support for host password
-            document.getElementById('hostPassword').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    verifyHostPassword();
+            // Add click sounds to all buttons
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', () => {
+                    if (!button.id || !['musicToggle'].includes(button.id)) {
+                        playSound('click');
+                    }
+                });
+            });
+
+            // Host dashboard buttons - use event delegation since buttons might not exist yet
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'exportBtn' || e.target.closest('#exportBtn')) {
+                    e.preventDefault();
+                    playSound('click');
+                    exportGameData();
+                } else if (e.target.id === 'clearBtn' || e.target.closest('#clearBtn')) {
+                    e.preventDefault();
+                    playSound('click');
+                    clearGameData();
+                } else if (e.target.id === 'refreshBtn' || e.target.closest('#refreshBtn')) {
+                    e.preventDefault();
+                    playSound('click');
+                    updateHostDashboard();
                 }
             });
-            
-            // Add event listeners for dashboard buttons with multiple connection methods
-            setTimeout(() => {
-                connectDashboardButtons();
-            }, 100);
-            
-            // Also try connecting when dashboard is shown
-            const originalShowHostDashboard = showHostDashboard;
-            showHostDashboard = function() {
-                originalShowHostDashboard();
-                setTimeout(connectDashboardButtons, 200);
-            };
         });
-        
-        function connectDashboardButtons() {
+
+        // Host Dashboard Button Functions
+        function exportGameData() {
             try {
-                const exportBtn = document.getElementById('exportBtn');
-                const clearBtn = document.getElementById('clearBtn');
-                const refreshBtn = document.getElementById('refreshBtn');
+                const data = loadGameData();
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataBlob = new Blob([dataStr], {type: 'application/json'});
                 
-                if (exportBtn) {
-                    exportBtn.onclick = exportData;
-                    exportBtn.addEventListener('click', exportData);
-                    console.log('✅ Export button connected');
-                } else {
-                    console.warn('❌ Export button not found');
-                }
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(dataBlob);
+                link.download = `ethnomath_data_${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 
-                if (clearBtn) {
-                    clearBtn.onclick = clearAllData;
-                    clearBtn.addEventListener('click', clearAllData);
-                    console.log('✅ Clear button connected');
-                } else {
-                    console.warn('❌ Clear button not found');
-                }
-                
-                if (refreshBtn) {
-                    refreshBtn.onclick = refreshDashboard;
-                    refreshBtn.addEventListener('click', refreshDashboard);
-                    console.log('✅ Refresh button connected');
-                } else {
-                    console.warn('❌ Refresh button not found');
-                }
+                // Show success message
+                showNotification('✅ Data berhasil diexport!', 'success');
             } catch (error) {
-                console.error('❌ Error connecting dashboard buttons:', error);
+                console.error('Export error:', error);
+                showNotification('❌ Gagal export data!', 'error');
             }
         }
-            
-            // Show host button only on home page initially
-            showHome();
-            
-            // Auto-start music after a short delay
-            setTimeout(() => {
-                if (!musicStarted) {
-                    startBackgroundMusic();
+
+        function clearGameData() {
+            if (confirm('⚠️ Apakah Anda yakin ingin menghapus semua data papan peringkat?\n\nTindakan ini tidak dapat dibatalkan!')) {
+                try {
+                    localStorage.removeItem('ethnomath_game_data');
+                    updateHostDashboard();
+                    showNotification('🗑️ Data papan peringkat berhasil dihapus!', 'success');
+                } catch (error) {
+                    console.error('Clear data error:', error);
+                    showNotification('❌ Gagal menghapus data!', 'error');
                 }
-            }, 2000);
-        });
+            }
+        }
+
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg font-bold text-white shadow-lg transform transition-all duration-300 ${
+                type === 'success' ? 'bg-green-500' : 'bg-red-500'
+            }`;
+            notification.textContent = message;
+            notification.style.transform = 'translateX(100%)';
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Animate out and remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 3000);
+        }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9743ae7a55575fdf',t:'MTc1NjA0NzIzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97466836011ffd65',t:'MTc1NjA3NTgxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
