@@ -1202,96 +1202,200 @@
         // Music and Sound Functions
         function initializeMusic() {
             try {
-                // Initialize background music with Joget Melayu from Google Drive
-                // Note: Replace this ID with your actual Google Drive file ID for Joget Melayu music
-                gameState.backgroundMusic = new Audio('https://drive.google.com/uc?export=download&id=1zbxpFgdT9u_cB4N3p13II-bQKoScc3Bh');
-                gameState.backgroundMusic.loop = true;
-                gameState.backgroundMusic.volume = 0.3;
-                
-                // Try to play music (will be blocked by browser policy until user interaction)
-                gameState.backgroundMusic.addEventListener('canplaythrough', () => {
-                    console.log('Background music loaded successfully');
-                });
-                
-                gameState.backgroundMusic.addEventListener('error', (e) => {
-                    console.log('Background music error:', e);
-                    // Fallback: create a simple melody using Web Audio API
-                    createFallbackMusic();
-                });
-                
+                createMalayBackgroundMusic();
             } catch (error) {
                 console.log('Music initialization error:', error);
-                createFallbackMusic();
             }
         }
 
-        function createFallbackMusic() {
-            // Create a simple traditional melody using Web Audio API as fallback
+        function createMalayBackgroundMusic() {
+            // Create energetic Malay-style background music using Web Audio API
             try {
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 let isPlaying = false;
+                let currentLoop = null;
                 
-                function playMelody() {
+                function playMalayMelody() {
                     if (isPlaying || !gameState.isMusicPlaying) return;
                     isPlaying = true;
                     
-                    // Traditional Malay-inspired melody notes (frequencies)
-                    const melody = [
-                        { freq: 523.25, duration: 0.5 }, // C5
-                        { freq: 587.33, duration: 0.5 }, // D5
-                        { freq: 659.25, duration: 0.5 }, // E5
-                        { freq: 698.46, duration: 0.5 }, // F5
-                        { freq: 783.99, duration: 0.5 }, // G5
-                        { freq: 659.25, duration: 0.5 }, // E5
-                        { freq: 587.33, duration: 0.5 }, // D5
-                        { freq: 523.25, duration: 1.0 }  // C5
+                    // Energetic Malay-inspired melody with traditional pentatonic scale
+                    // Using frequencies that create a joyful, upbeat Joget-style rhythm
+                    const mainMelody = [
+                        // Verse 1 - Upbeat opening
+                        { freq: 523.25, duration: 0.4, volume: 0.15 }, // C5
+                        { freq: 587.33, duration: 0.4, volume: 0.15 }, // D5
+                        { freq: 659.25, duration: 0.4, volume: 0.18 }, // E5
+                        { freq: 783.99, duration: 0.6, volume: 0.20 }, // G5
+                        { freq: 659.25, duration: 0.4, volume: 0.15 }, // E5
+                        { freq: 587.33, duration: 0.4, volume: 0.15 }, // D5
+                        { freq: 523.25, duration: 0.8, volume: 0.18 }, // C5
+                        
+                        // Verse 2 - Building energy
+                        { freq: 659.25, duration: 0.3, volume: 0.16 }, // E5
+                        { freq: 698.46, duration: 0.3, volume: 0.16 }, // F5
+                        { freq: 783.99, duration: 0.4, volume: 0.20 }, // G5
+                        { freq: 880.00, duration: 0.6, volume: 0.22 }, // A5
+                        { freq: 783.99, duration: 0.4, volume: 0.18 }, // G5
+                        { freq: 659.25, duration: 0.4, volume: 0.16 }, // E5
+                        { freq: 587.33, duration: 0.6, volume: 0.15 }, // D5
+                        
+                        // Chorus - Peak energy
+                        { freq: 1046.50, duration: 0.4, volume: 0.25 }, // C6
+                        { freq: 880.00, duration: 0.3, volume: 0.22 }, // A5
+                        { freq: 783.99, duration: 0.3, volume: 0.20 }, // G5
+                        { freq: 659.25, duration: 0.4, volume: 0.18 }, // E5
+                        { freq: 783.99, duration: 0.4, volume: 0.20 }, // G5
+                        { freq: 880.00, duration: 0.4, volume: 0.22 }, // A5
+                        { freq: 1046.50, duration: 0.8, volume: 0.25 }, // C6
+                        
+                        // Bridge - Rhythmic variation
+                        { freq: 880.00, duration: 0.2, volume: 0.20 }, // A5
+                        { freq: 783.99, duration: 0.2, volume: 0.18 }, // G5
+                        { freq: 659.25, duration: 0.2, volume: 0.16 }, // E5
+                        { freq: 587.33, duration: 0.2, volume: 0.15 }, // D5
+                        { freq: 659.25, duration: 0.4, volume: 0.18 }, // E5
+                        { freq: 783.99, duration: 0.4, volume: 0.20 }, // G5
+                        { freq: 523.25, duration: 1.0, volume: 0.18 }  // C5
+                    ];
+                    
+                    // Bass line for rhythm support
+                    const bassLine = [
+                        { freq: 261.63, duration: 0.8, volume: 0.12 }, // C4
+                        { freq: 293.66, duration: 0.8, volume: 0.12 }, // D4
+                        { freq: 329.63, duration: 0.8, volume: 0.12 }, // E4
+                        { freq: 391.99, duration: 0.8, volume: 0.12 }, // G4
+                        { freq: 329.63, duration: 0.8, volume: 0.12 }, // E4
+                        { freq: 293.66, duration: 0.8, volume: 0.12 }, // D4
+                        { freq: 261.63, duration: 1.6, volume: 0.12 }  // C4
                     ];
                     
                     let currentTime = audioContext.currentTime;
                     
-                    melody.forEach((note, index) => {
+                    // Play main melody with traditional Malay ornaments
+                    mainMelody.forEach((note, index) => {
+                        // Main oscillator
                         const oscillator = audioContext.createOscillator();
                         const gainNode = audioContext.createGain();
+                        
+                        // Add slight vibrato for traditional feel
+                        const vibrato = audioContext.createOscillator();
+                        const vibratoGain = audioContext.createGain();
+                        
+                        vibrato.frequency.setValueAtTime(5, currentTime); // 5Hz vibrato
+                        vibratoGain.gain.setValueAtTime(3, currentTime); // Subtle vibrato depth
+                        
+                        vibrato.connect(vibratoGain);
+                        vibratoGain.connect(oscillator.frequency);
                         
                         oscillator.connect(gainNode);
                         gainNode.connect(audioContext.destination);
                         
                         oscillator.frequency.setValueAtTime(note.freq, currentTime);
-                        oscillator.type = 'sine';
+                        oscillator.type = 'triangle'; // Warmer sound for traditional feel
                         
                         gainNode.gain.setValueAtTime(0, currentTime);
-                        gainNode.gain.linearRampToValueAtTime(0.1, currentTime + 0.1);
+                        gainNode.gain.linearRampToValueAtTime(note.volume, currentTime + 0.05);
                         gainNode.gain.exponentialRampToValueAtTime(0.01, currentTime + note.duration);
                         
                         oscillator.start(currentTime);
                         oscillator.stop(currentTime + note.duration);
+                        vibrato.start(currentTime);
+                        vibrato.stop(currentTime + note.duration);
                         
                         currentTime += note.duration;
                     });
                     
-                    setTimeout(() => {
+                    // Add bass line for rhythm
+                    let bassTime = audioContext.currentTime;
+                    bassLine.forEach((note, index) => {
+                        const bassOsc = audioContext.createOscillator();
+                        const bassGain = audioContext.createGain();
+                        
+                        bassOsc.connect(bassGain);
+                        bassGain.connect(audioContext.destination);
+                        
+                        bassOsc.frequency.setValueAtTime(note.freq, bassTime);
+                        bassOsc.type = 'sawtooth'; // Rich bass sound
+                        
+                        bassGain.gain.setValueAtTime(0, bassTime);
+                        bassGain.gain.linearRampToValueAtTime(note.volume, bassTime + 0.1);
+                        bassGain.gain.exponentialRampToValueAtTime(0.01, bassTime + note.duration);
+                        
+                        bassOsc.start(bassTime);
+                        bassOsc.stop(bassTime + note.duration);
+                        
+                        bassTime += note.duration;
+                    });
+                    
+                    // Add percussion-like rhythm using filtered noise
+                    addPercussionRhythm(audioContext, audioContext.currentTime, currentTime - audioContext.currentTime);
+                    
+                    const totalDuration = (currentTime - audioContext.currentTime) * 1000;
+                    
+                    currentLoop = setTimeout(() => {
                         isPlaying = false;
                         if (gameState.isMusicPlaying) {
-                            setTimeout(playMelody, 2000); // Repeat after 2 seconds
+                            setTimeout(playMalayMelody, 500); // Short pause between loops
                         }
-                    }, currentTime * 1000);
+                    }, totalDuration);
                 }
                 
-                // Override the background music object with fallback
+                function addPercussionRhythm(audioContext, startTime, duration) {
+                    // Create traditional Malay percussion rhythm using filtered noise
+                    const rhythmPattern = [0, 0.4, 0.8, 1.2, 1.6, 2.0, 2.4, 2.8]; // Beat positions
+                    
+                    rhythmPattern.forEach(beatTime => {
+                        if (beatTime < duration) {
+                            // High-hat like sound
+                            const bufferSize = audioContext.sampleRate * 0.1;
+                            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+                            const output = buffer.getChannelData(0);
+                            
+                            for (let i = 0; i < bufferSize; i++) {
+                                output[i] = Math.random() * 2 - 1;
+                            }
+                            
+                            const noise = audioContext.createBufferSource();
+                            noise.buffer = buffer;
+                            
+                            const filter = audioContext.createBiquadFilter();
+                            filter.type = 'highpass';
+                            filter.frequency.setValueAtTime(8000, startTime + beatTime);
+                            
+                            const percGain = audioContext.createGain();
+                            percGain.gain.setValueAtTime(0.08, startTime + beatTime);
+                            percGain.gain.exponentialRampToValueAtTime(0.01, startTime + beatTime + 0.1);
+                            
+                            noise.connect(filter);
+                            filter.connect(percGain);
+                            percGain.connect(audioContext.destination);
+                            
+                            noise.start(startTime + beatTime);
+                            noise.stop(startTime + beatTime + 0.1);
+                        }
+                    });
+                }
+                
+                // Create the background music object
                 gameState.backgroundMusic = {
                     play: () => {
                         gameState.isMusicPlaying = true;
-                        playMelody();
+                        playMalayMelody();
                         return Promise.resolve();
                     },
                     pause: () => {
                         gameState.isMusicPlaying = false;
+                        if (currentLoop) {
+                            clearTimeout(currentLoop);
+                            currentLoop = null;
+                        }
                     },
                     volume: 0.3
                 };
                 
             } catch (error) {
-                console.log('Fallback music creation error:', error);
+                console.log('Malay music creation error:', error);
             }
         }
 
@@ -2175,5 +2279,5 @@
             }, 3000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97466836011ffd65',t:'MTc1NjA3NTgxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'974678ba756ca06c',t:'MTc1NjA3NjQ4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
