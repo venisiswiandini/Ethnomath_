@@ -705,6 +705,34 @@
                     </button>
                 </div>
                 
+                <!-- QR Code Section for Students -->
+                <div class="glass-card rounded-3xl p-8 mb-8 text-center floating bg-gradient-to-br from-cyan-400/20 to-blue-400/20">
+                    <h3 class="text-4xl font-bold rainbow-text mb-6 flex items-center justify-center">
+                        📱 Scan QR Code untuk Bermain
+                        <span class="ml-3 text-3xl">🎮</span>
+                    </h3>
+                    
+                    <!-- Large QR Code Display -->
+                    <div class="flex justify-center">
+                        <div class="transform hover:scale-105 transition-all duration-300">
+                            <img src="https://imgur.com/jQDIHea.jpg" alt="QR Code Game Ethnomath" 
+                                 class="w-96 h-96 object-contain shadow-2xl"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white p-12 rounded-2xl w-96 h-96 flex flex-col items-center justify-center shadow-2xl">
+                                <div class="text-6xl mb-4">📱</div>
+                                <p class="text-2xl font-bold text-center">QR Code untuk<br>Akses Game</p>
+                                <p class="text-lg mt-2 opacity-75">Ethnomath Quiz</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-2xl text-white font-bold mt-6 mb-2">
+                        🎯 Siswa scan QR code ini untuk bermain!
+                    </p>
+                </div>
+
+
+
                 <!-- Statistics Cards -->
                 <div class="grid md:grid-cols-4 gap-6 mb-8">
                     <div class="glass-card rounded-2xl p-6 text-center floating">
@@ -877,6 +905,277 @@
     </button>
 
     <script>
+        // Google Drive API Configuration for Cloud Storage
+        const GOOGLE_DRIVE_CONFIG = {
+            apiKey: 'AIzaSyBH8vQ9X4K5L2M3N6P7R8S9T0U1V2W3X4Y5', // Demo key - replace with real key
+            clientId: '123456789-abcdefghijklmnopqrstuvwxyz.apps.googleusercontent.com', // Demo - replace with real
+            discoveryDoc: 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest',
+            scopes: 'https://www.googleapis.com/auth/drive.file',
+            targetEmail: 'venisiswiandini00@gmail.com',
+            folderName: 'Ethnomath Game Data'
+        };
+
+        // Cloud Storage State
+        let cloudStorage = {
+            isInitialized: false,
+            isSignedIn: false,
+            gapi: null,
+            folderId: null,
+            lastSync: null,
+            syncInProgress: false
+        };
+
+        // Initialize Google Drive API
+        async function initCloudStorage() {
+            try {
+                // Load Google API
+                if (!window.gapi) {
+                    await loadGoogleAPI();
+                }
+
+                await new Promise((resolve) => {
+                    gapi.load('client:auth2', resolve);
+                });
+
+                await gapi.client.init({
+                    apiKey: GOOGLE_DRIVE_CONFIG.apiKey,
+                    clientId: GOOGLE_DRIVE_CONFIG.clientId,
+                    discoveryDocs: [GOOGLE_DRIVE_CONFIG.discoveryDoc],
+                    scope: GOOGLE_DRIVE_CONFIG.scopes
+                });
+
+                cloudStorage.gapi = gapi;
+                cloudStorage.isInitialized = true;
+                
+                // Check if user is already signed in
+                const authInstance = gapi.auth2.getAuthInstance();
+                cloudStorage.isSignedIn = authInstance.isSignedIn.get();
+                
+                if (cloudStorage.isSignedIn) {
+                    await setupCloudFolder();
+                    console.log('✅ Cloud storage initialized and connected');
+                } else {
+                    // Auto sign in to cloud storage
+                    console.log('🔄 Auto-connecting to cloud storage...');
+                    await signInToCloud();
+                }
+
+                updateCloudStatus();
+                
+            } catch (error) {
+                console.warn('⚠️ Cloud storage initialization failed:', error);
+                // Continue with local storage as fallback
+                cloudStorage.isInitialized = false;
+            }
+        }
+
+        function loadGoogleAPI() {
+            return new Promise((resolve, reject) => {
+                if (window.gapi) {
+                    resolve();
+                    return;
+                }
+
+                const script = document.createElement('script');
+                script.src = 'https://apis.google.com/js/api.js';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        async function signInToCloud() {
+            if (!cloudStorage.isInitialized) {
+                console.log('🔧 Cloud storage belum siap. Mencoba inisialisasi ulang...');
+                await initCloudStorage();
+                return;
+            }
+
+            try {
+                const authInstance = gapi.auth2.getAuthInstance();
+                await authInstance.signIn();
+                
+                cloudStorage.isSignedIn = true;
+                await setupCloudFolder();
+                
+                // Sync existing local data to cloud
+                await syncToCloud();
+                
+                console.log('✅ Berhasil terhubung ke cloud storage untuk venisiswiandini00@gmail.com');
+                updateCloudStatus();
+                
+            } catch (error) {
+                console.warn('Sign in failed, continuing with local storage:', error);
+                // Silently continue with local storage
+            }
+        }
+
+        async function setupCloudFolder() {
+            try {
+                // Search for existing folder
+                const response = await gapi.client.drive.files.list({
+                    q: `name='${GOOGLE_DRIVE_CONFIG.folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`,
+                    spaces: 'drive'
+                });
+
+                if (response.result.files.length > 0) {
+                    cloudStorage.folderId = response.result.files[0].id;
+                    console.log('📁 Found existing cloud folder:', cloudStorage.folderId);
+                } else {
+                    // Create new folder
+                    const folderResponse = await gapi.client.drive.files.create({
+                        resource: {
+                            name: GOOGLE_DRIVE_CONFIG.folderName,
+                            mimeType: 'application/vnd.google-apps.folder'
+                        }
+                    });
+                    
+                    cloudStorage.folderId = folderResponse.result.id;
+                    console.log('📁 Created new cloud folder:', cloudStorage.folderId);
+                }
+
+                // Share folder with target email
+                await shareWithTargetEmail();
+                
+            } catch (error) {
+                console.error('Failed to setup cloud folder:', error);
+                throw error;
+            }
+        }
+
+        async function shareWithTargetEmail() {
+            try {
+                await gapi.client.drive.permissions.create({
+                    fileId: cloudStorage.folderId,
+                    resource: {
+                        role: 'writer',
+                        type: 'user',
+                        emailAddress: GOOGLE_DRIVE_CONFIG.targetEmail
+                    }
+                });
+                console.log(`📧 Folder shared with ${GOOGLE_DRIVE_CONFIG.targetEmail}`);
+            } catch (error) {
+                console.warn('Failed to share folder:', error);
+                // Continue anyway - folder is still accessible to signed-in user
+            }
+        }
+
+        async function syncToCloud() {
+            if (!cloudStorage.isSignedIn || cloudStorage.syncInProgress) {
+                return;
+            }
+
+            try {
+                cloudStorage.syncInProgress = true;
+                updateCloudStatus();
+
+                const gameData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
+                    players: {},
+                    games: [],
+                    dailyStats: {}
+                };
+
+                const syncData = {
+                    gameData: gameData,
+                    lastSync: new Date().toISOString(),
+                    version: '1.0',
+                    source: 'Ethnomath Game'
+                };
+
+                const fileName = `ethnomath_data_${new Date().toISOString().split('T')[0]}.json`;
+                
+                // Check if file exists for today
+                const existingFiles = await gapi.client.drive.files.list({
+                    q: `name='${fileName}' and parents in '${cloudStorage.folderId}' and trashed=false`,
+                    spaces: 'drive'
+                });
+
+                const fileContent = JSON.stringify(syncData, null, 2);
+                const blob = new Blob([fileContent], { type: 'application/json' });
+
+                if (existingFiles.result.files.length > 0) {
+                    // Update existing file
+                    const fileId = existingFiles.result.files[0].id;
+                    
+                    const form = new FormData();
+                    form.append('metadata', new Blob([JSON.stringify({
+                        name: fileName
+                    })], { type: 'application/json' }));
+                    form.append('file', blob);
+
+                    await fetch(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=multipart`, {
+                        method: 'PATCH',
+                        headers: {
+                            'Authorization': `Bearer ${gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token}`
+                        },
+                        body: form
+                    });
+                } else {
+                    // Create new file
+                    const form = new FormData();
+                    form.append('metadata', new Blob([JSON.stringify({
+                        name: fileName,
+                        parents: [cloudStorage.folderId]
+                    })], { type: 'application/json' }));
+                    form.append('file', blob);
+
+                    await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token}`
+                        },
+                        body: form
+                    });
+                }
+
+                cloudStorage.lastSync = new Date();
+                console.log('☁️ Data synced to cloud successfully');
+                
+            } catch (error) {
+                console.error('Cloud sync failed:', error);
+            } finally {
+                cloudStorage.syncInProgress = false;
+                updateCloudStatus();
+            }
+        }
+
+        async function loadFromCloud() {
+            if (!cloudStorage.isSignedIn) {
+                return null;
+            }
+
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const fileName = `ethnomath_data_${today}.json`;
+                
+                const files = await gapi.client.drive.files.list({
+                    q: `name='${fileName}' and parents in '${cloudStorage.folderId}' and trashed=false`,
+                    spaces: 'drive'
+                });
+
+                if (files.result.files.length > 0) {
+                    const fileId = files.result.files[0].id;
+                    const response = await gapi.client.drive.files.get({
+                        fileId: fileId,
+                        alt: 'media'
+                    });
+
+                    const cloudData = JSON.parse(response.body);
+                    return cloudData.gameData;
+                }
+                
+                return null;
+            } catch (error) {
+                console.error('Failed to load from cloud:', error);
+                return null;
+            }
+        }
+
+        function updateCloudStatus() {
+            // Simplified cloud status update - no UI elements to update
+            console.log(`📊 Cloud Status: ${cloudStorage.isSignedIn ? 'Connected' : 'Local Only'}`);
+        }
+
         // Enhanced Background Music Control with Malay Traditional Instrumental Music
         let backgroundMusic = null;
         let gameMusic = null;
@@ -895,7 +1194,7 @@
         
         function createMalayInstrumentalMusic() {
             // Convert Google Drive link to direct download link
-            const googleDriveId = '18QifUquyK-TEQexg5mNdOoHsrGLryiz7';
+            const googleDriveId = '1Xm_jQ5Q-_ePeuzjDlps19wR8MBTq7iWn';
             const directLink = `https://drive.google.com/uc?export=download&id=${googleDriveId}`;
             
             // Create background music audio element
@@ -1471,18 +1770,28 @@
             playClickSound();
         }
 
-        // Game Data Storage
+        // Enhanced Game Data Storage with Cloud Integration
         let gameData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
             players: {},
             games: [],
             dailyStats: {}
         };
 
-        function saveGameData() {
+        async function saveGameData() {
+            // Save to local storage first
             localStorage.setItem('ethnomath_game_data', JSON.stringify(gameData));
+            
+            // Auto-sync to cloud if connected
+            if (cloudStorage.isSignedIn && !cloudStorage.syncInProgress) {
+                try {
+                    await syncToCloud();
+                } catch (error) {
+                    console.warn('Auto-sync to cloud failed:', error);
+                }
+            }
         }
 
-        function recordGameResult(playerName, score, correctAnswers) {
+        async function recordGameResult(playerName, score, correctAnswers) {
             const today = new Date().toISOString().split('T')[0];
             const gameResult = {
                 playerName,
@@ -1525,7 +1834,7 @@
             gameData.dailyStats[today].totalScore += score;
             gameData.dailyStats[today].players.add(playerName);
 
-            saveGameData();
+            await saveGameData();
         }
 
         function loadDashboardData() {
@@ -1908,7 +2217,7 @@
 
 
 
-        function exportData() {
+        async function exportData() {
             try {
                 // Show loading state
                 const exportBtn = document.getElementById('exportBtn');
@@ -1916,19 +2225,46 @@
                 exportBtn.textContent = '📥 Mengexport...';
                 exportBtn.disabled = true;
                 
-                // Reload fresh data from localStorage
-                const freshData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
-                    players: {},
-                    games: [],
-                    dailyStats: {}
-                };
+                // Try to get latest data from cloud first
+                let freshData;
+                if (cloudStorage.isSignedIn) {
+                    try {
+                        const cloudData = await loadFromCloud();
+                        if (cloudData) {
+                            freshData = cloudData;
+                            console.log('📥 Using cloud data for export');
+                        } else {
+                            freshData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
+                                players: {},
+                                games: [],
+                                dailyStats: {}
+                            };
+                            console.log('📱 Using local data for export');
+                        }
+                    } catch (error) {
+                        console.warn('Failed to load cloud data, using local:', error);
+                        freshData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
+                            players: {},
+                            games: [],
+                            dailyStats: {}
+                        };
+                    }
+                } else {
+                    freshData = JSON.parse(localStorage.getItem('ethnomath_game_data')) || {
+                        players: {},
+                        games: [],
+                        dailyStats: {}
+                    };
+                }
                 
                 // Create formatted export data with comprehensive summary
                 const exportData = {
                     exportInfo: {
                         exportDate: new Date().toISOString(),
                         exportTime: new Date().toLocaleString('id-ID'),
-                        version: '1.0'
+                        version: '1.0',
+                        source: cloudStorage.isSignedIn ? 'Cloud Storage' : 'Local Storage',
+                        targetEmail: 'venisiswiandini00@gmail.com'
                     },
                     summary: {
                         totalPlayers: Object.keys(freshData.players).length,
@@ -1963,6 +2299,16 @@
                 // Clean up URL
                 setTimeout(() => URL.revokeObjectURL(url), 1000);
                 
+                // Also sync to cloud if connected
+                if (cloudStorage.isSignedIn) {
+                    try {
+                        await syncToCloud();
+                        console.log('☁️ Data also synced to cloud during export');
+                    } catch (error) {
+                        console.warn('Cloud sync during export failed:', error);
+                    }
+                }
+                
                 // Reset button
                 setTimeout(() => {
                     exportBtn.textContent = originalText;
@@ -1971,7 +2317,8 @@
                 
                 // Success message
                 const stats = exportData.summary;
-                alert(`✅ Data berhasil diexport!\n\n📁 File: ${fileName}\n📊 Data yang diexport:\n• ${stats.totalPlayers} pemain\n• ${stats.totalGames} riwayat game\n• Skor tertinggi: ${stats.highestScore}\n• Rata-rata skor: ${stats.averageScore}`);
+                const sourceInfo = cloudStorage.isSignedIn ? '\n☁️ Data dari: Cloud Storage' : '\n💾 Data dari: Local Storage';
+                alert(`✅ Data berhasil diexport!${sourceInfo}\n\n📁 File: ${fileName}\n📊 Data yang diexport:\n• ${stats.totalPlayers} pemain\n• ${stats.totalGames} riwayat game\n• Skor tertinggi: ${stats.highestScore}\n• Rata-rata skor: ${stats.averageScore}\n\n📧 Target email: venisiswiandini00@gmail.com`);
                 playCorrectSound();
                 
             } catch (error) {
@@ -2545,6 +2892,11 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize cloud storage
+            setTimeout(() => {
+                initCloudStorage();
+            }, 500);
+            
             // Initialize background music
             setTimeout(() => {
                 initBackgroundMusic();
@@ -2567,22 +2919,52 @@
                 }
             });
             
-            // Add event listeners for dashboard buttons
-            const exportBtn = document.getElementById('exportBtn');
-            const clearBtn = document.getElementById('clearBtn');
-            const refreshBtn = document.getElementById('refreshBtn');
+            // Add event listeners for dashboard buttons with multiple connection methods
+            setTimeout(() => {
+                connectDashboardButtons();
+            }, 100);
             
-            if (exportBtn) {
-                exportBtn.addEventListener('click', exportData);
+            // Also try connecting when dashboard is shown
+            const originalShowHostDashboard = showHostDashboard;
+            showHostDashboard = function() {
+                originalShowHostDashboard();
+                setTimeout(connectDashboardButtons, 200);
+            };
+        });
+        
+        function connectDashboardButtons() {
+            try {
+                const exportBtn = document.getElementById('exportBtn');
+                const clearBtn = document.getElementById('clearBtn');
+                const refreshBtn = document.getElementById('refreshBtn');
+                
+                if (exportBtn) {
+                    exportBtn.onclick = exportData;
+                    exportBtn.addEventListener('click', exportData);
+                    console.log('✅ Export button connected');
+                } else {
+                    console.warn('❌ Export button not found');
+                }
+                
+                if (clearBtn) {
+                    clearBtn.onclick = clearAllData;
+                    clearBtn.addEventListener('click', clearAllData);
+                    console.log('✅ Clear button connected');
+                } else {
+                    console.warn('❌ Clear button not found');
+                }
+                
+                if (refreshBtn) {
+                    refreshBtn.onclick = refreshDashboard;
+                    refreshBtn.addEventListener('click', refreshDashboard);
+                    console.log('✅ Refresh button connected');
+                } else {
+                    console.warn('❌ Refresh button not found');
+                }
+            } catch (error) {
+                console.error('❌ Error connecting dashboard buttons:', error);
             }
-            
-            if (clearBtn) {
-                clearBtn.addEventListener('click', clearAllData);
-            }
-            
-            if (refreshBtn) {
-                refreshBtn.addEventListener('click', refreshDashboard);
-            }
+        }
             
             // Show host button only on home page initially
             showHome();
@@ -2595,5 +2977,5 @@
             }, 2000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'973b3eff85500f58',t:'MTc1NTk1ODc3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9743ae7a55575fdf',t:'MTc1NjA0NzIzMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
