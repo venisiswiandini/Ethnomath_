@@ -330,6 +330,26 @@
                 padding: 0.75rem 1.5rem;
                 font-size: clamp(0.9rem, 3vw, 1.1rem);
             }
+            
+            /* Mobile image optimization */
+            #questionImage {
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: 150px !important;
+                max-height: 250px !important;
+                object-fit: contain !important;
+            }
+            
+            #questionImageFallback {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-height: 150px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
         }
     </style>
 </head>
@@ -733,12 +753,13 @@
                                 <!-- Question Image -->
                                 <div id="questionImageContainer" class="mb-4 text-center">
                                     <img id="questionImage" src="" alt="Gambar soal" 
-                                         class="max-w-full h-auto rounded-lg mx-auto shadow-lg max-h-48 object-contain"
-                                         style="display: none;"
+                                         class="w-full max-w-sm md:max-w-md h-auto rounded-lg mx-auto shadow-lg object-contain"
+                                         style="display: none; min-height: 200px; max-height: 300px;"
                                          onerror="this.style.display='none'; document.getElementById('questionImageFallback').style.display='block';">
-                                    <div id="questionImageFallback" class="hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg">
+                                    <div id="questionImageFallback" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg mx-auto max-w-sm">
                                         <div class="text-4xl mb-2">📐</div>
-                                        <p class="text-lg">Ilustrasi Soal Kesebangunan</p>
+                                        <p class="text-lg font-bold">Ilustrasi Soal Kesebangunan</p>
+                                        <p class="text-sm mt-2 opacity-75">Gambar akan membantu memahami soal</p>
                                     </div>
                                 </div>
                                 <!-- Question Text -->
@@ -1569,9 +1590,22 @@
             const questionImageFallback = document.getElementById('questionImageFallback');
             
             if (question.image) {
-                questionImage.src = question.image;
-                questionImage.style.display = 'block';
-                questionImageFallback.style.display = 'none';
+                // Reset image display
+                questionImage.style.display = 'none';
+                questionImageFallback.style.display = 'block';
+                
+                // Create new image to test loading
+                const testImg = new Image();
+                testImg.onload = function() {
+                    questionImage.src = question.image;
+                    questionImage.style.display = 'block';
+                    questionImageFallback.style.display = 'none';
+                };
+                testImg.onerror = function() {
+                    questionImage.style.display = 'none';
+                    questionImageFallback.style.display = 'block';
+                };
+                testImg.src = question.image;
             } else {
                 questionImage.style.display = 'none';
                 questionImageFallback.style.display = 'block';
@@ -2279,5 +2313,5 @@
             }, 3000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'974678ba756ca06c',t:'MTc1NjA3NjQ4Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97477ff53587f3fb',t:'MTc1NjA4NzI2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
