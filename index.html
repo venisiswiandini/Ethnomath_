@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏀 Ethnomath - Game Kesebangunan</title>
+    <title>🏀 Ethnomath - Ethnomathematics Twin Shapes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;600;700&family=Pacifico&display=swap');
@@ -12,7 +12,7 @@
             font-family: 'Poppins', sans-serif;
             background: 
                 linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.1)),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23B8860B;stop-opacity:1" /><stop offset="30%" style="stop-color:%23CD853F;stop-opacity:1" /><stop offset="60%" style="stop-color:%23D2691E;stop-opacity:1" /><stop offset="100%" style="stop-color:%23A0522D;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23sky)"/><g transform="translate(80,350)"><rect x="0" y="120" width="240" height="180" fill="%23CD853F" stroke="%23B8860B" stroke-width="4" rx="8"/><polygon points="0,120 40,60 120,20 200,60 240,120" fill="%23A0522D" stroke="%23654321" stroke-width="3"/><rect x="20" y="180" width="50" height="100" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="140" y="160" width="80" height="80" fill="%235F9EA0" stroke="%23708090" stroke-width="3"/><rect x="10" y="100" width="220" height="20" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/><rect x="100" y="40" width="40" height="80" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="0" y="300" width="240" height="40" fill="%23CD853F" stroke="%23B8860B" stroke-width="2"/><rect x="80" y="200" width="80" height="100" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/></g><g transform="translate(380,380)"><rect x="0" y="100" width="200" height="160" fill="%23CD853F" stroke="%23B8860B" stroke-width="4" rx="6"/><polygon points="0,100 30,50 100,15 170,50 200,100" fill="%23A0522D" stroke="%23654321" stroke-width="3"/><rect x="15" y="160" width="40" height="90" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="120" y="140" width="60" height="60" fill="%235F9EA0" stroke="%23708090" stroke-width="3"/><rect x="5" y="85" width="190" height="15" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/><rect x="85" y="35" width="30" height="65" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="0" y="260" width="200" height="30" fill="%23CD853F" stroke="%23B8860B" stroke-width="2"/></g><g transform="translate(680,360)"><rect x="0" y="120" width="260" height="200" fill="%23D2691E" stroke="%23CD853F" stroke-width="4" rx="10"/><polygon points="0,120 50,50 130,10 210,50 260,120" fill="%23A0522D" stroke="%23654321" stroke-width="3"/><rect x="25" y="190" width="55" height="110" fill="%23654321" stroke="%234A4A4A" stroke-width="2"/><rect x="150" y="165" width="85" height="85" fill="%235F9EA0" stroke="%23708090" stroke-width="3"/><rect x="10" y="100" width="240" height="20" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/><rect x="110" y="30" width="40" height="90" fill="%23A0522D" stroke="%23654321" stroke-width="2"/><rect x="0" y="320" width="260" height="50" fill="%23CD853F" stroke="%23B8860B" stroke-width="2"/><rect x="90" y="180" width="100" height="140" fill="%23D2691E" stroke="%23CD853F" stroke-width="2"/></g><g fill="%23228B22"><ellipse cx="50" cy="600" rx="30" ry="80"/><ellipse cx="350" cy="580" rx="25" ry="70"/><ellipse cx="650" cy="620" rx="35" ry="90"/><ellipse cx="950" cy="590" rx="28" ry="75"/></g><g fill="%23556B2F"><circle cx="50" cy="520" r="40"/><circle cx="350" cy="510" r="35"/><circle cx="650" cy="530" r="45"/><circle cx="950" cy="515" r="38"/></g></svg>');
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23B8860B;stop-opacity:1" /><stop offset="30%" style="stop-color:%23CD853F;stop-opacity:1" /><stop offset="60%" style="stop-color:%23D2691E;stop-opacity:1" /><stop offset="100%" style="stop-color:%23A0522D;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23sky)"/></svg>');
             background-size: cover, cover;
             background-position: center, center;
             min-height: 100vh;
@@ -24,7 +24,6 @@
             color: rgba(255, 255, 255, 0.9);
         }
         
-        /* Enhanced Game Elements */
         .enhanced-card {
             position: relative;
             overflow: hidden;
@@ -153,51 +152,6 @@
             50% { opacity: 1; transform: scale(1) rotate(180deg); }
         }
         
-        @keyframes fireworkExplode {
-            0% { 
-                opacity: 1; 
-                transform: scale(0) rotate(0deg); 
-            }
-            50% { 
-                opacity: 1; 
-                transform: scale(1.5) rotate(180deg); 
-            }
-            100% { 
-                opacity: 0; 
-                transform: scale(2) rotate(360deg) translateY(-50px); 
-            }
-        }
-        
-        @keyframes celebrationTextFloat {
-            0% { 
-                opacity: 0; 
-                transform: scale(0.5) translateY(0px); 
-            }
-            20% { 
-                opacity: 1; 
-                transform: scale(1.2) translateY(-20px); 
-            }
-            100% { 
-                opacity: 0; 
-                transform: scale(0.8) translateY(-80px); 
-            }
-        }
-        
-        @keyframes missEffectFloat {
-            0% { 
-                opacity: 0; 
-                transform: scale(0.8) translateY(0px); 
-            }
-            30% { 
-                opacity: 1; 
-                transform: scale(1.1) translateY(-10px); 
-            }
-            100% { 
-                opacity: 0; 
-                transform: scale(0.9) translateY(-40px); 
-            }
-        }
-        
         .bounce-in { animation: bounceIn 0.8s ease-out; }
         .celebrate { animation: celebrate 1s ease-in-out; }
         .miss { animation: miss 0.8s ease-in-out; }
@@ -314,6 +268,11 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                font-size: 14px;
+                overflow-x: hidden;
+            }
+            
             .mobile-friendly {
                 padding: 0.5rem;
             }
@@ -329,78 +288,151 @@
             .button-responsive {
                 padding: 0.75rem 1.5rem;
                 font-size: clamp(0.9rem, 3vw, 1.1rem);
+                min-height: 48px;
             }
             
-            /* Mobile image optimization */
-            #questionImage {
-                width: 100% !important;
-                max-width: 100% !important;
+            .glass-card {
+                margin: 0.5rem;
+                padding: 1rem !important;
+            }
+            
+            .grid.lg\\:grid-cols-2 {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            .grid.md\\:grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.5rem !important;
+            }
+            
+            .grid.md\\:grid-cols-2 {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            .grid.md\\:grid-cols-3 {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            .basketball-court {
+                height: 200px !important;
+                padding: 1rem !important;
+            }
+            
+            #questionPanel {
+                min-height: auto !important;
                 height: auto !important;
-                min-height: 150px !important;
-                max-height: 250px !important;
-                object-fit: contain !important;
             }
             
-            #questionImageFallback {
-                width: 100% !important;
-                max-width: 100% !important;
-                min-height: 150px !important;
+            .text-6xl { font-size: 2.5rem !important; }
+            .text-5xl { font-size: 2rem !important; }
+            .text-4xl { font-size: 1.75rem !important; }
+            .text-3xl { font-size: 1.5rem !important; }
+            .text-2xl { font-size: 1.25rem !important; }
+            .text-xl { font-size: 1.125rem !important; }
+            
+            .space-y-4 > * + * { margin-top: 0.75rem !important; }
+            .space-y-6 > * + * { margin-top: 1rem !important; }
+            .space-y-8 > * + * { margin-top: 1.5rem !important; }
+            
+            .p-8 { padding: 1rem !important; }
+            .p-6 { padding: 0.75rem !important; }
+            .p-4 { padding: 0.5rem !important; }
+            
+            .mb-8 { margin-bottom: 1rem !important; }
+            .mb-6 { margin-bottom: 0.75rem !important; }
+            
+            .option-button {
+                padding: 1rem !important;
+                font-size: 1rem !important;
+                min-height: 60px !important;
                 display: flex !important;
-                flex-direction: column !important;
-                justify-content: center !important;
                 align-items: center !important;
+                width: 100% !important;
+            }
+            
+            .fixed.bottom-4.right-4 {
+                bottom: 1rem !important;
+                right: 1rem !important;
+                z-index: 1000 !important;
+            }
+            
+            .fixed.bottom-4.left-4 {
+                bottom: 1rem !important;
+                left: 1rem !important;
+                z-index: 1000 !important;
+            }
+            
+            .max-w-md {
+                max-width: 90vw !important;
+                margin: 1rem !important;
+            }
+            
+            .max-w-2xl {
+                max-width: 95vw !important;
+                margin: 0.5rem !important;
+            }
+            
+            .max-w-5xl, .max-w-7xl {
+                max-width: 100vw !important;
+                margin: 0 !important;
+                padding: 0.5rem !important;
+            }
+            
+            table {
+                font-size: 0.75rem !important;
+            }
+            
+            th, td {
+                padding: 0.5rem 0.25rem !important;
+            }
+            
+            button, .option-button {
+                min-height: 44px !important;
+                min-width: 44px !important;
+            }
+            
+            .min-h-screen {
+                min-height: 100vh !important;
+                min-height: -webkit-fill-available !important;
             }
         }
-    
-        /* fix gambar soal responsif */
-        #questionImage {
-          width: 100%;
-          height: auto;
-          max-width: 100%;
-          object-fit: contain;
-          display: block;
-          margin: 0 auto;
+        
+        @media (max-width: 480px) {
+            .glass-card {
+                margin: 0.25rem !important;
+                padding: 0.75rem !important;
+            }
+            
+            .text-responsive {
+                font-size: clamp(0.875rem, 3.5vw, 1.5rem) !important;
+            }
+            
+            .title-responsive {
+                font-size: clamp(1.5rem, 6vw, 3rem) !important;
+            }
+            
+            .button-responsive {
+                padding: 0.5rem 1rem !important;
+                font-size: clamp(0.8rem, 2.5vw, 1rem) !important;
+            }
+            
+            .basketball-court {
+                height: 150px !important;
+                padding: 0.5rem !important;
+            }
         }
-        #questionImageFallback {
-          margin-top: 10px;
-          display: none; /* hanya tampil kalau benar-benar error */
+        
+        @media (max-width: 768px) and (orientation: landscape) {
+            .basketball-court {
+                height: 180px !important;
+            }
         }
-
     </style>
-
-  <!-- $__TIMER_CSS__ -->
-  <style>
-    #timerContainer{position:fixed;top:0;left:0;width:100%;z-index:9999;background:#e5e7eb;}
-    #timerBar{height:8px;background:#10b981;width:100%;transition:width .3s ease;}
-    #timerText{font:bold 12px/1.6 system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#111;text-align:center}
-    #statusBar{position:fixed;top:24px;left:0;width:100%;z-index:9998;background:rgba(255,255,255,.9);border-bottom:1px solid #e5e7eb;font:600 14px system-ui,Segoe UI,Roboto,Arial;padding:6px 10px}
-    #statusBar .label{color:#2563eb;margin-right:12px}
-    #statusBar .score{color:#059669}
-    .card { background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.08); }
-    table.leaderboard{width:100%;border-collapse:collapse}
-    table.leaderboard th,table.leaderboard td{padding:8px;border-top:1px solid #e5e7eb;text-align:left;font:14px system-ui,Segoe UI,Roboto,Arial}
-    table.leaderboard thead th{background:#f3f4f6}
-    .btn{appearance:none;border:0;border-radius:10px;padding:8px 12px;font:600 14px system-ui,Segoe UI,Roboto,Arial;color:#fff;cursor:pointer}
-    .btn-blue{background:#2563eb}
-    .btn-green{background:#16a34a}
-    .btn-red{background:#dc2626}
-    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
-    .container{max-width:1100px;margin:0 auto;padding:0 16px}
-    .mt-8{margin-top:2rem}
-  </style>
-
 </head>
 <body class="min-h-screen">
-  <!-- Timer + Status -->
-  <div id="timerContainer">
-    <div id="timerBar"></div>
-    <div id="timerText">15:00</div>
-  </div>
-  <div id="statusBar">
-    <span class="label">Pemain: <span id="playerNameDisplay"></span></span>
-    <span class="score">Skor: <span id="scoreDisplay">0</span></span>
-  </div>
-
     
     <!-- Enhanced Floating Background Shapes -->
     <div class="floating-shapes">
@@ -414,14 +446,6 @@
         <div class="shape text-5xl" style="left: 80%; animation-delay: 14s;">🎨</div>
         <div class="shape text-4xl" style="left: 90%; animation-delay: 16s;">🌈</div>
         <div class="shape text-6xl" style="left: 15%; animation-delay: 18s;">🎊</div>
-        <div class="shape text-5xl" style="left: 25%; animation-delay: 1s;">📐</div>
-        <div class="shape text-4xl" style="left: 35%; animation-delay: 3s;">📏</div>
-        <div class="shape text-6xl" style="left: 45%; animation-delay: 5s;">🔢</div>
-        <div class="shape text-5xl" style="left: 55%; animation-delay: 7s;">📊</div>
-        <div class="shape text-4xl" style="left: 65%; animation-delay: 9s;">🎲</div>
-        <div class="shape text-6xl" style="left: 75%; animation-delay: 11s;">🏆</div>
-        <div class="shape text-5xl" style="left: 85%; animation-delay: 13s;">🎉</div>
-        <div class="shape text-4xl" style="left: 95%; animation-delay: 15s;">✨</div>
     </div>
     
     <!-- Floating Emojis -->
@@ -438,7 +462,17 @@
         <div class="floating-emoji" style="left: 95%; animation-delay: 9s;">🌟</div>
     </div>
     
-    <!-- Host Dashboard Button (Only visible on home page) -->
+    <!-- Audio Control Button -->
+    <button id="audioButton" onclick="toggleAudio()" class="fixed bottom-4 right-4 z-50 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group">
+        <svg id="audioIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9a3 3 0 000 6h4v.01M9 15H5a2 2 0 01-2-2V9a2 2 0 012-2h4.01"></path>
+        </svg>
+        <div class="absolute bottom-full left-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
+            <span id="audioTooltip">Matikan Suara</span>
+        </div>
+    </button>
+
+    <!-- Host Dashboard Button -->
     <button id="hostButton" onclick="showHostLogin()" class="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
@@ -471,16 +505,41 @@
     <div id="homePage" class="min-h-screen flex items-center justify-center mobile-friendly">
         <div class="max-w-4xl mx-auto text-center w-full">
             <div class="glass-card rounded-3xl p-4 md:p-8 shadow-2xl bounce-in card-hover enhanced-card">
-                <!-- Fun Header with Emojis -->
                 <div class="mb-6">
-                    <div class="text-4xl md:text-6xl mb-2">🎮🌈📐✨</div>
-                    <h1 class="title-responsive font-bold text-gray-800 mb-2">🏀 ETHNOMATH by Veni Siswiandini</h1>
+                    <div class="text-4xl md:text-6xl mb-4">🎮🌈📐✨</div>
                     
-                    <h2 class="text-responsive text-gray-900 font-bold mb-4 floating">Game Kesebangunan Super Seru!</h2>
+                    <div class="flex justify-center mb-8">
+                        <div class="relative group">
+                            <div class="absolute -inset-4 bg-gradient-to-r from-pink-400 via-purple-500 to-cyan-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-500 animate-pulse"></div>
+                            
+                            <div class="relative bg-white/15 backdrop-blur-lg rounded-3xl p-6 border-2 border-white/30 shadow-2xl">
+                                <img src="https://imgur.com/sWMWajt.jpg" alt="ETHNOMATH - Ethnomathematics Twin Shapes" 
+                                     class="w-full max-w-xs mx-auto rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300"
+                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <div class="text-center bg-gradient-to-r from-purple-600 to-pink-600 text-white p-8 rounded-2xl" style="display: none;">
+                                    <div class="text-5xl mb-4">🎮</div>
+                                    <h1 class="text-3xl font-bold mb-3">ETHNOMATH</h1>
+                                    <h2 class="text-xl font-semibold mb-3">Ethnomathematics Twin Shapes</h2>
+                                    <p class="text-lg opacity-90">by Veni Siswiandini</p>
+                                </div>
+                            </div>
+                            
+                            <div class="absolute -top-4 -right-4 text-3xl animate-bounce" style="animation-delay: 0s;">✨</div>
+                            <div class="absolute -bottom-4 -left-4 text-3xl animate-bounce" style="animation-delay: 0.5s;">🌟</div>
+                            <div class="absolute top-1/2 -left-6 text-2xl animate-bounce" style="animation-delay: 1s;">⭐</div>
+                            <div class="absolute top-1/2 -right-6 text-2xl animate-bounce" style="animation-delay: 1.5s;">💫</div>
+                            <div class="absolute top-1/4 -left-8 text-xl animate-bounce" style="animation-delay: 2s;">🎯</div>
+                            <div class="absolute top-3/4 -right-8 text-xl animate-bounce" style="animation-delay: 2.5s;">🎨</div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-lg md:text-xl font-bold mb-4 floating text-center" style="font-family: 'Pacifico', cursive; animation-delay: 0.2s; background: linear-gradient(45deg, #000000, #8B5CF6, #000000, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900;">
+                        <div>Ethnomathematics Twin Shapes</div>
+                        <div style="font-family: 'Dancing Script', cursive; font-size: 0.9em; margin-top: 0.25rem;">by Veni Siswiandini</div>
+                    </div>
                     <div class="text-2xl md:text-3xl mb-4">🎯🎪🚀🎊</div>
                 </div>
                 
-                <!-- Fun Stats Cards -->
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-6">
                     <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
                         <div class="text-2xl md:text-3xl">🎲</div>
@@ -489,7 +548,7 @@
                     </div>
                     <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
                         <div class="text-2xl md:text-3xl">⏰</div>
-                        <div class="text-sm md:text-base text-green-600 font-bold">10 Menit</div>
+                        <div class="text-sm md:text-base text-green-600 font-bold">15 Menit</div>
                         <div class="text-xs text-gray-900 font-semibold">Waktu</div>
                     </div>
                     <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
@@ -506,7 +565,7 @@
                 
                 <div class="space-y-4">
                     <button onclick="showMaterial()" class="w-full md:w-auto neon-button text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
-                        📚 Pelajari Materi Dulu 🤓
+                        📖 Pelajari Materi 📚
                     </button>
                     <br>
                     <button onclick="showNameInput()" class="w-full md:w-auto bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
@@ -514,7 +573,6 @@
                     </button>
                 </div>
                 
-                <!-- Fun Footer -->
                 <div class="mt-6 text-sm md:text-base text-gray-900 font-bold">
                     <div class="mb-2">🌟 Belajar Matematika Jadi Menyenangkan! 🌟</div>
                     <div class="flex justify-center space-x-2 text-2xl">
@@ -529,7 +587,7 @@
         </div>
     </div>
                 
-    <!-- Name Input Modal (Hidden by default) -->
+    <!-- Name Input Modal -->
     <div id="nameInputModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
         <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in">
             <div class="text-6xl mb-4 text-center">👤</div>
@@ -566,7 +624,7 @@
                 
                 <div class="space-y-4 md:space-y-6">
                     <!-- Definisi Kesebangunan -->
-                    <div class="glass-card rounded-2xl p-4 md:p-6 floating card-hover bg-gradient-to-r from-yellow-400/20 to-orange-400/20">
+                    <div class="glass-card rounded-2xl p-4 md:p-6 floating card-hover bg-gradient-to-r from-yellow-400/20 to-orange-400/20" style="animation-delay: 0.2s;">
                         <div class="text-center mb-4">
                             <div class="text-4xl md:text-5xl mb-2">🔍✨</div>
                             <div class="text-2xl">🎯🌟🎨</div>
@@ -593,12 +651,12 @@
                     </div>
 
                     <!-- Gambar Ilustrasi -->
-                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.2s;">
+                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.4s;">
                         <div class="text-center">
-                            <img src="https://i.imgur.com/h2ms2hb.jpg" alt="Ilustrasi Kesebangunan" 
-                                 class="max-w-full h-auto rounded-lg mx-auto shadow-lg"
+                            <img src="https://imgur.com/7xZgVvU.jpg" alt="Ilustrasi Kesebangunan" 
+                                 class="w-full max-w-xs mx-auto rounded-lg shadow-lg"
                                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 rounded-lg">
+                            <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 rounded-lg" style="display: none;">
                                 <div class="text-4xl mb-4">📐</div>
                                 <p class="text-lg">Ilustrasi Kesebangunan</p>
                                 <p class="text-sm opacity-75 mt-2">Gambar menunjukkan dua bangun sebangun</p>
@@ -607,19 +665,24 @@
                     </div>
 
                     <!-- Rumus -->
-                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.4s;">
+                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.6s;">
                         <div class="text-4xl mb-4">📏</div>
                         <h3 class="text-2xl font-bold text-green-600 mb-4">Rumus Perbandingan Sisi:</h3>
-                        <div class="bg-gradient-to-r from-yellow-300 to-orange-300 rounded-xl p-6 text-center border-3 border-orange-500">
-                            <div class="text-2xl font-bold text-gray-900 mb-2">
-                                <span class="text-red-800">sisi 1</span> / <span class="text-red-800">sisi 1'</span> = 
-                                <span class="text-red-800">sisi 2</span> / <span class="text-red-800">sisi 2'</span> = ⋯
+                        <div class="text-center">
+                            <img src="https://imgur.com/nDxmI3h.jpg" alt="Rumus Perbandingan Sisi" 
+                                 class="w-full max-w-xs mx-auto rounded-lg shadow-lg mb-4"
+                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                            <div class="bg-gradient-to-r from-yellow-300 to-orange-300 rounded-xl p-6 text-center border-3 border-orange-500" style="display: none;">
+                                <div class="text-2xl font-bold text-gray-900 mb-2">
+                                    <span class="text-red-800">sisi 1</span> / <span class="text-red-800">sisi 1'</span> = 
+                                    <span class="text-red-800">sisi 2</span> / <span class="text-red-800">sisi 2'</span> = ⋯
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Simbol -->
-                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.6s;">
+                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.8s;">
                         <div class="text-4xl mb-4">🔤</div>
                         <h3 class="text-2xl font-bold text-pink-600 mb-4">Simbol Kesebangunan:</h3>
                         <div class="bg-gradient-to-r from-pink-300 to-red-300 rounded-xl p-6 text-center border-3 border-pink-500">
@@ -629,7 +692,7 @@
                     </div>
 
                     <!-- Contoh Soal -->
-                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.8s;">
+                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 1s;">
                         <div class="text-4xl mb-4">💡</div>
                         <h3 class="text-2xl font-bold text-orange-600 mb-4">Contoh Soal Singkat:</h3>
                         
@@ -642,11 +705,16 @@
                             
                             <div class="border-l-4 border-blue-600 pl-4">
                                 <p class="text-blue-700 font-bold mb-2">Penyelesaian:</p>
-                                <div class="space-y-2 text-gray-900 font-semibold">
-                                    <p><span class="text-red-700">PQ/XY</span> = <span class="text-red-700">QR/YZ</span></p>
-                                    <p><span class="text-red-700">4/6</span> = <span class="text-red-700">6/YZ</span></p>
-                                    <p>YZ = <span class="text-red-700">(6×6)/4</span></p>
-                                    <p class="text-green-700 font-bold text-xl">YZ = 9 cm</p>
+                                <div class="text-center mb-4">
+                                    <img src="https://imgur.com/dQRgyEr.jpg" alt="Penyelesaian Soal" 
+                                         class="w-full max-w-48 mx-auto rounded-lg shadow-lg mb-4"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="space-y-2 text-gray-900 font-semibold" style="display: none;">
+                                        <p><span class="text-red-700">PQ/XY</span> = <span class="text-red-700">QR/YZ</span></p>
+                                        <p><span class="text-red-700">4/6</span> = <span class="text-red-700">6/YZ</span></p>
+                                        <p>YZ = <span class="text-red-700">(6×6)/4</span></p>
+                                        <p class="text-green-700 font-bold text-xl">YZ = 9 cm</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -690,7 +758,7 @@
                         </div>
                         <div class="text-center">
                             <div class="text-2xl">⏰</div>
-                            <div class="text-lg md:text-2xl font-bold text-orange-400" id="timeRemaining">10:00</div>
+                            <div class="text-lg md:text-2xl font-bold text-orange-400" id="timeRemaining">15:00</div>
                             <div class="text-xs text-white font-bold">WAKTU</div>
                         </div>
                     </div>
@@ -799,10 +867,6 @@
                             <div class="glass-card rounded-2xl p-4 md:p-6 mb-4 md:mb-6">
                                 <!-- Question Image -->
                                 <div id="questionImageContainer" class="mb-4 text-center">
-                                    <img id="questionImage" src="" alt="Gambar soal" 
-                                         class="w-full max-w-sm md:max-w-md h-auto rounded-lg mx-auto shadow-lg object-contain"
-                                         style="min-height: 200px; max-height: 300px;"
-                                         onerror="this.style.display='none'; document.getElementById('questionImageFallback').style.display='block';">
                                     <div id="questionImageFallback" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg mx-auto max-w-sm">
                                         <div class="text-4xl mb-2">📐</div>
                                         <p class="text-lg font-bold">Ilustrasi Soal Kesebangunan</p>
@@ -850,39 +914,15 @@
                 <div class="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8 space-y-4 md:space-y-0">
                     <div class="text-center md:text-left">
                         <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800">📊 Host Dashboard</h1>
-                        <p class="text-sm md:text-base text-gray-600 mt-2">Panel kontrol untuk guru dan host</p>
+                        <p class="text-sm md:text-base text-gray-600 mt-2">Panel kontrol untuk guru dan host - Data Real-time ☁️</p>
                     </div>
-                    <button onclick="showHome()" class="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 whitespace-nowrap">
-                        ← Kembali
-                    </button>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="showHome()" class="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white px-4 py-2 rounded-full font-bold transition-all duration-300 transform hover:scale-105 text-sm">
+                            ← Kembali
+                        </button>
+                    </div>
                 </div>
                 
-                <!-- QR Code Section for Students -->
-                <div class="glass-card rounded-3xl p-8 mb-8 text-center floating bg-gradient-to-br from-cyan-400/20 to-blue-400/20">
-                    <h3 class="text-4xl font-bold text-gray-800 mb-6 flex items-center justify-center">
-                        📱 Scan QR Code untuk Bermain
-                        <span class="ml-3 text-3xl">🎮</span>
-                    </h3>
-                    
-                    <!-- Large QR Code Display -->
-                    <div class="flex justify-center">
-                        <div class="transform hover:scale-105 transition-all duration-300">
-                            <img src="https://i.imgur.com/jQDIHea.jpg" alt="QR Code Game Ethnomath" 
-                                 class="w-96 h-96 object-contain shadow-2xl"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="hidden bg-gradient-to-r from-blue-500 to-purple-600 text-white p-12 rounded-2xl w-96 h-96 flex flex-col items-center justify-center shadow-2xl">
-                                <div class="text-6xl mb-4">📱</div>
-                                <p class="text-2xl font-bold text-center">QR Code untuk<br>Akses Game</p>
-                                <p class="text-lg mt-2 opacity-75">Ethnomath Quiz</p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <p class="text-2xl text-white font-bold mt-6 mb-2">
-                        🎯 Siswa scan QR code ini untuk bermain!
-                    </p>
-                </div>
-
                 <!-- Statistics Cards -->
                 <div class="grid md:grid-cols-4 gap-6 mb-8">
                     <div class="glass-card rounded-2xl p-6 text-center floating">
@@ -907,103 +947,11 @@
                     </div>
                 </div>
                 
-                <!-- Charts Section -->
-                <div class="flex justify-center mb-8">
-                    <!-- Score Distribution Chart -->
-                    <div class="glass-card rounded-2xl p-6 floating bg-gradient-to-br from-purple-500/20 to-pink-500/20 max-w-2xl w-full">
-                        <h3 class="text-2xl font-bold text-white mb-6 flex items-center justify-center">
-                            📈 Distribusi Skor Pemain
-                            <span class="ml-2 text-lg">🎯</span>
-                        </h3>
-                        <div class="relative h-80 bg-gradient-to-br from-gray-900/50 to-gray-800/50 rounded-xl p-4 border-2 border-purple-400/30">
-                            <div id="scoreChart" class="w-full h-full rounded-lg flex items-center justify-center">
-                                <!-- Custom Chart Implementation -->
-                                <div id="chartContainer" class="w-full h-full">
-                                    <!-- Chart will be rendered here -->
-                                </div>
-                            </div>
-                            <div class="absolute top-2 right-2 text-xs text-gray-300 bg-black/50 px-2 py-1 rounded">
-                                📊 Live Data
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Additional Stats Cards -->
-                <div class="grid md:grid-cols-3 gap-6 mb-8">
-                    <div class="glass-card rounded-2xl p-6 text-center floating bg-gradient-to-br from-green-400/20 to-emerald-400/20" style="animation-delay: 0.4s;">
-                        <div class="text-4xl mb-2">🎯</div>
-                        <div class="text-2xl font-bold text-green-400" id="accuracyRate">0%</div>
-                        <div class="text-gray-300">Tingkat Akurasi</div>
-                        <div class="text-xs text-gray-400 mt-1">Rata-rata jawaban benar</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 text-center floating bg-gradient-to-br from-orange-400/20 to-red-400/20" style="animation-delay: 0.5s;">
-                        <div class="text-4xl mb-2">⚡</div>
-                        <div class="text-2xl font-bold text-orange-400" id="activeToday">0</div>
-                        <div class="text-gray-300">Aktif Hari Ini</div>
-                        <div class="text-xs text-gray-400 mt-1">Pemain yang bermain hari ini</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 text-center floating bg-gradient-to-br from-pink-400/20 to-purple-400/20" style="animation-delay: 0.6s;">
-                        <div class="text-4xl mb-2">🔥</div>
-                        <div class="text-2xl font-bold text-pink-400" id="streakRecord">0</div>
-                        <div class="text-gray-300">Rekor Beruntun</div>
-                        <div class="text-xs text-gray-400 mt-1">Jawaban benar berturut-turut</div>
-                    </div>
-                </div>
-                
-                
-                
-                    <div class="mt-4 grid md:grid-cols-3 gap-4">
-                        <div class="md:col-span-2">
-                            <label class="block text-white text-sm mb-1">Web App URL (Google Apps Script)</label>
-                            <input id="gasUrlInput" type="url" placeholder="https://script.google.com/macros/s/AKfycbyOUR-DEPLOYED-ID/exec" class="w-full px-4 py-3 rounded-xl bg-white/90 text-gray-900 font-semibold border-2 border-white/40 focus:outline-none focus:ring-4 focus:ring-cyan-400/30">
-                            <p class="text-xs text-white/70 mt-1">URL disimpan di perangkat host (localStorage). Hanya host yang bisa melihat ini.</p>
-                        </div>
-                        <div class="glass-card rounded-xl p-4 text-white">
-                            <div class="text-sm opacity-80">Target Pemain</div>
-                            <div class="text-3xl font-bold" id="cloudTargetPlayers">35</div>
-                            <div class="text-sm opacity-80 mt-2">Tercatat di Cloud</div>
-                            <div class="text-3xl font-bold" id="cloudRecordedPlayers">0</div>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 overflow-x-auto">
-                        <table class="w-full text-white">
-                            <thead>
-                                <tr class="border-b border-white/20">
-                                    <th class="text-left py-3 px-4">#</th>
-                                    <th class="text-left py-3 px-4">Nama</th>
-                                    <th class="text-left py-3 px-4">Device</th>
-                                    <th class="text-left py-3 px-4">Waktu</th>
-                                    <th class="text-left py-3 px-4">IP (opsional)</th>
-                                </tr>
-                            </thead>
-                            <tbody id="playersLogTable"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-
-
-    <div class="overflow-x-auto">
-        <table class="w-full text-white text-sm">
-            <thead>
-                <tr class="border-b border-white/20">
-                    <th class="text-left py-2 px-3">#</th>
-                    <th class="text-left py-2 px-3">Nama</th>
-                    <th class="text-left py-2 px-3">Device</th>
-                    <th class="text-left py-2 px-3">Waktu</th>
-                </tr>
-            </thead>
-            <tbody id="playersLogTable"></tbody>
-        </table>
-    </div>
-</div>
-
-<!-- Player Leaderboard -->
+                <!-- Player Leaderboard -->
                 <div class="glass-card rounded-2xl p-6">
                     <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
                         🏅 Papan Peringkat Pemain
+                        <span class="ml-2 text-sm bg-green-500 px-2 py-1 rounded-full">Real-time</span>
                     </h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-white">
@@ -1022,19 +970,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                
-                <!-- Control Buttons -->
-                <div class="flex flex-wrap justify-center gap-4 mt-8">
-                    <button id="exportBtn" class="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
-                        📥 Export Data
-                    </button>
-                    <button id="clearBtn" class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
-                        🗑️ Hapus Papan Peringkat
-                    </button>
-                    <button id="refreshBtn" class="bg-gradient-to-r from-green-500 to-teal-500 hover:from-green-600 hover:to-teal-600 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
-                        🔄 Refresh
-                    </button>
                 </div>
             </div>
         </div>
@@ -1098,37 +1033,259 @@
         </div>
     </div>
 
-    <!-- Music Control Button -->
-    <button id="musicToggle" onclick="toggleMusic()" class="fixed bottom-4 right-4 z-50 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group">
-        <svg id="musicIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9v6l4-2V7l-4 2z"></path>
-        </svg>
-        <div class="absolute bottom-full left-0 mb-2 px-3 py-1 bg-gray-800 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
-            <span id="musicTooltip">Matikan Musik</span>
-        </div>
-    </button>
-
     <script>
-        // Global Game State - accessible from HTML onclick handlers
+        // Audio System
+        class AudioManager {
+            constructor() {
+                this.audioContext = null;
+                this.sounds = {};
+                this.backgroundMusic = null;
+                this.isMuted = false;
+                this.volume = 0.7;
+                this.musicVolume = 0.3;
+                this.initAudio();
+            }
+
+            async initAudio() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    this.createSounds();
+                } catch (error) {
+                    console.log('Audio not supported:', error);
+                }
+            }
+
+            createSounds() {
+                // Create sound effects using Web Audio API
+                this.sounds = {
+                    correct: this.createTone(800, 0.2, 'sine'),
+                    wrong: this.createTone(200, 0.3, 'sawtooth'),
+                    click: this.createTone(600, 0.1, 'square'),
+                    celebration: this.createCelebrationSound(),
+                    tick: this.createTone(400, 0.05, 'sine'),
+                    gameStart: this.createGameStartSound(),
+                    gameEnd: this.createGameEndSound()
+                };
+                
+                this.createBackgroundMusic();
+            }
+
+            createTone(frequency, duration, type = 'sine') {
+                return () => {
+                    if (!this.audioContext || this.isMuted) return;
+                    
+                    const oscillator = this.audioContext.createOscillator();
+                    const gainNode = this.audioContext.createGain();
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(this.audioContext.destination);
+                    
+                    oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
+                    oscillator.type = type;
+                    
+                    gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(this.volume * 0.3, this.audioContext.currentTime + 0.01);
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + duration);
+                    
+                    oscillator.start(this.audioContext.currentTime);
+                    oscillator.stop(this.audioContext.currentTime + duration);
+                };
+            }
+
+            createCelebrationSound() {
+                return () => {
+                    if (!this.audioContext || this.isMuted) return;
+                    
+                    const frequencies = [523, 659, 784, 1047]; // C, E, G, C
+                    frequencies.forEach((freq, index) => {
+                        setTimeout(() => {
+                            const oscillator = this.audioContext.createOscillator();
+                            const gainNode = this.audioContext.createGain();
+                            
+                            oscillator.connect(gainNode);
+                            gainNode.connect(this.audioContext.destination);
+                            
+                            oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+                            oscillator.type = 'sine';
+                            
+                            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                            gainNode.gain.linearRampToValueAtTime(this.volume * 0.4, this.audioContext.currentTime + 0.01);
+                            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.3);
+                            
+                            oscillator.start(this.audioContext.currentTime);
+                            oscillator.stop(this.audioContext.currentTime + 0.3);
+                        }, index * 100);
+                    });
+                };
+            }
+
+            createGameStartSound() {
+                return () => {
+                    if (!this.audioContext || this.isMuted) return;
+                    
+                    const frequencies = [440, 554, 659]; // A, C#, E
+                    frequencies.forEach((freq, index) => {
+                        setTimeout(() => {
+                            const oscillator = this.audioContext.createOscillator();
+                            const gainNode = this.audioContext.createGain();
+                            
+                            oscillator.connect(gainNode);
+                            gainNode.connect(this.audioContext.destination);
+                            
+                            oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+                            oscillator.type = 'triangle';
+                            
+                            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                            gainNode.gain.linearRampToValueAtTime(this.volume * 0.5, this.audioContext.currentTime + 0.01);
+                            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.4);
+                            
+                            oscillator.start(this.audioContext.currentTime);
+                            oscillator.stop(this.audioContext.currentTime + 0.4);
+                        }, index * 150);
+                    });
+                };
+            }
+
+            createGameEndSound() {
+                return () => {
+                    if (!this.audioContext || this.isMuted) return;
+                    
+                    const melody = [523, 659, 784, 1047, 1319]; // C, E, G, C, E
+                    melody.forEach((freq, index) => {
+                        setTimeout(() => {
+                            const oscillator = this.audioContext.createOscillator();
+                            const gainNode = this.audioContext.createGain();
+                            
+                            oscillator.connect(gainNode);
+                            gainNode.connect(this.audioContext.destination);
+                            
+                            oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+                            oscillator.type = 'sine';
+                            
+                            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                            gainNode.gain.linearRampToValueAtTime(this.volume * 0.6, this.audioContext.currentTime + 0.01);
+                            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.5);
+                            
+                            oscillator.start(this.audioContext.currentTime);
+                            oscillator.stop(this.audioContext.currentTime + 0.5);
+                        }, index * 200);
+                    });
+                };
+            }
+
+            createBackgroundMusic() {
+                if (!this.audioContext) return;
+                
+                // Create upbeat background music pattern
+                const musicPattern = [
+                    { freq: 261.63, duration: 0.5 }, // C4
+                    { freq: 329.63, duration: 0.5 }, // E4
+                    { freq: 392.00, duration: 0.5 }, // G4
+                    { freq: 523.25, duration: 0.5 }, // C5
+                    { freq: 392.00, duration: 0.5 }, // G4
+                    { freq: 329.63, duration: 0.5 }, // E4
+                    { freq: 293.66, duration: 0.5 }, // D4
+                    { freq: 261.63, duration: 1.0 }  // C4
+                ];
+                
+                this.backgroundMusic = {
+                    pattern: musicPattern,
+                    isPlaying: false,
+                    currentIndex: 0,
+                    timeoutId: null
+                };
+            }
+
+            playBackgroundMusic() {
+                if (!this.audioContext || this.isMuted || this.backgroundMusic.isPlaying) return;
+                
+                this.backgroundMusic.isPlaying = true;
+                this.playMusicNote();
+            }
+
+            playMusicNote() {
+                if (!this.backgroundMusic.isPlaying || this.isMuted) return;
+                
+                const note = this.backgroundMusic.pattern[this.backgroundMusic.currentIndex];
+                
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+                
+                oscillator.frequency.setValueAtTime(note.freq, this.audioContext.currentTime);
+                oscillator.type = 'triangle';
+                
+                gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(this.musicVolume * 0.1, this.audioContext.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + note.duration);
+                
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + note.duration);
+                
+                this.backgroundMusic.currentIndex = (this.backgroundMusic.currentIndex + 1) % this.backgroundMusic.pattern.length;
+                
+                this.backgroundMusic.timeoutId = setTimeout(() => {
+                    this.playMusicNote();
+                }, note.duration * 1000);
+            }
+
+            stopBackgroundMusic() {
+                if (this.backgroundMusic) {
+                    this.backgroundMusic.isPlaying = false;
+                    if (this.backgroundMusic.timeoutId) {
+                        clearTimeout(this.backgroundMusic.timeoutId);
+                        this.backgroundMusic.timeoutId = null;
+                    }
+                }
+            }
+
+            playSound(soundName) {
+                if (this.sounds[soundName] && !this.isMuted) {
+                    this.sounds[soundName]();
+                }
+            }
+
+            toggleMute() {
+                this.isMuted = !this.isMuted;
+                if (this.isMuted) {
+                    this.stopBackgroundMusic();
+                } else if (gameState.isGameActive) {
+                    this.playBackgroundMusic();
+                }
+                return this.isMuted;
+            }
+
+            setVolume(volume) {
+                this.volume = Math.max(0, Math.min(1, volume));
+            }
+
+            setMusicVolume(volume) {
+                this.musicVolume = Math.max(0, Math.min(1, volume));
+            }
+        }
+
+        // Initialize Audio Manager
+        const audioManager = new AudioManager();
+
+        // Global Game State
         window.gameState = {
             currentPlayer: '',
             currentQuestion: 0,
             score: 0,
             correctAnswers: 0,
-            timeRemaining: 600,
+            timeRemaining: 900,
             gameTimer: null,
             isGameActive: false,
             selectedAnswer: null,
-            answerSubmitted: false,
-            backgroundMusic: null,
-            isMusicPlaying: true
+            answerSubmitted: false
         };
 
-        // Question Pool - Ethnomath questions about Malay traditional architecture
+        // Question Pool
         const questionPool = [
             {
                 question: "Pada kain corak insang di atas, apakah segitiga yang diberikan garis merah dan garis hitam merupakan segitiga yang sebangun?",
-                image: "https://i.imgur.com/IBtGqrB.jpg",
                 optionA: "Ya",
                 optionB: "Tidak",
                 correct: "A",
@@ -1136,7 +1293,6 @@
             },
             {
                 question: "Gambar di atas merupakan rumah adat Melayu Pontianak. Rumah adat tersebut memiliki atap yang membentuk segitiga. Terdapat segitiga yang diberikan garis merah dan garis kuning. Apakah dua segitiga tersebut merupakan segitiga yang sebangun?",
-                image: "https://i.imgur.com/VRaSKCa.jpg",
                 optionA: "Ya",
                 optionB: "Tidak",
                 correct: "A",
@@ -1144,7 +1300,6 @@
             },
             {
                 question: "Atap rumah adat Melayu di atas berbentuk segitiga sama kaki. Di bawah atap utama, terdapat segitiga hiasan yang bentuknya sebangun dengan segitiga atap besar. Diketahui: Lebar alas atap besar = 8 m, tinggi atap besar = 4,5 m, Lebar alas segitiga hiasan = 3,2 m. Berapa tinggi segitiga hiasan tersebut?",
-                image: "https://i.imgur.com/yvEt1l9.jpg",
                 optionA: "1,8 m",
                 optionB: "1,9 m",
                 correct: "A",
@@ -1152,7 +1307,6 @@
             },
             {
                 question: "Pintu rumah adat Melayu di atas terdiri dari pintu besar dan pola panel persegi panjang di dalamnya. Panel-panel tersebut sebangun dengan bentuk pintu secara keseluruhan. Diketahui: Tinggi pintu utama = 210 cm, lebar pintu utama = 90 cm, Panel di dalam pintu memiliki lebar 30 cm. Berapa tinggi panel tersebut?",
-                image: "https://i.imgur.com/Mn8WKlU.jpg",
                 optionA: "74 cm",
                 optionB: "70 cm",
                 correct: "B",
@@ -1160,7 +1314,6 @@
             },
             {
                 question: "Perhatikan gambar berikut. Pagar rumah adat Melayu di atas memiliki pola belah ketupat yang berwarna hitam dan hijau. Belah ketupat yang berwarna hitam sebangun dengan belah ketupat yang berwarna hijau. Diketahui: Panjang diagonal horizontal belah ketupat hitam = 20 cm, Panjang diagonal vertikal belah ketupat hitam = 24 cm, Panjang diagonal horizontal belah ketupat hijau = 15 cm. Berapa panjang diagonal vertikal belah ketupat hijau?",
-                image: "https://i.imgur.com/7ZVdWRu.jpg",
                 optionA: "19 cm",
                 optionB: "18 cm",
                 correct: "B",
@@ -1168,504 +1321,185 @@
             }
         ];
 
-        // Navigation Functions - declared globally for HTML onclick access
-        window.showHome = function() {
+        // Local Storage Functions
+        function saveGameDataLocal(gameData) {
+            try {
+                const data = loadGameDataLocal();
+                const today = new Date().toISOString().split('T')[0];
+                
+                if (!data.players[gameData.playerName]) {
+                    data.players[gameData.playerName] = {
+                        name: gameData.playerName,
+                        highestScore: 0,
+                        totalGames: 0,
+                        totalScore: 0,
+                        lastPlayed: today
+                    };
+                }
+                
+                const player = data.players[gameData.playerName];
+                player.highestScore = Math.max(player.highestScore, gameData.score);
+                player.totalGames++;
+                player.totalScore += gameData.score;
+                player.lastPlayed = today;
+                
+                data.games.push({
+                    player: gameData.playerName,
+                    score: gameData.score,
+                    correctAnswers: gameData.correctAnswers,
+                    totalQuestions: questionPool.length,
+                    date: new Date().toISOString(),
+                    timeSpent: 900 - gameData.timeRemaining
+                });
+                
+                localStorage.setItem('ethnomath_game_data', JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error('Error saving local data:', error);
+                return false;
+            }
+        }
+
+        function loadGameDataLocal() {
+            try {
+                const data = localStorage.getItem('ethnomath_game_data');
+                if (data) {
+                    return JSON.parse(data);
+                }
+            } catch (error) {
+                console.error('Error loading local data:', error);
+            }
+            return {
+                players: {},
+                games: []
+            };
+        }
+
+        function clearLocalData() {
+            try {
+                localStorage.removeItem('ethnomath_game_data');
+                return true;
+            } catch (error) {
+                console.error('Error clearing local data:', error);
+                return false;
+            }
+        }
+
+        // Navigation Functions
+        function showHome() {
+            audioManager.playSound('click');
+            audioManager.stopBackgroundMusic();
             hideAllPages();
             document.getElementById('homePage').classList.remove('hidden');
             document.getElementById('hostButton').style.display = 'block';
-        };
+        }
 
-        window.showMaterial = function() {
-            playSound('click');
+        function showMaterial() {
+            audioManager.playSound('click');
             hideAllPages();
             document.getElementById('materialPage').classList.remove('hidden');
             document.getElementById('hostButton').style.display = 'none';
-        };
+        }
 
-        window.showNameInput = function() {
-            playSound('click');
-            document.getElementById('nameInputModal').classList.remove('hidden');
-            document.getElementById('playerName').focus();
-        };
+        function showGame() {
+            hideAllPages();
+            document.getElementById('gamePage').classList.remove('hidden');
+            document.getElementById('hostButton').style.display = 'none';
+        }
 
-        window.hideNameInput = function() {
-            document.getElementById('nameInputModal').classList.add('hidden');
-        };
+        function showResults() {
+            hideAllPages();
+            document.getElementById('resultsPage').classList.remove('hidden');
+            document.getElementById('hostButton').style.display = 'none';
+        }
 
-        window.showHostLogin = function() {
-            document.getElementById('hostLoginModal').classList.remove('hidden');
-            document.getElementById('hostPassword').focus();
-        };
-
-        window.hideHostLogin = function() {
-            document.getElementById('hostLoginModal').classList.add('hidden');
-            document.getElementById('hostPassword').value = '';
-        };
-
-        window.verifyHostPassword = function() {
-            const password = document.getElementById('hostPassword').value;
-            if (password === 'admin123') {
-                hideHostLogin();
-                showHostDashboard();
-            } else {
-                alert('Password salah! Coba lagi.');
-                document.getElementById('hostPassword').value = '';
-                document.getElementById('hostPassword').focus();
-            }
-        };
-
-        window.showHostDashboard = function() {
+        function showHostDashboard() {
             hideAllPages();
             document.getElementById('hostDashboard').classList.remove('hidden');
             document.getElementById('hostButton').style.display = 'none';
-            updateHostDashboard();
-        };
+            loadDashboardData();
+        }
 
-        window.startGameWithName = function() {
-            const playerName = document.getElementById('playerName').value.trim();
-            if (playerName === '') {
-                alert('Masukkan nama kamu dulu ya! 😊');
-                document.getElementById('playerName').focus();
-                return;
-            }
-            
-            gameState.currentPlayer = playerName;
-            hideNameInput();
-            startGame();
-        };
-
-        window.selectAnswer = function(answer) {
-            if (gameState.answerSubmitted) return;
-            
-            gameState.selectedAnswer = answer;
-            gameState.answerSubmitted = true;
-            
-            const question = questionPool[gameState.currentQuestion];
-            const isCorrect = answer === question.correct;
-            
-            // Disable all buttons
-            document.getElementById('optionA').disabled = true;
-            document.getElementById('optionB').disabled = true;
-            
-            // Show correct/incorrect styling
-            const selectedButton = document.getElementById(`option${answer}`);
-            const correctButton = document.getElementById(`option${question.correct}`);
-            const feedback = document.getElementById('answerFeedback');
-            
-            if (isCorrect) {
-                selectedButton.classList.add('correct-answer');
-                gameState.score += 20;
-                gameState.correctAnswers++;
-                
-                feedback.textContent = '🎉 Benar! Hebat!';
-                feedback.style.color = '#00FF00';
-                
-                // Play success sound effects
-                playSound('correct');
-                setTimeout(() => playSound('celebration'), 300);
-                
-                animateBasketballSuccess();
-            } else {
-                selectedButton.classList.add('wrong-answer');
-                correctButton.classList.add('correct-answer');
-                
-                feedback.textContent = '❌ Salah! Coba lagi ya!';
-                feedback.style.color = '#FF1493';
-                
-                // Play error sound effect
-                playSound('wrong');
-                
-                animateBasketballMiss();
-            }
-            
-            // Update score display
-            document.getElementById('currentScore').textContent = gameState.score;
-            feedback.style.opacity = '1';
-            
-            // Auto proceed to next question after 1.5 seconds
-            setTimeout(() => {
-                nextQuestion();
-            }, 1500);
-        };
-
-        window.restartGame = function() {
-            showNameInput();
-        };
-
-        window.toggleMusic = function() {
-            if (gameState.backgroundMusic) {
-                if (gameState.isMusicPlaying) {
-                    gameState.backgroundMusic.pause();
-                    gameState.isMusicPlaying = false;
-                    document.getElementById('musicIcon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>';
-                    document.getElementById('musicTooltip').textContent = 'Nyalakan Musik';
-                } else {
-                    gameState.backgroundMusic.play().catch(e => console.log('Music play error:', e));
-                    gameState.isMusicPlaying = true;
-                    document.getElementById('musicIcon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9v6l4-2V7l-4 2z"></path>';
-                    document.getElementById('musicTooltip').textContent = 'Matikan Musik';
-                }
-            }
-        };
-
-        // Helper Functions
         function hideAllPages() {
-            const pages = ['homePage', 'materialPage', 'gamePage', 'hostDashboard', 'resultsPage'];
+            const pages = ['homePage', 'materialPage', 'gamePage', 'resultsPage', 'hostDashboard'];
             pages.forEach(pageId => {
                 document.getElementById(pageId).classList.add('hidden');
             });
         }
 
-        // Music and Sound Functions
-        function initializeMusic() {
-            try {
-                createMalayBackgroundMusic();
-            } catch (error) {
-                console.log('Music initialization error:', error);
+        // Modal Functions
+        function showNameInput() {
+            audioManager.playSound('click');
+            document.getElementById('nameInputModal').classList.remove('hidden');
+            document.getElementById('playerName').focus();
+        }
+
+        function hideNameInput() {
+            document.getElementById('nameInputModal').classList.add('hidden');
+            document.getElementById('playerName').value = '';
+        }
+
+        function showHostLogin() {
+            document.getElementById('hostLoginModal').classList.remove('hidden');
+            document.getElementById('hostPassword').focus();
+        }
+
+        function hideHostLogin() {
+            document.getElementById('hostLoginModal').classList.add('hidden');
+            document.getElementById('hostPassword').value = '';
+        }
+
+        function verifyHostPassword() {
+            const password = document.getElementById('hostPassword').value;
+            if (password === 'admin123') {
+                hideHostLogin();
+                showHostDashboard();
+            } else {
+                alert('❌ Password salah! Coba lagi.');
+                document.getElementById('hostPassword').value = '';
+                document.getElementById('hostPassword').focus();
             }
         }
 
-        function createMalayBackgroundMusic() {
-            // Create energetic Malay-style background music using Web Audio API
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                let isPlaying = false;
-                let currentLoop = null;
-                
-                function playMalayMelody() {
-                    if (isPlaying || !gameState.isMusicPlaying) return;
-                    isPlaying = true;
-                    
-                    // Energetic Malay-inspired melody with traditional pentatonic scale
-                    // Using frequencies that create a joyful, upbeat Joget-style rhythm
-                    const mainMelody = [
-                        // Verse 1 - Upbeat opening
-                        { freq: 523.25, duration: 0.4, volume: 0.15 }, // C5
-                        { freq: 587.33, duration: 0.4, volume: 0.15 }, // D5
-                        { freq: 659.25, duration: 0.4, volume: 0.18 }, // E5
-                        { freq: 783.99, duration: 0.6, volume: 0.20 }, // G5
-                        { freq: 659.25, duration: 0.4, volume: 0.15 }, // E5
-                        { freq: 587.33, duration: 0.4, volume: 0.15 }, // D5
-                        { freq: 523.25, duration: 0.8, volume: 0.18 }, // C5
-                        
-                        // Verse 2 - Building energy
-                        { freq: 659.25, duration: 0.3, volume: 0.16 }, // E5
-                        { freq: 698.46, duration: 0.3, volume: 0.16 }, // F5
-                        { freq: 783.99, duration: 0.4, volume: 0.20 }, // G5
-                        { freq: 880.00, duration: 0.6, volume: 0.22 }, // A5
-                        { freq: 783.99, duration: 0.4, volume: 0.18 }, // G5
-                        { freq: 659.25, duration: 0.4, volume: 0.16 }, // E5
-                        { freq: 587.33, duration: 0.6, volume: 0.15 }, // D5
-                        
-                        // Chorus - Peak energy
-                        { freq: 1046.50, duration: 0.4, volume: 0.25 }, // C6
-                        { freq: 880.00, duration: 0.3, volume: 0.22 }, // A5
-                        { freq: 783.99, duration: 0.3, volume: 0.20 }, // G5
-                        { freq: 659.25, duration: 0.4, volume: 0.18 }, // E5
-                        { freq: 783.99, duration: 0.4, volume: 0.20 }, // G5
-                        { freq: 880.00, duration: 0.4, volume: 0.22 }, // A5
-                        { freq: 1046.50, duration: 0.8, volume: 0.25 }, // C6
-                        
-                        // Bridge - Rhythmic variation
-                        { freq: 880.00, duration: 0.2, volume: 0.20 }, // A5
-                        { freq: 783.99, duration: 0.2, volume: 0.18 }, // G5
-                        { freq: 659.25, duration: 0.2, volume: 0.16 }, // E5
-                        { freq: 587.33, duration: 0.2, volume: 0.15 }, // D5
-                        { freq: 659.25, duration: 0.4, volume: 0.18 }, // E5
-                        { freq: 783.99, duration: 0.4, volume: 0.20 }, // G5
-                        { freq: 523.25, duration: 1.0, volume: 0.18 }  // C5
-                    ];
-                    
-                    // Bass line for rhythm support
-                    const bassLine = [
-                        { freq: 261.63, duration: 0.8, volume: 0.12 }, // C4
-                        { freq: 293.66, duration: 0.8, volume: 0.12 }, // D4
-                        { freq: 329.63, duration: 0.8, volume: 0.12 }, // E4
-                        { freq: 391.99, duration: 0.8, volume: 0.12 }, // G4
-                        { freq: 329.63, duration: 0.8, volume: 0.12 }, // E4
-                        { freq: 293.66, duration: 0.8, volume: 0.12 }, // D4
-                        { freq: 261.63, duration: 1.6, volume: 0.12 }  // C4
-                    ];
-                    
-                    let currentTime = audioContext.currentTime;
-                    
-                    // Play main melody with traditional Malay ornaments
-                    mainMelody.forEach((note, index) => {
-                        // Main oscillator
-                        const oscillator = audioContext.createOscillator();
-                        const gainNode = audioContext.createGain();
-                        
-                        // Add slight vibrato for traditional feel
-                        const vibrato = audioContext.createOscillator();
-                        const vibratoGain = audioContext.createGain();
-                        
-                        vibrato.frequency.setValueAtTime(5, currentTime); // 5Hz vibrato
-                        vibratoGain.gain.setValueAtTime(3, currentTime); // Subtle vibrato depth
-                        
-                        vibrato.connect(vibratoGain);
-                        vibratoGain.connect(oscillator.frequency);
-                        
-                        oscillator.connect(gainNode);
-                        gainNode.connect(audioContext.destination);
-                        
-                        oscillator.frequency.setValueAtTime(note.freq, currentTime);
-                        oscillator.type = 'triangle'; // Warmer sound for traditional feel
-                        
-                        gainNode.gain.setValueAtTime(0, currentTime);
-                        gainNode.gain.linearRampToValueAtTime(note.volume, currentTime + 0.05);
-                        gainNode.gain.exponentialRampToValueAtTime(0.01, currentTime + note.duration);
-                        
-                        oscillator.start(currentTime);
-                        oscillator.stop(currentTime + note.duration);
-                        vibrato.start(currentTime);
-                        vibrato.stop(currentTime + note.duration);
-                        
-                        currentTime += note.duration;
-                    });
-                    
-                    // Add bass line for rhythm
-                    let bassTime = audioContext.currentTime;
-                    bassLine.forEach((note, index) => {
-                        const bassOsc = audioContext.createOscillator();
-                        const bassGain = audioContext.createGain();
-                        
-                        bassOsc.connect(bassGain);
-                        bassGain.connect(audioContext.destination);
-                        
-                        bassOsc.frequency.setValueAtTime(note.freq, bassTime);
-                        bassOsc.type = 'sawtooth'; // Rich bass sound
-                        
-                        bassGain.gain.setValueAtTime(0, bassTime);
-                        bassGain.gain.linearRampToValueAtTime(note.volume, bassTime + 0.1);
-                        bassGain.gain.exponentialRampToValueAtTime(0.01, bassTime + note.duration);
-                        
-                        bassOsc.start(bassTime);
-                        bassOsc.stop(bassTime + note.duration);
-                        
-                        bassTime += note.duration;
-                    });
-                    
-                    // Add percussion-like rhythm using filtered noise
-                    addPercussionRhythm(audioContext, audioContext.currentTime, currentTime - audioContext.currentTime);
-                    
-                    const totalDuration = (currentTime - audioContext.currentTime) * 1000;
-                    
-                    currentLoop = setTimeout(() => {
-                        isPlaying = false;
-                        if (gameState.isMusicPlaying) {
-                            setTimeout(playMalayMelody, 500); // Short pause between loops
-                        }
-                    }, totalDuration);
-                }
-                
-                function addPercussionRhythm(audioContext, startTime, duration) {
-                    // Create traditional Malay percussion rhythm using filtered noise
-                    const rhythmPattern = [0, 0.4, 0.8, 1.2, 1.6, 2.0, 2.4, 2.8]; // Beat positions
-                    
-                    rhythmPattern.forEach(beatTime => {
-                        if (beatTime < duration) {
-                            // High-hat like sound
-                            const bufferSize = audioContext.sampleRate * 0.1;
-                            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-                            const output = buffer.getChannelData(0);
-                            
-                            for (let i = 0; i < bufferSize; i++) {
-                                output[i] = Math.random() * 2 - 1;
-                            }
-                            
-                            const noise = audioContext.createBufferSource();
-                            noise.buffer = buffer;
-                            
-                            const filter = audioContext.createBiquadFilter();
-                            filter.type = 'highpass';
-                            filter.frequency.setValueAtTime(8000, startTime + beatTime);
-                            
-                            const percGain = audioContext.createGain();
-                            percGain.gain.setValueAtTime(0.08, startTime + beatTime);
-                            percGain.gain.exponentialRampToValueAtTime(0.01, startTime + beatTime + 0.1);
-                            
-                            noise.connect(filter);
-                            filter.connect(percGain);
-                            percGain.connect(audioContext.destination);
-                            
-                            noise.start(startTime + beatTime);
-                            noise.stop(startTime + beatTime + 0.1);
-                        }
-                    });
-                }
-                
-                // Create the background music object
-                gameState.backgroundMusic = {
-                    play: () => {
-                        gameState.isMusicPlaying = true;
-                        playMalayMelody();
-                        return Promise.resolve();
-                    },
-                    pause: () => {
-                        gameState.isMusicPlaying = false;
-                        if (currentLoop) {
-                            clearTimeout(currentLoop);
-                            currentLoop = null;
-                        }
-                    },
-                    volume: 0.3
-                };
-                
-            } catch (error) {
-                console.log('Malay music creation error:', error);
-            }
-        }
-
-        function playSound(type) {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                
-                switch (type) {
-                    case 'correct':
-                        // Success sound - ascending notes
-                        playTone(audioContext, 523.25, 0.2); // C5
-                        setTimeout(() => playTone(audioContext, 659.25, 0.2), 100); // E5
-                        setTimeout(() => playTone(audioContext, 783.99, 0.3), 200); // G5
-                        break;
-                        
-                    case 'wrong':
-                        // Error sound - descending notes
-                        playTone(audioContext, 392.00, 0.3); // G4
-                        setTimeout(() => playTone(audioContext, 329.63, 0.4), 150); // E4
-                        break;
-                        
-                    case 'click':
-                        // Button click sound
-                        playTone(audioContext, 800, 0.1);
-                        break;
-                        
-                    case 'swoosh':
-                        // Basketball swoosh sound
-                        createSwooshSound(audioContext);
-                        break;
-                        
-                    case 'bounce':
-                        // Ball bounce sound
-                        playTone(audioContext, 200, 0.2);
-                        break;
-                        
-                    case 'celebration':
-                        // Celebration fanfare
-                        const celebrationNotes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
-                        celebrationNotes.forEach((freq, index) => {
-                            setTimeout(() => playTone(audioContext, freq, 0.3), index * 100);
-                        });
-                        break;
-                }
-            } catch (error) {
-                console.log('Sound effect error:', error);
-            }
-        }
-
-        function playTone(audioContext, frequency, duration) {
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-            oscillator.type = 'sine';
-            
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.2, audioContext.currentTime + 0.01);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
-        }
-
-        function createSwooshSound(audioContext) {
-            // Create a swoosh sound using white noise and filtering
-            const bufferSize = audioContext.sampleRate * 0.5; // 0.5 seconds
-            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-            const output = buffer.getChannelData(0);
-            
-            // Generate white noise
-            for (let i = 0; i < bufferSize; i++) {
-                output[i] = Math.random() * 2 - 1;
+        // Game Functions
+        function startGameWithName() {
+            const playerName = document.getElementById('playerName').value.trim();
+            if (playerName === '') {
+                alert('🤔 Nama tidak boleh kosong! Silakan masukkan nama kamu.');
+                return;
             }
             
-            const whiteNoise = audioContext.createBufferSource();
-            whiteNoise.buffer = buffer;
-            
-            const filter = audioContext.createBiquadFilter();
-            filter.type = 'highpass';
-            filter.frequency.setValueAtTime(1000, audioContext.currentTime);
-            filter.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.5);
-            
-            const gainNode = audioContext.createGain();
-            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-            
-            whiteNoise.connect(filter);
-            filter.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            whiteNoise.start(audioContext.currentTime);
-            whiteNoise.stop(audioContext.currentTime + 0.5);
+            gameState.currentPlayer = playerName;
+            hideNameInput();
+            audioManager.playSound('gameStart');
+            initializeGame();
         }
 
-        function startBackgroundMusic() {
-            if (gameState.backgroundMusic && gameState.isMusicPlaying) {
-                gameState.backgroundMusic.play().catch(e => {
-                    console.log('Background music play error:', e);
-                });
-            }
-        }
-
-        function startGame() {
-            hideAllPages();
-            document.getElementById('gamePage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none';
-            
-            // Reset game state
+        function initializeGame() {
             gameState.currentQuestion = 0;
             gameState.score = 0;
             gameState.correctAnswers = 0;
-            gameState.timeRemaining = 600;
+            gameState.timeRemaining = 900;
             gameState.isGameActive = true;
             gameState.selectedAnswer = null;
             gameState.answerSubmitted = false;
             
-            // Update display
+            showGame();
+            updateGameDisplay();
+            loadQuestion();
+            startTimer();
+            audioManager.playBackgroundMusic();
+        }
+
+        function updateGameDisplay() {
             document.getElementById('playerNameDisplay').textContent = gameState.currentPlayer;
             document.getElementById('currentScore').textContent = gameState.score;
+            document.getElementById('questionNumber').textContent = gameState.currentQuestion + 1;
             
-            // Start background music
-            startBackgroundMusic();
-            
-            // Start timer
-            startGameTimer();
-            
-            // Load first question
-            loadQuestion();
-        }
-
-        function startGameTimer() {
-            if (gameState.gameTimer) {
-                clearInterval(gameState.gameTimer);
-            }
-            
-            gameState.gameTimer = setInterval(() => {
-                gameState.timeRemaining--;
-                updateTimerDisplay();
-                
-                if (gameState.timeRemaining <= 0) {
-                    endGame();
-                }
-            }, 1000);
-        }
-
-        function updateTimerDisplay() {
             const minutes = Math.floor(gameState.timeRemaining / 60);
             const seconds = gameState.timeRemaining % 60;
-            document.getElementById('timeRemaining').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('timeRemaining').textContent = 
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function loadQuestion() {
@@ -1676,68 +1510,170 @@
             
             const question = questionPool[gameState.currentQuestion];
             
-            // Update question display
-            document.getElementById('questionNumber').textContent = gameState.currentQuestion + 1;
             document.getElementById('questionTitle').textContent = `🤔 Soal ${gameState.currentQuestion + 1}`;
             document.getElementById('questionText').textContent = question.question;
             
-            // Update question image
-            const questionImage = document.getElementById('questionImage');
-            const questionImageFallback = document.getElementById('questionImageFallback');
+            const optionA = document.getElementById('optionA');
+            const optionB = document.getElementById('optionB');
             
-            if (question.image) {
-                // Reset image display
-                questionImage.style.display = 'none';
-                questionImageFallback.style.display = 'block';
-                
-                // Create new image to test loading
-                const testImg = new Image();
-                testImg.onload = function() {
-                    questionImage.src = question.image;
-                    questionImage.style.display = 'block';
-                    questionImageFallback.style.display = 'none';
-                };
-                testImg.onerror = function() {
-                    questionImage.style.display = 'none';
-                    questionImageFallback.style.display = 'block';
-                };
-                testImg.src = question.image;
-            } else {
-                questionImage.style.display = 'none';
-                questionImageFallback.style.display = 'block';
-            }
-            
-            // Update options
-            document.getElementById('optionA').querySelector('span:nth-child(2)').textContent = question.optionA;
-            document.getElementById('optionB').querySelector('span:nth-child(2)').textContent = question.optionB;
+            optionA.querySelector('span:nth-child(2)').textContent = question.optionA;
+            optionB.querySelector('span:nth-child(2)').textContent = question.optionB;
             
             // Reset button states
-            resetAnswerButtons();
+            optionA.className = 'option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-bold text-base md:text-lg card-hover';
+            optionB.className = 'option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-bold text-base md:text-lg card-hover';
             
-            // Reset answer state
+            optionA.disabled = false;
+            optionB.disabled = false;
+            
             gameState.selectedAnswer = null;
             gameState.answerSubmitted = false;
-        }
-
-        function resetAnswerButtons() {
-            const buttons = ['optionA', 'optionB'];
-            buttons.forEach(buttonId => {
-                const button = document.getElementById(buttonId);
-                button.classList.remove('correct-answer', 'wrong-answer');
-                button.disabled = false;
-            });
             
             document.getElementById('answerFeedback').style.opacity = '0';
         }
 
-        function nextQuestion() {
-            gameState.currentQuestion++;
+        function selectAnswer(answer) {
+            if (gameState.answerSubmitted) return;
             
-            if (gameState.currentQuestion >= questionPool.length) {
-                endGame();
+            gameState.selectedAnswer = answer;
+            gameState.answerSubmitted = true;
+            
+            const question = questionPool[gameState.currentQuestion];
+            const isCorrect = answer === question.correct;
+            
+            const optionA = document.getElementById('optionA');
+            const optionB = document.getElementById('optionB');
+            
+            // Disable both buttons
+            optionA.disabled = true;
+            optionB.disabled = true;
+            
+            // Show correct/incorrect styling
+            if (answer === 'A') {
+                if (isCorrect) {
+                    optionA.className += ' correct-answer';
+                } else {
+                    optionA.className += ' wrong-answer';
+                }
             } else {
-                loadQuestion();
+                if (isCorrect) {
+                    optionB.className += ' correct-answer';
+                } else {
+                    optionB.className += ' wrong-answer';
+                }
             }
+            
+            // Show correct answer if wrong
+            if (!isCorrect) {
+                if (question.correct === 'A') {
+                    optionA.className += ' correct-answer';
+                } else {
+                    optionB.className += ' correct-answer';
+                }
+            }
+            
+            // Update score and show feedback
+            if (isCorrect) {
+                gameState.score += 20;
+                gameState.correctAnswers++;
+                audioManager.playSound('correct');
+                audioManager.playSound('celebration');
+                showBasketballAnimation(true);
+                showAnswerFeedback('🎉 BENAR! +20 Poin', 'text-green-400');
+            } else {
+                audioManager.playSound('wrong');
+                showBasketballAnimation(false);
+                showAnswerFeedback('❌ Salah! Jawaban yang benar: ' + (question.correct === 'A' ? question.optionA : question.optionB), 'text-red-400');
+            }
+            
+            updateGameDisplay();
+            
+            // Move to next question after delay
+            setTimeout(() => {
+                gameState.currentQuestion++;
+                loadQuestion();
+            }, 3000);
+        }
+
+        function showAnswerFeedback(message, className) {
+            const feedback = document.getElementById('answerFeedback');
+            feedback.textContent = message;
+            feedback.className = `text-2xl font-bold mb-4 transition-all duration-500 ${className}`;
+            feedback.style.opacity = '1';
+        }
+
+        function showBasketballAnimation(isCorrect) {
+            const player = document.getElementById('basketballPlayer');
+            const ball = document.getElementById('basketball');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            
+            if (isCorrect) {
+                // Celebration animation
+                player.classList.add('celebrate');
+                ball.classList.add('ball-bounce');
+                
+                // Show score popup
+                scoreDisplay.textContent = '+20';
+                scoreDisplay.style.opacity = '1';
+                scoreDisplay.classList.add('score-popup');
+                
+                // Create confetti
+                createConfetti();
+                
+                setTimeout(() => {
+                    player.classList.remove('celebrate');
+                    ball.classList.remove('ball-bounce');
+                    scoreDisplay.style.opacity = '0';
+                    scoreDisplay.classList.remove('score-popup');
+                }, 2000);
+            } else {
+                // Miss animation
+                player.classList.add('miss');
+                ball.classList.add('miss');
+                
+                setTimeout(() => {
+                    player.classList.remove('miss');
+                    ball.classList.remove('miss');
+                }, 1000);
+            }
+        }
+
+        function createConfetti() {
+            const container = document.getElementById('confettiContainer');
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd'];
+            
+            for (let i = 0; i < 20; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
+        }
+
+        function startTimer() {
+            if (gameState.gameTimer) {
+                clearInterval(gameState.gameTimer);
+            }
+            
+            gameState.gameTimer = setInterval(() => {
+                gameState.timeRemaining--;
+                updateGameDisplay();
+                
+                // Play tick sound for last 10 seconds
+                if (gameState.timeRemaining <= 10 && gameState.timeRemaining > 0) {
+                    audioManager.playSound('tick');
+                }
+                
+                if (gameState.timeRemaining <= 0) {
+                    endGame();
+                }
+            }, 1000);
         }
 
         function endGame() {
@@ -1748,1282 +1684,191 @@
                 gameState.gameTimer = null;
             }
             
+            // Stop background music and play end sound
+            audioManager.stopBackgroundMusic();
+            audioManager.playSound('gameEnd');
+            
             // Save game data
-            saveGameData();
+            const gameData = {
+                playerName: gameState.currentPlayer,
+                score: gameState.score,
+                correctAnswers: gameState.correctAnswers,
+                timeRemaining: gameState.timeRemaining
+            };
+            
+            saveGameDataLocal(gameData);
             
             // Show results
+            showGameResults();
+        }
+
+        function showGameResults() {
+            const percentage = Math.round((gameState.correctAnswers / questionPool.length) * 100);
+            
+            document.getElementById('resultPlayerName').textContent = gameState.currentPlayer;
+            document.getElementById('finalScore').textContent = gameState.score;
+            document.getElementById('correctAnswers').textContent = gameState.correctAnswers;
+            
+            // Set result message based on performance
+            let title, message, icon;
+            
+            if (percentage >= 80) {
+                title = 'LUAR BIASA! 🌟';
+                message = 'Kamu sangat menguasai materi kesebangunan!';
+                icon = '🏆';
+            } else if (percentage >= 60) {
+                title = 'BAGUS SEKALI! 👏';
+                message = 'Pemahaman kamu tentang kesebangunan sudah baik!';
+                icon = '🥈';
+            } else if (percentage >= 40) {
+                title = 'TERUS BELAJAR! 💪';
+                message = 'Kamu sudah berusaha dengan baik, terus tingkatkan!';
+                icon = '🥉';
+            } else {
+                title = 'JANGAN MENYERAH! 🌈';
+                message = 'Setiap usaha adalah langkah menuju kesuksesan!';
+                icon = '⭐';
+            }
+            
+            document.getElementById('resultTitle').textContent = title;
+            document.getElementById('resultMessage').textContent = message;
+            document.getElementById('resultIcon').textContent = icon;
+            
             showResults();
         }
 
-        function showResults() {
-            hideAllPages();
-            document.getElementById('resultsPage').classList.remove('hidden');
-            
-            // Calculate performance
-            const percentage = (gameState.correctAnswers / questionPool.length) * 100;
-            let resultTitle, resultIcon, resultMessage;
-            
-            if (percentage >= 80) {
-                resultTitle = "LUAR BIASA! 🌟";
-                resultIcon = "🏆";
-                resultMessage = "Kamu adalah master kesebangunan!";
-            } else if (percentage >= 60) {
-                resultTitle = "BAGUS SEKALI! 👏";
-                resultIcon = "🥈";
-                resultMessage = "Pemahaman kamu sudah bagus!";
-            } else if (percentage >= 40) {
-                resultTitle = "TERUS BELAJAR! 💪";
-                resultIcon = "🥉";
-                resultMessage = "Kamu bisa lebih baik lagi!";
-            } else {
-                resultTitle = "JANGAN MENYERAH! 🌈";
-                resultIcon = "📚";
-                resultMessage = "Ayo belajar lagi dan coba lagi!";
-            }
-            
-            // Update result display
-            document.getElementById('resultTitle').textContent = resultTitle;
-            document.getElementById('resultIcon').textContent = resultIcon;
-            document.getElementById('resultPlayerName').textContent = gameState.currentPlayer;
-            document.getElementById('resultMessage').textContent = resultMessage;
-            document.getElementById('finalScore').textContent = gameState.score;
-            document.getElementById('correctAnswers').textContent = `${gameState.correctAnswers}/${questionPool.length}`;
+        function restartGame() {
+            showNameInput();
         }
 
-        // Enhanced Basketball Animation Functions
-        function animateBasketballSuccess() {
-            const player = document.getElementById('basketballPlayer');
-            const ball = document.getElementById('basketball');
-            const scoreDisplay = document.getElementById('scoreDisplay');
-            const court = document.querySelector('.basketball-court');
+        // Dashboard Functions
+        function loadDashboardData() {
+            const data = loadGameDataLocal();
             
-            // Create sound effect text and play swoosh sound
-            createSoundEffect('SWOOSH! 🎯', 'success');
-            playSound('swoosh');
+            // Update statistics
+            const players = Object.values(data.players);
+            const totalPlayers = players.length;
+            const totalGames = data.games.length;
+            const averageScore = totalGames > 0 ? 
+                Math.round(data.games.reduce((sum, game) => sum + game.score, 0) / totalGames) : 0;
+            const highestScore = players.length > 0 ? 
+                Math.max(...players.map(p => p.highestScore)) : 0;
             
-            // Enhanced success animation sequence
-            // Phase 1: Player jumps and shoots
-            player.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            player.style.transform = 'translateY(-25px) scale(1.15) rotate(-5deg)';
-            
-            // Phase 2: Ball flies to basket with arc
-            setTimeout(() => {
-                ball.style.transition = 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-                ball.style.transform = 'translate(180px, -120px) scale(0.7) rotate(720deg)';
-                ball.style.filter = 'drop-shadow(0 8px 16px rgba(255,140,0,0.6))';
-            }, 200);
-            
-            // Phase 3: Ball goes through hoop
-            setTimeout(() => {
-                ball.style.transition = 'all 0.4s ease-in';
-                ball.style.transform = 'translate(180px, -80px) scale(0.6) rotate(900deg)';
-                
-                // Score display with enhanced animation
-                if (scoreDisplay) {
-                    scoreDisplay.textContent = '+20 🏀';
-                    scoreDisplay.style.opacity = '1';
-                    scoreDisplay.style.transform = 'scale(2) translateY(-20px)';
-                    scoreDisplay.style.color = '#00FF00';
-                    scoreDisplay.style.textShadow = '0 0 20px #00FF00';
-                    scoreDisplay.style.animation = 'scorePopup 1s ease-out';
-                }
-                
-                // Create multiple confetti bursts
-                createEnhancedConfetti();
-                createFireworks();
-                
-                // Court celebration effect
-                court.style.background = 'linear-gradient(135deg, rgba(0,255,0,0.3), rgba(255,255,255,0.2), rgba(0,255,0,0.3))';
-                
-            }, 1000);
-            
-            // Phase 4: Player celebrates
-            setTimeout(() => {
-                player.style.transform = 'translateY(-15px) scale(1.2) rotate(10deg)';
-                player.style.filter = 'drop-shadow(0 12px 24px rgba(0,255,0,0.4))';
-                
-                // Add celebration text
-                createCelebrationText('HEBAT! 🌟');
-                
-            }, 1400);
-            
-            // Reset after full animation
-            setTimeout(() => {
-                resetBasketballAnimation(player, ball, scoreDisplay, court);
-            }, 2500);
-        }
-
-        function animateBasketballMiss() {
-            const player = document.getElementById('basketballPlayer');
-            const ball = document.getElementById('basketball');
-            const court = document.querySelector('.basketball-court');
-            
-            // Create sound effect text and play bounce sound
-            createSoundEffect('MISS! 😅', 'miss');
-            playSound('bounce');
-            
-            // Enhanced miss animation sequence
-            // Phase 1: Player attempts shot with less confidence
-            player.style.transition = 'all 0.5s ease-out';
-            player.style.transform = 'translateY(-15px) scale(1.05) rotate(-3deg)';
-            player.style.filter = 'drop-shadow(0 6px 12px rgba(255,0,0,0.3))';
-            
-            // Phase 2: Ball flies but misses the basket
-            setTimeout(() => {
-                ball.style.transition = 'all 1s cubic-bezier(0.55, 0.085, 0.68, 0.53)';
-                ball.style.transform = 'translate(220px, -60px) scale(0.8) rotate(450deg)';
-                ball.style.filter = 'drop-shadow(0 4px 8px rgba(255,0,0,0.4))';
-            }, 200);
-            
-            // Phase 3: Ball bounces off rim/backboard
-            setTimeout(() => {
-                ball.style.transition = 'all 0.6s ease-out';
-                ball.style.transform = 'translate(160px, -20px) scale(0.9) rotate(630deg)';
-                
-                // Court disappointment effect
-                court.style.background = 'linear-gradient(135deg, rgba(255,0,0,0.2), rgba(255,255,255,0.15), rgba(255,0,0,0.2))';
-                
-                // Add miss effect text
-                createMissEffect('Coba Lagi! 💪');
-                
-            }, 900);
-            
-            // Phase 4: Ball falls down
-            setTimeout(() => {
-                ball.style.transition = 'all 0.8s ease-in';
-                ball.style.transform = 'translate(140px, 20px) scale(1) rotate(720deg)';
-                
-                // Player shows disappointment then encouragement
-                player.style.transform = 'translateY(-5px) scale(0.95) rotate(2deg)';
-                
-            }, 1300);
-            
-            // Reset after animation
-            setTimeout(() => {
-                resetBasketballAnimation(player, ball, null, court);
-            }, 2200);
-        }
-
-        function resetBasketballAnimation(player, ball, scoreDisplay, court) {
-            // Reset all elements to original state
-            player.style.transition = 'all 0.5s ease-out';
-            player.style.transform = '';
-            player.style.filter = '';
-            
-            ball.style.transition = 'all 0.5s ease-out';
-            ball.style.transform = '';
-            ball.style.filter = '';
-            
-            if (scoreDisplay) {
-                scoreDisplay.style.opacity = '0';
-                scoreDisplay.style.transform = '';
-                scoreDisplay.style.animation = '';
-                scoreDisplay.style.textShadow = '';
-            }
-            
-            // Reset court background
-            setTimeout(() => {
-                court.style.background = '';
-            }, 500);
-        }
-
-        function createSoundEffect(text, type) {
-            const court = document.querySelector('.basketball-court');
-            const soundEffect = document.createElement('div');
-            soundEffect.textContent = text;
-            soundEffect.style.cssText = `
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                font-size: 2rem;
-                font-weight: bold;
-                color: ${type === 'success' ? '#00FF00' : '#FF4444'};
-                text-shadow: 0 0 10px ${type === 'success' ? '#00FF00' : '#FF4444'};
-                animation: ${type === 'success' ? 'celebrationTextFloat' : 'missEffectFloat'} 2s ease-out forwards;
-                z-index: 10;
-                pointer-events: none;
-            `;
-            court.appendChild(soundEffect);
-            
-            setTimeout(() => {
-                if (soundEffect.parentNode) {
-                    soundEffect.remove();
-                }
-            }, 2000);
-        }
-
-        function createCelebrationText(text) {
-            const court = document.querySelector('.basketball-court');
-            const celebText = document.createElement('div');
-            celebText.textContent = text;
-            celebText.style.cssText = `
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                font-size: 3rem;
-                font-weight: bold;
-                color: #FFD700;
-                text-shadow: 0 0 20px #FFD700;
-                animation: celebrationTextFloat 2s ease-out forwards;
-                z-index: 15;
-                pointer-events: none;
-            `;
-            court.appendChild(celebText);
-            
-            setTimeout(() => {
-                if (celebText.parentNode) {
-                    celebText.remove();
-                }
-            }, 2000);
-        }
-
-        function createMissEffect(text) {
-            const court = document.querySelector('.basketball-court');
-            const missText = document.createElement('div');
-            missText.textContent = text;
-            missText.style.cssText = `
-                position: absolute;
-                top: 60%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                font-size: 2rem;
-                font-weight: bold;
-                color: #FF6B6B;
-                text-shadow: 0 0 15px #FF6B6B;
-                animation: missEffectFloat 2s ease-out forwards;
-                z-index: 15;
-                pointer-events: none;
-            `;
-            court.appendChild(missText);
-            
-            setTimeout(() => {
-                if (missText.parentNode) {
-                    missText.remove();
-                }
-            }, 2000);
-        }
-
-        function createEnhancedConfetti() {
-            const container = document.getElementById('confettiContainer');
-            if (!container) return;
-            
-            const colors = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98FB98'];
-            const shapes = ['🎉', '🎊', '⭐', '✨', '🌟', '💫', '🎈', '🎁'];
-            
-            // Create multiple waves of confetti
-            for (let wave = 0; wave < 3; wave++) {
-                setTimeout(() => {
-                    for (let i = 0; i < 15; i++) {
-                        const isEmoji = Math.random() > 0.6;
-                        const confetti = document.createElement('div');
-                        
-                        if (isEmoji) {
-                            confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
-                            confetti.style.fontSize = '1.5rem';
-                        } else {
-                            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                            confetti.style.width = Math.random() * 12 + 8 + 'px';
-                            confetti.style.height = Math.random() * 12 + 8 + 'px';
-                        }
-                        
-                        confetti.style.position = 'absolute';
-                        confetti.style.left = Math.random() * 100 + '%';
-                        confetti.style.top = Math.random() * 30 + '%';
-                        confetti.style.animation = `confetti ${2 + Math.random() * 2}s ease-out forwards`;
-                        confetti.style.animationDelay = Math.random() * 0.5 + 's';
-                        container.appendChild(confetti);
-                        
-                        setTimeout(() => {
-                            if (confetti.parentNode) {
-                                confetti.remove();
-                            }
-                        }, 4000);
-                    }
-                }, wave * 300);
-            }
-        }
-
-        function createFireworks() {
-            const court = document.querySelector('.basketball-court');
-            const fireworkPositions = [
-                { x: '20%', y: '30%' },
-                { x: '80%', y: '25%' },
-                { x: '50%', y: '20%' },
-                { x: '30%', y: '40%' },
-                { x: '70%', y: '35%' }
-            ];
-            
-            fireworkPositions.forEach((pos, index) => {
-                setTimeout(() => {
-                    const firework = document.createElement('div');
-                    firework.style.cssText = `
-                        position: absolute;
-                        left: ${pos.x};
-                        top: ${pos.y};
-                        width: 4px;
-                        height: 4px;
-                        background: radial-gradient(circle, #FFD700, #FF6B6B, #4ECDC4);
-                        border-radius: 50%;
-                        animation: fireworkExplode 1.5s ease-out forwards;
-                        z-index: 12;
-                    `;
-                    court.appendChild(firework);
-                    
-                    // Create sparkles around firework
-                    for (let i = 0; i < 8; i++) {
-                        const sparkle = document.createElement('div');
-                        sparkle.textContent = '✨';
-                        sparkle.style.cssText = `
-                            position: absolute;
-                            left: ${pos.x};
-                            top: ${pos.y};
-                            font-size: 1rem;
-                            animation: sparkle 1s ease-out infinite;
-                            animation-delay: ${i * 0.1}s;
-                            z-index: 11;
-                        `;
-                        court.appendChild(sparkle);
-                        
-                        setTimeout(() => {
-                            if (sparkle.parentNode) {
-                                sparkle.remove();
-                            }
-                        }, 1500);
-                    }
-                    
-                    setTimeout(() => {
-                        if (firework.parentNode) {
-                            firework.remove();
-                        }
-                    }, 1500);
-                }, index * 200);
-            });
-        }
-
-
-
-        // Data Management Functions
-        function loadGameData() {
-            try {
-                const data = localStorage.getItem('ethnomath_game_data');
-                if (data) {
-                    return JSON.parse(data);
-                }
-            } catch (error) {
-                console.log('Error loading data:', error);
-            }
-            return {
-                players: {},
-                games: [],
-                dailyStats: {}
-            };
-        }
-
-        function saveGameData() {
-            try {
-                const data = loadGameData();
-                const today = new Date().toISOString().split('T')[0];
-                
-                // Update player data
-                if (!data.players[gameState.currentPlayer]) {
-                    data.players[gameState.currentPlayer] = {
-                        name: gameState.currentPlayer,
-                        highestScore: 0,
-                        totalGames: 0,
-                        totalScore: 0,
-                        lastPlayed: today
-                    };
-                }
-                
-                const player = data.players[gameState.currentPlayer];
-                player.highestScore = Math.max(player.highestScore, gameState.score);
-                player.totalGames++;
-                player.totalScore += gameState.score;
-                player.lastPlayed = today;
-                
-                // Add game record
-                data.games.push({
-                    player: gameState.currentPlayer,
-                    score: gameState.score,
-                    correctAnswers: gameState.correctAnswers,
-                    totalQuestions: questionPool.length,
-                    date: new Date().toISOString(),
-                    timeSpent: 600 - gameState.timeRemaining
-                });
-                
-                localStorage.setItem('ethnomath_game_data', JSON.stringify(data));
-            } catch (error) {
-                console.log('Save game data error:', error);
-            }
-        }
-
-        // Host Dashboard Functions
-        function updateHostDashboard() {
-            const data = loadGameData();
-            
-            // Calculate statistics
-            const totalPlayers = Object.keys(data.players || {}).length;
-            const totalGames = (data.games || []).length;
-            const averageScore = totalGames > 0 ? Math.round(data.games.reduce((sum, game) => sum + (game.score || 0), 0) / totalGames) : 0;
-            const highestScore = data.games && data.games.length > 0 ? Math.max(...data.games.map(game => game.score || 0)) : 0;
-            
-            // Update dashboard stats
             document.getElementById('totalPlayers').textContent = totalPlayers;
             document.getElementById('totalGames').textContent = totalGames;
             document.getElementById('averageScore').textContent = averageScore;
             document.getElementById('highestScore').textContent = highestScore;
             
-            // Calculate additional stats
-            const today = new Date().toISOString().split('T')[0];
-            const todayGames = (data.games || []).filter(game => game.date && game.date.startsWith(today));
-            const activeToday = new Set(todayGames.map(game => game.player)).size;
-            
-            const correctAnswers = (data.games || []).reduce((sum, game) => sum + (game.correctAnswers || 0), 0);
-            const totalQuestions = (data.games || []).reduce((sum, game) => sum + (game.totalQuestions || 0), 0);
-            const accuracyRate = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
-            
-            document.getElementById('activeToday').textContent = activeToday;
-            document.getElementById('accuracyRate').textContent = accuracyRate + '%';
-            document.getElementById('streakRecord').textContent = '5'; // Static for demo
-            
-            // Update leaderboard and chart
-            updateLeaderboard(data);
-            renderScoreChart(data);
+            // Update leaderboard
+            updateLeaderboard(players);
         }
 
-        function renderScoreChart(data) {
-            const chartContainer = document.getElementById('chartContainer');
-            if (!chartContainer) return;
+        function updateLeaderboard(players) {
+            const tbody = document.getElementById('leaderboardTable');
+            tbody.innerHTML = '';
             
-            const games = data.games || [];
-            if (games.length === 0) {
-                chartContainer.innerHTML = `
-                    <div class="flex flex-col items-center justify-center h-full text-gray-400">
-                        <div class="text-6xl mb-4">📊</div>
-                        <p class="text-xl">Belum ada data untuk ditampilkan</p>
-                        <p class="text-sm mt-2">Grafik akan muncul setelah ada pemain yang bermain</p>
-                    </div>
-                `;
+            const sortedPlayers = players.sort((a, b) => b.highestScore - a.highestScore);
+            
+            if (sortedPlayers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400">Belum ada data pemain</td></tr>';
                 return;
             }
             
-            // Group scores into ranges
-            const scoreRanges = {
-                '0-20': 0,
-                '21-40': 0,
-                '41-60': 0,
-                '61-80': 0,
-                '81-100': 0
-            };
-            
-            games.forEach(game => {
-                const score = game.score || 0;
-                if (score <= 20) scoreRanges['0-20']++;
-                else if (score <= 40) scoreRanges['21-40']++;
-                else if (score <= 60) scoreRanges['41-60']++;
-                else if (score <= 80) scoreRanges['61-80']++;
-                else scoreRanges['81-100']++;
-            });
-            
-            const maxCount = Math.max(...Object.values(scoreRanges));
-            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6'];
-            const emojis = ['😅', '😐', '🙂', '😊', '🤩'];
-            
-            let chartHTML = '<div class="flex items-end justify-center h-full space-x-4 px-4">';
-            
-            Object.entries(scoreRanges).forEach(([range, count], index) => {
-                const height = maxCount > 0 ? (count / maxCount) * 80 : 0;
-                const percentage = games.length > 0 ? Math.round((count / games.length) * 100) : 0;
+            sortedPlayers.forEach((player, index) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-white/10 hover:bg-white/5';
                 
-                chartHTML += `
-                    <div class="flex flex-col items-center space-y-2">
-                        <div class="text-white text-sm font-bold">${count}</div>
-                        <div class="relative">
-                            <div class="w-12 bg-gradient-to-t from-${colors[index].replace('#', '')} to-${colors[index].replace('#', '')} rounded-t-lg transition-all duration-1000 ease-out" 
-                                 style="height: ${height}%; min-height: ${count > 0 ? '20px' : '2px'}; background: linear-gradient(to top, ${colors[index]}, ${colors[index]}aa);"></div>
-                        </div>
-                        <div class="text-2xl">${emojis[index]}</div>
-                        <div class="text-white text-xs font-bold text-center">
-                            <div>${range}</div>
-                            <div class="text-gray-300">${percentage}%</div>
-                        </div>
-                    </div>
+                const averageScore = player.totalGames > 0 ? 
+                    Math.round(player.totalScore / player.totalGames) : 0;
+                
+                const rankIcon = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
+                
+                row.innerHTML = `
+                    <td class="py-3 px-4 font-bold">${rankIcon}</td>
+                    <td class="py-3 px-4">${player.name}</td>
+                    <td class="py-3 px-4 text-yellow-400 font-bold">${player.highestScore}</td>
+                    <td class="py-3 px-4">${player.totalGames}</td>
+                    <td class="py-3 px-4">${averageScore}</td>
+                    <td class="py-3 px-4 text-sm">${player.lastPlayed}</td>
                 `;
+                
+                tbody.appendChild(row);
             });
-            
-            chartHTML += '</div>';
-            chartContainer.innerHTML = chartHTML;
         }
 
-        function updateLeaderboard(data) {
-            const leaderboard = Object.values(data.players || {})
-                .sort((a, b) => (b.highestScore || 0) - (a.highestScore || 0))
-                .slice(0, 10);
+        // Audio Control Functions
+        function toggleAudio() {
+            const isMuted = audioManager.toggleMute();
+            const audioIcon = document.getElementById('audioIcon');
+            const audioTooltip = document.getElementById('audioTooltip');
             
-            const tableBody = document.getElementById('leaderboardTable');
-            tableBody.innerHTML = '';
-            
-            leaderboard.forEach((player, index) => {
-                const row = document.createElement('tr');
-                row.className = 'border-b border-white/10 hover:bg-white/5 transition-colors';
-                
-                const averageScore = (player.totalGames || 0) > 0 ? Math.round((player.totalScore || 0) / player.totalGames) : 0;
-                const lastPlayed = player.lastPlayed ? new Date(player.lastPlayed).toLocaleDateString('id-ID') : 'Tidak diketahui';
-                
-                row.innerHTML = `
-                    <td class="py-3 px-4">
-                        <span class="text-2xl">${index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : '🏅'}</span>
-                        ${index + 1}
-                    </td>
-                    <td class="py-3 px-4 font-bold">${player.name || 'Pemain'}</td>
-                    <td class="py-3 px-4 text-yellow-400 font-bold">${player.highestScore || 0}</td>
-                    <td class="py-3 px-4">${player.totalGames || 0}</td>
-                    <td class="py-3 px-4">${averageScore}</td>
-                    <td class="py-3 px-4 text-sm">${lastPlayed}</td>
-                `;
-                
-                tableBody.appendChild(row);
-            });
-            
-            if (leaderboard.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td colspan="6" class="py-8 px-4 text-center text-gray-400">
-                        <div class="text-4xl mb-2">🎮</div>
-                        Belum ada pemain yang bermain
-                    </td>
-                `;
-                tableBody.appendChild(row);
+            if (isMuted) {
+                // Muted icon
+                audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>';
+                audioTooltip.textContent = 'Nyalakan Suara';
+                document.getElementById('audioButton').className = 'fixed bottom-4 right-4 z-50 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group';
+            } else {
+                // Unmuted icon
+                audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9a3 3 0 000 6h4v.01M9 15H5a2 2 0 01-2-2V9a2 2 0 012-2h4.01"></path>';
+                audioTooltip.textContent = 'Matikan Suara';
+                document.getElementById('audioButton').className = 'fixed bottom-4 right-4 z-50 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group';
             }
+            
+            audioManager.playSound('click');
         }
 
         // Event Listeners
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the game
+            // Initialize the app
             showHome();
             
-            // Initialize music system
-            initializeMusic();
-            
-            // Host password input enter key
-            document.getElementById('hostPassword').addEventListener('keypress', function(e) {
+            // Add keyboard event listeners
+            document.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
-                    verifyHostPassword();
-                }
-            });
-
-            // Player name input enter key
-            document.getElementById('playerName').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    startGameWithName();
-                }
-            });
-
-            // Add click sounds to all buttons
-            document.querySelectorAll('button').forEach(button => {
-                button.addEventListener('click', () => {
-                    if (!button.id || !['musicToggle'].includes(button.id)) {
-                        playSound('click');
+                    const activeModal = document.querySelector('.fixed:not(.hidden)');
+                    if (activeModal) {
+                        if (activeModal.id === 'nameInputModal') {
+                            startGameWithName();
+                        } else if (activeModal.id === 'hostLoginModal') {
+                            verifyHostPassword();
+                        }
                     }
-                });
-            });
-
-            // Host dashboard buttons - use event delegation since buttons might not exist yet
-            document.addEventListener('click', function(e) {
-                if (e.target.id === 'exportBtn' || e.target.closest('#exportBtn')) {
-                    e.preventDefault();
-                    playSound('click');
-                    exportGameData();
-                } else if (e.target.id === 'clearBtn' || e.target.closest('#clearBtn')) {
-                    e.preventDefault();
-                    playSound('click');
-                    clearGameData();
-                } else if (e.target.id === 'refreshBtn' || e.target.closest('#refreshBtn')) {
-                    e.preventDefault();
-                    playSound('click');
-                    updateHostDashboard();
                 }
-            });
-        });
-
-        // Host Dashboard Button Functions
-        function exportGameData() {
-            try {
-                const data = loadGameData();
-                const dataStr = JSON.stringify(data, null, 2);
-                const dataBlob = new Blob([dataStr], {type: 'application/json'});
                 
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(dataBlob);
-                link.download = `ethnomath_data_${new Date().toISOString().split('T')[0]}.json`;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                
-                // Show success message
-                showNotification('✅ Data berhasil diexport!', 'success');
-            } catch (error) {
-                console.error('Export error:', error);
-                showNotification('❌ Gagal export data!', 'error');
-            }
-        }
-
-        function clearGameData() {
-            if (confirm('⚠️ Apakah Anda yakin ingin menghapus semua data papan peringkat?\n\nTindakan ini tidak dapat dibatalkan!')) {
-                try {
-                    localStorage.removeItem('ethnomath_game_data');
-                    updateHostDashboard();
-                    showNotification('🗑️ Data papan peringkat berhasil dihapus!', 'success');
-                } catch (error) {
-                    console.error('Clear data error:', error);
-                    showNotification('❌ Gagal menghapus data!', 'error');
+                if (e.key === 'Escape') {
+                    hideNameInput();
+                    hideHostLogin();
                 }
-            }
-        }
-
-        function showNotification(message, type) {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 z-50 px-6 py-3 rounded-lg font-bold text-white shadow-lg transform transition-all duration-300 ${
-                type === 'success' ? 'bg-green-500' : 'bg-red-500'
-            }`;
-            notification.textContent = message;
-            notification.style.transform = 'translateX(100%)';
-            
-            document.body.appendChild(notification);
-            
-            // Animate in
-            setTimeout(() => {
-                notification.style.transform = 'translateX(0)';
-            }, 100);
-            
-            // Animate out and remove
-            setTimeout(() => {
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.remove();
+                
+                // Game controls
+                if (gameState.isGameActive && !gameState.answerSubmitted) {
+                    if (e.key === 'a' || e.key === 'A') {
+                        selectAnswer('A');
+                    } else if (e.key === 'b' || e.key === 'B') {
+                        selectAnswer('B');
                     }
-                }, 300);
-            }, 3000);
-        }
+                }
+            });
+            
+            // Add click outside to close modals
+            document.getElementById('nameInputModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideNameInput();
+                }
+            });
+            
+            document.getElementById('hostLoginModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    hideHostLogin();
+                }
+            });
+        });
+
+        // Initialize app when page loads
+        window.addEventListener('load', function() {
+            console.log('🎮 Ethnomath Quiz loaded successfully!');
+            showHome();
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97477ff53587f3fb',t:'MTc1NjA4NzI2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-    <script>
-    // === Cloud Sync (Google Apps Script) ===
-    const GAS_CONFIG_KEY = 'ethnomath_gas_url';
-
-    function getScriptURL() {
-        return localStorage.getItem(GAS_CONFIG_KEY) || '';
-    }
-    function setScriptURL(url) {
-        localStorage.setItem(GAS_CONFIG_KEY, url);
-        const input = document.getElementById('gasUrlInput');
-        if (input) input.value = url;
-    }
-    function hydrateScriptURLInput() {
-        const input = document.getElementById('gasUrlInput');
-        if (input) input.value = getScriptURL();
-    }
-
-    async function sendJoinRecord(name) {
-        try {
-            const endpoint = getScriptURL();
-            if (!endpoint) {
-                console.warn('GAS endpoint belum di-set oleh host.');
-                return;
-            }
-            const payload = {
-                action: 'join',
-                name: name,
-                device: navigator.userAgent,
-                ts: new Date().toISOString(),
-            };
-            await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-        } catch (e) {
-            console.error('Gagal mengirim join record:', e);
-        }
-    }
-
-    async function fetchPlayersFromCloud() {
-        const endpoint = getScriptURL();
-        if (!endpoint) {
-            alert('Masukkan dan simpan Web App URL terlebih dahulu.');
-            return;
-        }
-        try {
-            const res = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'list' })
-            });
-            const data = await res.json();
-            if (!Array.isArray(data.rows)) {
-                throw new Error('Format data tidak sesuai.');
-            }
-            renderPlayersLog(data.rows);
-        } catch (e) {
-            console.error(e);
-            alert('Gagal memuat data dari cloud. Cek konsol untuk detail.');
-        }
-    }
-
-    function renderPlayersLog(rows) {
-        const tbody = document.getElementById('playersLogTable');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        let recorded = 0;
-        rows.forEach((r, idx) => {
-            // expected row: [timestamp, name, device, ip]
-            const tr = document.createElement('tr');
-            tr.className = 'border-b border-white/10';
-            const tds = [
-                String(idx + 1),
-                r[1] || '',
-                (r[2] || '').slice(0, 40) + (r[2] && r[2].length > 40 ? '…' : ''),
-                r[0] || '',
-                r[3] || ''
-            ];
-            tds.forEach(text => {
-                const td = document.createElement('td');
-                td.className = 'py-2 px-4 text-sm';
-                td.textContent = text;
-                tr.appendChild(td);
-            });
-            tbody.appendChild(tr);
-            recorded++;
-        });
-        const cloudRecorded = document.getElementById('cloudRecordedPlayers');
-        if (cloudRecorded) cloudRecorded.textContent = recorded;
-    }
-
-    async function testConnection() {
-        const endpoint = getScriptURL();
-        if (!endpoint) {
-            alert('Masukkan dan simpan Web App URL terlebih dahulu.');
-            return;
-        }
-        try {
-            const res = await fetch(endpoint, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'ping' })
-            });
-            const data = await res.json();
-            alert('Tes koneksi: ' + (data.status || JSON.stringify(data)));
-        } catch (e) {
-            console.error(e);
-            alert('Tes koneksi gagal. Cek konsol untuk detail.');
-        }
-    }
-
-    // Patch startGameWithName to also send cloud join record
-    (function patchStartGameWithName(){
-        const oldFn = window.startGameWithName;
-        window.startGameWithName = function(...args){
-            const input = document.getElementById('playerName');
-            const name = (input && input.value ? input.value.trim() : '') || window.gameState?.currentPlayer || '';
-            if (name) {
-                if (window.gameState) window.gameState.currentPlayer = name;
-                sendJoinRecord(name);
-            }
-            if (typeof oldFn === 'function') {
-                return oldFn.apply(this, args);
-            }
-        };
-    })();
-
-    document.addEventListener('DOMContentLoaded', () => {
-        hydrateScriptURLInput();
-        const saveBtn = document.getElementById('saveScriptURLBtn');
-        const testBtn = document.getElementById('testScriptURLBtn');
-        const loadBtn = document.getElementById('loadPlayersBtn');
-        if (saveBtn) saveBtn.addEventListener('click', () => {
-            const val = (document.getElementById('gasUrlInput') || {}).value || '';
-            if (!val) return alert('Masukkan URL terlebih dahulu.');
-            setScriptURL(val);
-            alert('URL tersimpan untuk perangkat host ini.');
-        });
-        if (testBtn) testBtn.addEventListener('click', testConnection);
-        if (loadBtn) loadBtn.addEventListener('click', fetchPlayersFromCloud);
-    });
-    </script>
-
-
-<!-- SheetJS library -->
-<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-
-<script>
-const GAS_CONFIG_KEY = 'ethnomath_gas_url';
-let latestRows = [];
-
-// Ambil/Set URL Apps Script
-function getScriptURL() { return localStorage.getItem(GAS_CONFIG_KEY) || ''; }
-function setScriptURL(url) { localStorage.setItem(GAS_CONFIG_KEY, url); document.getElementById('gasUrlInput').value = url; }
-
-// Kirim join ke cloud (cek limit 35)
-async function sendJoinRecord(name) {
-    const endpoint = getScriptURL();
-    if (!endpoint) return;
-
-    // cek jumlah pemain dulu
-    const resList = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'list' })
-    });
-    const data = await resList.json();
-    const rows = Array.isArray(data.rows) ? data.rows : [];
-    if (rows.length >= 35) {
-        alert("❌ Maaf, kuota 35 pemain sudah penuh.");
-        return false;
-    }
-
-    // kirim join
-    await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            action: 'join',
-            name: name,
-            device: navigator.userAgent,
-            ts: new Date().toISOString()
-        })
-    });
-    return true;
-}
-
-// Ambil pemain dari cloud
-async function fetchPlayersFromCloud() {
-    const endpoint = getScriptURL();
-    if (!endpoint) return;
-    const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'list' })
-    });
-    const data = await res.json();
-    const rows = Array.isArray(data.rows) ? data.rows : [];
-    latestRows = rows;
-    renderPlayersLog(rows);
-}
-
-// Render tabel
-function renderPlayersLog(rows) {
-    const tbody = document.getElementById('playersLogTable');
-    tbody.innerHTML = '';
-    rows.forEach((r, idx) => {
-        const tr = document.createElement('tr');
-        tr.className = 'border-b border-white/10';
-        tr.innerHTML = `
-          <td class="py-2 px-3">${idx+1}</td>
-          <td class="py-2 px-3">${r[1]||''}</td>
-          <td class="py-2 px-3">${(r[2]||'').slice(0,25)}...</td>
-          <td class="py-2 px-3">${r[0]||''}</td>`;
-        tbody.appendChild(tr);
-    });
-    document.getElementById('cloudRecordedPlayers').textContent = rows.length;
-}
-
-// Export ke Excel
-function exportToExcel() {
-    if (!latestRows.length) {
-        alert("Data kosong. Muat pemain dulu.");
-        return;
-    }
-    const header = ["Timestamp", "Nama", "Device", "IP"];
-    const data = [header, ...latestRows];
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Players");
-    XLSX.writeFile(wb, "players.xlsx");
-}
-
-// Patch fungsi start game agar cek limit
-(function(){
-    const oldFn = window.startGameWithName;
-    window.startGameWithName = async function(...args){
-        const input = document.getElementById('playerName');
-        const name = (input && input.value.trim()) || '';
-        if (name) {
-            const ok = await sendJoinRecord(name);
-            if (!ok) return; // stop kalau sudah penuh
-        }
-        if (typeof oldFn === 'function') oldFn.apply(this,args);
-    }
-})();
-
-// Listener
-document.addEventListener('DOMContentLoaded', ()=>{
-    document.getElementById('gasUrlInput').value = getScriptURL();
-    document.getElementById('saveScriptURLBtn').onclick = ()=>setScriptURL(document.getElementById('gasUrlInput').value);
-    document.getElementById('loadPlayersBtn').onclick = fetchPlayersFromCloud;
-    document.getElementById('exportExcelBtn').onclick = exportToExcel;
-});
-</script>
-
-
-<!-- SheetJS library -->
-<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-
-<script>
-const GAS_CONFIG_KEY = 'ethnomath_gas_url';
-let latestRows = [];
-
-// Ambil/Set URL Apps Script (hardcode dulu, host bisa edit manual di JS)
-function getScriptURL() { 
-    return localStorage.getItem(GAS_CONFIG_KEY) || ''; 
-}
-function setScriptURL(url) { 
-    localStorage.setItem(GAS_CONFIG_KEY, url); 
-}
-
-// Kirim join ke cloud (cek limit 35)
-async function sendJoinRecord(name) {
-    const endpoint = getScriptURL();
-    if (!endpoint) return;
-
-    const resList = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'list' })
-    });
-    const data = await resList.json();
-    const rows = Array.isArray(data.rows) ? data.rows : [];
-    if (rows.length >= 35) {
-        alert("❌ Maaf, kuota 35 pemain sudah penuh.");
-        return false;
-    }
-
-    await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            action: 'join',
-            name: name,
-            device: navigator.userAgent,
-            ts: new Date().toISOString()
-        })
-    });
-    return true;
-}
-
-// Ambil pemain dari cloud
-async function fetchPlayersFromCloud() {
-    const endpoint = getScriptURL();
-    if (!endpoint) return;
-    const res = await fetch(endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'list' })
-    });
-    const data = await res.json();
-    const rows = Array.isArray(data.rows) ? data.rows : [];
-    latestRows = rows;
-    document.getElementById('cloudRecordedPlayers').textContent = rows.length;
-}
-
-// Export ke Excel
-function exportToExcel() {
-    if (!latestRows.length) {
-        alert("Data kosong. Reload halaman host untuk sync.");
-        return;
-    }
-    const header = ["Timestamp", "Nama", "Device", "IP"];
-    const data = [header, ...latestRows];
-    const ws = XLSX.utils.aoa_to_sheet(data);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Players");
-    XLSX.writeFile(wb, "players.xlsx");
-}
-
-// Patch fungsi start game agar cek limit
-(function(){
-    const oldFn = window.startGameWithName;
-    window.startGameWithName = async function(...args){
-        const input = document.getElementById('playerName');
-        const name = (input && input.value.trim()) || '';
-        if (name) {
-            const ok = await sendJoinRecord(name);
-            if (!ok) return; // stop kalau sudah penuh
-        }
-        if (typeof oldFn === 'function') oldFn.apply(this,args);
-    }
-})();
-
-// Init
-document.addEventListener('DOMContentLoaded', ()=>{
-    document.getElementById('exportExcelBtn').onclick = exportToExcel;
-    fetchPlayersFromCloud();
-});
-</script>
-
-
-<!-- === Tambahan Script Integrasi Timer + Leaderboard === -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script>
-  // === Popup nama pemain ===
-  let currentPlayer = if (!currentPlayer || currentPlayer.trim() === "") {
-    currentPlayer = "Pemain" + Math.floor(Math.random() * 1000);
-  }
-  const playerNameDisplay = document.getElementById("playerNameDisplay");
-  if(playerNameDisplay) playerNameDisplay.textContent = currentPlayer;
-
-  // Skor pemain (default 0)
-  let currentScore = 0;
-  const scoreDisplay = document.getElementById("scoreDisplay");
-  function addScore(points) {
-    currentScore += points;
-    if(scoreDisplay) scoreDisplay.textContent = currentScore;
-  }
-  window.addScore = addScore; // agar bisa dipanggil dari game
-
-  // === Timer 15 menit ===
-  const TOTAL_TIME = 15 * 60; // 900 detik
-  let timeLeft = TOTAL_TIME;
-  const timerBar = document.getElementById("timerBar");
-  const timerText = document.getElementById("timerText");
-  let savedOnTimeout = false;
-
-  function formatMMSS(s) {
-    const m = Math.floor(s / 60).toString().padStart(2, "0");
-    const d = (s % 60).toString().padStart(2, "0");
-    return m + ":" + d;
-  }
-  function updateTimer() {
-    if(timerText) timerText.textContent = formatMMSS(timeLeft);
-    const percent = (timeLeft / TOTAL_TIME) * 100;
-    if(timerBar) {
-      timerBar.style.width = percent + "%";
-      timerBar.className = "h-3 " + (percent > 50 ? "bg-green-500" : percent > 20 ? "bg-yellow-500" : "bg-red-500");
-    }
-    if (timeLeft <= 0) {
-      clearInterval(timerInterval);
-      if(timerText) timerText.textContent = "00:00";
-      if (!savedOnTimeout) {
-        savedOnTimeout = true;
-        addPlayerResult(currentPlayer, currentScore);
-      }
-      alert("⏰ Waktu habis! Game selesai.");
-    }
-    timeLeft--;
-  }
-  const timerInterval = setInterval(updateTimer, 1000);
-
-  // === Leaderboard ===
-  const leaderboardData = [];
-  function addPlayerResult(name, score) {
-    const now = new Date().toLocaleString();
-    const existing = leaderboardData.find(p => p.name === name);
-    if (existing) {
-      existing.scores.push(score);
-      existing.highest = Math.max(existing.highest, score);
-      existing.totalGames += 1;
-      existing.average = (existing.scores.reduce((a,b)=>a+b,0) / existing.scores.length).toFixed(2);
-      existing.lastPlayed = now;
-    } else {
-      leaderboardData.push({
-        name,
-        highest: score,
-        totalGames: 1,
-        average: score,
-        scores: [score],
-        lastPlayed: now
-      });
-    }
-    updateLeaderboard();
-  }
-  function updateLeaderboard() {
-    leaderboardData.sort((a,b) => b.highest - a.highest);
-    const tbody = document.getElementById("leaderboardTable");
-    if(!tbody) return;
-    tbody.innerHTML = "";
-    leaderboardData.forEach((p,i) => {
-      const tr = document.createElement("tr");
-      tr.className = "border-t";
-      tr.innerHTML = `
-        <td class="p-2">${i+1}</td>
-        <td class="p-2">${p.name}</td>
-        <td class="p-2">${p.highest}</td>
-        <td class="p-2">${p.totalGames}</td>
-        <td class="p-2">${p.average}</td>
-        <td class="p-2">${p.lastPlayed}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-  }
-
-  // === Export ke Excel ===
-  const exportBtn = document.getElementById("exportBtn");
-  if(exportBtn) exportBtn.addEventListener("click", () => {
-    const rows = leaderboardData.map((p,i) => ({
-      Peringkat: i + 1,
-      Nama: p.name,
-      "Skor Tertinggi": p.highest,
-      "Total Game": p.totalGames,
-      "Rata-rata": p.average,
-      "Terakhir Main": p.lastPlayed
-    }));
-    const ws = XLSX.utils.json_to_sheet(rows);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Leaderboard");
-    XLSX.writeFile(wb, "Leaderboard.xlsx");
-  });
-
-  const clearBtn = document.getElementById("clearBtn");
-  if(clearBtn) clearBtn.addEventListener("click", () => {
-    leaderboardData.length = 0;
-    updateLeaderboard();
-  });
-  const refreshBtn = document.getElementById("refreshBtn");
-  if(refreshBtn) refreshBtn.addEventListener("click", () => updateLeaderboard());
-</script>
-
-
-  <!-- $__LEADERBOARD_SYNC__ -->
-  <script>
-    // === Konfigurasi Web App Google Apps Script ===
-    const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyo_TJxTArGM_PRmWeXWXC4v7rp7e7_uderj1eY2f1L2dHxv0ven0fWb444R6iUKEL9/exec";
-
-    // === Nama pemain otomatis (tanpa popup) ===
-    (function initPlayer(){
-      let counter = localStorage.getItem("playerCounter") || 1;
-      window.currentPlayer = "Pemain" + counter;
-      localStorage.setItem("playerCounter", parseInt(counter) + 1);
-      const nameEl = document.getElementById("playerNameDisplay");
-      if (nameEl) nameEl.textContent = window.currentPlayer;
-    })();
-
-    // === Skor dan API untuk game ===
-    window.currentScore = 0;
-    window.addScore = function(points){
-      window.currentScore += (Number(points)||0);
-      const s = document.getElementById("scoreDisplay");
-      if (s) s.textContent = window.currentScore;
-      addPlayerResult(window.currentPlayer, window.currentScore);
-    };
-
-    // === Timer 15 menit (900 detik) ===
-    (function initTimer(){
-      const TOTAL_TIME = 15 * 60;
-      let timeLeft = TOTAL_TIME;
-      const bar = document.getElementById("timerBar");
-      const txt = document.getElementById("timerText");
-      let savedOnTimeout = false;
-      function mmss(sec){ const m=String(Math.floor(sec/60)).padStart(2,'0'); const d=String(sec%60).padStart(2,'0'); return m+':'+d; }
-      function tick(){
-        if (txt) txt.textContent = mmss(timeLeft);
-        if (bar){ 
-          const pct = (timeLeft / TOTAL_TIME) * 100;
-          bar.style.width = pct + '%';
-          bar.style.background = pct>50 ? '#10b981' : (pct>20 ? '#f59e0b' : '#ef4444');
-        }
-        if (timeLeft<=0){
-          clearInterval(iv);
-          if (txt) txt.textContent = '00:00';
-          if (!savedOnTimeout){
-            savedOnTimeout = true;
-            addPlayerResult(window.currentPlayer, window.currentScore);
-          }
-          alert('⏰ Waktu habis! Game selesai.');
-        }
-        timeLeft--;
-      }
-      const iv = setInterval(tick, 1000);
-    })();
-
-    // === Leaderboard lokal + sinkron server ===
-    const leaderboardData = [];
-
-    function addPlayerResult(name, score){
-      const now = new Date().toLocaleString();
-      const ex = leaderboardData.find(p => p.name === name);
-      if (ex){
-        ex.scores.push(score);
-        ex.highest = Math.max(ex.highest, score);
-        ex.totalGames += 1;
-        ex.average = (ex.scores.reduce((a,b)=>a+b,0)/ex.scores.length).toFixed(2);
-        ex.lastPlayed = now;
-      } else {
-        leaderboardData.push({name, highest: score, totalGames: 1, average: score, scores: [score], lastPlayed: now});
-      }
-      updateLeaderboard();
-      // Sync ke server (POST)
-      try{
-        fetch(DEPLOY_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ name, score, lastPlayed: now })
-        });
-      }catch(e){ console.error('Gagal sync:', e); }
-    }
-
-    function updateLeaderboard(){
-      leaderboardData.sort((a,b)=> b.highest - a.highest);
-      const tbody = document.getElementById('leaderboardTable');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-      leaderboardData.forEach((p,i)=>{
-        const tr = document.createElement('tr');
-        tr.innerHTML = '<td>'+ (i+1) +'</td>' +
-                       '<td>'+ p.name +'</td>' +
-                       '<td>'+ p.highest +'</td>' +
-                       '<td>'+ p.totalGames +'</td>' +
-                       '<td>'+ p.average +'</td>' +
-                       '<td>'+ p.lastPlayed +'</td>';
-        tbody.appendChild(tr);
-      });
-    }
-
-    async function loadLeaderboardFromServer(){
-      try{
-        const res = await fetch(DEPLOY_URL);
-        const data = await res.json();
-        leaderboardData.length = 0;
-        data.forEach(p=> leaderboardData.push(p));
-        updateLeaderboard();
-      }catch(e){
-        console.error('Gagal load leaderboard global:', e);
-      }
-    }
-
-    // Tombol Export/Hapus/Refresh
-    document.addEventListener('DOMContentLoaded', function(){
-      const exportBtn = document.getElementById('exportBtn');
-      const clearBtn = document.getElementById('clearBtn');
-      const refreshBtn = document.getElementById('refreshBtn');
-      if (exportBtn){
-        exportBtn.addEventListener('click', function(){
-          const rows = leaderboardData.map((p,i)=>({
-            'Peringkat': i+1, 'Nama': p.name, 'Skor Tertinggi': p.highest,
-            'Total Game': p.totalGames, 'Rata-rata': p.average, 'Terakhir Main': p.lastPlayed
-          }));
-          const ws = XLSX.utils.json_to_sheet(rows);
-          const wb = XLSX.utils.book_new();
-          XLSX.utils.book_append_sheet(wb, ws, 'Leaderboard');
-          XLSX.writeFile(wb, 'Leaderboard.xlsx');
-        });
-      }
-      if (clearBtn){
-        clearBtn.addEventListener('click', function(){
-          leaderboardData.length = 0;
-          updateLeaderboard();
-        });
-      }
-      if (refreshBtn){
-        refreshBtn.addEventListener('click', loadLeaderboardFromServer);
-      }
-      // Load awal + auto refresh per menit
-      loadLeaderboardFromServer();
-      setInterval(loadLeaderboardFromServer, 60000);
-    });
-  </script>
-
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'974ee67b244a4d5d',t:'MTc1NjE2NDg2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
