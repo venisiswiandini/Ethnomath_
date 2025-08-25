@@ -1579,7 +1579,7 @@
         //         endGame();
         //         return;
         //     }
-        function loadQuestion(q) {
+        function loadQuestion() {
 const img = document.getElementById("questionImage");
 const fallback = document.getElementById("questionImageFallback");
 if (q.image) {
@@ -1590,8 +1590,7 @@ fallback.style.display = "none";
 img.style.display = "none";
 fallback.style.display = "block";
 }
-}
-            
+}   
             const question = questionPool[gameState.currentQuestion];
             
             // Update question display
