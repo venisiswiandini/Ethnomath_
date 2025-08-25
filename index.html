@@ -920,19 +920,7 @@
                 </div>
                 
                 
-                <!-- Cloud Sync: Players Join Log -->
-                <div class="glass-card rounded-2xl p-6 mb-8 bg-gradient-to-br from-cyan-400/20 to-blue-400/20">
-                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-                        <div>
-                            <h3 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">☁️ Sinkronisasi Cloud <span class="text-sm font-normal text-white/80">(Google Apps Script)</span></h3>
-                            <p class="text-white/80 text-sm">Simpan dan pantau data pemain yang join dari banyak device di Google Drive (Spreadsheet). Tempel <em>Web App URL</em> dari Apps Script di bawah.</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button id="saveScriptURLBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2 rounded-full font-bold transition-all">💾 Simpan URL</button>
-                            <button id="testScriptURLBtn" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-4 py-2 rounded-full font-bold transition-all">🧪 Tes Koneksi</button>
-                            <button id="loadPlayersBtn" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-4 py-2 rounded-full font-bold transition-all">🔄 Muat Pemain</button>
-                        </div>
-                    </div>
+                
                     <div class="mt-4 grid md:grid-cols-3 gap-4">
                         <div class="md:col-span-2">
                             <label class="block text-white text-sm mb-1">Web App URL (Google Apps Script)</label>
@@ -964,20 +952,7 @@
                 </div>
 
 
-<!-- Cloud Sync: Players Join Log (Simplified) -->
-<div class="glass-card rounded-2xl p-6 mb-8 bg-gradient-to-br from-cyan-500/20 to-blue-500/20">
-    <h3 class="text-xl font-bold text-white mb-3">☁️ Sinkronisasi Cloud</h3>
-    <div class="flex gap-2 mb-4">
-        <input id="gasUrlInput" type="url" placeholder="Tempel Web App URL di sini"
-            class="flex-1 px-3 py-2 rounded-lg bg-white/90 text-gray-900 font-semibold border-2 border-white/40 focus:outline-none">
-        <button id="saveScriptURLBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg">💾 Simpan</button>
-        <button id="loadPlayersBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg">🔄 Muat</button>
-        <button id="exportExcelBtn" class="bg-yellow-500 text-white px-4 py-2 rounded-lg">📥 Export Excel</button>
-    </div>
-    <div class="flex gap-6 text-white mb-3">
-        <div>Target: <span class="font-bold" id="cloudTargetPlayers">35</span></div>
-        <div>Tercatat: <span class="font-bold" id="cloudRecordedPlayers">0</span></div>
-    </div>
+
     <div class="overflow-x-auto">
         <table class="w-full text-white text-sm">
             <thead>
@@ -2657,6 +2632,102 @@ document.addEventListener('DOMContentLoaded', ()=>{
     document.getElementById('saveScriptURLBtn').onclick = ()=>setScriptURL(document.getElementById('gasUrlInput').value);
     document.getElementById('loadPlayersBtn').onclick = fetchPlayersFromCloud;
     document.getElementById('exportExcelBtn').onclick = exportToExcel;
+});
+</script>
+
+
+<!-- SheetJS library -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<script>
+const GAS_CONFIG_KEY = 'ethnomath_gas_url';
+let latestRows = [];
+
+// Ambil/Set URL Apps Script (hardcode dulu, host bisa edit manual di JS)
+function getScriptURL() { 
+    return localStorage.getItem(GAS_CONFIG_KEY) || ''; 
+}
+function setScriptURL(url) { 
+    localStorage.setItem(GAS_CONFIG_KEY, url); 
+}
+
+// Kirim join ke cloud (cek limit 35)
+async function sendJoinRecord(name) {
+    const endpoint = getScriptURL();
+    if (!endpoint) return;
+
+    const resList = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list' })
+    });
+    const data = await resList.json();
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+    if (rows.length >= 35) {
+        alert("❌ Maaf, kuota 35 pemain sudah penuh.");
+        return false;
+    }
+
+    await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'join',
+            name: name,
+            device: navigator.userAgent,
+            ts: new Date().toISOString()
+        })
+    });
+    return true;
+}
+
+// Ambil pemain dari cloud
+async function fetchPlayersFromCloud() {
+    const endpoint = getScriptURL();
+    if (!endpoint) return;
+    const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list' })
+    });
+    const data = await res.json();
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+    latestRows = rows;
+    document.getElementById('cloudRecordedPlayers').textContent = rows.length;
+}
+
+// Export ke Excel
+function exportToExcel() {
+    if (!latestRows.length) {
+        alert("Data kosong. Reload halaman host untuk sync.");
+        return;
+    }
+    const header = ["Timestamp", "Nama", "Device", "IP"];
+    const data = [header, ...latestRows];
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Players");
+    XLSX.writeFile(wb, "players.xlsx");
+}
+
+// Patch fungsi start game agar cek limit
+(function(){
+    const oldFn = window.startGameWithName;
+    window.startGameWithName = async function(...args){
+        const input = document.getElementById('playerName');
+        const name = (input && input.value.trim()) || '';
+        if (name) {
+            const ok = await sendJoinRecord(name);
+            if (!ok) return; // stop kalau sudah penuh
+        }
+        if (typeof oldFn === 'function') oldFn.apply(this,args);
+    }
+})();
+
+// Init
+document.addEventListener('DOMContentLoaded', ()=>{
+    document.getElementById('exportExcelBtn').onclick = exportToExcel;
+    fetchPlayersFromCloud();
 });
 </script>
 
