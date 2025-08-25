@@ -919,7 +919,81 @@
                     </div>
                 </div>
                 
-                <!-- Player Leaderboard -->
+                
+                <!-- Cloud Sync: Players Join Log -->
+                <div class="glass-card rounded-2xl p-6 mb-8 bg-gradient-to-br from-cyan-400/20 to-blue-400/20">
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white mb-2 flex items-center gap-2">☁️ Sinkronisasi Cloud <span class="text-sm font-normal text-white/80">(Google Apps Script)</span></h3>
+                            <p class="text-white/80 text-sm">Simpan dan pantau data pemain yang join dari banyak device di Google Drive (Spreadsheet). Tempel <em>Web App URL</em> dari Apps Script di bawah.</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="saveScriptURLBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-4 py-2 rounded-full font-bold transition-all">💾 Simpan URL</button>
+                            <button id="testScriptURLBtn" class="bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-4 py-2 rounded-full font-bold transition-all">🧪 Tes Koneksi</button>
+                            <button id="loadPlayersBtn" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white px-4 py-2 rounded-full font-bold transition-all">🔄 Muat Pemain</button>
+                        </div>
+                    </div>
+                    <div class="mt-4 grid md:grid-cols-3 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-white text-sm mb-1">Web App URL (Google Apps Script)</label>
+                            <input id="gasUrlInput" type="url" placeholder="https://script.google.com/macros/s/AKfycbyOUR-DEPLOYED-ID/exec" class="w-full px-4 py-3 rounded-xl bg-white/90 text-gray-900 font-semibold border-2 border-white/40 focus:outline-none focus:ring-4 focus:ring-cyan-400/30">
+                            <p class="text-xs text-white/70 mt-1">URL disimpan di perangkat host (localStorage). Hanya host yang bisa melihat ini.</p>
+                        </div>
+                        <div class="glass-card rounded-xl p-4 text-white">
+                            <div class="text-sm opacity-80">Target Pemain</div>
+                            <div class="text-3xl font-bold" id="cloudTargetPlayers">35</div>
+                            <div class="text-sm opacity-80 mt-2">Tercatat di Cloud</div>
+                            <div class="text-3xl font-bold" id="cloudRecordedPlayers">0</div>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 overflow-x-auto">
+                        <table class="w-full text-white">
+                            <thead>
+                                <tr class="border-b border-white/20">
+                                    <th class="text-left py-3 px-4">#</th>
+                                    <th class="text-left py-3 px-4">Nama</th>
+                                    <th class="text-left py-3 px-4">Device</th>
+                                    <th class="text-left py-3 px-4">Waktu</th>
+                                    <th class="text-left py-3 px-4">IP (opsional)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="playersLogTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+<!-- Cloud Sync: Players Join Log (Simplified) -->
+<div class="glass-card rounded-2xl p-6 mb-8 bg-gradient-to-br from-cyan-500/20 to-blue-500/20">
+    <h3 class="text-xl font-bold text-white mb-3">☁️ Sinkronisasi Cloud</h3>
+    <div class="flex gap-2 mb-4">
+        <input id="gasUrlInput" type="url" placeholder="Tempel Web App URL di sini"
+            class="flex-1 px-3 py-2 rounded-lg bg-white/90 text-gray-900 font-semibold border-2 border-white/40 focus:outline-none">
+        <button id="saveScriptURLBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg">💾 Simpan</button>
+        <button id="loadPlayersBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg">🔄 Muat</button>
+        <button id="exportExcelBtn" class="bg-yellow-500 text-white px-4 py-2 rounded-lg">📥 Export Excel</button>
+    </div>
+    <div class="flex gap-6 text-white mb-3">
+        <div>Target: <span class="font-bold" id="cloudTargetPlayers">35</span></div>
+        <div>Tercatat: <span class="font-bold" id="cloudRecordedPlayers">0</span></div>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full text-white text-sm">
+            <thead>
+                <tr class="border-b border-white/20">
+                    <th class="text-left py-2 px-3">#</th>
+                    <th class="text-left py-2 px-3">Nama</th>
+                    <th class="text-left py-2 px-3">Device</th>
+                    <th class="text-left py-2 px-3">Waktu</th>
+                </tr>
+            </thead>
+            <tbody id="playersLogTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Player Leaderboard -->
                 <div class="glass-card rounded-2xl p-6">
                     <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
                         🏅 Papan Peringkat Pemain
@@ -2328,5 +2402,263 @@
             }, 3000);
         }
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97477ff53587f3fb',t:'MTc1NjA4NzI2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97477ff53587f3fb',t:'MTc1NjA4NzI2OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <script>
+    // === Cloud Sync (Google Apps Script) ===
+    const GAS_CONFIG_KEY = 'ethnomath_gas_url';
+
+    function getScriptURL() {
+        return localStorage.getItem(GAS_CONFIG_KEY) || '';
+    }
+    function setScriptURL(url) {
+        localStorage.setItem(GAS_CONFIG_KEY, url);
+        const input = document.getElementById('gasUrlInput');
+        if (input) input.value = url;
+    }
+    function hydrateScriptURLInput() {
+        const input = document.getElementById('gasUrlInput');
+        if (input) input.value = getScriptURL();
+    }
+
+    async function sendJoinRecord(name) {
+        try {
+            const endpoint = getScriptURL();
+            if (!endpoint) {
+                console.warn('GAS endpoint belum di-set oleh host.');
+                return;
+            }
+            const payload = {
+                action: 'join',
+                name: name,
+                device: navigator.userAgent,
+                ts: new Date().toISOString(),
+            };
+            await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        } catch (e) {
+            console.error('Gagal mengirim join record:', e);
+        }
+    }
+
+    async function fetchPlayersFromCloud() {
+        const endpoint = getScriptURL();
+        if (!endpoint) {
+            alert('Masukkan dan simpan Web App URL terlebih dahulu.');
+            return;
+        }
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'list' })
+            });
+            const data = await res.json();
+            if (!Array.isArray(data.rows)) {
+                throw new Error('Format data tidak sesuai.');
+            }
+            renderPlayersLog(data.rows);
+        } catch (e) {
+            console.error(e);
+            alert('Gagal memuat data dari cloud. Cek konsol untuk detail.');
+        }
+    }
+
+    function renderPlayersLog(rows) {
+        const tbody = document.getElementById('playersLogTable');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        let recorded = 0;
+        rows.forEach((r, idx) => {
+            // expected row: [timestamp, name, device, ip]
+            const tr = document.createElement('tr');
+            tr.className = 'border-b border-white/10';
+            const tds = [
+                String(idx + 1),
+                r[1] || '',
+                (r[2] || '').slice(0, 40) + (r[2] && r[2].length > 40 ? '…' : ''),
+                r[0] || '',
+                r[3] || ''
+            ];
+            tds.forEach(text => {
+                const td = document.createElement('td');
+                td.className = 'py-2 px-4 text-sm';
+                td.textContent = text;
+                tr.appendChild(td);
+            });
+            tbody.appendChild(tr);
+            recorded++;
+        });
+        const cloudRecorded = document.getElementById('cloudRecordedPlayers');
+        if (cloudRecorded) cloudRecorded.textContent = recorded;
+    }
+
+    async function testConnection() {
+        const endpoint = getScriptURL();
+        if (!endpoint) {
+            alert('Masukkan dan simpan Web App URL terlebih dahulu.');
+            return;
+        }
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'ping' })
+            });
+            const data = await res.json();
+            alert('Tes koneksi: ' + (data.status || JSON.stringify(data)));
+        } catch (e) {
+            console.error(e);
+            alert('Tes koneksi gagal. Cek konsol untuk detail.');
+        }
+    }
+
+    // Patch startGameWithName to also send cloud join record
+    (function patchStartGameWithName(){
+        const oldFn = window.startGameWithName;
+        window.startGameWithName = function(...args){
+            const input = document.getElementById('playerName');
+            const name = (input && input.value ? input.value.trim() : '') || window.gameState?.currentPlayer || '';
+            if (name) {
+                if (window.gameState) window.gameState.currentPlayer = name;
+                sendJoinRecord(name);
+            }
+            if (typeof oldFn === 'function') {
+                return oldFn.apply(this, args);
+            }
+        };
+    })();
+
+    document.addEventListener('DOMContentLoaded', () => {
+        hydrateScriptURLInput();
+        const saveBtn = document.getElementById('saveScriptURLBtn');
+        const testBtn = document.getElementById('testScriptURLBtn');
+        const loadBtn = document.getElementById('loadPlayersBtn');
+        if (saveBtn) saveBtn.addEventListener('click', () => {
+            const val = (document.getElementById('gasUrlInput') || {}).value || '';
+            if (!val) return alert('Masukkan URL terlebih dahulu.');
+            setScriptURL(val);
+            alert('URL tersimpan untuk perangkat host ini.');
+        });
+        if (testBtn) testBtn.addEventListener('click', testConnection);
+        if (loadBtn) loadBtn.addEventListener('click', fetchPlayersFromCloud);
+    });
+    </script>
+
+
+<!-- SheetJS library -->
+<script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+
+<script>
+const GAS_CONFIG_KEY = 'ethnomath_gas_url';
+let latestRows = [];
+
+// Ambil/Set URL Apps Script
+function getScriptURL() { return localStorage.getItem(GAS_CONFIG_KEY) || ''; }
+function setScriptURL(url) { localStorage.setItem(GAS_CONFIG_KEY, url); document.getElementById('gasUrlInput').value = url; }
+
+// Kirim join ke cloud (cek limit 35)
+async function sendJoinRecord(name) {
+    const endpoint = getScriptURL();
+    if (!endpoint) return;
+
+    // cek jumlah pemain dulu
+    const resList = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list' })
+    });
+    const data = await resList.json();
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+    if (rows.length >= 35) {
+        alert("❌ Maaf, kuota 35 pemain sudah penuh.");
+        return false;
+    }
+
+    // kirim join
+    await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            action: 'join',
+            name: name,
+            device: navigator.userAgent,
+            ts: new Date().toISOString()
+        })
+    });
+    return true;
+}
+
+// Ambil pemain dari cloud
+async function fetchPlayersFromCloud() {
+    const endpoint = getScriptURL();
+    if (!endpoint) return;
+    const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'list' })
+    });
+    const data = await res.json();
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+    latestRows = rows;
+    renderPlayersLog(rows);
+}
+
+// Render tabel
+function renderPlayersLog(rows) {
+    const tbody = document.getElementById('playersLogTable');
+    tbody.innerHTML = '';
+    rows.forEach((r, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b border-white/10';
+        tr.innerHTML = `
+          <td class="py-2 px-3">${idx+1}</td>
+          <td class="py-2 px-3">${r[1]||''}</td>
+          <td class="py-2 px-3">${(r[2]||'').slice(0,25)}...</td>
+          <td class="py-2 px-3">${r[0]||''}</td>`;
+        tbody.appendChild(tr);
+    });
+    document.getElementById('cloudRecordedPlayers').textContent = rows.length;
+}
+
+// Export ke Excel
+function exportToExcel() {
+    if (!latestRows.length) {
+        alert("Data kosong. Muat pemain dulu.");
+        return;
+    }
+    const header = ["Timestamp", "Nama", "Device", "IP"];
+    const data = [header, ...latestRows];
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Players");
+    XLSX.writeFile(wb, "players.xlsx");
+}
+
+// Patch fungsi start game agar cek limit
+(function(){
+    const oldFn = window.startGameWithName;
+    window.startGameWithName = async function(...args){
+        const input = document.getElementById('playerName');
+        const name = (input && input.value.trim()) || '';
+        if (name) {
+            const ok = await sendJoinRecord(name);
+            if (!ok) return; // stop kalau sudah penuh
+        }
+        if (typeof oldFn === 'function') oldFn.apply(this,args);
+    }
+})();
+
+// Listener
+document.addEventListener('DOMContentLoaded', ()=>{
+    document.getElementById('gasUrlInput').value = getScriptURL();
+    document.getElementById('saveScriptURLBtn').onclick = ()=>setScriptURL(document.getElementById('gasUrlInput').value);
+    document.getElementById('loadPlayersBtn').onclick = fetchPlayersFromCloud;
+    document.getElementById('exportExcelBtn').onclick = exportToExcel;
+});
+</script>
+
+</body>
 </html>
