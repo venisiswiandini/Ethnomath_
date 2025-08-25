@@ -337,18 +337,20 @@
                 max-width: 100% !important;
                 height: auto !important;
                 min-height: 150px !important;
-                max-height: 250px !important;
+                max-height: 300px !important;
                 object-fit: contain !important;
+                display: block !important;
             }
             
             #questionImageFallback {
-                width: 100% !important;
+/*                 width: 100% !important;
                 max-width: 100% !important;
                 min-height: 150px !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: center !important;
-                align-items: center !important;
+                align-items: center !important; */
+                display: none;
             }
         }
     </style>
@@ -1572,11 +1574,23 @@
             document.getElementById('timeRemaining').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        function loadQuestion() {
-            if (gameState.currentQuestion >= questionPool.length) {
-                endGame();
-                return;
-            }
+        // function loadQuestion() {
+        //     if (gameState.currentQuestion >= questionPool.length) {
+        //         endGame();
+        //         return;
+        //     }
+        function loadQuestion(q) {
+const img = document.getElementById("questionImage");
+const fallback = document.getElementById("questionImageFallback");
+if (q.image) {
+img.src = q.image;
+img.style.display = "block";
+fallback.style.display = "none";
+} else {
+img.style.display = "none";
+fallback.style.display = "block";
+}
+}
             
             const question = questionPool[gameState.currentQuestion];
             
