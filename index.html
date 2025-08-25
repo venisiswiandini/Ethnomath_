@@ -2731,5 +2731,127 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 </script>
 
+
+<!-- === Tambahan Script Integrasi Timer + Leaderboard === -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+  // === Popup nama pemain ===
+  let currentPlayer = prompt("Masukkan nama Anda:");
+  if (!currentPlayer || currentPlayer.trim() === "") {
+    currentPlayer = "Pemain" + Math.floor(Math.random() * 1000);
+  }
+  const playerNameDisplay = document.getElementById("playerNameDisplay");
+  if(playerNameDisplay) playerNameDisplay.textContent = currentPlayer;
+
+  // Skor pemain (default 0)
+  let currentScore = 0;
+  const scoreDisplay = document.getElementById("scoreDisplay");
+  function addScore(points) {
+    currentScore += points;
+    if(scoreDisplay) scoreDisplay.textContent = currentScore;
+  }
+  window.addScore = addScore; // agar bisa dipanggil dari game
+
+  // === Timer 15 menit ===
+  const TOTAL_TIME = 15 * 60; // 900 detik
+  let timeLeft = TOTAL_TIME;
+  const timerBar = document.getElementById("timerBar");
+  const timerText = document.getElementById("timerText");
+  let savedOnTimeout = false;
+
+  function formatMMSS(s) {
+    const m = Math.floor(s / 60).toString().padStart(2, "0");
+    const d = (s % 60).toString().padStart(2, "0");
+    return m + ":" + d;
+  }
+  function updateTimer() {
+    if(timerText) timerText.textContent = formatMMSS(timeLeft);
+    const percent = (timeLeft / TOTAL_TIME) * 100;
+    if(timerBar) {
+      timerBar.style.width = percent + "%";
+      timerBar.className = "h-3 " + (percent > 50 ? "bg-green-500" : percent > 20 ? "bg-yellow-500" : "bg-red-500");
+    }
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      if(timerText) timerText.textContent = "00:00";
+      if (!savedOnTimeout) {
+        savedOnTimeout = true;
+        addPlayerResult(currentPlayer, currentScore);
+      }
+      alert("⏰ Waktu habis! Game selesai.");
+    }
+    timeLeft--;
+  }
+  const timerInterval = setInterval(updateTimer, 1000);
+
+  // === Leaderboard ===
+  const leaderboardData = [];
+  function addPlayerResult(name, score) {
+    const now = new Date().toLocaleString();
+    const existing = leaderboardData.find(p => p.name === name);
+    if (existing) {
+      existing.scores.push(score);
+      existing.highest = Math.max(existing.highest, score);
+      existing.totalGames += 1;
+      existing.average = (existing.scores.reduce((a,b)=>a+b,0) / existing.scores.length).toFixed(2);
+      existing.lastPlayed = now;
+    } else {
+      leaderboardData.push({
+        name,
+        highest: score,
+        totalGames: 1,
+        average: score,
+        scores: [score],
+        lastPlayed: now
+      });
+    }
+    updateLeaderboard();
+  }
+  function updateLeaderboard() {
+    leaderboardData.sort((a,b) => b.highest - a.highest);
+    const tbody = document.getElementById("leaderboardTable");
+    if(!tbody) return;
+    tbody.innerHTML = "";
+    leaderboardData.forEach((p,i) => {
+      const tr = document.createElement("tr");
+      tr.className = "border-t";
+      tr.innerHTML = `
+        <td class="p-2">${i+1}</td>
+        <td class="p-2">${p.name}</td>
+        <td class="p-2">${p.highest}</td>
+        <td class="p-2">${p.totalGames}</td>
+        <td class="p-2">${p.average}</td>
+        <td class="p-2">${p.lastPlayed}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // === Export ke Excel ===
+  const exportBtn = document.getElementById("exportBtn");
+  if(exportBtn) exportBtn.addEventListener("click", () => {
+    const rows = leaderboardData.map((p,i) => ({
+      Peringkat: i + 1,
+      Nama: p.name,
+      "Skor Tertinggi": p.highest,
+      "Total Game": p.totalGames,
+      "Rata-rata": p.average,
+      "Terakhir Main": p.lastPlayed
+    }));
+    const ws = XLSX.utils.json_to_sheet(rows);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Leaderboard");
+    XLSX.writeFile(wb, "Leaderboard.xlsx");
+  });
+
+  const clearBtn = document.getElementById("clearBtn");
+  if(clearBtn) clearBtn.addEventListener("click", () => {
+    leaderboardData.length = 0;
+    updateLeaderboard();
+  });
+  const refreshBtn = document.getElementById("refreshBtn");
+  if(refreshBtn) refreshBtn.addEventListener("click", () => updateLeaderboard());
+</script>
+
 </body>
 </html>
