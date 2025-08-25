@@ -337,22 +337,35 @@
                 max-width: 100% !important;
                 height: auto !important;
                 min-height: 150px !important;
-                max-height: 300px !important;
+                max-height: 250px !important;
                 object-fit: contain !important;
-                display: block !important;
             }
             
             #questionImageFallback {
-/*                 width: 100% !important;
+                width: 100% !important;
                 max-width: 100% !important;
                 min-height: 150px !important;
                 display: flex !important;
                 flex-direction: column !important;
                 justify-content: center !important;
-                align-items: center !important; */
-                display: none;
+                align-items: center !important;
             }
         }
+    
+        /* fix gambar soal responsif */
+        #questionImage {
+          width: 100% !important;
+          height: auto !important;
+          max-width: 100% !important;
+          min-height: 150px !important;
+          max-height: 300px !important;
+          object-fit: contain !important;
+          display: block !important;
+        }
+        #questionImageFallback {
+          display: none;
+        }
+
     </style>
 </head>
 <body class="min-h-screen">
@@ -756,7 +769,7 @@
                                 <div id="questionImageContainer" class="mb-4 text-center">
                                     <img id="questionImage" src="" alt="Gambar soal" 
                                          class="w-full max-w-sm md:max-w-md h-auto rounded-lg mx-auto shadow-lg object-contain"
-                                         style="display: none; min-height: 200px; max-height: 300px;"
+                                         style="min-height: 200px; max-height: 300px;"
                                          onerror="this.style.display='none'; document.getElementById('questionImageFallback').style.display='block';">
                                     <div id="questionImageFallback" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg mx-auto max-w-sm">
                                         <div class="text-4xl mb-2">📐</div>
@@ -1574,23 +1587,12 @@
             document.getElementById('timeRemaining').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // function loadQuestion() {
-        //     if (gameState.currentQuestion >= questionPool.length) {
-        //         endGame();
-        //         return;
-        //     }
         function loadQuestion() {
-const img = document.getElementById("questionImage");
-const fallback = document.getElementById("questionImageFallback");
-if (q.image) {
-img.src = q.image;
-img.style.display = "block";
-fallback.style.display = "none";
-} else {
-img.style.display = "none";
-fallback.style.display = "block";
-}
-}   
+            if (gameState.currentQuestion >= questionPool.length) {
+                endGame();
+                return;
+            }
+            
             const question = questionPool[gameState.currentQuestion];
             
             // Update question display
