@@ -3,26 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>🏀Ethnomath - Kesebangunan</title>
+  <title>Ethnomath - Kesebangunan</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body { background:#f3f4f6; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
     .card { background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.08); }
-    /* Timer/progress (hidden until quiz starts) */
-    #timerContainer{ position:fixed; top:0; left:0; width:100%; z-index:9999; display:none; background:transparent; }
+    #timerContainer{ position:fixed; top:0; left:0; width:100%; z-index:9999; display:none; }
     #timerBarWrap{ width:100%; background:#e5e7eb; height:12px; }
     #timerBar{ height:12px; width:100%; background:#10b981; transition: width .4s linear; }
     #timerText{ text-align:center; font-weight:700; font-size:13px; color:#ffffff; background:#111827; padding:6px 0; }
-    .container { max-width:1100px; margin:0 auto; padding:0 16px; }
     table.leaderboard { width:100%; border-collapse:collapse; }
     table.leaderboard th, table.leaderboard td { padding:10px 8px; border-top:1px solid #e5e7eb; text-align:left; font-size:14px; }
     table.leaderboard thead th { background:#f3f4f6; font-weight:700; }
-    .btn { border:0; border-radius:10px; padding:8px 12px; font-weight:700; color:#fff; cursor:pointer; }
+    .btn { border:0; border-radius:10px; padding:10px 16px; font-weight:700; color:#fff; cursor:pointer; }
     .btn-blue { background:#2563eb; }
     .btn-green { background:#16a34a; }
     .btn-red { background:#ef4444; }
-    input[type="text"] { border:1px solid #e5e7eb; padding:8px; border-radius:8px; width:100%; }
     .hidden { display:none !important; }
     .center { text-align:center; }
     img.responsive { max-width:100%; height:auto; display:block; margin:0 auto; border-radius:10px; }
@@ -38,8 +35,17 @@
 
   <div class="container pt-14">
 
+    <!-- OPENING -->
+    <div id="openingCard" class="card p-8 text-center">
+      <h1 class="text-2xl font-bold mb-6">Ethnomath Quiz — Kesebangunan</h1>
+      <div class="flex gap-4 justify-center">
+        <button onclick="mulaiQuiz()" class="btn btn-green">Mulai Quiz</button>
+        <button onclick="showMateri()" class="btn btn-blue">Pelajari Materi</button>
+      </div>
+    </div>
+
     <!-- Materi -->
-    <div id="materiCard" class="card p-6">
+    <div id="materiCard" class="card p-6 hidden">
       <h1 class="text-2xl font-bold mb-4">KESEBANGUNAN</h1>
       <p class="text-gray-700 mb-2">
         Kesebangunan adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama.
@@ -69,7 +75,7 @@
         <img class="responsive" src="https://i.imgur.com/dQRgyEr.jpg" alt="Penyelesaian contoh soal">
       </div>
       <div class="center mt-6">
-        <button onclick="mulaiQuiz()" class="btn btn-blue px-6 py-3">Mulai Quiz</button>
+        <button onclick="backToOpening()" class="btn btn-red">Kembali</button>
       </div>
     </div>
 
@@ -120,7 +126,7 @@
 <script>
 const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyo_TJxTArGM_PRmWeXWXC4v7rp7e7_uderj1eY2f1L2dHxv0ven0fWb444R6iUKEL9/exec";
 
-// === Nama pemain otomatis ===
+// Nama pemain otomatis
 let playerCounter = parseInt(localStorage.getItem("playerCounter") || "1", 10);
 let currentPlayer = "Pemain" + playerCounter;
 localStorage.setItem("playerCounter", String(playerCounter + 1));
@@ -129,16 +135,20 @@ let currentScore = 0;
 const leaderboardData = [];
 let timerInterval = null, timerRunning = false;
 
-function show(id){ document.getElementById(id).classList.remove("hidden"); }
-function hide(id){ document.getElementById(id).classList.add("hidden"); }
-function formatMMSS(s){ const m=String(Math.floor(s/60)).padStart(2,"0"); const d=String(s%60).padStart(2,"0"); return m+":"+d; }
-
+// Navigasi
+function showMateri(){ hide("openingCard"); show("materiCard"); }
+function backToOpening(){ hide("materiCard"); show("openingCard"); }
 function mulaiQuiz(){
-  hide("materiCard"); show("quizCard");
+  hide("openingCard"); hide("materiCard"); show("quizCard");
   document.getElementById("timerContainer").style.display = "block";
   if (!timerRunning) startTimer();
 }
 
+function show(id){ document.getElementById(id).classList.remove("hidden"); }
+function hide(id){ document.getElementById(id).classList.add("hidden"); }
+
+// Timer
+function formatMMSS(s){ const m=String(Math.floor(s/60)).padStart(2,"0"); const d=String(s%60).padStart(2,"0"); return m+":"+d; }
 function startTimer(){
   const TOTAL = 15*60; let timeLeft = TOTAL;
   const bar = document.getElementById("timerBar");
@@ -158,6 +168,7 @@ function startTimer(){
   tick(); timerInterval=setInterval(tick,1000);
 }
 
+// Quiz
 function finishEarly(){
   if(timerInterval){ clearInterval(timerInterval); timerRunning=false; }
   addPlayerResult(currentPlayer,currentScore);
@@ -173,6 +184,7 @@ function submitAnswer(){
   addPlayerResult(currentPlayer,currentScore);
 }
 
+// Leaderboard
 function addPlayerResult(name,score){
   const now=new Date().toLocaleString();
   const ex=leaderboardData.find(p=>p.name===name);
