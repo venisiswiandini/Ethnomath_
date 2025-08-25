@@ -367,8 +367,40 @@
         }
 
     </style>
+
+  <!-- $__TIMER_CSS__ -->
+  <style>
+    #timerContainer{position:fixed;top:0;left:0;width:100%;z-index:9999;background:#e5e7eb;}
+    #timerBar{height:8px;background:#10b981;width:100%;transition:width .3s ease;}
+    #timerText{font:bold 12px/1.6 system-ui,Segoe UI,Roboto,Arial;color:#fff;background:#111;text-align:center}
+    #statusBar{position:fixed;top:24px;left:0;width:100%;z-index:9998;background:rgba(255,255,255,.9);border-bottom:1px solid #e5e7eb;font:600 14px system-ui,Segoe UI,Roboto,Arial;padding:6px 10px}
+    #statusBar .label{color:#2563eb;margin-right:12px}
+    #statusBar .score{color:#059669}
+    .card { background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.08); }
+    table.leaderboard{width:100%;border-collapse:collapse}
+    table.leaderboard th,table.leaderboard td{padding:8px;border-top:1px solid #e5e7eb;text-align:left;font:14px system-ui,Segoe UI,Roboto,Arial}
+    table.leaderboard thead th{background:#f3f4f6}
+    .btn{appearance:none;border:0;border-radius:10px;padding:8px 12px;font:600 14px system-ui,Segoe UI,Roboto,Arial;color:#fff;cursor:pointer}
+    .btn-blue{background:#2563eb}
+    .btn-green{background:#16a34a}
+    .btn-red{background:#dc2626}
+    .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    .container{max-width:1100px;margin:0 auto;padding:0 16px}
+    .mt-8{margin-top:2rem}
+  </style>
+
 </head>
 <body class="min-h-screen">
+  <!-- Timer + Status -->
+  <div id="timerContainer">
+    <div id="timerBar"></div>
+    <div id="timerText">15:00</div>
+  </div>
+  <div id="statusBar">
+    <span class="label">Pemain: <span id="playerNameDisplay"></span></span>
+    <span class="score">Skor: <span id="scoreDisplay">0</span></span>
+  </div>
+
     
     <!-- Enhanced Floating Background Shapes -->
     <div class="floating-shapes">
@@ -2736,8 +2768,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
   // === Popup nama pemain ===
-  let currentPlayer = prompt("Masukkan nama Anda:");
-  if (!currentPlayer || currentPlayer.trim() === "") {
+  let currentPlayer = if (!currentPlayer || currentPlayer.trim() === "") {
     currentPlayer = "Pemain" + Math.floor(Math.random() * 1000);
   }
   const playerNameDisplay = document.getElementById("playerNameDisplay");
@@ -2852,6 +2883,147 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const refreshBtn = document.getElementById("refreshBtn");
   if(refreshBtn) refreshBtn.addEventListener("click", () => updateLeaderboard());
 </script>
+
+
+  <!-- $__LEADERBOARD_SYNC__ -->
+  <script>
+    // === Konfigurasi Web App Google Apps Script ===
+    const DEPLOY_URL = "https://script.google.com/macros/s/AKfycbyo_TJxTArGM_PRmWeXWXC4v7rp7e7_uderj1eY2f1L2dHxv0ven0fWb444R6iUKEL9/exec";
+
+    // === Nama pemain otomatis (tanpa popup) ===
+    (function initPlayer(){
+      let counter = localStorage.getItem("playerCounter") || 1;
+      window.currentPlayer = "Pemain" + counter;
+      localStorage.setItem("playerCounter", parseInt(counter) + 1);
+      const nameEl = document.getElementById("playerNameDisplay");
+      if (nameEl) nameEl.textContent = window.currentPlayer;
+    })();
+
+    // === Skor dan API untuk game ===
+    window.currentScore = 0;
+    window.addScore = function(points){
+      window.currentScore += (Number(points)||0);
+      const s = document.getElementById("scoreDisplay");
+      if (s) s.textContent = window.currentScore;
+      addPlayerResult(window.currentPlayer, window.currentScore);
+    };
+
+    // === Timer 15 menit (900 detik) ===
+    (function initTimer(){
+      const TOTAL_TIME = 15 * 60;
+      let timeLeft = TOTAL_TIME;
+      const bar = document.getElementById("timerBar");
+      const txt = document.getElementById("timerText");
+      let savedOnTimeout = false;
+      function mmss(sec){ const m=String(Math.floor(sec/60)).padStart(2,'0'); const d=String(sec%60).padStart(2,'0'); return m+':'+d; }
+      function tick(){
+        if (txt) txt.textContent = mmss(timeLeft);
+        if (bar){ 
+          const pct = (timeLeft / TOTAL_TIME) * 100;
+          bar.style.width = pct + '%';
+          bar.style.background = pct>50 ? '#10b981' : (pct>20 ? '#f59e0b' : '#ef4444');
+        }
+        if (timeLeft<=0){
+          clearInterval(iv);
+          if (txt) txt.textContent = '00:00';
+          if (!savedOnTimeout){
+            savedOnTimeout = true;
+            addPlayerResult(window.currentPlayer, window.currentScore);
+          }
+          alert('⏰ Waktu habis! Game selesai.');
+        }
+        timeLeft--;
+      }
+      const iv = setInterval(tick, 1000);
+    })();
+
+    // === Leaderboard lokal + sinkron server ===
+    const leaderboardData = [];
+
+    function addPlayerResult(name, score){
+      const now = new Date().toLocaleString();
+      const ex = leaderboardData.find(p => p.name === name);
+      if (ex){
+        ex.scores.push(score);
+        ex.highest = Math.max(ex.highest, score);
+        ex.totalGames += 1;
+        ex.average = (ex.scores.reduce((a,b)=>a+b,0)/ex.scores.length).toFixed(2);
+        ex.lastPlayed = now;
+      } else {
+        leaderboardData.push({name, highest: score, totalGames: 1, average: score, scores: [score], lastPlayed: now});
+      }
+      updateLeaderboard();
+      // Sync ke server (POST)
+      try{
+        fetch(DEPLOY_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ name, score, lastPlayed: now })
+        });
+      }catch(e){ console.error('Gagal sync:', e); }
+    }
+
+    function updateLeaderboard(){
+      leaderboardData.sort((a,b)=> b.highest - a.highest);
+      const tbody = document.getElementById('leaderboardTable');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      leaderboardData.forEach((p,i)=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = '<td>'+ (i+1) +'</td>' +
+                       '<td>'+ p.name +'</td>' +
+                       '<td>'+ p.highest +'</td>' +
+                       '<td>'+ p.totalGames +'</td>' +
+                       '<td>'+ p.average +'</td>' +
+                       '<td>'+ p.lastPlayed +'</td>';
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function loadLeaderboardFromServer(){
+      try{
+        const res = await fetch(DEPLOY_URL);
+        const data = await res.json();
+        leaderboardData.length = 0;
+        data.forEach(p=> leaderboardData.push(p));
+        updateLeaderboard();
+      }catch(e){
+        console.error('Gagal load leaderboard global:', e);
+      }
+    }
+
+    // Tombol Export/Hapus/Refresh
+    document.addEventListener('DOMContentLoaded', function(){
+      const exportBtn = document.getElementById('exportBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const refreshBtn = document.getElementById('refreshBtn');
+      if (exportBtn){
+        exportBtn.addEventListener('click', function(){
+          const rows = leaderboardData.map((p,i)=>({
+            'Peringkat': i+1, 'Nama': p.name, 'Skor Tertinggi': p.highest,
+            'Total Game': p.totalGames, 'Rata-rata': p.average, 'Terakhir Main': p.lastPlayed
+          }));
+          const ws = XLSX.utils.json_to_sheet(rows);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, 'Leaderboard');
+          XLSX.writeFile(wb, 'Leaderboard.xlsx');
+        });
+      }
+      if (clearBtn){
+        clearBtn.addEventListener('click', function(){
+          leaderboardData.length = 0;
+          updateLeaderboard();
+        });
+      }
+      if (refreshBtn){
+        refreshBtn.addEventListener('click', loadLeaderboardFromServer);
+      }
+      // Load awal + auto refresh per menit
+      loadLeaderboardFromServer();
+      setInterval(loadLeaderboardFromServer, 60000);
+    });
+  </script>
 
 </body>
 </html>
