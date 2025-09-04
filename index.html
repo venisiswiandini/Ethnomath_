@@ -5,325 +5,603 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🏀 Ethnomath - Ethnomathematics Twin Shapes</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;600;700&family=Pacifico&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@400;600;700&family=Pacifico&family=Orbitron:wght@400;700;900&display=swap');
+        
+        :root {
+            --primary-gradient: linear-gradient(135deg, #D2691E 0%, #A0522D 100%);
+            --secondary-gradient: linear-gradient(135deg, #CD853F 0%, #DEB887 100%);
+            --success-gradient: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
+            --warning-gradient: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            --danger-gradient: linear-gradient(135deg, #DC143C 0%, #B22222 100%);
+            --dark-gradient: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            --malay-gold: #FFD700;
+            --malay-brown: #8B4513;
+            --malay-cream: #F5DEB3;
+            --malay-orange: #FF8C00;
+        }
         
         body {
             font-family: 'Poppins', sans-serif;
             background: 
                 linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.1)),
-                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:%23B8860B;stop-opacity:1" /><stop offset="30%" style="stop-color:%23CD853F;stop-opacity:1" /><stop offset="60%" style="stop-color:%23D2691E;stop-opacity:1" /><stop offset="100%" style="stop-color:%23A0522D;stop-opacity:1" /></linearGradient></defs><rect width="1200" height="800" fill="url(%23sky)"/></svg>');
+                url('https://i.imgur.com/ZgpO67l.jpg');
             background-size: cover, cover;
             background-position: center, center;
+            background-attachment: fixed;
             min-height: 100vh;
             overflow-x: hidden;
-        }
-        
-        .game-title {
-            font-family: 'Fredoka One', cursive;
-            color: rgba(255, 255, 255, 0.9);
-        }
-        
-        .enhanced-card {
             position: relative;
-            overflow: hidden;
         }
         
-        .enhanced-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, rgba(255,255,255,0.3), rgba(255,255,255,0.2), rgba(255,255,255,0.4), rgba(255,255,255,0.3), rgba(255,255,255,0.2));
-            border-radius: inherit;
-            z-index: -1;
-            animation: borderGlow 3s linear infinite;
-        }
-        
-        @keyframes borderGlow {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
-        
-        .floating-emojis {
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Futuristic Pattern Background */
+        #particles-js {
+            position: fixed;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-        }
-        
-        .floating-emoji {
-            position: absolute;
-            font-size: 2rem;
-            animation: floatEmoji 8s linear infinite;
-            opacity: 0.7;
-        }
-        
-        @keyframes floatEmoji {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        .basketball-court {
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.15), rgba(255,255,255,0.2), rgba(255,255,255,0.1));
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .basketball-court::before {
-            content: '';
-            position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            z-index: -1;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(74, 144, 226, 0.1) 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, rgba(92, 179, 204, 0.1) 2px, transparent 2px),
+                repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(74, 144, 226, 0.05) 20px, rgba(74, 144, 226, 0.05) 40px);
+            background-size: 50px 50px, 50px 50px, 100px 100px;
         }
         
-        .player {
-            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
-        }
-        
-        .ball {
-            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
-        }
-        
-        .ring {
-            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
-        }
-        
-        @keyframes bounceIn {
-            0% { transform: scale(0.3) translateY(100px); opacity: 0; }
-            50% { transform: scale(1.05) translateY(-10px); }
-            70% { transform: scale(0.9) translateY(5px); }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-        
-        @keyframes celebrate {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.2) rotate(-10deg); }
-            50% { transform: scale(1.3) rotate(0deg); }
-            75% { transform: scale(1.2) rotate(10deg); }
-        }
-        
-        @keyframes miss {
-            0% { transform: translateX(0) rotate(0deg); }
-            25% { transform: translateX(-15px) rotate(-5deg); }
-            50% { transform: translateX(15px) rotate(5deg); }
-            75% { transform: translateX(-10px) rotate(-3deg); }
-            100% { transform: translateX(0) rotate(0deg); }
-        }
-        
-        @keyframes ballBounce {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-20px) scale(1.1); }
-        }
-        
-        @keyframes scorePopup {
-            0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-            50% { transform: scale(1.3) rotate(0deg); opacity: 1; }
-            100% { transform: scale(1) rotate(0deg); opacity: 1; }
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
-            50% { opacity: 1; transform: scale(1) rotate(180deg); }
-        }
-        
-        .bounce-in { animation: bounceIn 0.8s ease-out; }
-        .celebrate { animation: celebrate 1s ease-in-out; }
-        .miss { animation: miss 0.8s ease-in-out; }
-        .ball-bounce { animation: ballBounce 0.6s infinite; }
-        .score-popup { animation: scorePopup 0.6s ease-out; }
-        .sparkle { animation: sparkle 1s ease-in-out infinite; }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
-        .neon-button {
-            background: linear-gradient(45deg, rgba(255,255,255,0.2), rgba(255,255,255,0.3), rgba(255,255,255,0.25));
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .neon-button:hover {
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.5);
-            transform: translateY(-3px) scale(1.05);
-        }
-        
-        .option-button {
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.15));
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .option-button:hover {
-            transform: translateY(-2px) scale(1.01);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .correct-answer {
-            background: linear-gradient(135deg, #10b981, #059669) !important;
-            border-color: #10b981 !important;
-            box-shadow: 0 0 30px rgba(16, 185, 129, 0.8) !important;
-        }
-        
-        .wrong-answer {
-            background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-            border-color: #ef4444 !important;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.8) !important;
-        }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .pulse-ring {
-            animation: pulseRing 2s infinite;
-        }
-        
-        @keyframes pulseRing {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(1.5); opacity: 0; }
-        }
-        
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: #ff6b6b;
-            animation: confetti 3s ease-in-out infinite;
-        }
-        
-        @keyframes confetti {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(300px) rotate(720deg); opacity: 0; }
-        }
-        
-        .floating-shapes {
+        /* Futuristic Motif Overlay */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234A90E2' fill-opacity='0.08'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm0 0c0 11.046 8.954 20 20 20s20-8.954 20-20-8.954-20-20-20-20 8.954-20 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            background-size: 120px 120px;
             pointer-events: none;
             z-index: -1;
+            opacity: 0.3;
         }
         
-        .shape {
+
+        
+        /* Enhanced Glass Morphism with Malay Theme */
+        .glass-card {
+            background: rgba(245, 222, 179, 0.98);
+            border: 3px solid rgba(210, 105, 30, 0.7);
+            box-shadow: 
+                0 12px 40px rgba(139, 69, 19, 0.4),
+                inset 0 2px 0 rgba(255, 215, 0, 0.5),
+                0 0 30px rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-card::before {
+            content: '';
             position: absolute;
-            opacity: 0.1;
-            animation: floatShapes 20s linear infinite;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.2), transparent);
+            transition: left 0.5s;
         }
         
-        @keyframes floatShapes {
-            0% { transform: translateY(100vh) rotate(0deg); }
-            100% { transform: translateY(-100px) rotate(360deg); }
+        .glass-card:hover::before {
+            left: 100%;
         }
         
-        .card-hover {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* Advanced Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-10px) rotate(1deg); }
+            66% { transform: translateY(-5px) rotate(-1deg); }
         }
         
-        .card-hover:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        @keyframes pulse-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(232, 213, 183, 0.3);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(232, 213, 183, 0.5);
+                transform: scale(1.02);
+            }
         }
         
-        .mobile-friendly {
+        @keyframes rainbow-border {
+            0% { border-color: #E8D5B7; }
+            16% { border-color: #D4C4A8; }
+            33% { border-color: #C8B5A0; }
+            50% { border-color: #B8A082; }
+            66% { border-color: #A0896B; }
+            83% { border-color: #8B7355; }
+            100% { border-color: #E8D5B7; }
+        }
+        
+        @keyframes matrix-rain {
+            0% { transform: translateY(-100vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+        
+        @keyframes neon-flicker {
+            0%, 100% { 
+                opacity: 1; 
+                text-shadow: 0 0 10px #E8D5B7, 0 0 20px #E8D5B7, 0 0 30px #E8D5B7;
+            }
+            50% { 
+                opacity: 0.9; 
+                text-shadow: 0 0 20px #E8D5B7, 0 0 30px #E8D5B7, 0 0 40px #E8D5B7;
+            }
+        }
+        
+        @keyframes bounce-in-3d {
+            0% { 
+                transform: scale(0) rotateX(180deg) rotateY(180deg);
+                opacity: 0;
+            }
+            50% { 
+                transform: scale(1.1) rotateX(0deg) rotateY(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(1) rotateX(0deg) rotateY(0deg);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slide-in-right {
+            0% { transform: translateX(100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slide-in-left {
+            0% { transform: translateX(-100%); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slide-in-up {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        @keyframes slide-in-down {
+            0% { transform: translateY(-100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Enhanced Basketball Animations */
+        @keyframes basketball-dribble {
+            0%, 100% { transform: translateY(0) scale(1); }
+            25% { transform: translateY(-30px) scale(1.1); }
+            50% { transform: translateY(-50px) scale(1.2); }
+            75% { transform: translateY(-30px) scale(1.1); }
+        }
+        
+        @keyframes player-celebration {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg) translateY(-10px); }
+            50% { transform: scale(1.2) rotate(0deg) translateY(-20px); }
+            75% { transform: scale(1.1) rotate(5deg) translateY(-10px); }
+        }
+        
+        @keyframes ball-perfect-shot {
+            0% { 
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            20% { 
+                transform: translate(100px, -60px) scale(0.9) rotate(180deg);
+                opacity: 1;
+            }
+            40% { 
+                transform: translate(200px, -100px) scale(0.8) rotate(360deg);
+                opacity: 1;
+            }
+            60% { 
+                transform: translate(300px, -120px) scale(0.7) rotate(540deg);
+                opacity: 1;
+            }
+            80% { 
+                transform: translate(380px, -100px) scale(0.6) rotate(720deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(400px, -80px) scale(0.5) rotate(900deg);
+                opacity: 0.8;
+            }
+        }
+        
+        @keyframes ball-miss-shot {
+            0% { 
+                transform: translate(0, 0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            30% { 
+                transform: translate(150px, -80px) scale(0.8) rotate(270deg);
+                opacity: 1;
+            }
+            60% { 
+                transform: translate(300px, -60px) scale(0.6) rotate(540deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(450px, 50px) scale(0.4) rotate(810deg);
+                opacity: 0.2;
+            }
+        }
+        
+        @keyframes ring-net-swish {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            25% { transform: rotate(3deg) scale(1.05); }
+            50% { transform: rotate(-2deg) scale(1.1); }
+            75% { transform: rotate(1deg) scale(1.05); }
+        }
+        
+        @keyframes crowd-cheer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* Particle Effects */
+        @keyframes particle-explosion {
+            0% { 
+                transform: scale(0) rotate(0deg);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1) rotate(180deg);
+                opacity: 0.8;
+            }
+            100% { 
+                transform: scale(2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes firework {
+            0% { 
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% { 
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+        
+        /* Enhanced UI Elements */
+        .neon-button {
+            background: linear-gradient(135deg, #D2691E 0%, #FF8C00 50%, #FFD700 100%);
+            border: 3px solid rgba(210, 105, 30, 0.8);
+            background-clip: padding-box;
+            box-shadow: 
+                0 8px 25px rgba(210, 105, 30, 0.6),
+                inset 0 2px 0 rgba(255, 215, 0, 0.5),
+                0 0 20px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            color: #2C1810 !important;
+            font-weight: 700;
+            text-shadow: 
+                2px 2px 4px rgba(255, 255, 255, 0.5),
+                1px 1px 2px rgba(255, 255, 255, 0.3),
+                0 0 6px rgba(255, 255, 255, 0.4);
+            font-size: 1.1em;
+            letter-spacing: 0.3px;
+        }
+        
+        .neon-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .neon-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            background: linear-gradient(135deg, #FF8C00 0%, #D2691E 100%);
+            box-shadow: 
+                0 6px 20px rgba(210, 105, 30, 0.5),
+                inset 0 1px 0 rgba(255, 215, 0, 0.4);
+        }
+        
+        .neon-button:hover::before {
+            left: 100%;
+        }
+        
+        .option-button {
+            background: rgba(245, 222, 179, 0.95);
+            border: 3px solid rgba(210, 105, 30, 0.7);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            color: #2C1810 !important;
+            text-shadow: 
+                2px 2px 4px rgba(255, 255, 255, 0.5),
+                1px 1px 2px rgba(255, 255, 255, 0.3),
+                0 0 6px rgba(255, 255, 255, 0.4);
+            font-weight: 700;
+            font-size: 1.1em;
+            letter-spacing: 0.3px;
+            box-shadow: 0 6px 20px rgba(210, 105, 30, 0.3);
+        }
+        
+        .option-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(232, 213, 183, 0.15), rgba(232, 213, 183, 0.25));
+            transition: width 0.3s ease;
+        }
+        
+        .option-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            border-color: #D2691E;
+            box-shadow: 0 6px 20px rgba(210, 105, 30, 0.3);
+            background: rgba(255, 215, 0, 0.2);
+        }
+        
+        .option-button:hover::before {
+            width: 100%;
+        }
+        
+        .correct-answer {
+            background: var(--success-gradient) !important;
+            border-color: #A8C8A8 !important;
+            box-shadow: 0 0 30px rgba(168, 200, 168, 0.6) !important;
+            animation: pulse-glow 1s infinite;
+        }
+        
+        .wrong-answer {
+            background: var(--danger-gradient) !important;
+            border-color: #D4A8A8 !important;
+            box-shadow: 0 0 30px rgba(212, 168, 168, 0.6) !important;
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        /* Enhanced Typography */
+        .game-title {
+            font-family: 'Fredoka One', cursive;
+            background: linear-gradient(45deg, #8B4513, #D2691E, #FFD700, #FF8C00, #CD853F);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: rainbow-text 3s ease-in-out infinite;
+            font-weight: 800;
+        }
+        
+        @keyframes rainbow-text {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        .neon-text {
+            font-family: 'Orbitron', monospace;
+            color: #000000 !important;
+            text-shadow: 
+                2px 2px 4px rgba(255, 255, 255, 0.9),
+                1px 1px 2px rgba(255, 255, 255, 0.8),
+                0 0 8px rgba(255, 255, 255, 0.6);
+            font-weight: 700;
+            font-size: 1.15em;
+            letter-spacing: 0.3px;
+        }
+        
+        /* Enhanced Basketball Court with Malay Theme */
+        .basketball-court {
+            background: 
+                linear-gradient(135deg, rgba(210, 105, 30, 0.3) 0%, rgba(139, 69, 19, 0.4) 100%),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 215, 0, 0.15) 10px,
+                    rgba(255, 215, 0, 0.15) 12px
+                );
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(210, 105, 30, 0.6);
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.3);
+        }
+        
+        .basketball-court::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .basketball-court::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 215, 0, 0.6);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Enhanced Text Styling */
+        .text-white {
+            color: #000000 !important;
+            text-shadow: 
+                2px 2px 4px rgba(255, 255, 255, 0.9),
+                1px 1px 2px rgba(255, 255, 255, 0.8),
+                0 0 6px rgba(255, 255, 255, 0.6);
+            font-weight: 700;
+            font-size: 1.1em;
+            letter-spacing: 0.3px;
+        }
+        
+        .text-gray-200 {
+            color: #000000 !important;
+            text-shadow: 
+                2px 2px 4px rgba(255, 255, 255, 0.8),
+                1px 1px 2px rgba(255, 255, 255, 0.7),
+                0 0 6px rgba(255, 255, 255, 0.5);
+            font-weight: 700;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+        
+        /* Matching Game Styles */
+        .matching-game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
             padding: 1rem;
+            background: rgba(245, 222, 179, 0.1);
+            border-radius: 1rem;
+            border: 2px solid rgba(210, 105, 30, 0.3);
+        }
+        
+        .building-card {
+            aspect-ratio: 1;
+            background: rgba(245, 222, 179, 0.95);
+            border: 3px solid rgba(210, 105, 30, 0.7);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .building-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 25px rgba(210, 105, 30, 0.4);
+            border-color: #FFD700;
+        }
+        
+        .building-card.selected {
+            border-color: #32CD32;
+            background: rgba(50, 205, 50, 0.2);
+            transform: scale(1.1);
+        }
+        
+        .building-card.matched {
+            border-color: #228B22;
+            background: rgba(34, 139, 34, 0.3);
+            animation: pulse-glow 1s ease-in-out;
+        }
+        
+        .building-card.wrong {
+            border-color: #DC143C;
+            background: rgba(220, 20, 60, 0.2);
+            animation: shake 0.5s ease-in-out;
+        }
+        
+        /* Enhanced Responsive Design */
+        @media (max-width: 1024px) {
+            /* Tablet adjustments */
+            .neon-button, .option-button {
+                padding: 1rem 2rem !important;
+                font-size: 1rem !important;
+                min-height: 52px !important;
+                touch-action: manipulation;
+            }
+            
+            /* Better touch targets */
+            button {
+                min-height: 48px !important;
+                min-width: 48px !important;
+            }
         }
         
         @media (max-width: 768px) {
-            body {
-                font-size: 14px;
-                overflow-x: hidden;
+            body { font-size: 14px; }
+            
+            .glass-card { 
+                margin: 0.5rem; 
+                padding: 1rem !important; 
             }
             
-            .mobile-friendly {
-                padding: 0.5rem;
+            .basketball-court { 
+                height: 200px !important; 
+                padding: 1rem !important; 
             }
             
-            .text-responsive {
-                font-size: clamp(1rem, 4vw, 2rem);
+            /* Enhanced button responsiveness */
+            .neon-button, .option-button {
+                padding: 1rem 1.5rem !important;
+                font-size: 0.95rem !important;
+                min-height: 52px !important;
+                width: 100% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: transparent;
             }
             
-            .title-responsive {
-                font-size: clamp(2rem, 8vw, 4rem);
-            }
-            
-            .button-responsive {
-                padding: 0.75rem 1.5rem;
-                font-size: clamp(0.9rem, 3vw, 1.1rem);
-                min-height: 48px;
-            }
-            
-            .glass-card {
-                margin: 0.5rem;
+            /* Fixed button containers */
+            #audioButton, #hostButton {
+                width: 56px !important;
+                height: 56px !important;
                 padding: 1rem !important;
+                min-width: 56px !important;
+                min-height: 56px !important;
             }
             
-            .grid.lg\\:grid-cols-2 {
-                grid-template-columns: 1fr !important;
+            /* Game control buttons */
+            .flex.space-x-6 {
+                flex-direction: column !important;
+                space-x: 0 !important;
                 gap: 1rem !important;
             }
             
-            .grid.md\\:grid-cols-4 {
-                grid-template-columns: repeat(2, 1fr) !important;
-                gap: 0.5rem !important;
-            }
-            
-            .grid.md\\:grid-cols-2 {
-                grid-template-columns: 1fr !important;
+            .flex.md\\:space-x-6 {
+                flex-direction: column !important;
                 gap: 1rem !important;
             }
             
-            .grid.md\\:grid-cols-3 {
-                grid-template-columns: 1fr !important;
-                gap: 1rem !important;
+            /* Option buttons in quiz */
+            #optionA, #optionB {
+                padding: 1.25rem !important;
+                font-size: 1rem !important;
+                min-height: 60px !important;
             }
             
-            .basketball-court {
-                height: 200px !important;
-                padding: 1rem !important;
-            }
-            
-            #questionPanel {
-                min-height: auto !important;
-                height: auto !important;
+            /* Header buttons */
+            .flex.flex-wrap.gap-2 button {
+                min-width: 120px !important;
+                padding: 0.75rem 1rem !important;
             }
             
             .text-6xl { font-size: 2.5rem !important; }
@@ -333,137 +611,381 @@
             .text-2xl { font-size: 1.25rem !important; }
             .text-xl { font-size: 1.125rem !important; }
             
-            .space-y-4 > * + * { margin-top: 0.75rem !important; }
-            .space-y-6 > * + * { margin-top: 1rem !important; }
-            .space-y-8 > * + * { margin-top: 1.5rem !important; }
+            .matching-game-board {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.5rem;
+            }
             
-            .p-8 { padding: 1rem !important; }
-            .p-6 { padding: 0.75rem !important; }
-            .p-4 { padding: 0.5rem !important; }
+            /* Better spacing for mobile */
+            .space-y-6 > * + * {
+                margin-top: 1rem !important;
+            }
             
-            .mb-8 { margin-bottom: 1rem !important; }
-            .mb-6 { margin-bottom: 0.75rem !important; }
+            .space-y-4 > * + * {
+                margin-top: 0.75rem !important;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            /* Small mobile adjustments */
+            .neon-button, .option-button {
+                padding: 1.25rem 1rem !important;
+                font-size: 0.9rem !important;
+                min-height: 56px !important;
+                line-height: 1.2 !important;
+            }
             
-            .option-button {
-                padding: 1rem !important;
-                font-size: 1rem !important;
-                min-height: 60px !important;
-                display: flex !important;
-                align-items: center !important;
+            /* Stack buttons vertically */
+            .grid.grid-cols-2 {
+                grid-template-columns: 1fr !important;
+                gap: 1rem !important;
+            }
+            
+            .grid.md\\:grid-cols-4 {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 0.75rem !important;
+            }
+            
+            /* Modal buttons */
+            .flex.space-x-4 {
+                flex-direction: column !important;
+                gap: 0.75rem !important;
+            }
+            
+            .flex.space-x-4 button {
                 width: 100% !important;
-            }
-            
-            .fixed.bottom-4.right-4 {
-                bottom: 1rem !important;
-                right: 1rem !important;
-                z-index: 1000 !important;
-            }
-            
-            .fixed.bottom-4.left-4 {
-                bottom: 1rem !important;
-                left: 1rem !important;
-                z-index: 1000 !important;
-            }
-            
-            .max-w-md {
-                max-width: 90vw !important;
-                margin: 1rem !important;
-            }
-            
-            .max-w-2xl {
-                max-width: 95vw !important;
-                margin: 0.5rem !important;
-            }
-            
-            .max-w-5xl, .max-w-7xl {
-                max-width: 100vw !important;
-                margin: 0 !important;
-                padding: 0.5rem !important;
-            }
-            
-            table {
-                font-size: 0.75rem !important;
-            }
-            
-            th, td {
-                padding: 0.5rem 0.25rem !important;
-            }
-            
-            button, .option-button {
-                min-height: 44px !important;
-                min-width: 44px !important;
-            }
-            
-            .min-h-screen {
-                min-height: 100vh !important;
-                min-height: -webkit-fill-available !important;
             }
         }
         
         @media (max-width: 480px) {
-            .glass-card {
-                margin: 0.25rem !important;
+            .glass-card { 
+                margin: 0.25rem !important; 
+                padding: 0.75rem !important; 
+            }
+            
+            .basketball-court { 
+                height: 150px !important; 
+                padding: 0.5rem !important; 
+            }
+            
+            /* Extra small mobile */
+            .neon-button, .option-button {
+                padding: 1rem 0.75rem !important;
+                font-size: 0.85rem !important;
+                min-height: 52px !important;
+                text-align: center !important;
+            }
+            
+            .matching-game-board {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            
+            /* Feature cards stack */
+            .grid.grid-cols-2.md\\:grid-cols-4 {
+                grid-template-columns: 1fr !important;
+            }
+            
+            /* Reduce text size for very small screens */
+            .text-lg { font-size: 0.95rem !important; }
+            .text-base { font-size: 0.9rem !important; }
+            
+            /* Fixed buttons positioning */
+            #audioButton {
+                bottom: 1rem !important;
+                right: 1rem !important;
+                width: 48px !important;
+                height: 48px !important;
                 padding: 0.75rem !important;
             }
             
-            .text-responsive {
-                font-size: clamp(0.875rem, 3.5vw, 1.5rem) !important;
-            }
-            
-            .title-responsive {
-                font-size: clamp(1.5rem, 6vw, 3rem) !important;
-            }
-            
-            .button-responsive {
-                padding: 0.5rem 1rem !important;
-                font-size: clamp(0.8rem, 2.5vw, 1rem) !important;
-            }
-            
-            .basketball-court {
-                height: 150px !important;
-                padding: 0.5rem !important;
+            #hostButton {
+                bottom: 1rem !important;
+                left: 1rem !important;
+                width: 48px !important;
+                height: 48px !important;
+                padding: 0.75rem !important;
             }
         }
         
-        @media (max-width: 768px) and (orientation: landscape) {
-            .basketball-court {
-                height: 180px !important;
+        @media (max-width: 360px) {
+            /* Very small screens */
+            .neon-button, .option-button {
+                padding: 0.875rem 0.5rem !important;
+                font-size: 0.8rem !important;
+                min-height: 48px !important;
+            }
+            
+            .glass-card {
+                margin: 0.125rem !important;
+                padding: 0.5rem !important;
+            }
+            
+            /* Compact layout */
+            .text-3xl { font-size: 1.25rem !important; }
+            .text-2xl { font-size: 1.125rem !important; }
+            .text-xl { font-size: 1rem !important; }
+        }
+        
+        /* Touch improvements for all screen sizes */
+        @media (hover: none) and (pointer: coarse) {
+            /* Touch devices */
+            .neon-button, .option-button, button {
+                min-height: 48px !important;
+                min-width: 48px !important;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.1);
+                user-select: none;
+            }
+            
+            .neon-button:active, .option-button:active {
+                transform: scale(0.98) !important;
+                transition: transform 0.1s ease !important;
+            }
+            
+            /* Remove hover effects on touch */
+            .card-hover:hover {
+                transform: none !important;
             }
         }
+        
+        /* Landscape orientation adjustments */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .glass-card {
+                padding: 0.75rem !important;
+            }
+            
+            .neon-button, .option-button {
+                padding: 0.75rem 1rem !important;
+                min-height: 44px !important;
+            }
+            
+            .text-6xl { font-size: 2rem !important; }
+            .text-5xl { font-size: 1.75rem !important; }
+            .text-4xl { font-size: 1.5rem !important; }
+        }
+        
+        /* Loading Animations */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(232, 213, 183, 0.2);
+            border-top: 4px solid #E8D5B7;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Enhanced Floating Elements */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .floating:nth-child(2) { animation-delay: -2s; }
+        .floating:nth-child(3) { animation-delay: -4s; }
+        
+        /* Matrix Rain Effect */
+        .matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .matrix-char {
+            position: absolute;
+            color: rgba(232, 213, 183, 0.4);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            animation: matrix-rain 3s linear infinite;
+        }
+        
+        /* Enhanced Confetti */
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #E8D5B7;
+            animation: confetti-fall 3s ease-in-out infinite;
+        }
+        
+        @keyframes confetti-fall {
+            0% { 
+                transform: translateY(-100vh) rotate(0deg); 
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(100vh) rotate(720deg); 
+                opacity: 0; 
+            }
+        }
+        
+        /* Enhanced Progress Bar */
+        .progress-bar {
+            background: rgba(200, 200, 200, 0.3);
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--primary-gradient);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progress-shine 2s infinite;
+        }
+        
+        @keyframes progress-shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* Enhanced Hover Effects */
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px) scale(1.02) rotateX(5deg);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.2),
+                0 0 20px rgba(232, 213, 183, 0.2);
+        }
+        
+        /* Enhanced Animations Classes */
+        .bounce-in-3d { animation: bounce-in-3d 0.8s ease-out; }
+        .slide-in-right { animation: slide-in-right 0.6s ease-out; }
+        .slide-in-left { animation: slide-in-left 0.6s ease-out; }
+        .slide-in-up { animation: slide-in-up 0.6s ease-out; }
+        .slide-in-down { animation: slide-in-down 0.6s ease-out; }
+        .basketball-dribble { animation: basketball-dribble 0.8s infinite; }
+        .player-celebration { animation: player-celebration 1.5s ease-in-out; }
+        .ball-perfect-shot { animation: ball-perfect-shot 2.5s ease-in-out; }
+        .ball-miss-shot { animation: ball-miss-shot 2.5s ease-in-out; }
+        .ring-net-swish { animation: ring-net-swish 1s ease-in-out; }
+        .crowd-cheer { animation: crowd-cheer 0.5s ease-in-out 3; }
+        .rainbow-border { animation: rainbow-border 3s linear infinite; }
+        
+        /* Enhanced Visual Effects */
+        .glow-effect {
+            box-shadow: 
+                0 0 15px rgba(74, 144, 226, 0.2),
+                inset 0 0 15px rgba(74, 144, 226, 0.05);
+        }
+        
+        .holographic {
+            background: linear-gradient(45deg, 
+                rgba(74, 144, 226, 0.05), 
+                rgba(92, 179, 204, 0.05), 
+                rgba(126, 211, 33, 0.05), 
+                rgba(245, 166, 35, 0.05));
+            background-size: 400% 400%;
+            animation: holographic-shift 4s ease-in-out infinite;
+        }
+        
+        @keyframes holographic-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
     </style>
+
+    <script>
+        // ====== AUDIO CONTROL ======
+        function toggleAudio() {
+            const audioIcon = document.getElementById("audioIcon");
+            const tooltip = document.getElementById("audioTooltip");
+
+            if (tooltip.innerText === "Matikan Suara") {
+                tooltip.innerText = "Nyalakan Suara";
+                audioIcon.setAttribute("stroke", "red");
+                // TODO: pause audio element kalau ada
+            } else {
+                tooltip.innerText = "Matikan Suara";
+                audioIcon.setAttribute("stroke", "currentColor");
+                // TODO: play audio element kalau ada
+            }
+        }
+
+        // ====== HOST LOGIN ======
+        function showHostLogin() {
+            document.getElementById("hostLoginModal").classList.remove("hidden");
+        }
+
+        function hideHostLogin() {
+            document.getElementById("hostLoginModal").classList.add("hidden");
+        }
+
+        function verifyHostPassword() {
+            const pw = document.getElementById("hostPassword").value;
+            if (pw === "admin123") {
+                hideHostLogin();
+                showPage("hostPage");
+            } else {
+                alert("Password salah!");
+            }
+        }
+
+        // ====== HALAMAN KONTROL ======
+        function showPage(pageId) {
+            const pages = ["homePage", "materialPage", "matchingPage", "nameInputPage", "hostPage"];
+            pages.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    if (id === pageId) {
+                        el.classList.remove("hidden");
+                    } else {
+                        el.classList.add("hidden");
+                    }
+                }
+            });
+        }
+
+        // ====== TOMBOL HOME ======
+        function showMaterial() {
+            showPage("materialPage");
+        }
+
+        function showMatchingGame() {
+            showPage("matchingPage");
+        }
+
+        function showNameInput() {
+            showPage("nameInputPage");
+        }
+    </script>
 </head>
 <body class="min-h-screen">
     
-    <!-- Enhanced Floating Background Shapes -->
-    <div class="floating-shapes">
-        <div class="shape text-6xl" style="left: 10%; animation-delay: 0s;">🌟</div>
-        <div class="shape text-5xl" style="left: 20%; animation-delay: 2s;">🎨</div>
-        <div class="shape text-4xl" style="left: 30%; animation-delay: 4s;">🎯</div>
-        <div class="shape text-6xl" style="left: 40%; animation-delay: 6s;">🚀</div>
-        <div class="shape text-5xl" style="left: 50%; animation-delay: 8s;">⭐</div>
-        <div class="shape text-4xl" style="left: 60%; animation-delay: 10s;">🎪</div>
-        <div class="shape text-6xl" style="left: 70%; animation-delay: 12s;">🎭</div>
-        <div class="shape text-5xl" style="left: 80%; animation-delay: 14s;">🎨</div>
-        <div class="shape text-4xl" style="left: 90%; animation-delay: 16s;">🌈</div>
-        <div class="shape text-6xl" style="left: 15%; animation-delay: 18s;">🎊</div>
-    </div>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
     
-    <!-- Floating Emojis -->
-    <div class="floating-emojis">
-        <div class="floating-emoji" style="left: 5%; animation-delay: 0s;">🎓</div>
-        <div class="floating-emoji" style="left: 15%; animation-delay: 1s;">📚</div>
-        <div class="floating-emoji" style="left: 25%; animation-delay: 2s;">🧮</div>
-        <div class="floating-emoji" style="left: 35%; animation-delay: 3s;">📐</div>
-        <div class="floating-emoji" style="left: 45%; animation-delay: 4s;">📏</div>
-        <div class="floating-emoji" style="left: 55%; animation-delay: 5s;">🔢</div>
-        <div class="floating-emoji" style="left: 65%; animation-delay: 6s;">🎯</div>
-        <div class="floating-emoji" style="left: 75%; animation-delay: 7s;">🏆</div>
-        <div class="floating-emoji" style="left: 85%; animation-delay: 8s;">⭐</div>
-        <div class="floating-emoji" style="left: 95%; animation-delay: 9s;">🌟</div>
-    </div>
+    <!-- Matrix Rain Effect -->
+    <div class="matrix-rain" id="matrixRain"></div>
     
-    <!-- Audio Control Button -->
-    <button id="audioButton" onclick="toggleAudio()" class="fixed bottom-4 right-4 z-50 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group">
+    <!-- Enhanced Audio Control Button -->
+    <button id="audioButton" onclick="toggleAudio()" class="fixed bottom-4 right-4 z-50 neon-button text-black p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 group">
         <svg id="audioIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9a3 3 0 000 6h4v.01M9 15H5a2 2 0 01-2-2V9a2 2 0 012-2h4.01"></path>
         </svg>
@@ -472,8 +994,8 @@
         </div>
     </button>
 
-    <!-- Host Dashboard Button -->
-    <button id="hostButton" onclick="showHostLogin()" class="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group">
+    <!-- Enhanced Host Dashboard Button -->
+    <button id="hostButton" onclick="showHostLogin()" class="fixed bottom-4 left-4 z-50 neon-button text-black p-4 rounded-full shadow-2xl transition-all duration-300 transform hover:scale-110 group">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
         </svg>
@@ -482,1393 +1004,266 @@
         </div>
     </button>
 
-    <!-- Host Login Modal -->
-    <div id="hostLoginModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in">
+    <!-- Enhanced Host Login Modal -->
+    <div id="hostLoginModal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
             <div class="text-6xl mb-4 text-center">🔐</div>
-            <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center">Host Login</h3>
+            <h3 class="text-3xl font-bold text-white mb-6 text-center neon-text">Host Login</h3>
             <input type="password" id="hostPassword" placeholder="Masukkan password host..." 
-                   class="w-full px-6 py-4 rounded-full text-lg font-semibold text-gray-800 bg-white/90 backdrop-blur-sm border-2 border-white/30 focus:border-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30 transition-all duration-300 mb-4">
-            <p class="text-gray-700 text-sm mb-6 text-center">Password: <span class="text-red-600 font-bold">admin123</span></p>
+                   class="w-full px-6 py-4 rounded-full text-lg font-semibold text-gray-800 bg-white/90 border-2 border-white/30 focus:border-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30 transition-all duration-300 mb-4">
+            <p class="text-gray-200 text-sm mb-6 text-center">Password: <span class="text-red-400 font-bold">admin123</span></p>
             <div class="flex space-x-4">
                 <button onclick="hideHostLogin()" class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
                     ❌ Batal
                 </button>
-                <button onclick="verifyHostPassword()" class="flex-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                <button onclick="verifyHostPassword()" class="flex-1 neon-button text-black px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
                     🔓 Masuk
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Home Page -->
-    <div id="homePage" class="min-h-screen flex items-center justify-center mobile-friendly">
+    <!-- Enhanced Home Page -->
+    <div id="homePage" class="min-h-screen flex items-center justify-center p-4">
         <div class="max-w-4xl mx-auto text-center w-full">
-            <div class="glass-card rounded-3xl p-4 md:p-8 shadow-2xl bounce-in card-hover enhanced-card">
-                <div class="mb-6">
-                    <div class="text-4xl md:text-6xl mb-4">🎮🌈📐✨</div>
+            <div class="glass-card rounded-3xl p-8 shadow-2xl bounce-in-3d card-hover holographic">
+                <div class="mb-8">
+                    <div class="text-6xl mb-4 floating">🎮🌈📐✨</div>
                     
                     <div class="flex justify-center mb-8">
                         <div class="relative group">
-                            <div class="absolute -inset-4 bg-gradient-to-r from-pink-400 via-purple-500 to-cyan-500 rounded-3xl blur-xl opacity-40 group-hover:opacity-60 transition-all duration-500 animate-pulse"></div>
+                            <div class="absolute -inset-6 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-500 animate-pulse"></div>
                             
-                            <div class="relative bg-white/15 backdrop-blur-lg rounded-3xl p-6 border-2 border-white/30 shadow-2xl">
+                            <div class="relative glass-card rounded-3xl p-8 border-2 border-white/20 shadow-2xl glow-effect">
                                 <img src="https://imgur.com/sWMWajt.jpg" alt="ETHNOMATH - Ethnomathematics Twin Shapes" 
                                      class="w-full max-w-xs mx-auto rounded-2xl shadow-lg transform hover:scale-105 transition-all duration-300"
                                      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <div class="text-center bg-gradient-to-r from-purple-600 to-pink-600 text-white p-8 rounded-2xl" style="display: none;">
+                                <div class="text-center bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-8 rounded-2xl" style="display: none;">
                                     <div class="text-5xl mb-4">🎮</div>
                                     <h1 class="text-3xl font-bold mb-3">ETHNOMATH</h1>
-                                    <h2 class="text-xl font-semibold mb-3">Ethnomathematics Twin Shapes</h2>
+                                    <h2 class="text-xl font-semibold mb-3">Twin Shapes</h2>
                                     <p class="text-lg opacity-90">by Veni Siswiandini</p>
                                 </div>
                             </div>
                             
-                            <div class="absolute -top-4 -right-4 text-3xl animate-bounce" style="animation-delay: 0s;">✨</div>
-                            <div class="absolute -bottom-4 -left-4 text-3xl animate-bounce" style="animation-delay: 0.5s;">🌟</div>
-                            <div class="absolute top-1/2 -left-6 text-2xl animate-bounce" style="animation-delay: 1s;">⭐</div>
-                            <div class="absolute top-1/2 -right-6 text-2xl animate-bounce" style="animation-delay: 1.5s;">💫</div>
-                            <div class="absolute top-1/4 -left-8 text-xl animate-bounce" style="animation-delay: 2s;">🎯</div>
-                            <div class="absolute top-3/4 -right-8 text-xl animate-bounce" style="animation-delay: 2.5s;">🎨</div>
+                            <!-- Enhanced Floating Elements -->
+                            <div class="absolute -top-6 -right-6 text-4xl animate-bounce floating" style="animation-delay: 0s;">✨</div>
+                            <div class="absolute -bottom-6 -left-6 text-4xl animate-bounce floating" style="animation-delay: 0.5s;">🌟</div>
+                            <div class="absolute top-1/2 -left-8 text-3xl animate-bounce floating" style="animation-delay: 1s;">⭐</div>
+                            <div class="absolute top-1/2 -right-8 text-3xl animate-bounce floating" style="animation-delay: 1.5s;">💫</div>
+                            <div class="absolute top-1/4 -left-10 text-2xl animate-bounce floating" style="animation-delay: 2s;">🎯</div>
+                            <div class="absolute top-3/4 -right-10 text-2xl animate-bounce floating" style="animation-delay: 2.5s;">🎨</div>
                         </div>
                     </div>
                     
-                    <div class="text-lg md:text-xl font-bold mb-4 floating text-center" style="font-family: 'Pacifico', cursive; animation-delay: 0.2s; background: linear-gradient(45deg, #000000, #8B5CF6, #000000, #8B5CF6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900;">
-                        <div>Ethnomathematics Twin Shapes</div>
-                        <div style="font-family: 'Dancing Script', cursive; font-size: 0.9em; margin-top: 0.25rem;">by Veni Siswiandini</div>
+                    <div class="text-2xl font-bold mb-6 text-center game-title">
+                        <div style="font-family: 'Orbitron', monospace; font-weight: 900; font-size: 2.2rem; color: #000000; text-shadow: 0 0 0 transparent; letter-spacing: 0.5px; margin-bottom: 1rem; background: linear-gradient(45deg, #8B4513, #D2691E, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; filter: contrast(1.5) brightness(1.2); line-height: 1.2; word-wrap: break-word; overflow-wrap: break-word;">Ethnomathematics Twin Shapes</div>
+                        <div style="font-family: 'Dancing Script', cursive; font-size: 1.8rem; color: #000000; font-weight: 900; letter-spacing: 0.3px; opacity: 1; margin-top: 0.5rem; visibility: visible; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.3);">by Veni Siswiandini</div>
                     </div>
-                    <div class="text-2xl md:text-3xl mb-4">🎯🎪🚀🎊</div>
+                    <div class="text-3xl mb-6 floating">🎯🎪🚀🎊</div>
                 </div>
                 
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-6">
-                    <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
-                        <div class="text-2xl md:text-3xl">🎲</div>
-                        <div class="text-sm md:text-base text-blue-600 font-bold">5 Soal</div>
-                        <div class="text-xs text-gray-900 font-semibold">Seru!</div>
+                <!-- Enhanced Feature Cards -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                    <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-left" style="border: 3px solid rgba(59, 130, 246, 0.6); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);">
+                        <div class="text-5xl floating mb-3">🎲</div>
+                        <div class="text-xl text-blue-600 font-bold neon-text">3 Mode</div>
+                        <div class="text-lg text-white font-bold">Belajar!</div>
                     </div>
-                    <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
-                        <div class="text-2xl md:text-3xl">⏰</div>
-                        <div class="text-sm md:text-base text-green-600 font-bold">15 Menit</div>
-                        <div class="text-xs text-gray-900 font-semibold">Waktu</div>
+                    <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-up" style="animation-delay: 0.1s; border: 3px solid rgba(34, 197, 94, 0.6); box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);">
+                        <div class="text-5xl floating mb-3" style="animation-delay: 0.5s;">⏰</div>
+                        <div class="text-xl text-green-600 font-bold neon-text">Interaktif</div>
+                        <div class="text-lg text-white font-bold">Seru!</div>
                     </div>
-                    <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
-                        <div class="text-2xl md:text-3xl">🏆</div>
-                        <div class="text-sm md:text-base text-yellow-600 font-bold">100 Poin</div>
-                        <div class="text-xs text-gray-900 font-semibold">Maksimal</div>
+                    <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-down" style="animation-delay: 0.2s; border: 3px solid rgba(245, 158, 11, 0.6); box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);">
+                        <div class="text-5xl floating mb-3" style="animation-delay: 1s;">🏆</div>
+                        <div class="text-xl text-yellow-600 font-bold neon-text">Budaya</div>
+                        <div class="text-lg text-white font-bold">Melayu</div>
                     </div>
-                    <div class="glass-card rounded-2xl p-3 card-hover enhanced-card">
-                        <div class="text-2xl md:text-3xl">🎨</div>
-                        <div class="text-sm md:text-base text-purple-600 font-bold">Animasi</div>
-                        <div class="text-xs text-gray-900 font-semibold">Keren!</div>
+                    <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-right" style="animation-delay: 0.3s; border: 3px solid rgba(168, 85, 247, 0.6); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);">
+                        <div class="text-5xl floating mb-3" style="animation-delay: 1.5s;">🎨</div>
+                        <div class="text-xl text-purple-600 font-bold neon-text">Animasi</div>
+                        <div class="text-lg text-white font-bold">Keren!</div>
                     </div>
                 </div>
                 
-                <div class="space-y-4">
-                    <button onclick="showMaterial()" class="w-full md:w-auto neon-button text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
-                        📖 Pelajari Materi 📚
+                <!-- Enhanced Action Buttons -->
+                <div class="space-y-6">
+                    <button onclick="showMaterial()" class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        📖 Materi Pembelajaran 📚
                     </button>
-                    <br>
-                    <button onclick="showNameInput()" class="w-full md:w-auto bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 hover:from-pink-500 hover:via-purple-600 hover:to-indigo-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
-                        🚀 MULAI BERMAIN SEKARANG! 🎮
+                    <button onclick="showMatchingGame()" class="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                        🧩 Cocokin Yuk! 🏛️
                     </button>
-                </div>
-                
-                <div class="mt-6 text-sm md:text-base text-gray-900 font-bold">
-                    <div class="mb-2">🌟 Belajar Matematika Jadi Menyenangkan! 🌟</div>
-                    <div class="flex justify-center space-x-2 text-2xl">
-                        <span class="animate-bounce">🎉</span>
-                        <span class="animate-bounce" style="animation-delay: 0.1s;">🎊</span>
-                        <span class="animate-bounce" style="animation-delay: 0.2s;">🎈</span>
-                        <span class="animate-bounce" style="animation-delay: 0.3s;">🎁</span>
-                        <span class="animate-bounce" style="animation-delay: 0.4s;">🎪</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-                
-    <!-- Name Input Modal -->
-    <div id="nameInputModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in">
-            <div class="text-6xl mb-4 text-center">👤</div>
-            <h3 class="text-3xl font-bold text-gray-900 mb-6 text-center">Siapa Nama Kamu?</h3>
-            <input type="text" id="playerName" placeholder="Tulis nama kamu di sini..." 
-                   class="w-full px-6 py-4 rounded-full text-lg font-semibold text-gray-900 bg-white/95 backdrop-blur-sm border-2 border-white/30 focus:border-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30 transition-all duration-300 mb-4"
-                   maxlength="20">
-            <p class="text-gray-800 text-sm mb-6 text-center font-semibold">Nama akan ditampilkan di papan skor! ✨</p>
-            <div class="flex space-x-4">
-                <button onclick="hideNameInput()" class="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
-                    ❌ Batal
-                </button>
-                <button onclick="startGameWithName()" class="flex-1 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
-                    🎮 Mulai!
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Material Page -->
-    <div id="materialPage" class="hidden min-h-screen mobile-friendly">
-        <div class="max-w-5xl mx-auto">
-            <div class="glass-card rounded-3xl p-4 md:p-8 shadow-2xl card-hover">
-                <div class="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8 space-y-4 md:space-y-0">
-                    <div class="text-center md:text-left">
-                        <div class="text-4xl md:text-6xl mb-2">📚🌈✨</div>
-                        <h1 class="title-responsive font-bold text-gray-800">Materi Kesebangunan</h1>
-                        <div class="text-2xl md:text-3xl mt-2">🎯📐🎨</div>
-                    </div>
-                    <button onclick="showHome()" class="bg-gradient-to-r from-red-400 via-pink-500 to-purple-500 hover:from-red-500 hover:via-pink-600 hover:to-purple-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
-                        ← Kembali 🏠
+                    <button onclick="showNameInput()" class="w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-red-600 hover:from-yellow-600 hover:via-orange-600 hover:to-red-700 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl border-3 border-yellow-400" style="background: linear-gradient(135deg, #FFD700 0%, #FF8C00 25%, #D2691E 50%, #A0522D 75%, #8B4513 100%); box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 255, 255, 0.6);">
+                        🚀 Latihan Soal 🎮
                     </button>
                 </div>
                 
-                <div class="space-y-4 md:space-y-6">
-                    <!-- Definisi Kesebangunan -->
-                    <div class="glass-card rounded-2xl p-4 md:p-6 floating card-hover bg-gradient-to-r from-yellow-400/20 to-orange-400/20" style="animation-delay: 0.2s;">
-                        <div class="text-center mb-4">
-                            <div class="text-4xl md:text-5xl mb-2">🔍✨</div>
-                            <div class="text-2xl">🎯🌟🎨</div>
-                        </div>
-                        <h2 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4 text-center">KESEBANGUNAN</h2>
-                        <p class="text-gray-900 leading-relaxed text-lg mb-4 font-semibold">
-                            <strong class="text-red-700">Kesebangunan</strong> adalah hubungan dua bangun yang memiliki 
-                            <strong class="text-red-700">bentuk sama</strong> tetapi <strong class="text-red-700">ukuran belum tentu sama</strong>.
-                        </p>
-                        
-                        <div class="mt-6">
-                            <h3 class="text-xl font-bold text-blue-600 mb-3">Dua bangun dikatakan sebangun jika:</h3>
-                            <ul class="text-gray-900 space-y-2 ml-4 font-semibold">
-                                <li class="flex items-start">
-                                    <span class="text-red-600 mr-2 font-bold">•</span>
-                                    <span>Bentuknya sama (sudut-sudut yang bersesuaian sama besar).</span>
-                                </li>
-                                <li class="flex items-start">
-                                    <span class="text-red-600 mr-2 font-bold">•</span>
-                                    <span>Perbandingan panjang sisi-sisi yang bersesuaian sama.</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Gambar Ilustrasi -->
-                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.4s;">
-                        <div class="text-center">
-                            <img src="https://imgur.com/7xZgVvU.jpg" alt="Ilustrasi Kesebangunan" 
-                                 class="w-full max-w-xs mx-auto rounded-lg shadow-lg"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-8 rounded-lg" style="display: none;">
-                                <div class="text-4xl mb-4">📐</div>
-                                <p class="text-lg">Ilustrasi Kesebangunan</p>
-                                <p class="text-sm opacity-75 mt-2">Gambar menunjukkan dua bangun sebangun</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Rumus -->
-                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.6s;">
-                        <div class="text-4xl mb-4">📏</div>
-                        <h3 class="text-2xl font-bold text-green-600 mb-4">Rumus Perbandingan Sisi:</h3>
-                        <div class="text-center">
-                            <img src="https://imgur.com/nDxmI3h.jpg" alt="Rumus Perbandingan Sisi" 
-                                 class="w-full max-w-xs mx-auto rounded-lg shadow-lg mb-4"
-                                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                            <div class="bg-gradient-to-r from-yellow-300 to-orange-300 rounded-xl p-6 text-center border-3 border-orange-500" style="display: none;">
-                                <div class="text-2xl font-bold text-gray-900 mb-2">
-                                    <span class="text-red-800">sisi 1</span> / <span class="text-red-800">sisi 1'</span> = 
-                                    <span class="text-red-800">sisi 2</span> / <span class="text-red-800">sisi 2'</span> = ⋯
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Simbol -->
-                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 0.8s;">
-                        <div class="text-4xl mb-4">🔤</div>
-                        <h3 class="text-2xl font-bold text-pink-600 mb-4">Simbol Kesebangunan:</h3>
-                        <div class="bg-gradient-to-r from-pink-300 to-red-300 rounded-xl p-6 text-center border-3 border-pink-500">
-                            <div class="text-3xl font-bold text-gray-900 mb-2">∆ABC ~ ∆DEF</div>
-                            <p class="text-gray-900 font-semibold">yang artinya segitiga ABC sebangun dengan segitiga DEF.</p>
-                        </div>
-                    </div>
-
-                    <!-- Contoh Soal -->
-                    <div class="glass-card rounded-2xl p-6 floating" style="animation-delay: 1s;">
-                        <div class="text-4xl mb-4">💡</div>
-                        <h3 class="text-2xl font-bold text-orange-600 mb-4">Contoh Soal Singkat:</h3>
-                        
-                        <div class="bg-gradient-to-r from-orange-200 to-yellow-200 rounded-xl p-6 mb-4 border-3 border-orange-400">
-                            <p class="text-gray-900 mb-4 font-semibold">
-                                <strong class="text-orange-700">Soal:</strong><br>
-                                ∆PQR sebangun dengan ∆XYZ. Panjang PQ = 4 cm, QR = 6 cm, dan XY = 6 cm. 
-                                Tentukan panjang YZ.
-                            </p>
-                            
-                            <div class="border-l-4 border-blue-600 pl-4">
-                                <p class="text-blue-700 font-bold mb-2">Penyelesaian:</p>
-                                <div class="text-center mb-4">
-                                    <img src="https://imgur.com/dQRgyEr.jpg" alt="Penyelesaian Soal" 
-                                         class="w-full max-w-48 mx-auto rounded-lg shadow-lg mb-4"
-                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                    <div class="space-y-2 text-gray-900 font-semibold" style="display: none;">
-                                        <p><span class="text-red-700">PQ/XY</span> = <span class="text-red-700">QR/YZ</span></p>
-                                        <p><span class="text-red-700">4/6</span> = <span class="text-red-700">6/YZ</span></p>
-                                        <p>YZ = <span class="text-red-700">(6×6)/4</span></p>
-                                        <p class="text-green-700 font-bold text-xl">YZ = 9 cm</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="text-center mt-8">
-                    <button onclick="showNameInput()" class="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white px-12 py-4 rounded-full font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-lg">
-                        Ayo Main Sekarang! 🎮
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Game Page -->
-    <div id="gamePage" class="hidden min-h-screen mobile-friendly">
-        <div class="max-w-7xl mx-auto">
-            <!-- Game Header -->
-            <div class="glass-card rounded-3xl p-4 md:p-6 mb-6 md:mb-8 card-hover">
-                <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                    <div class="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
-                        <div class="text-center">
-                            <div class="text-2xl md:text-3xl mb-1">🎮🌈</div>
-                            <h2 class="text-xl md:text-2xl font-bold text-gray-800">ETHNOMATH QUIZ</h2>
-                        </div>
-                        <div class="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-3 md:px-4 py-2 rounded-full font-bold text-sm md:text-base">
-                            🎯 Soal <span id="questionNumber">1</span>/5
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-3 md:space-x-6">
-                        <div class="text-center">
-                            <div class="text-2xl">👤</div>
-                            <div class="text-sm md:text-lg font-bold text-cyan-300" id="playerNameDisplay">Pemain</div>
-                            <div class="text-xs text-white font-bold">NAMA</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-2xl">🏆</div>
-                            <div class="text-xl md:text-3xl font-bold text-green-400" id="currentScore">0</div>
-                            <div class="text-xs text-white font-bold">SKOR</div>
-                        </div>
-                        <div class="text-center">
-                            <div class="text-2xl">⏰</div>
-                            <div class="text-lg md:text-2xl font-bold text-orange-400" id="timeRemaining">15:00</div>
-                            <div class="text-xs text-white font-bold">WAKTU</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-4 md:gap-8">
-                <!-- Basketball Animation -->
-                <div class="glass-card rounded-3xl p-4 md:p-6 card-hover">
-                    <div class="text-center mb-2">
-                        <div class="text-2xl md:text-3xl">🏀🎯✨</div>
-                    </div>
-                    <div class="basketball-court rounded-2xl p-4 md:p-8 relative h-64 md:h-96 overflow-hidden">
-                        <!-- Confetti Elements -->
-                        <div id="confettiContainer" class="absolute inset-0 pointer-events-none"></div>
-                        
-                        <!-- Basketball Ring with Pulse Effect -->
-                        <div class="absolute top-8 right-12 ring">
-                            <div class="pulse-ring absolute inset-0 bg-orange-400 rounded-full opacity-20"></div>
-                            <svg width="100" height="80" viewBox="0 0 100 80">
-                                <defs>
-                                    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#ff8c00;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#ff4500;stop-opacity:1" />
-                                    </linearGradient>
-                                </defs>
-                                <ellipse cx="50" cy="20" rx="40" ry="10" fill="url(#ringGradient)" stroke="#cc5500" stroke-width="3"/>
-                                <rect x="47" y="20" width="6" height="35" fill="#8B4513" rx="3"/>
-                                <path d="M 15 20 Q 50 35 85 20" stroke="white" stroke-width="3" fill="none"/>
-                                <path d="M 20 22 Q 50 37 80 22" stroke="white" stroke-width="2" fill="none"/>
-                            </svg>
-                        </div>
-                        
-                        <!-- Basketball Player -->
-                        <div id="basketballPlayer" class="absolute bottom-8 left-12 player">
-                            <svg width="80" height="100" viewBox="0 0 80 100">
-                                <defs>
-                                    <linearGradient id="skinGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#FDBCB4;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#F7A399;stop-opacity:1" />
-                                    </linearGradient>
-                                    <linearGradient id="shirtGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#357ABD;stop-opacity:1" />
-                                    </linearGradient>
-                                </defs>
-                                <!-- Body -->
-                                <rect x="25" y="40" width="30" height="40" fill="url(#shirtGradient)" rx="8"/>
-                                <!-- Head -->
-                                <circle cx="40" cy="25" r="15" fill="url(#skinGradient)"/>
-                                <!-- Hair -->
-                                <path d="M 28 15 Q 40 8 52 15 Q 50 12 40 12 Q 30 12 28 15" fill="#4A4A4A"/>
-                                <!-- Eyes -->
-                                <circle cx="35" cy="22" r="2" fill="#000"/>
-                                <circle cx="45" cy="22" r="2" fill="#000"/>
-                                <!-- Smile -->
-                                <path d="M 35 28 Q 40 32 45 28" stroke="#000" stroke-width="2" fill="none"/>
-                                <!-- Arms -->
-                                <rect x="12" y="45" width="12" height="25" fill="url(#skinGradient)" rx="6"/>
-                                <rect x="56" y="45" width="12" height="25" fill="url(#skinGradient)" rx="6"/>
-                                <!-- Legs -->
-                                <rect x="28" y="80" width="10" height="20" fill="#2C3E50" rx="5"/>
-                                <rect x="42" y="80" width="10" height="20" fill="#2C3E50" rx="5"/>
-                                <!-- Shoes -->
-                                <ellipse cx="33" cy="98" rx="8" ry="4" fill="#000"/>
-                                <ellipse cx="47" cy="98" rx="8" ry="4" fill="#000"/>
-                                <!-- Jersey Number -->
-                                <text x="40" y="60" text-anchor="middle" fill="white" font-size="12" font-weight="bold">7</text>
-                            </svg>
-                        </div>
-                        
-                        <!-- Basketball -->
-                        <div id="basketball" class="absolute bottom-28 left-28 ball">
-                            <svg width="32" height="32" viewBox="0 0 32 32">
-                                <defs>
-                                    <radialGradient id="ballGradient" cx="30%" cy="30%">
-                                        <stop offset="0%" style="stop-color:#ff8c00;stop-opacity:1" />
-                                        <stop offset="100%" style="stop-color:#ff4500;stop-opacity:1" />
-                                    </radialGradient>
-                                </defs>
-                                <circle cx="16" cy="16" r="15" fill="url(#ballGradient)" stroke="#cc5500" stroke-width="2"/>
-                                <path d="M 2 16 Q 16 2 30 16" stroke="#cc5500" stroke-width="2" fill="none"/>
-                                <path d="M 2 16 Q 16 30 30 16" stroke="#cc5500" stroke-width="2" fill="none"/>
-                                <line x1="16" y1="1" x2="16" y2="31" stroke="#cc5500" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        
-                        <!-- Score Display -->
-                        <div id="scoreDisplay" class="absolute top-4 left-4 text-white font-bold text-4xl opacity-0 transition-all duration-500 score-popup">
-                            +20
-                        </div>
-                        
-                        <!-- Sparkle Effects -->
-                        <div id="sparkleContainer" class="absolute inset-0 pointer-events-none"></div>
-                    </div>
-                </div>
-
-                <!-- Question Panel -->
-                <div class="glass-card rounded-3xl p-4 md:p-6 card-hover">
-                    <div class="text-center mb-4">
-                        <div class="text-2xl md:text-3xl">🤔💭✨</div>
-                    </div>
-                    <div id="questionPanel" class="min-h-64 md:h-96 flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-xl md:text-3xl font-bold text-gray-800 mb-4 md:mb-6 text-center" id="questionTitle">🤔 Soal 1</h3>
-                            <div class="glass-card rounded-2xl p-4 md:p-6 mb-4 md:mb-6">
-                                <!-- Question Image -->
-                                <div id="questionImageContainer" class="mb-4 text-center">
-                                    <div id="questionImageFallback" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white p-6 rounded-lg mx-auto max-w-sm">
-                                        <div class="text-4xl mb-2">📐</div>
-                                        <p class="text-lg font-bold">Ilustrasi Soal Kesebangunan</p>
-                                        <p class="text-sm mt-2 opacity-75">Gambar akan membantu memahami soal</p>
-                                    </div>
-                                </div>
-                                <!-- Question Text -->
-                                <p class="text-gray-900 leading-relaxed text-lg font-bold" id="questionText">
-                                    Dua segitiga ABC dan DEF sebangun. Jika AB = 6 cm, BC = 8 cm, dan DE = 9 cm, 
-                                    maka panjang EF adalah...
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-3 md:space-y-4">
-                            <button id="optionA" onclick="selectAnswer('A')" class="option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-bold text-base md:text-lg card-hover">
-                                <div class="flex items-center space-x-3">
-                                    <span class="text-2xl">🅰️</span>
-                                    <span>12 cm</span>
-                                    <span class="ml-auto text-xl">🎯</span>
-                                </div>
-                            </button>
-                            <button id="optionB" onclick="selectAnswer('B')" class="option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-bold text-base md:text-lg card-hover">
-                                <div class="flex items-center space-x-3">
-                                    <span class="text-2xl">🅱️</span>
-                                    <span>10 cm</span>
-                                    <span class="ml-auto text-xl">🎯</span>
-                                </div>
-                            </button>
-                        </div>
-                        
-                        <div class="mt-6 text-center">
-                            <div id="answerFeedback" class="text-2xl font-bold mb-4 opacity-0 transition-all duration-500"></div>
-                        </div>
+                <!-- Enhanced Footer -->
+                <div class="mt-8 text-center">
+                    <div class="text-lg text-white font-bold mb-4 neon-text">🌟 Belajar Matematika Jadi Menyenangkan! 🌟</div>
+                    <div class="flex justify-center space-x-3 text-3xl">
+                        <span class="animate-bounce floating">🎉</span>
+                        <span class="animate-bounce floating" style="animation-delay: 0.1s;">🎊</span>
+                        <span class="animate-bounce floating" style="animation-delay: 0.2s;">🎈</span>
+                        <span class="animate-bounce floating" style="animation-delay: 0.3s;">🎁</span>
+                        <span class="animate-bounce floating" style="animation-delay: 0.4s;">🎪</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Host Dashboard Page -->
-    <div id="hostDashboard" class="hidden min-h-screen p-4">
-        <div class="max-w-7xl mx-auto">
-            <div class="glass-card rounded-3xl p-8 shadow-2xl">
-                <div class="flex flex-col md:flex-row items-center justify-between mb-6 md:mb-8 space-y-4 md:space-y-0">
-                    <div class="text-center md:text-left">
-                        <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800">📊 Host Dashboard</h1>
-                        <p class="text-sm md:text-base text-gray-600 mt-2">Panel kontrol untuk guru dan host - Data Real-time ☁️</p>
-                    </div>
-                    <div class="flex flex-wrap gap-2">
-                        <button onclick="showHome()" class="bg-gradient-to-r from-red-400 to-pink-500 hover:from-red-500 hover:to-pink-600 text-white px-4 py-2 rounded-full font-bold transition-all duration-300 transform hover:scale-105 text-sm">
-                            ← Kembali
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Statistics Cards -->
-                <div class="grid md:grid-cols-4 gap-6 mb-8">
-                    <div class="glass-card rounded-2xl p-6 text-center floating">
-                        <div class="text-4xl mb-2">👥</div>
-                        <div class="text-3xl font-bold text-cyan-400" id="totalPlayers">0</div>
-                        <div class="text-gray-300">Total Pemain</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 text-center floating" style="animation-delay: 0.1s;">
-                        <div class="text-4xl mb-2">🎮</div>
-                        <div class="text-3xl font-bold text-green-400" id="totalGames">0</div>
-                        <div class="text-gray-300">Total Game</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 text-center floating" style="animation-delay: 0.2s;">
-                        <div class="text-4xl mb-2">⭐</div>
-                        <div class="text-3xl font-bold text-yellow-400" id="averageScore">0</div>
-                        <div class="text-gray-300">Rata-rata Skor</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 text-center floating" style="animation-delay: 0.3s;">
-                        <div class="text-4xl mb-2">🏆</div>
-                        <div class="text-3xl font-bold text-purple-400" id="highestScore">0</div>
-                        <div class="text-gray-300">Skor Tertinggi</div>
-                    </div>
-                </div>
-                
-                <!-- Player Leaderboard -->
-                <div class="glass-card rounded-2xl p-6">
-                    <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
-                        🏅 Papan Peringkat Pemain
-                        <span class="ml-2 text-sm bg-green-500 px-2 py-1 rounded-full">Real-time</span>
-                    </h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-white">
-                            <thead>
-                                <tr class="border-b border-white/20">
-                                    <th class="text-left py-3 px-4">Peringkat</th>
-                                    <th class="text-left py-3 px-4">Nama Pemain</th>
-                                    <th class="text-left py-3 px-4">Skor Tertinggi</th>
-                                    <th class="text-left py-3 px-4">Total Game</th>
-                                    <th class="text-left py-3 px-4">Rata-rata</th>
-                                    <th class="text-left py-3 px-4">Terakhir Main</th>
-                                </tr>
-                            </thead>
-                            <tbody id="leaderboardTable">
-                                <!-- Data will be populated by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <!-- Halaman Materi -->
+    <div id="materialPage" class="hidden min-h-screen flex items-center justify-center p-8">
+      <div class="glass-card rounded-3xl p-8 max-w-4xl mx-auto">
+        <div class="text-center mb-8">
+          <h2 class="text-4xl font-bold mb-4 game-title">📖 Materi Pembelajaran 📚</h2>
+          <div class="text-2xl mb-4">🏛️ Kesebangunan dalam Arsitektur Melayu 🏛️</div>
         </div>
+        
+        <div class="text-left space-y-6">
+          <!-- Definisi Kesebangunan -->
+          <div class="glass-card rounded-2xl p-6" style="border: 2px solid rgba(59, 130, 246, 0.2); background: rgba(59, 130, 246, 0.05); backdrop-filter: blur(10px);">
+            <h3 class="text-2xl font-bold mb-4 text-center text-blue-600">🔍 KESEBANGUNAN</h3>
+            <p class="text-lg mb-4 leading-relaxed">
+              <strong>Kesebangunan</strong> adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama.
+            </p>
+            
+            <div class="rounded-xl p-4 mb-4" style="background: rgba(245, 222, 179, 0.05); border: 1px solid rgba(210, 105, 30, 0.2); backdrop-filter: blur(10px);">
+              <h4 class="font-bold text-lg mb-2" style="color: #000000; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);">📋 Syarat Dua Bangun Sebangun:</h4>
+              <ul class="list-disc list-inside space-y-2" style="color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);">
+                <li><strong>Bentuknya sama</strong> (sudut-sudut yang bersesuaian sama besar)</li>
+                <li><strong>Perbandingan panjang sisi-sisi yang bersesuaian sama</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Gambar Ilustrasi -->
+          <div class="glass-card rounded-2xl p-6 text-center" style="border: 2px solid rgba(34, 197, 94, 0.2); background: rgba(34, 197, 94, 0.05); backdrop-filter: blur(10px);">
+            <h4 class="text-xl font-bold mb-4 text-green-600">🖼️ Ilustrasi Kesebangunan</h4>
+            <div class="bg-white/90 rounded-xl p-4 mb-4">
+              <img src="https://i.imgur.com/7xZgVvU.jpg" alt="Ilustrasi Kesebangunan" 
+                   class="w-full max-w-xs mx-auto rounded-lg shadow-lg"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <div class="hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white p-8 rounded-lg">
+                <div class="text-4xl mb-4">📐</div>
+                <p class="text-lg">Ilustrasi Kesebangunan Segitiga</p>
+                <p class="text-sm mt-2">Gambar tidak dapat dimuat</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Rumus Perbandingan -->
+          <div class="glass-card rounded-2xl p-6" style="border: 2px solid rgba(168, 85, 247, 0.2); background: rgba(168, 85, 247, 0.05); backdrop-filter: blur(10px);">
+            <h4 class="text-xl font-bold mb-4 text-center text-purple-600">📏 Rumus Perbandingan Sisi</h4>
+            <div class="bg-white/90 rounded-xl p-4 mb-4 text-center">
+              <img src="https://i.imgur.com/nDxmI3h.jpg" alt="Rumus Perbandingan Sisi" 
+                   class="w-full max-w-48 mx-auto rounded-lg shadow-lg"
+                   onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+              <div class="hidden bg-gradient-to-r from-purple-500 to-pink-500 text-white p-6 rounded-lg">
+                <div class="text-3xl mb-3">📊</div>
+                <p class="text-xl font-bold mb-2">Rumus Perbandingan:</p>
+                <p class="text-lg">a₁/a₂ = b₁/b₂ = c₁/c₂ = k</p>
+                <p class="text-sm mt-2">k = faktor skala</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simbol Kesebangunan -->
+          <div class="glass-card rounded-2xl p-6" style="border: 2px solid rgba(245, 158, 11, 0.2); background: rgba(245, 158, 11, 0.05); backdrop-filter: blur(10px);">
+            <h4 class="text-xl font-bold mb-4 text-center text-orange-600">🔤 Simbol Kesebangunan</h4>
+            <div class="rounded-xl p-6 text-center" style="background: rgba(245, 222, 179, 0.05); border: 1px solid rgba(210, 105, 30, 0.2); backdrop-filter: blur(10px);">
+              <div class="text-3xl font-bold mb-2" style="color: #000000; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);">∆ABC ~ ∆DEF</div>
+              <p class="text-lg" style="color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);">
+                yang artinya <strong>segitiga ABC sebangun dengan segitiga DEF</strong>
+              </p>
+            </div>
+          </div>
+
+          <!-- Contoh Soal -->
+          <div class="glass-card rounded-2xl p-6" style="border: 2px solid rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.05); backdrop-filter: blur(10px);">
+            <h4 class="text-xl font-bold mb-4 text-center text-red-600">💡 Contoh Soal Singkat</h4>
+            
+            <div class="rounded-xl p-4 mb-4" style="background: rgba(245, 222, 179, 0.05); border: 1px solid rgba(210, 105, 30, 0.2); backdrop-filter: blur(10px);">
+              <h5 class="font-bold text-lg mb-2" style="color: #000000; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);">📝 Soal:</h5>
+              <p class="leading-relaxed" style="color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);">
+                ∆PQR sebangun dengan ∆XYZ. Panjang PQ = 4 cm, QR = 6 cm, dan XY = 6 cm. 
+                Tentukan panjang YZ.
+              </p>
+            </div>
+
+            <div class="rounded-xl p-4 mb-4" style="background: rgba(245, 222, 179, 0.05); border: 1px solid rgba(210, 105, 30, 0.2); backdrop-filter: blur(10px);">
+              <h5 class="font-bold text-lg mb-2" style="color: #000000; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.8);">✅ Penyelesaian:</h5>
+              <div class="bg-white/90 rounded-xl p-4 text-center">
+                <img src="https://i.imgur.com/dQRgyEr.jpg" alt="Penyelesaian Contoh Soal" 
+                     class="w-full max-w-24 mx-auto rounded-lg shadow-lg"
+                     onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="hidden bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 rounded-lg">
+                  <div class="text-3xl mb-3">🧮</div>
+                  <p class="text-lg font-bold mb-2">Penyelesaian:</p>
+                  <p class="text-base mb-2">PQ/XY = QR/YZ</p>
+                  <p class="text-base mb-2">4/6 = 6/YZ</p>
+                  <p class="text-base mb-2">4 × YZ = 6 × 6</p>
+                  <p class="text-base mb-2">4 × YZ = 36</p>
+                  <p class="text-lg font-bold">YZ = 9 cm</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Aplikasi dalam Budaya Melayu -->
+          <div class="glass-card rounded-2xl p-6" style="border: 2px solid rgba(234, 179, 8, 0.2); background: rgba(234, 179, 8, 0.05); backdrop-filter: blur(10px);">
+            <h4 class="text-xl font-bold mb-4 text-center text-yellow-600">🏛️ Kesebangunan dalam Arsitektur Melayu</h4>
+            <div class="rounded-xl p-4" style="background: rgba(245, 222, 179, 0.05); border: 1px solid rgba(210, 105, 30, 0.2); backdrop-filter: blur(10px);">
+              <p class="leading-relaxed mb-3" style="color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);">
+                Konsep kesebangunan banyak ditemukan dalam arsitektur tradisional Melayu Pontianak:
+              </p>
+              <ul class="list-disc list-inside space-y-2" style="color: #000000; text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);">
+                <li><strong>Rumah Radank:</strong> Proporsi atap bertingkat yang sebangun</li>
+                <li><strong>Ornamen Ukiran:</strong> Motif yang berulang dengan skala berbeda</li>
+                <li><strong>Jendela dan Pintu:</strong> Desain yang sebangun namun berbeda ukuran</li>
+                <li><strong>Tiang Penyangga:</strong> Struktur yang proporsional dan sebangun</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-8">
+          <button onclick="showPage('homePage')" class="neon-button px-8 py-4 rounded-full text-lg font-bold">
+            ⬅ Kembali ke Beranda 🏠
+          </button>
+        </div>
+      </div>
     </div>
 
-    <!-- Results Page -->
-    <div id="resultsPage" class="hidden min-h-screen flex items-center justify-center mobile-friendly">
-        <div class="max-w-2xl mx-auto w-full">
-            <div class="glass-card rounded-3xl p-4 md:p-8 shadow-2xl text-center bounce-in card-hover bg-gradient-to-br from-yellow-400/20 via-pink-400/20 to-purple-400/20">
-                <!-- Celebration Header -->
-                <div class="mb-6">
-                    <div class="text-4xl md:text-6xl mb-2">🎉🎊🌟</div>
-                    <div id="resultIcon" class="text-6xl md:text-9xl mb-4">🏆</div>
-                    <div class="text-4xl md:text-6xl mb-2">✨🎈🎁</div>
-                </div>
-                
-                <h1 class="text-3xl md:text-5xl font-bold text-gray-800 mb-4" id="resultTitle">LUAR BIASA!</h1>
-                <p class="text-xl md:text-3xl font-bold text-cyan-300 mb-4" id="resultPlayerName">Pemain</p>
-                <p class="text-lg md:text-2xl text-gray-200 mb-6 md:mb-8" id="resultMessage">Kamu telah menyelesaikan quiz!</p>
-                
-                <div class="glass-card rounded-2xl p-4 md:p-8 mb-6 md:mb-8 bg-gradient-to-r from-green-400/20 to-blue-400/20">
-                    <div class="grid grid-cols-2 gap-4 md:gap-8 text-center">
-                        <div class="card-hover p-4 rounded-xl bg-gradient-to-br from-green-400/30 to-emerald-400/30">
-                            <div class="text-3xl mb-2">🏆</div>
-                            <div class="text-3xl md:text-5xl font-bold text-green-400 mb-2" id="finalScore">0</div>
-                            <div class="text-gray-300 text-sm md:text-lg">Skor Akhir</div>
-                            <div class="text-2xl mt-1">⭐</div>
-                        </div>
-                        <div class="card-hover p-4 rounded-xl bg-gradient-to-br from-blue-400/30 to-cyan-400/30">
-                            <div class="text-3xl mb-2">✅</div>
-                            <div class="text-3xl md:text-5xl font-bold text-blue-400 mb-2" id="correctAnswers">0</div>
-                            <div class="text-gray-300 text-sm md:text-lg">Jawaban Benar</div>
-                            <div class="text-2xl mt-1">🎯</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="space-y-4">
-                    <button onclick="restartGame()" class="w-full bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 hover:from-green-500 hover:via-teal-600 hover:to-blue-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer">
-                        🔄 Main Lagi Yuk! 🎮
-                    </button>
-                    <button onclick="showHome()" class="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 hover:from-purple-600 hover:via-pink-600 hover:to-red-600 text-white button-responsive rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg cursor-pointer">
-                        🏠 Kembali ke Beranda 🌈
-                    </button>
-                </div>
-                
-                <!-- Fun Footer -->
-                <div class="mt-6 text-center">
-                    <div class="text-sm md:text-base text-gray-300 mb-2">
-                        🌟 Terima kasih sudah bermain! 🌟
-                    </div>
-                    <div class="flex justify-center space-x-2 text-2xl">
-                        <span class="animate-bounce">🎉</span>
-                        <span class="animate-bounce" style="animation-delay: 0.1s;">🎊</span>
-                        <span class="animate-bounce" style="animation-delay: 0.2s;">🎈</span>
-                        <span class="animate-bounce" style="animation-delay: 0.3s;">🎁</span>
-                        <span class="animate-bounce" style="animation-delay: 0.4s;">🌈</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- Halaman Matching Game -->
+    <div id="matchingPage" class="hidden min-h-screen flex items-center justify-center p-8">
+      <div class="glass-card rounded-3xl p-8 max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-4">🧩 Cocokin Yuk!</h2>
+        <p class="mb-6">Game matching akan ditaruh di sini...</p>
+        <button onclick="showPage('homePage')" class="neon-button px-6 py-3 rounded-full">⬅ Kembali</button>
+      </div>
     </div>
 
-    <script>
-        // Audio System
-        class AudioManager {
-            constructor() {
-                this.audioContext = null;
-                this.sounds = {};
-                this.backgroundMusic = null;
-                this.isMuted = false;
-                this.volume = 0.7;
-                this.musicVolume = 0.3;
-                this.initAudio();
-            }
+    <!-- Halaman Input Nama -->
+    <div id="nameInputPage" class="hidden min-h-screen flex items-center justify-center p-8">
+      <div class="glass-card rounded-3xl p-8 max-w-md mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-4">✍️ Masukkan Nama</h2>
+        <input type="text" placeholder="Nama Anda..." class="w-full px-4 py-2 rounded-lg mb-4 border-2">
+        <button onclick="showPage('homePage')" class="neon-button px-6 py-3 rounded-full">✅ Mulai</button>
+      </div>
+    </div>
 
-            async initAudio() {
-                try {
-                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    this.createSounds();
-                } catch (error) {
-                    console.log('Audio not supported:', error);
-                }
-            }
+    <!-- Halaman Host Dashboard -->
+    <div id="hostPage" class="hidden min-h-screen flex items-center justify-center p-8">
+      <div class="glass-card rounded-3xl p-8 max-w-3xl mx-auto text-center">
+        <h2 class="text-3xl font-bold mb-4">📊 Host Dashboard</h2>
+        <p class="mb-6">Di sini nanti papan skor & kontrol host.</p>
+        <button onclick="showPage('homePage')" class="neon-button px-6 py-3 rounded-full">⬅ Kembali</button>
+      </div>
+    </div>
 
-            createSounds() {
-                // Create sound effects using Web Audio API
-                this.sounds = {
-                    correct: this.createTone(800, 0.2, 'sine'),
-                    wrong: this.createTone(200, 0.3, 'sawtooth'),
-                    click: this.createTone(600, 0.1, 'square'),
-                    celebration: this.createCelebrationSound(),
-                    tick: this.createTone(400, 0.05, 'sine'),
-                    gameStart: this.createGameStartSound(),
-                    gameEnd: this.createGameEndSound()
-                };
-                
-                this.createBackgroundMusic();
-            }
-
-            createTone(frequency, duration, type = 'sine') {
-                return () => {
-                    if (!this.audioContext || this.isMuted) return;
-                    
-                    const oscillator = this.audioContext.createOscillator();
-                    const gainNode = this.audioContext.createGain();
-                    
-                    oscillator.connect(gainNode);
-                    gainNode.connect(this.audioContext.destination);
-                    
-                    oscillator.frequency.setValueAtTime(frequency, this.audioContext.currentTime);
-                    oscillator.type = type;
-                    
-                    gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-                    gainNode.gain.linearRampToValueAtTime(this.volume * 0.3, this.audioContext.currentTime + 0.01);
-                    gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + duration);
-                    
-                    oscillator.start(this.audioContext.currentTime);
-                    oscillator.stop(this.audioContext.currentTime + duration);
-                };
-            }
-
-            createCelebrationSound() {
-                return () => {
-                    if (!this.audioContext || this.isMuted) return;
-                    
-                    const frequencies = [523, 659, 784, 1047]; // C, E, G, C
-                    frequencies.forEach((freq, index) => {
-                        setTimeout(() => {
-                            const oscillator = this.audioContext.createOscillator();
-                            const gainNode = this.audioContext.createGain();
-                            
-                            oscillator.connect(gainNode);
-                            gainNode.connect(this.audioContext.destination);
-                            
-                            oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
-                            oscillator.type = 'sine';
-                            
-                            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-                            gainNode.gain.linearRampToValueAtTime(this.volume * 0.4, this.audioContext.currentTime + 0.01);
-                            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.3);
-                            
-                            oscillator.start(this.audioContext.currentTime);
-                            oscillator.stop(this.audioContext.currentTime + 0.3);
-                        }, index * 100);
-                    });
-                };
-            }
-
-            createGameStartSound() {
-                return () => {
-                    if (!this.audioContext || this.isMuted) return;
-                    
-                    const frequencies = [440, 554, 659]; // A, C#, E
-                    frequencies.forEach((freq, index) => {
-                        setTimeout(() => {
-                            const oscillator = this.audioContext.createOscillator();
-                            const gainNode = this.audioContext.createGain();
-                            
-                            oscillator.connect(gainNode);
-                            gainNode.connect(this.audioContext.destination);
-                            
-                            oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
-                            oscillator.type = 'triangle';
-                            
-                            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-                            gainNode.gain.linearRampToValueAtTime(this.volume * 0.5, this.audioContext.currentTime + 0.01);
-                            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.4);
-                            
-                            oscillator.start(this.audioContext.currentTime);
-                            oscillator.stop(this.audioContext.currentTime + 0.4);
-                        }, index * 150);
-                    });
-                };
-            }
-
-            createGameEndSound() {
-                return () => {
-                    if (!this.audioContext || this.isMuted) return;
-                    
-                    const melody = [523, 659, 784, 1047, 1319]; // C, E, G, C, E
-                    melody.forEach((freq, index) => {
-                        setTimeout(() => {
-                            const oscillator = this.audioContext.createOscillator();
-                            const gainNode = this.audioContext.createGain();
-                            
-                            oscillator.connect(gainNode);
-                            gainNode.connect(this.audioContext.destination);
-                            
-                            oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
-                            oscillator.type = 'sine';
-                            
-                            gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-                            gainNode.gain.linearRampToValueAtTime(this.volume * 0.6, this.audioContext.currentTime + 0.01);
-                            gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + 0.5);
-                            
-                            oscillator.start(this.audioContext.currentTime);
-                            oscillator.stop(this.audioContext.currentTime + 0.5);
-                        }, index * 200);
-                    });
-                };
-            }
-
-            createBackgroundMusic() {
-                if (!this.audioContext) return;
-                
-                // Create upbeat background music pattern
-                const musicPattern = [
-                    { freq: 261.63, duration: 0.5 }, // C4
-                    { freq: 329.63, duration: 0.5 }, // E4
-                    { freq: 392.00, duration: 0.5 }, // G4
-                    { freq: 523.25, duration: 0.5 }, // C5
-                    { freq: 392.00, duration: 0.5 }, // G4
-                    { freq: 329.63, duration: 0.5 }, // E4
-                    { freq: 293.66, duration: 0.5 }, // D4
-                    { freq: 261.63, duration: 1.0 }  // C4
-                ];
-                
-                this.backgroundMusic = {
-                    pattern: musicPattern,
-                    isPlaying: false,
-                    currentIndex: 0,
-                    timeoutId: null
-                };
-            }
-
-            playBackgroundMusic() {
-                if (!this.audioContext || this.isMuted || this.backgroundMusic.isPlaying) return;
-                
-                this.backgroundMusic.isPlaying = true;
-                this.playMusicNote();
-            }
-
-            playMusicNote() {
-                if (!this.backgroundMusic.isPlaying || this.isMuted) return;
-                
-                const note = this.backgroundMusic.pattern[this.backgroundMusic.currentIndex];
-                
-                const oscillator = this.audioContext.createOscillator();
-                const gainNode = this.audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(this.audioContext.destination);
-                
-                oscillator.frequency.setValueAtTime(note.freq, this.audioContext.currentTime);
-                oscillator.type = 'triangle';
-                
-                gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
-                gainNode.gain.linearRampToValueAtTime(this.musicVolume * 0.1, this.audioContext.currentTime + 0.01);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, this.audioContext.currentTime + note.duration);
-                
-                oscillator.start(this.audioContext.currentTime);
-                oscillator.stop(this.audioContext.currentTime + note.duration);
-                
-                this.backgroundMusic.currentIndex = (this.backgroundMusic.currentIndex + 1) % this.backgroundMusic.pattern.length;
-                
-                this.backgroundMusic.timeoutId = setTimeout(() => {
-                    this.playMusicNote();
-                }, note.duration * 1000);
-            }
-
-            stopBackgroundMusic() {
-                if (this.backgroundMusic) {
-                    this.backgroundMusic.isPlaying = false;
-                    if (this.backgroundMusic.timeoutId) {
-                        clearTimeout(this.backgroundMusic.timeoutId);
-                        this.backgroundMusic.timeoutId = null;
-                    }
-                }
-            }
-
-            playSound(soundName) {
-                if (this.sounds[soundName] && !this.isMuted) {
-                    this.sounds[soundName]();
-                }
-            }
-
-            toggleMute() {
-                this.isMuted = !this.isMuted;
-                if (this.isMuted) {
-                    this.stopBackgroundMusic();
-                } else if (gameState.isGameActive) {
-                    this.playBackgroundMusic();
-                }
-                return this.isMuted;
-            }
-
-            setVolume(volume) {
-                this.volume = Math.max(0, Math.min(1, volume));
-            }
-
-            setMusicVolume(volume) {
-                this.musicVolume = Math.max(0, Math.min(1, volume));
-            }
-        }
-
-        // Initialize Audio Manager
-        const audioManager = new AudioManager();
-
-        // Global Game State
-        window.gameState = {
-            currentPlayer: '',
-            currentQuestion: 0,
-            score: 0,
-            correctAnswers: 0,
-            timeRemaining: 900,
-            gameTimer: null,
-            isGameActive: false,
-            selectedAnswer: null,
-            answerSubmitted: false
-        };
-
-        // Question Pool
-        const questionPool = [
-            {
-                question: "Pada kain corak insang di atas, apakah segitiga yang diberikan garis merah dan garis hitam merupakan segitiga yang sebangun?",
-                optionA: "Ya",
-                optionB: "Tidak",
-                correct: "A",
-                explanation: "Ya, kedua segitiga memiliki bentuk yang sama dengan sudut-sudut yang bersesuaian sama besar, sehingga mereka sebangun."
-            },
-            {
-                question: "Gambar di atas merupakan rumah adat Melayu Pontianak. Rumah adat tersebut memiliki atap yang membentuk segitiga. Terdapat segitiga yang diberikan garis merah dan garis kuning. Apakah dua segitiga tersebut merupakan segitiga yang sebangun?",
-                optionA: "Ya",
-                optionB: "Tidak",
-                correct: "A",
-                explanation: "Ya, kedua segitiga pada atap rumah adat Melayu memiliki bentuk yang sama dan sudut-sudut yang bersesuaian sama besar."
-            },
-            {
-                question: "Atap rumah adat Melayu di atas berbentuk segitiga sama kaki. Di bawah atap utama, terdapat segitiga hiasan yang bentuknya sebangun dengan segitiga atap besar. Diketahui: Lebar alas atap besar = 8 m, tinggi atap besar = 4,5 m, Lebar alas segitiga hiasan = 3,2 m. Berapa tinggi segitiga hiasan tersebut?",
-                optionA: "1,8 m",
-                optionB: "1,9 m",
-                correct: "A",
-                explanation: "Karena sebangun, perbandingan sisi-sisi sama. 8/3,2 = 4,5/tinggi hiasan, maka tinggi hiasan = 4,5 × 3,2/8 = 1,8 m."
-            },
-            {
-                question: "Pintu rumah adat Melayu di atas terdiri dari pintu besar dan pola panel persegi panjang di dalamnya. Panel-panel tersebut sebangun dengan bentuk pintu secara keseluruhan. Diketahui: Tinggi pintu utama = 210 cm, lebar pintu utama = 90 cm, Panel di dalam pintu memiliki lebar 30 cm. Berapa tinggi panel tersebut?",
-                optionA: "74 cm",
-                optionB: "70 cm",
-                correct: "B",
-                explanation: "Karena sebangun, perbandingan sisi-sisi sama. 90/30 = 210/tinggi panel, maka tinggi panel = 210 × 30/90 = 70 cm."
-            },
-            {
-                question: "Perhatikan gambar berikut. Pagar rumah adat Melayu di atas memiliki pola belah ketupat yang berwarna hitam dan hijau. Belah ketupat yang berwarna hitam sebangun dengan belah ketupat yang berwarna hijau. Diketahui: Panjang diagonal horizontal belah ketupat hitam = 20 cm, Panjang diagonal vertikal belah ketupat hitam = 24 cm, Panjang diagonal horizontal belah ketupat hijau = 15 cm. Berapa panjang diagonal vertikal belah ketupat hijau?",
-                optionA: "19 cm",
-                optionB: "18 cm",
-                correct: "B",
-                explanation: "Karena sebangun, perbandingan diagonal sama. 20/15 = 24/diagonal vertikal hijau, maka diagonal vertikal hijau = 24 × 15/20 = 18 cm."
-            }
-        ];
-
-        // Local Storage Functions
-        function saveGameDataLocal(gameData) {
-            try {
-                const data = loadGameDataLocal();
-                const today = new Date().toISOString().split('T')[0];
-                
-                if (!data.players[gameData.playerName]) {
-                    data.players[gameData.playerName] = {
-                        name: gameData.playerName,
-                        highestScore: 0,
-                        totalGames: 0,
-                        totalScore: 0,
-                        lastPlayed: today
-                    };
-                }
-                
-                const player = data.players[gameData.playerName];
-                player.highestScore = Math.max(player.highestScore, gameData.score);
-                player.totalGames++;
-                player.totalScore += gameData.score;
-                player.lastPlayed = today;
-                
-                data.games.push({
-                    player: gameData.playerName,
-                    score: gameData.score,
-                    correctAnswers: gameData.correctAnswers,
-                    totalQuestions: questionPool.length,
-                    date: new Date().toISOString(),
-                    timeSpent: 900 - gameData.timeRemaining
-                });
-                
-                localStorage.setItem('ethnomath_game_data', JSON.stringify(data));
-                return true;
-            } catch (error) {
-                console.error('Error saving local data:', error);
-                return false;
-            }
-        }
-
-        function loadGameDataLocal() {
-            try {
-                const data = localStorage.getItem('ethnomath_game_data');
-                if (data) {
-                    return JSON.parse(data);
-                }
-            } catch (error) {
-                console.error('Error loading local data:', error);
-            }
-            return {
-                players: {},
-                games: []
-            };
-        }
-
-        function clearLocalData() {
-            try {
-                localStorage.removeItem('ethnomath_game_data');
-                return true;
-            } catch (error) {
-                console.error('Error clearing local data:', error);
-                return false;
-            }
-        }
-
-        // Navigation Functions
-        function showHome() {
-            audioManager.playSound('click');
-            audioManager.stopBackgroundMusic();
-            hideAllPages();
-            document.getElementById('homePage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'block';
-        }
-
-        function showMaterial() {
-            audioManager.playSound('click');
-            hideAllPages();
-            document.getElementById('materialPage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none';
-        }
-
-        function showGame() {
-            hideAllPages();
-            document.getElementById('gamePage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none';
-        }
-
-        function showResults() {
-            hideAllPages();
-            document.getElementById('resultsPage').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none';
-        }
-
-        function showHostDashboard() {
-            hideAllPages();
-            document.getElementById('hostDashboard').classList.remove('hidden');
-            document.getElementById('hostButton').style.display = 'none';
-            loadDashboardData();
-        }
-
-        function hideAllPages() {
-            const pages = ['homePage', 'materialPage', 'gamePage', 'resultsPage', 'hostDashboard'];
-            pages.forEach(pageId => {
-                document.getElementById(pageId).classList.add('hidden');
-            });
-        }
-
-        // Modal Functions
-        function showNameInput() {
-            audioManager.playSound('click');
-            document.getElementById('nameInputModal').classList.remove('hidden');
-            document.getElementById('playerName').focus();
-        }
-
-        function hideNameInput() {
-            document.getElementById('nameInputModal').classList.add('hidden');
-            document.getElementById('playerName').value = '';
-        }
-
-        function showHostLogin() {
-            document.getElementById('hostLoginModal').classList.remove('hidden');
-            document.getElementById('hostPassword').focus();
-        }
-
-        function hideHostLogin() {
-            document.getElementById('hostLoginModal').classList.add('hidden');
-            document.getElementById('hostPassword').value = '';
-        }
-
-        function verifyHostPassword() {
-            const password = document.getElementById('hostPassword').value;
-            if (password === 'admin123') {
-                hideHostLogin();
-                showHostDashboard();
-            } else {
-                alert('❌ Password salah! Coba lagi.');
-                document.getElementById('hostPassword').value = '';
-                document.getElementById('hostPassword').focus();
-            }
-        }
-
-        // Game Functions
-        function startGameWithName() {
-            const playerName = document.getElementById('playerName').value.trim();
-            if (playerName === '') {
-                alert('🤔 Nama tidak boleh kosong! Silakan masukkan nama kamu.');
-                return;
-            }
-            
-            gameState.currentPlayer = playerName;
-            hideNameInput();
-            audioManager.playSound('gameStart');
-            initializeGame();
-        }
-
-        function initializeGame() {
-            gameState.currentQuestion = 0;
-            gameState.score = 0;
-            gameState.correctAnswers = 0;
-            gameState.timeRemaining = 900;
-            gameState.isGameActive = true;
-            gameState.selectedAnswer = null;
-            gameState.answerSubmitted = false;
-            
-            showGame();
-            updateGameDisplay();
-            loadQuestion();
-            startTimer();
-            audioManager.playBackgroundMusic();
-        }
-
-        function updateGameDisplay() {
-            document.getElementById('playerNameDisplay').textContent = gameState.currentPlayer;
-            document.getElementById('currentScore').textContent = gameState.score;
-            document.getElementById('questionNumber').textContent = gameState.currentQuestion + 1;
-            
-            const minutes = Math.floor(gameState.timeRemaining / 60);
-            const seconds = gameState.timeRemaining % 60;
-            document.getElementById('timeRemaining').textContent = 
-                `${minutes}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function loadQuestion() {
-            if (gameState.currentQuestion >= questionPool.length) {
-                endGame();
-                return;
-            }
-            
-            const question = questionPool[gameState.currentQuestion];
-            
-            document.getElementById('questionTitle').textContent = `🤔 Soal ${gameState.currentQuestion + 1}`;
-            document.getElementById('questionText').textContent = question.question;
-            
-            const optionA = document.getElementById('optionA');
-            const optionB = document.getElementById('optionB');
-            
-            optionA.querySelector('span:nth-child(2)').textContent = question.optionA;
-            optionB.querySelector('span:nth-child(2)').textContent = question.optionB;
-            
-            // Reset button states
-            optionA.className = 'option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-bold text-base md:text-lg card-hover';
-            optionB.className = 'option-button w-full text-gray-800 p-4 md:p-6 rounded-2xl text-left font-bold text-base md:text-lg card-hover';
-            
-            optionA.disabled = false;
-            optionB.disabled = false;
-            
-            gameState.selectedAnswer = null;
-            gameState.answerSubmitted = false;
-            
-            document.getElementById('answerFeedback').style.opacity = '0';
-        }
-
-        function selectAnswer(answer) {
-            if (gameState.answerSubmitted) return;
-            
-            gameState.selectedAnswer = answer;
-            gameState.answerSubmitted = true;
-            
-            const question = questionPool[gameState.currentQuestion];
-            const isCorrect = answer === question.correct;
-            
-            const optionA = document.getElementById('optionA');
-            const optionB = document.getElementById('optionB');
-            
-            // Disable both buttons
-            optionA.disabled = true;
-            optionB.disabled = true;
-            
-            // Show correct/incorrect styling
-            if (answer === 'A') {
-                if (isCorrect) {
-                    optionA.className += ' correct-answer';
-                } else {
-                    optionA.className += ' wrong-answer';
-                }
-            } else {
-                if (isCorrect) {
-                    optionB.className += ' correct-answer';
-                } else {
-                    optionB.className += ' wrong-answer';
-                }
-            }
-            
-            // Show correct answer if wrong
-            if (!isCorrect) {
-                if (question.correct === 'A') {
-                    optionA.className += ' correct-answer';
-                } else {
-                    optionB.className += ' correct-answer';
-                }
-            }
-            
-            // Update score and show feedback
-            if (isCorrect) {
-                gameState.score += 20;
-                gameState.correctAnswers++;
-                audioManager.playSound('correct');
-                audioManager.playSound('celebration');
-                showBasketballAnimation(true);
-                showAnswerFeedback('🎉 BENAR! +20 Poin', 'text-green-400');
-            } else {
-                audioManager.playSound('wrong');
-                showBasketballAnimation(false);
-                showAnswerFeedback('❌ Salah! Jawaban yang benar: ' + (question.correct === 'A' ? question.optionA : question.optionB), 'text-red-400');
-            }
-            
-            updateGameDisplay();
-            
-            // Move to next question after delay
-            setTimeout(() => {
-                gameState.currentQuestion++;
-                loadQuestion();
-            }, 3000);
-        }
-
-        function showAnswerFeedback(message, className) {
-            const feedback = document.getElementById('answerFeedback');
-            feedback.textContent = message;
-            feedback.className = `text-2xl font-bold mb-4 transition-all duration-500 ${className}`;
-            feedback.style.opacity = '1';
-        }
-
-        function showBasketballAnimation(isCorrect) {
-            const player = document.getElementById('basketballPlayer');
-            const ball = document.getElementById('basketball');
-            const scoreDisplay = document.getElementById('scoreDisplay');
-            
-            if (isCorrect) {
-                // Celebration animation
-                player.classList.add('celebrate');
-                ball.classList.add('ball-bounce');
-                
-                // Show score popup
-                scoreDisplay.textContent = '+20';
-                scoreDisplay.style.opacity = '1';
-                scoreDisplay.classList.add('score-popup');
-                
-                // Create confetti
-                createConfetti();
-                
-                setTimeout(() => {
-                    player.classList.remove('celebrate');
-                    ball.classList.remove('ball-bounce');
-                    scoreDisplay.style.opacity = '0';
-                    scoreDisplay.classList.remove('score-popup');
-                }, 2000);
-            } else {
-                // Miss animation
-                player.classList.add('miss');
-                ball.classList.add('miss');
-                
-                setTimeout(() => {
-                    player.classList.remove('miss');
-                    ball.classList.remove('miss');
-                }, 1000);
-            }
-        }
-
-        function createConfetti() {
-            const container = document.getElementById('confettiContainer');
-            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd'];
-            
-            for (let i = 0; i < 20; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                container.appendChild(confetti);
-                
-                setTimeout(() => {
-                    confetti.remove();
-                }, 3000);
-            }
-        }
-
-        function startTimer() {
-            if (gameState.gameTimer) {
-                clearInterval(gameState.gameTimer);
-            }
-            
-            gameState.gameTimer = setInterval(() => {
-                gameState.timeRemaining--;
-                updateGameDisplay();
-                
-                // Play tick sound for last 10 seconds
-                if (gameState.timeRemaining <= 10 && gameState.timeRemaining > 0) {
-                    audioManager.playSound('tick');
-                }
-                
-                if (gameState.timeRemaining <= 0) {
-                    endGame();
-                }
-            }, 1000);
-        }
-
-        function endGame() {
-            gameState.isGameActive = false;
-            
-            if (gameState.gameTimer) {
-                clearInterval(gameState.gameTimer);
-                gameState.gameTimer = null;
-            }
-            
-            // Stop background music and play end sound
-            audioManager.stopBackgroundMusic();
-            audioManager.playSound('gameEnd');
-            
-            // Save game data
-            const gameData = {
-                playerName: gameState.currentPlayer,
-                score: gameState.score,
-                correctAnswers: gameState.correctAnswers,
-                timeRemaining: gameState.timeRemaining
-            };
-            
-            saveGameDataLocal(gameData);
-            
-            // Show results
-            showGameResults();
-        }
-
-        function showGameResults() {
-            const percentage = Math.round((gameState.correctAnswers / questionPool.length) * 100);
-            
-            document.getElementById('resultPlayerName').textContent = gameState.currentPlayer;
-            document.getElementById('finalScore').textContent = gameState.score;
-            document.getElementById('correctAnswers').textContent = gameState.correctAnswers;
-            
-            // Set result message based on performance
-            let title, message, icon;
-            
-            if (percentage >= 80) {
-                title = 'LUAR BIASA! 🌟';
-                message = 'Kamu sangat menguasai materi kesebangunan!';
-                icon = '🏆';
-            } else if (percentage >= 60) {
-                title = 'BAGUS SEKALI! 👏';
-                message = 'Pemahaman kamu tentang kesebangunan sudah baik!';
-                icon = '🥈';
-            } else if (percentage >= 40) {
-                title = 'TERUS BELAJAR! 💪';
-                message = 'Kamu sudah berusaha dengan baik, terus tingkatkan!';
-                icon = '🥉';
-            } else {
-                title = 'JANGAN MENYERAH! 🌈';
-                message = 'Setiap usaha adalah langkah menuju kesuksesan!';
-                icon = '⭐';
-            }
-            
-            document.getElementById('resultTitle').textContent = title;
-            document.getElementById('resultMessage').textContent = message;
-            document.getElementById('resultIcon').textContent = icon;
-            
-            showResults();
-        }
-
-        function restartGame() {
-            showNameInput();
-        }
-
-        // Dashboard Functions
-        function loadDashboardData() {
-            const data = loadGameDataLocal();
-            
-            // Update statistics
-            const players = Object.values(data.players);
-            const totalPlayers = players.length;
-            const totalGames = data.games.length;
-            const averageScore = totalGames > 0 ? 
-                Math.round(data.games.reduce((sum, game) => sum + game.score, 0) / totalGames) : 0;
-            const highestScore = players.length > 0 ? 
-                Math.max(...players.map(p => p.highestScore)) : 0;
-            
-            document.getElementById('totalPlayers').textContent = totalPlayers;
-            document.getElementById('totalGames').textContent = totalGames;
-            document.getElementById('averageScore').textContent = averageScore;
-            document.getElementById('highestScore').textContent = highestScore;
-            
-            // Update leaderboard
-            updateLeaderboard(players);
-        }
-
-        function updateLeaderboard(players) {
-            const tbody = document.getElementById('leaderboardTable');
-            tbody.innerHTML = '';
-            
-            const sortedPlayers = players.sort((a, b) => b.highestScore - a.highestScore);
-            
-            if (sortedPlayers.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-8 text-gray-400">Belum ada data pemain</td></tr>';
-                return;
-            }
-            
-            sortedPlayers.forEach((player, index) => {
-                const row = document.createElement('tr');
-                row.className = 'border-b border-white/10 hover:bg-white/5';
-                
-                const averageScore = player.totalGames > 0 ? 
-                    Math.round(player.totalScore / player.totalGames) : 0;
-                
-                const rankIcon = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}`;
-                
-                row.innerHTML = `
-                    <td class="py-3 px-4 font-bold">${rankIcon}</td>
-                    <td class="py-3 px-4">${player.name}</td>
-                    <td class="py-3 px-4 text-yellow-400 font-bold">${player.highestScore}</td>
-                    <td class="py-3 px-4">${player.totalGames}</td>
-                    <td class="py-3 px-4">${averageScore}</td>
-                    <td class="py-3 px-4 text-sm">${player.lastPlayed}</td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-        }
-
-        // Audio Control Functions
-        function toggleAudio() {
-            const isMuted = audioManager.toggleMute();
-            const audioIcon = document.getElementById('audioIcon');
-            const audioTooltip = document.getElementById('audioTooltip');
-            
-            if (isMuted) {
-                // Muted icon
-                audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>';
-                audioTooltip.textContent = 'Nyalakan Suara';
-                document.getElementById('audioButton').className = 'fixed bottom-4 right-4 z-50 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group';
-            } else {
-                // Unmuted icon
-                audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 14.142M9 9a3 3 0 000 6h4v.01M9 15H5a2 2 0 01-2-2V9a2 2 0 012-2h4.01"></path>';
-                audioTooltip.textContent = 'Matikan Suara';
-                document.getElementById('audioButton').className = 'fixed bottom-4 right-4 z-50 bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 group';
-            }
-            
-            audioManager.playSound('click');
-        }
-
-        // Event Listeners
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize the app
-            showHome();
-            
-            // Add keyboard event listeners
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    const activeModal = document.querySelector('.fixed:not(.hidden)');
-                    if (activeModal) {
-                        if (activeModal.id === 'nameInputModal') {
-                            startGameWithName();
-                        } else if (activeModal.id === 'hostLoginModal') {
-                            verifyHostPassword();
-                        }
-                    }
-                }
-                
-                if (e.key === 'Escape') {
-                    hideNameInput();
-                    hideHostLogin();
-                }
-                
-                // Game controls
-                if (gameState.isGameActive && !gameState.answerSubmitted) {
-                    if (e.key === 'a' || e.key === 'A') {
-                        selectAnswer('A');
-                    } else if (e.key === 'b' || e.key === 'B') {
-                        selectAnswer('B');
-                    }
-                }
-            });
-            
-            // Add click outside to close modals
-            document.getElementById('nameInputModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    hideNameInput();
-                }
-            });
-            
-            document.getElementById('hostLoginModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    hideHostLogin();
-                }
-            });
-        });
-
-        // Initialize app when page loads
-        window.addEventListener('load', function() {
-            console.log('🎮 Ethnomath Quiz loaded successfully!');
-            showHome();
-        });
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'974ee67b244a4d5d',t:'MTc1NjE2NDg2OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'979c2b4543b691b3',t:'MTc1Njk3NTA4OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
