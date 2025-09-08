@@ -972,18 +972,440 @@
 
     <script>
         // ====== AUDIO CONTROL ======
+        let audioEnabled = true;
+
         function toggleAudio() {
             const audioIcon = document.getElementById("audioIcon");
             const tooltip = document.getElementById("audioTooltip");
 
             if (tooltip.innerText === "Matikan Suara") {
+                audioEnabled = false;
                 tooltip.innerText = "Nyalakan Suara";
                 audioIcon.setAttribute("stroke", "red");
             } else {
+                audioEnabled = true;
                 tooltip.innerText = "Matikan Suara";
                 audioIcon.setAttribute("stroke", "currentColor");
             }
         }
+
+        // ====== SOUND EFFECTS ======
+        let audioContext = null;
+
+        function initAudioContext() {
+            if (!audioContext) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    
+                    // Resume audio context if it's suspended (required by some browsers)
+                    if (audioContext.state === 'suspended') {
+                        audioContext.resume();
+                    }
+                } catch (error) {
+                    console.log('Audio not supported:', error);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function playSound(type) {
+            if (!audioEnabled) return;
+            
+            // Initialize audio context on first use
+            if (!initAudioContext()) return;
+            
+            try {
+                if (type === 'correct') {
+                    // Festive success sound - magical ascending melody
+                    const melody = [
+                        {freq: 523.25, duration: 0.15}, // C5
+                        {freq: 659.25, duration: 0.15}, // E5
+                        {freq: 783.99, duration: 0.15}, // G5
+                        {freq: 1046.50, duration: 0.25}, // C6
+                        {freq: 1318.51, duration: 0.3}   // E6
+                    ];
+                    
+                    melody.forEach((note, index) => {
+                        setTimeout(() => {
+                            try {
+                                // Main melody
+                                const oscillator = audioContext.createOscillator();
+                                const gainNode = audioContext.createGain();
+                                
+                                oscillator.connect(gainNode);
+                                gainNode.connect(audioContext.destination);
+                                
+                                oscillator.frequency.setValueAtTime(note.freq, audioContext.currentTime);
+                                oscillator.type = 'triangle';
+                                
+                                gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+                                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + note.duration);
+                                
+                                oscillator.start(audioContext.currentTime);
+                                oscillator.stop(audioContext.currentTime + note.duration);
+                                
+                                // Add harmony for the last note
+                                if (index === melody.length - 1) {
+                                    setTimeout(() => {
+                                        const harmonyOsc = audioContext.createOscillator();
+                                        const harmonyGain = audioContext.createGain();
+                                        
+                                        harmonyOsc.connect(harmonyGain);
+                                        harmonyGain.connect(audioContext.destination);
+                                        
+                                        harmonyOsc.frequency.setValueAtTime(note.freq * 1.5, audioContext.currentTime);
+                                        harmonyOsc.type = 'sine';
+                                        
+                                        harmonyGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                                        harmonyGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                                        
+                                        harmonyOsc.start(audioContext.currentTime);
+                                        harmonyOsc.stop(audioContext.currentTime + 0.4);
+                                    }, 50);
+                                }
+                            } catch (e) {
+                                console.log('Error playing correct sound:', e);
+                            }
+                        }, index * 120);
+                    });
+                    
+                    // Add sparkle effect
+                    setTimeout(() => {
+                        for (let i = 0; i < 5; i++) {
+                            setTimeout(() => {
+                                try {
+                                    const sparkle = audioContext.createOscillator();
+                                    const sparkleGain = audioContext.createGain();
+                                    
+                                    sparkle.connect(sparkleGain);
+                                    sparkleGain.connect(audioContext.destination);
+                                    
+                                    sparkle.frequency.setValueAtTime(2000 + Math.random() * 1000, audioContext.currentTime);
+                                    sparkle.type = 'sine';
+                                    
+                                    sparkleGain.gain.setValueAtTime(0.1, audioContext.currentTime);
+                                    sparkleGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                                    
+                                    sparkle.start(audioContext.currentTime);
+                                    sparkle.stop(audioContext.currentTime + 0.1);
+                                } catch (e) {
+                                    console.log('Error playing sparkle:', e);
+                                }
+                            }, i * 50);
+                        }
+                    }, 600);
+                    
+                } else if (type === 'wrong') {
+                    // Dramatic wrong answer sound
+                    try {
+                        // Main descending buzz
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(400, audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(150, audioContext.currentTime + 0.8);
+                        oscillator.type = 'sawtooth';
+                        
+                        gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.8);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 0.8);
+                        
+                        // Add dramatic low rumble
+                        setTimeout(() => {
+                            const rumble = audioContext.createOscillator();
+                            const rumbleGain = audioContext.createGain();
+                            
+                            rumble.connect(rumbleGain);
+                            rumbleGain.connect(audioContext.destination);
+                            
+                            rumble.frequency.setValueAtTime(80, audioContext.currentTime);
+                            rumble.type = 'triangle';
+                            
+                            rumbleGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                            rumbleGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                            
+                            rumble.start(audioContext.currentTime);
+                            rumble.stop(audioContext.currentTime + 0.3);
+                        }, 200);
+                        
+                    } catch (e) {
+                        console.log('Error playing wrong sound:', e);
+                    }
+                    
+                } else if (type === 'click') {
+                    // Enhanced button click with echo
+                    try {
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
+                        oscillator.frequency.exponentialRampToValueAtTime(800, audioContext.currentTime + 0.1);
+                        oscillator.type = 'square';
+                        
+                        gainNode.gain.setValueAtTime(0.15, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + 0.1);
+                        
+                        // Add soft echo
+                        setTimeout(() => {
+                            const echo = audioContext.createOscillator();
+                            const echoGain = audioContext.createGain();
+                            
+                            echo.connect(echoGain);
+                            echoGain.connect(audioContext.destination);
+                            
+                            echo.frequency.setValueAtTime(600, audioContext.currentTime);
+                            echo.type = 'sine';
+                            
+                            echoGain.gain.setValueAtTime(0.05, audioContext.currentTime);
+                            echoGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
+                            
+                            echo.start(audioContext.currentTime);
+                            echo.stop(audioContext.currentTime + 0.08);
+                        }, 80);
+                        
+                    } catch (e) {
+                        console.log('Error playing click sound:', e);
+                    }
+                    
+                } else if (type === 'complete') {
+                    // Grand finale fanfare with multiple instruments
+                    const fanfare = [
+                        {freq: 523.25, duration: 0.3}, // C5
+                        {freq: 659.25, duration: 0.3}, // E5
+                        {freq: 783.99, duration: 0.3}, // G5
+                        {freq: 1046.50, duration: 0.4}, // C6
+                        {freq: 1318.51, duration: 0.5}, // E6
+                        {freq: 1567.98, duration: 0.6}  // G6
+                    ];
+                    
+                    fanfare.forEach((note, index) => {
+                        setTimeout(() => {
+                            try {
+                                // Main trumpet-like sound
+                                const oscillator = audioContext.createOscillator();
+                                const gainNode = audioContext.createGain();
+                                
+                                oscillator.connect(gainNode);
+                                gainNode.connect(audioContext.destination);
+                                
+                                oscillator.frequency.setValueAtTime(note.freq, audioContext.currentTime);
+                                oscillator.type = 'triangle';
+                                
+                                gainNode.gain.setValueAtTime(0.4, audioContext.currentTime);
+                                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + note.duration);
+                                
+                                oscillator.start(audioContext.currentTime);
+                                oscillator.stop(audioContext.currentTime + note.duration);
+                                
+                                // Add harmony
+                                const harmony = audioContext.createOscillator();
+                                const harmonyGain = audioContext.createGain();
+                                
+                                harmony.connect(harmonyGain);
+                                harmonyGain.connect(audioContext.destination);
+                                
+                                harmony.frequency.setValueAtTime(note.freq * 0.75, audioContext.currentTime);
+                                harmony.type = 'sine';
+                                
+                                harmonyGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+                                harmonyGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + note.duration);
+                                
+                                harmony.start(audioContext.currentTime);
+                                harmony.stop(audioContext.currentTime + note.duration);
+                                
+                            } catch (e) {
+                                console.log('Error playing complete sound:', e);
+                            }
+                        }, index * 200);
+                    });
+                    
+                    // Add celebration bells
+                    setTimeout(() => {
+                        for (let i = 0; i < 8; i++) {
+                            setTimeout(() => {
+                                try {
+                                    const bell = audioContext.createOscillator();
+                                    const bellGain = audioContext.createGain();
+                                    
+                                    bell.connect(bellGain);
+                                    bellGain.connect(audioContext.destination);
+                                    
+                                    const bellFreqs = [1046.50, 1318.51, 1567.98, 2093.00];
+                                    bell.frequency.setValueAtTime(bellFreqs[i % 4], audioContext.currentTime);
+                                    bell.type = 'sine';
+                                    
+                                    bellGain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                                    bellGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.4);
+                                    
+                                    bell.start(audioContext.currentTime);
+                                    bell.stop(audioContext.currentTime + 0.4);
+                                } catch (e) {
+                                    console.log('Error playing bell:', e);
+                                }
+                            }, i * 100);
+                        }
+                    }, 1000);
+                    
+                } else if (type === 'start') {
+                    // Quiz start sound - uplifting melody
+                    const startMelody = [
+                        {freq: 392.00, duration: 0.2}, // G4
+                        {freq: 523.25, duration: 0.2}, // C5
+                        {freq: 659.25, duration: 0.3}, // E5
+                        {freq: 783.99, duration: 0.4}  // G5
+                    ];
+                    
+                    startMelody.forEach((note, index) => {
+                        setTimeout(() => {
+                            try {
+                                const oscillator = audioContext.createOscillator();
+                                const gainNode = audioContext.createGain();
+                                
+                                oscillator.connect(gainNode);
+                                gainNode.connect(audioContext.destination);
+                                
+                                oscillator.frequency.setValueAtTime(note.freq, audioContext.currentTime);
+                                oscillator.type = 'triangle';
+                                
+                                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + note.duration);
+                                
+                                oscillator.start(audioContext.currentTime);
+                                oscillator.stop(audioContext.currentTime + note.duration);
+                            } catch (e) {
+                                console.log('Error playing start sound:', e);
+                            }
+                        }, index * 150);
+                    });
+                    
+                } else if (type === 'timeWarning') {
+                    // Time warning sound - urgent but not alarming
+                    try {
+                        for (let i = 0; i < 3; i++) {
+                            setTimeout(() => {
+                                const oscillator = audioContext.createOscillator();
+                                const gainNode = audioContext.createGain();
+                                
+                                oscillator.connect(gainNode);
+                                gainNode.connect(audioContext.destination);
+                                
+                                oscillator.frequency.setValueAtTime(880, audioContext.currentTime);
+                                oscillator.type = 'sine';
+                                
+                                gainNode.gain.setValueAtTime(0.2, audioContext.currentTime);
+                                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+                                
+                                oscillator.start(audioContext.currentTime);
+                                oscillator.stop(audioContext.currentTime + 0.15);
+                            }, i * 200);
+                        }
+                    } catch (e) {
+                        console.log('Error playing time warning:', e);
+                    }
+                    
+                } else if (type === 'perfectScore') {
+                    // Perfect score celebration - extra special
+                    const celebration = [
+                        {freq: 523.25, duration: 0.2}, // C5
+                        {freq: 659.25, duration: 0.2}, // E5
+                        {freq: 783.99, duration: 0.2}, // G5
+                        {freq: 1046.50, duration: 0.3}, // C6
+                        {freq: 1318.51, duration: 0.3}, // E6
+                        {freq: 1567.98, duration: 0.4}, // G6
+                        {freq: 2093.00, duration: 0.5}  // C7
+                    ];
+                    
+                    celebration.forEach((note, index) => {
+                        setTimeout(() => {
+                            try {
+                                // Main melody
+                                const oscillator = audioContext.createOscillator();
+                                const gainNode = audioContext.createGain();
+                                
+                                oscillator.connect(gainNode);
+                                gainNode.connect(audioContext.destination);
+                                
+                                oscillator.frequency.setValueAtTime(note.freq, audioContext.currentTime);
+                                oscillator.type = 'triangle';
+                                
+                                gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
+                                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + note.duration);
+                                
+                                oscillator.start(audioContext.currentTime);
+                                oscillator.stop(audioContext.currentTime + note.duration);
+                                
+                                // Add multiple harmonies for richness
+                                [0.5, 0.75, 1.25].forEach((ratio, harmonyIndex) => {
+                                    setTimeout(() => {
+                                        const harmony = audioContext.createOscillator();
+                                        const harmonyGain = audioContext.createGain();
+                                        
+                                        harmony.connect(harmonyGain);
+                                        harmonyGain.connect(audioContext.destination);
+                                        
+                                        harmony.frequency.setValueAtTime(note.freq * ratio, audioContext.currentTime);
+                                        harmony.type = 'sine';
+                                        
+                                        harmonyGain.gain.setValueAtTime(0.15, audioContext.currentTime);
+                                        harmonyGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + note.duration);
+                                        
+                                        harmony.start(audioContext.currentTime);
+                                        harmony.stop(audioContext.currentTime + note.duration);
+                                    }, harmonyIndex * 20);
+                                });
+                                
+                            } catch (e) {
+                                console.log('Error playing perfect score sound:', e);
+                            }
+                        }, index * 120);
+                    });
+                    
+                    // Add magical sparkles throughout
+                    for (let i = 0; i < 15; i++) {
+                        setTimeout(() => {
+                            try {
+                                const sparkle = audioContext.createOscillator();
+                                const sparkleGain = audioContext.createGain();
+                                
+                                sparkle.connect(sparkleGain);
+                                sparkleGain.connect(audioContext.destination);
+                                
+                                sparkle.frequency.setValueAtTime(2000 + Math.random() * 2000, audioContext.currentTime);
+                                sparkle.type = 'sine';
+                                
+                                sparkleGain.gain.setValueAtTime(0.08, audioContext.currentTime);
+                                sparkleGain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                                
+                                sparkle.start(audioContext.currentTime);
+                                sparkle.stop(audioContext.currentTime + 0.2);
+                            } catch (e) {
+                                console.log('Error playing sparkle:', e);
+                            }
+                        }, i * 100 + Math.random() * 200);
+                    }
+                }
+            } catch (error) {
+                console.log('Error in playSound:', error);
+            }
+        }
+
+        // Initialize audio context on user interaction
+        document.addEventListener('click', function initAudioOnClick() {
+            initAudioContext();
+            document.removeEventListener('click', initAudioOnClick);
+        }, { once: true });
 
         // ====== HOST LOGIN ======
         function showHostLogin() {
@@ -1006,7 +1428,7 @@
 
         // ====== HALAMAN KONTROL ======
         function showPage(pageId) {
-            const pages = ["homePage", "materialPage", "nameInputPage", "hostPage"];
+            const pages = ["homePage", "materialPage", "nameInputPage", "hostPage", "quizPage"];
             pages.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
@@ -1098,6 +1520,515 @@
 
         function hideSlide1Popup() {
             document.getElementById("slide1PopupModal").classList.add("hidden");
+        }
+
+        // ====== QUIZ SYSTEM ======
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let playerName = "";
+        let userAnswers = [];
+        let quizTimer = null;
+        let timeRemaining = 25 * 60; // 25 minutes in seconds
+        let quizStartTime = null;
+
+        const quizData = [
+            // Pertanyaan 1
+            {
+                id: 1,
+                title: "Pertanyaan 1",
+                image: "https://i.imgur.com/6FTTPjc.jpg",
+                context: "Perhatikan gambar kain corak insang berikut! Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Apakah segitiga merah dan segitiga hitam sebangun?",
+                options: ["Ya", "Tidak"],
+                correct: 0
+            },
+            {
+                id: 2,
+                title: "Pertanyaan 1 (lanjutan)",
+                image: "https://i.imgur.com/6FTTPjc.jpg",
+                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Tentukan perbandingan panjang sisi segitiga merah dan segitiga hitam.",
+                options: ["⅓", "½"],
+                correct: 1
+            },
+            {
+                id: 3,
+                title: "Pertanyaan 1 (lanjutan)",
+                image: "https://i.imgur.com/6FTTPjc.jpg",
+                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Berapa tinggi segitiga hitam?",
+                options: ["6", "4"],
+                correct: 1
+            },
+            {
+                id: 4,
+                title: "Pertanyaan 1 (lanjutan)",
+                image: "https://i.imgur.com/6FTTPjc.jpg",
+                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Jika luas segitiga merah adalah Lm, dan luas segitiga hitam adalah Lh, tentukan perbandingan Lh dan Lm!",
+                options: ["¼", "⅑"],
+                correct: 0
+            },
+            // Pertanyaan 2
+            {
+                id: 5,
+                title: "Pertanyaan 2",
+                image: "https://i.imgur.com/60w7w1L.jpg",
+                context: "Perhatikan gambar berikut! Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 8 m dan tinggi 4,5 m. Di bawah atap utama ada segitiga hiasan dengan alas 3,2 m.",
+                question: "Apa yang ditanyakan dalam soal?",
+                options: ["Luas segitiga besar", "Tinggi segitiga hiasan"],
+                correct: 1
+            },
+            {
+                id: 6,
+                title: "Pertanyaan 2 (lanjutan)",
+                image: "https://i.imgur.com/60w7w1L.jpg",
+                context: "Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 8 m dan tinggi 4,5 m. Di bawah atap utama ada segitiga hiasan dengan alas 3,2 m.",
+                question: "Segitiga hiasan dan segitiga besar adalah …",
+                options: ["Sebangun", "Tidak sebangun"],
+                correct: 0
+            },
+            {
+                id: 7,
+                title: "Pertanyaan 2 (lanjutan)",
+                image: "https://i.imgur.com/2GcWm8J.jpg",
+                context: "Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 8 m dan tinggi 4,5 m. Di bawah atap utama ada segitiga hiasan dengan alas 3,2 m.",
+                question: "Perbandingan alas kedua segitiga adalah:",
+                options: ["0,4", "0,6"],
+                correct: 0
+            },
+            {
+                id: 8,
+                title: "Pertanyaan 2 (lanjutan)",
+                image: "https://i.imgur.com/60w7w1L.jpg",
+                context: "Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 8 m dan tinggi 4,5 m. Di bawah atap utama ada segitiga hiasan dengan alas 3,2 m.",
+                question: "Tinggi segitiga hiasan adalah …",
+                options: ["1,8 m", "2,5 m"],
+                correct: 0
+            },
+            // Pertanyaan 3
+            {
+                id: 9,
+                title: "Pertanyaan 3",
+                image: "https://i.imgur.com/KguukHd.jpg",
+                context: "Perhatikan gambar berikut. Pintu rumah adat Melayu di atas terdiri dari pintu besar dan pola panel persegi panjang di dalamnya. Panel-panel tersebut sebangun dengan bentuk pintu secara keseluruhan. Pintu rumah adat Melayu memiliki tinggi 210 cm dan lebar 90 cm. Panel di dalam pintu memiliki lebar 30 cm dan sebangun dengan pintu utama.",
+                question: "Apa yang ditanyakan pada soal ini?",
+                options: ["tinggi panel", "lebar pintu utama"],
+                correct: 0
+            },
+            {
+                id: 10,
+                title: "Pertanyaan 3 (lanjutan)",
+                image: "https://i.imgur.com/KguukHd.jpg",
+                context: "Pintu rumah adat Melayu memiliki tinggi 210 cm dan lebar 90 cm. Panel di dalam pintu memiliki lebar 30 cm dan sebangun dengan pintu utama.",
+                question: "Rumus kesebangunan yang tepat digunakan adalah …",
+                options: [
+                    {text: "Rumus A", image: "https://i.imgur.com/FpFnPXB.jpg"},
+                    {text: "Rumus B", image: "https://i.imgur.com/8RIOUZ4.jpg"}
+                ],
+                correct: 0
+            },
+            {
+                id: 11,
+                title: "Pertanyaan 3 (lanjutan)",
+                image: "https://i.imgur.com/KguukHd.jpg",
+                context: "Pintu rumah adat Melayu memiliki tinggi 210 cm dan lebar 90 cm. Panel di dalam pintu memiliki lebar 30 cm dan sebangun dengan pintu utama.",
+                question: "Berapa tinggi panel?",
+                options: ["70", "90"],
+                correct: 0
+            },
+            {
+                id: 12,
+                title: "Pertanyaan 3 (lanjutan)",
+                image: "https://i.imgur.com/HpeORSM.jpg",
+                context: "Pintu rumah adat Melayu memiliki tinggi 210 cm dan lebar 90 cm. Panel di dalam pintu memiliki lebar 30 cm dan sebangun dengan pintu utama.",
+                question: "Apakah benar perbandingan pada gambar?",
+                options: ["Ya, sama → hasil benar", "Tidak, berbeda → hasil salah"],
+                correct: 0
+            }
+        ];
+
+        function startQuiz() {
+            const nameInput = document.getElementById("playerName").value.trim();
+            if (!nameInput) {
+                alert("Silakan masukkan nama Anda terlebih dahulu!");
+                return;
+            }
+            
+            playerName = nameInput;
+            document.getElementById("displayPlayerName").textContent = playerName;
+            document.getElementById("finalPlayerName").textContent = playerName;
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            timeRemaining = 25 * 60; // Reset timer to 25 minutes
+            
+            // Play quiz start sound
+            playSound('start');
+            
+            showPage("quizPage");
+            startTimer();
+            displayQuestion();
+        }
+
+        function startTimer() {
+            quizStartTime = Date.now();
+            updateTimerDisplay();
+            
+            quizTimer = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(quizTimer);
+                    timeUp();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            const timerElement = document.getElementById("timerDisplay");
+            timerElement.textContent = display;
+            
+            // Change color based on remaining time
+            if (timeRemaining <= 300) { // Last 5 minutes
+                timerElement.className = "text-red-600 animate-pulse";
+                // Play warning sound at 5 minutes, 2 minutes, and 1 minute
+                if (timeRemaining === 300 || timeRemaining === 120 || timeRemaining === 60) {
+                    playSound('timeWarning');
+                }
+            } else if (timeRemaining <= 600) { // Last 10 minutes
+                timerElement.className = "text-yellow-600";
+                // Play warning sound at 10 minutes
+                if (timeRemaining === 600) {
+                    playSound('timeWarning');
+                }
+            } else {
+                timerElement.className = "text-orange-600";
+            }
+        }
+
+        function timeUp() {
+            alert("⏰ Waktu habis! Quiz akan berakhir sekarang.");
+            showQuizResults();
+        }
+
+        function stopTimer() {
+            if (quizTimer) {
+                clearInterval(quizTimer);
+                quizTimer = null;
+            }
+        }
+
+        function displayQuestion() {
+            const question = quizData[currentQuestionIndex];
+            const container = document.getElementById("questionContainer");
+            
+            // Update progress
+            const progress = ((currentQuestionIndex + 1) / quizData.length) * 100;
+            document.getElementById("progressBar").style.width = progress + "%";
+            document.getElementById("currentQuestion").textContent = currentQuestionIndex + 1;
+            document.getElementById("totalQuestions").textContent = quizData.length;
+            
+            // Check if this question has already been answered
+            const hasAnswered = userAnswers[currentQuestionIndex] !== undefined;
+            const userAnswer = userAnswers[currentQuestionIndex];
+            
+            // Create question HTML
+            let optionsHTML = "";
+            
+            if (typeof question.options[0] === 'object') {
+                // Options with images
+                question.options.forEach((option, index) => {
+                    const isSelected = hasAnswered && userAnswer === index;
+                    const isCorrect = index === question.correct;
+                    const isWrong = hasAnswered && userAnswer === index && index !== question.correct;
+                    
+                    let buttonClass = "option-button w-full p-4 rounded-xl text-left transition-all duration-300";
+                    let clickHandler = hasAnswered ? "" : `onclick="playSound('click'); selectAnswer(${index})"`;
+                    
+                    if (hasAnswered) {
+                        buttonClass += " cursor-not-allowed";
+                        if (isSelected && isCorrect) {
+                            buttonClass += " correct-answer";
+                        } else if (isSelected && isWrong) {
+                            buttonClass += " wrong-answer";
+                        } else if (isCorrect && userAnswer !== index) {
+                            buttonClass += " correct-answer";
+                        }
+                    } else {
+                        buttonClass += " transform hover:scale-102";
+                    }
+                    
+                    optionsHTML += `
+                        <div class="option-container mb-4">
+                            <button ${clickHandler} class="${buttonClass}" data-option="${index}" ${hasAnswered ? 'disabled' : ''}>
+                                <div class="flex flex-col items-center">
+                                    <span class="font-bold mb-2">${option.text}</span>
+                                    <img src="${option.image}" alt="${option.text}" class="max-w-xs rounded-lg shadow-md" style="max-height: 150px;" onerror="this.style.display='none';">
+                                </div>
+                            </button>
+                        </div>
+                    `;
+                });
+            } else {
+                // Text options
+                question.options.forEach((option, index) => {
+                    const isSelected = hasAnswered && userAnswer === index;
+                    const isCorrect = index === question.correct;
+                    const isWrong = hasAnswered && userAnswer === index && index !== question.correct;
+                    
+                    let buttonClass = "option-button w-full p-4 rounded-xl text-left font-bold text-lg transition-all duration-300";
+                    let clickHandler = hasAnswered ? "" : `onclick="playSound('click'); selectAnswer(${index})"`;
+                    
+                    if (hasAnswered) {
+                        buttonClass += " cursor-not-allowed";
+                        if (isSelected && isCorrect) {
+                            buttonClass += " correct-answer";
+                        } else if (isSelected && isWrong) {
+                            buttonClass += " wrong-answer";
+                        } else if (isCorrect && userAnswer !== index) {
+                            buttonClass += " correct-answer";
+                        }
+                    } else {
+                        buttonClass += " transform hover:scale-102";
+                    }
+                    
+                    optionsHTML += `
+                        <div class="option-container mb-4">
+                            <button ${clickHandler} class="${buttonClass}" data-option="${index}" ${hasAnswered ? 'disabled' : ''}>
+                                ${option}
+                            </button>
+                        </div>
+                    `;
+                });
+            }
+            
+            // Add status message if question has been answered
+            let statusMessage = "";
+            if (hasAnswered) {
+                const isCorrect = userAnswer === question.correct;
+                statusMessage = `
+                    <div class="bg-gradient-to-r ${isCorrect ? 'from-green-100 to-green-200' : 'from-red-100 to-red-200'} p-4 rounded-xl mb-6 text-center">
+                        <div class="text-2xl mb-2">${isCorrect ? '✅' : '❌'}</div>
+                        <p class="text-lg font-bold text-gray-800">
+                            ${isCorrect ? 'Jawaban Benar!' : 'Jawaban Salah!'}
+                        </p>
+                        <p class="text-sm text-gray-600 mt-2">
+                            Jawaban sudah dikunci dan tidak dapat diubah
+                        </p>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = `
+                <div class="text-center mb-6">
+                    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">${question.title}</h3>
+                </div>
+                
+                ${question.image ? `
+                    <div class="text-center mb-6">
+                        <img src="${question.image}" alt="Soal ${question.id}" class="w-full max-w-md mx-auto rounded-xl shadow-lg object-contain" style="max-height: 300px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div class="hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white p-8 rounded-xl">
+                            <div class="text-6xl mb-4">📐</div>
+                            <p class="text-xl font-semibold">Gambar Soal ${question.id}</p>
+                        </div>
+                    </div>
+                ` : ''}
+                
+                <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl mb-6">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                        ${question.context}
+                    </p>
+                    <h4 class="text-xl font-bold text-gray-800 mb-4">❓ ${question.question}</h4>
+                </div>
+                
+                ${statusMessage}
+                
+                <div class="space-y-4">
+                    ${optionsHTML}
+                </div>
+            `;
+            
+            // Update navigation buttons
+            updateNavigationButtons();
+        }
+
+        function selectAnswer(optionIndex) {
+            // Check if this question has already been answered
+            if (userAnswers[currentQuestionIndex] !== undefined) {
+                return; // Prevent changing answer
+            }
+            
+            // Remove previous selections
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.classList.remove('correct-answer', 'wrong-answer');
+                btn.style.background = '';
+                btn.style.borderColor = '';
+                btn.style.boxShadow = '';
+            });
+            
+            // Store user answer
+            userAnswers[currentQuestionIndex] = optionIndex;
+            
+            const question = quizData[currentQuestionIndex];
+            const selectedButton = document.querySelector(`[data-option="${optionIndex}"]`);
+            
+            if (optionIndex === question.correct) {
+                selectedButton.classList.add('correct-answer');
+                score++;
+                document.getElementById("currentScore").textContent = score;
+                
+                // Play correct answer sound
+                playSound('correct');
+                
+                // Show celebration animation
+                createConfetti();
+            } else {
+                selectedButton.classList.add('wrong-answer');
+                
+                // Play wrong answer sound
+                playSound('wrong');
+                
+                // Also highlight the correct answer
+                const correctButton = document.querySelector(`[data-option="${question.correct}"]`);
+                if (correctButton) {
+                    setTimeout(() => {
+                        correctButton.classList.add('correct-answer');
+                    }, 500);
+                }
+            }
+            
+            // Disable all option buttons to prevent further clicks
+            document.querySelectorAll('.option-button').forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('cursor-not-allowed');
+                btn.onclick = null;
+            });
+            
+            // Enable next button
+            document.getElementById("nextQuestionBtn").disabled = false;
+            
+            // Auto advance after 2 seconds
+            setTimeout(() => {
+                if (currentQuestionIndex < quizData.length - 1) {
+                    nextQuestion();
+                } else {
+                    showQuizResults();
+                }
+            }, 2000);
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < quizData.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showQuizResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById("prevQuestionBtn");
+            const nextBtn = document.getElementById("nextQuestionBtn");
+            
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.disabled = userAnswers[currentQuestionIndex] === undefined;
+            
+            if (currentQuestionIndex === 0) {
+                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function showQuizResults() {
+            stopTimer(); // Stop the timer when quiz ends
+            
+            const percentage = Math.round((score / quizData.length) * 100);
+            let emoji = "🎉";
+            let message = "Kerja bagus!";
+            
+            // Play appropriate completion sound based on score
+            if (score === quizData.length) {
+                // Perfect score - extra special celebration
+                playSound('perfectScore');
+                emoji = "🏆👑";
+                message = "SEMPURNA! Kamu adalah master kesebangunan! 🌟";
+            } else if (percentage >= 90) {
+                playSound('complete');
+                emoji = "🏆";
+                message = "Luar biasa! Kamu sangat memahami kesebangunan!";
+            } else if (percentage >= 70) {
+                playSound('complete');
+                emoji = "🎉";
+                message = "Bagus sekali! Kamu sudah paham konsep kesebangunan!";
+            } else if (percentage >= 50) {
+                playSound('complete');
+                emoji = "👍";
+                message = "Cukup baik! Terus belajar ya!";
+            } else {
+                playSound('complete');
+                emoji = "💪";
+                message = "Jangan menyerah! Coba lagi dan pelajari materinya!";
+            }
+            
+            // Calculate time taken
+            const totalTime = 25 * 60; // 25 minutes in seconds
+            const timeTaken = totalTime - timeRemaining;
+            const minutesTaken = Math.floor(timeTaken / 60);
+            const secondsTaken = timeTaken % 60;
+            const timeDisplay = `${minutesTaken}:${secondsTaken.toString().padStart(2, '0')}`;
+            
+            document.getElementById("resultEmoji").textContent = emoji;
+            document.getElementById("finalScore").textContent = score;
+            document.getElementById("scoreMessage").textContent = message;
+            document.getElementById("timeTaken").textContent = timeDisplay;
+            document.getElementById("quizResultsModal").classList.remove("hidden");
+        }
+
+        function restartQuiz() {
+            document.getElementById("quizResultsModal").classList.add("hidden");
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            timeRemaining = 25 * 60; // Reset timer to 25 minutes
+            document.getElementById("currentScore").textContent = "0";
+            startTimer();
+            displayQuestion();
+        }
+
+        function closeQuizResults() {
+            document.getElementById("quizResultsModal").classList.add("hidden");
+            stopTimer(); // Make sure timer is stopped
+            showPage("homePage");
+        }
+
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.backgroundColor = ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7'][Math.floor(Math.random() * 6)];
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => {
+                    confetti.remove();
+                }, 3000);
+            }
         }
     </script>
 </head>
@@ -1385,10 +2316,10 @@
                     <div class="space-y-6">
                         <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-6 rounded-xl">
                             <p class="text-lg text-gray-700 mb-4 leading-relaxed">
-                                Segitiga putih dan segitiga merah merupakan dua segitiga yang <strong>sebangun</strong>.
+                                Segitiga putih dan segitiga merah merupakan dua segitiga yang sebangun.
                             </p>
                             <p class="text-lg text-gray-700 mb-4 leading-relaxed">
-                                <strong>Kesebangunan</strong> adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama. Dua bangun dikatakan sebangun jika:
+                                Kesebangunan adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama. Dua bangun dikatakan sebangun jika:
                             </p>
                             <div class="bg-white p-4 rounded-lg">
                                 <ul class="text-left space-y-2 text-gray-700">
@@ -1399,7 +2330,7 @@
                         </div>
                         
                         <div class="text-center mb-6">
-                            <img src="https://i.imgur.com/yWuS3RA.jpg" 
+                            <img src="https://i.imgur.com/7xZgVvU.jpg" 
                                  alt="Ilustrasi Kesebangunan" 
                                  class="w-full max-w-md mx-auto rounded-xl shadow-lg object-contain"
                                  style="max-height: 250px;"
@@ -1415,8 +2346,8 @@
                             <div class="text-center">
                                 <img src="https://i.imgur.com/FiyQBuN.jpg" 
                                      alt="Rumus Perbandingan Sisi" 
-                                     class="w-full max-w-md mx-auto rounded-xl shadow-lg object-contain"
-                                     style="max-height: 250px;"
+                                     class="w-full max-w-xs mx-auto rounded-xl shadow-lg object-contain"
+                                     style="max-height: 150px;"
                                      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                                 <div class="hidden bg-gradient-to-r from-orange-500 to-red-500 text-white p-8 rounded-xl">
                                     <div class="text-6xl mb-4">📊</div>
@@ -1544,12 +2475,114 @@
     </div>
 
     <!-- Halaman Input Nama -->
-    <div id="nameInputPage" class="hidden min-h-screen flex items-center justify-center p-8">
-      <div class="glass-card rounded-3xl p-8 max-w-md mx-auto text-center">
-        <h2 class="text-3xl font-bold mb-4">✍️ Masukkan Nama</h2>
-        <input type="text" placeholder="Nama Anda..." class="w-full px-4 py-2 rounded-lg mb-4 border-2">
-        <button onclick="showPage('homePage')" class="neon-button px-6 py-3 rounded-full">✅ Mulai</button>
-      </div>
+    <div id="nameInputPage" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 max-w-md mx-auto text-center">
+            <div class="text-6xl mb-4 floating">🎮</div>
+            <h2 class="text-3xl font-bold mb-6 game-title">✍️ Masukkan Nama</h2>
+            
+            <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-xl mb-6">
+                <div class="text-4xl mb-2">⏰</div>
+                <h3 class="text-xl font-bold text-gray-800 mb-2">Informasi Waktu</h3>
+                <p class="text-lg text-gray-700 font-semibold">
+                    Durasi maksimal: <span class="text-red-600">25 menit</span>
+                </p>
+                <p class="text-sm text-gray-600 mt-2">
+                    Timer akan dimulai setelah Anda klik "Mulai Latihan Soal"
+                </p>
+            </div>
+            
+            <input type="text" id="playerName" placeholder="Nama Anda..." class="w-full px-6 py-4 rounded-full text-lg font-semibold text-gray-800 bg-white/90 border-2 border-white/30 focus:border-cyan-400 focus:outline-none focus:ring-4 focus:ring-cyan-400/30 transition-all duration-300 mb-6">
+            <button onclick="startQuiz()" class="neon-button text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 w-full">
+                🚀 Mulai Latihan Soal! 🎯
+            </button>
+            <button onclick="showPage('homePage')" class="mt-4 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                ⬅️ Kembali
+            </button>
+        </div>
+    </div>
+
+    <!-- Halaman Quiz -->
+    <div id="quizPage" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 max-w-4xl mx-auto w-full">
+            <!-- Quiz Header -->
+            <div class="text-center mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="text-2xl font-bold text-white neon-text">
+                        👋 Halo, <span id="displayPlayerName" class="text-yellow-600">Siswa</span>!
+                    </div>
+                    <div class="flex space-x-4">
+                        <div class="text-xl font-bold text-white neon-text">
+                            ⏰ Waktu: <span id="timerDisplay" class="text-orange-600">25:00</span>
+                        </div>
+                        <div class="text-xl font-bold text-white neon-text">
+                            🏆 Skor: <span id="currentScore" class="text-green-600">0</span>
+                        </div>
+                    </div>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">🎯 Latihan Soal Kesebangunan</h2>
+                <div class="text-4xl md:text-6xl mb-4 floating">📝</div>
+                
+                <!-- Progress Bar -->
+                <div class="progress-bar w-full h-4 mb-4">
+                    <div id="progressBar" class="progress-fill h-full" style="width: 0%"></div>
+                </div>
+                <p class="text-lg text-white neon-text">
+                    Soal <span id="currentQuestion">1</span> dari <span id="totalQuestions">12</span>
+                </p>
+            </div>
+
+            <!-- Question Container -->
+            <div id="questionContainer" class="bg-white/95 rounded-2xl p-6 md:p-8 shadow-2xl min-h-[500px]">
+                <!-- Question content will be inserted here -->
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="flex justify-between items-center mt-6">
+                <button id="prevQuestionBtn" onclick="previousQuestion()" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    ⬅️ Sebelumnya
+                </button>
+                
+                <button onclick="stopTimer(); showPage('homePage')" class="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                    🏠 Beranda
+                </button>
+                
+                <button id="nextQuestionBtn" onclick="nextQuestion()" class="neon-button text-black px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" disabled>
+                    Selanjutnya ➡️
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz Results Modal -->
+    <div id="quizResultsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="glass-card rounded-3xl p-8 max-w-lg mx-4 shadow-2xl bounce-in-3d glow-effect">
+            <div class="text-center">
+                <div id="resultEmoji" class="text-8xl mb-4">🎉</div>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Quiz Selesai!</h3>
+                <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl mb-6">
+                    <p class="text-xl text-gray-700 font-semibold mb-2">
+                        Selamat <span id="finalPlayerName" class="text-blue-600">Siswa</span>!
+                    </p>
+                    <p class="text-2xl font-bold text-gray-800 mb-2">
+                        Skor Akhir: <span id="finalScore" class="text-green-600">0</span>/12
+                    </p>
+                    <p class="text-xl font-bold text-gray-800 mb-2">
+                        ⏰ Waktu Pengerjaan: <span id="timeTaken" class="text-blue-600">0:00</span>
+                    </p>
+                    <p id="scoreMessage" class="text-lg text-gray-700 font-semibold">
+                        Kerja bagus!
+                    </p>
+                </div>
+                <div class="space-y-4">
+                    <button onclick="restartQuiz()" class="w-full neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                        🔄 Ulangi Quiz
+                    </button>
+                    <button onclick="closeQuizResults()" class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                        🏠 Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Halaman Host Dashboard -->
@@ -1563,5 +2596,5 @@
 
 
 
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97bc3ecdc6b9fcef',t:'MTc1NzMxMTQzNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97bd303a77e18802',t:'MTc1NzMyMTMyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
