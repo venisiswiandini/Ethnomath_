@@ -830,6 +830,23 @@
             .text-6xl { font-size: 2rem !important; }
             .text-5xl { font-size: 1.75rem !important; }
             .text-4xl { font-size: 1.5rem !important; }
+            
+            .memory-game-board {
+                max-height: 50vh !important;
+                gap: 0.3rem !important;
+                padding: 0.5rem !important;
+            }
+            
+            .memory-card {
+                min-height: 40px !important;
+                max-height: 70px !important;
+            }
+        }
+        
+        @media (orientation: landscape) and (max-height: 600px) {
+            .memory-game-board {
+                max-height: 60vh;
+            }
         }
         
         .loading-spinner {
@@ -878,6 +895,122 @@
             height: 10px;
             background: #E8D5B7;
             animation: confetti-fall 3s ease-in-out infinite;
+        }
+        
+        /* Memory Game Styles */
+        .memory-game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 0.75rem;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1rem;
+            aspect-ratio: 4/3;
+        }
+        
+        .memory-card {
+            aspect-ratio: 2/3;
+            perspective: 1000px;
+            width: 100%;
+            height: 100%;
+            min-height: 100px;
+            max-height: 180px;
+        }
+        
+        .card-inner {
+            transform-style: preserve-3d;
+        }
+        
+        .card-face {
+            backface-visibility: hidden;
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        
+        .transform-style-preserve-3d {
+            transform-style: preserve-3d;
+        }
+        
+        .memory-card.matched {
+            opacity: 0.7;
+            transform: scale(0.95);
+        }
+        
+        .memory-card.matched .card-inner {
+            animation: match-celebration 0.6s ease-in-out;
+        }
+        
+        @keyframes match-celebration {
+            0%, 100% { transform: rotateY(180deg) scale(1); }
+            50% { transform: rotateY(180deg) scale(1.1); }
+        }
+        
+        @media (max-width: 768px) {
+            .memory-game-board {
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(4, 1fr);
+                gap: 0.5rem;
+                padding: 0.75rem;
+                aspect-ratio: 3/4;
+                max-width: 100%;
+            }
+            
+            .memory-card {
+                aspect-ratio: 2/3;
+                min-height: 80px;
+                max-height: 140px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .memory-game-board {
+                gap: 0.4rem;
+                padding: 0.5rem;
+                max-height: 70vh;
+            }
+            
+            .memory-card {
+                min-height: 70px;
+                max-height: 120px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .memory-game-board {
+                gap: 0.3rem;
+                padding: 0.4rem;
+                max-height: 65vh;
+            }
+            
+            .memory-card {
+                min-height: 60px;
+                max-height: 100px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .memory-game-board {
+                gap: 0.25rem;
+                padding: 0.3rem;
+                max-height: 60vh;
+            }
+            
+            .memory-card {
+                min-height: 50px;
+                max-height: 85px;
+            }
         }
         
         @keyframes confetti-fall {
@@ -1428,7 +1561,7 @@
 
         // ====== HALAMAN KONTROL ======
         function showPage(pageId) {
-            const pages = ["homePage", "materialPage", "nameInputPage", "hostPage", "quizPage"];
+            const pages = ["homePage", "materialPage", "nameInputPage", "hostPage", "quizPage", "memoryGamePage"];
             pages.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
@@ -1450,8 +1583,227 @@
             showPage("nameInputPage");
         }
 
+        // ====== MEMORY GAME SYSTEM ======
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let gameStarted = false;
+        let memoryGameTimer = null;
+        let memoryGameTime = 0;
+        let memoryPlayerName = "";
+
+        const cardPairs = [
+            { id: 1, front: 'https://i.imgur.com/b1Zlbkt.jpg', back: 'https://i.imgur.com/Ejy16gR.jpg' },
+            { id: 2, front: 'https://i.imgur.com/80ICXOO.jpg', back: 'https://i.imgur.com/gcJxB4M.jpg' },
+            { id: 3, front: 'https://i.imgur.com/Veak9do.jpg', back: 'https://i.imgur.com/w12jWLf.jpg' },
+            { id: 4, front: 'https://i.imgur.com/0fxX71F.jpg', back: 'https://i.imgur.com/bsv7VA7.jpg' },
+            { id: 5, front: 'https://i.imgur.com/hDz2ArX.jpg', back: 'https://i.imgur.com/974FBWr.jpg' },
+            { id: 6, front: 'https://i.imgur.com/2witPyO.jpg', back: 'https://i.imgur.com/xte0thx.jpg' }
+        ];
+
+        const cardCover = 'https://i.imgur.com/vHjoLP5.jpg';
+
         function showMemoryGame() {
-            alert("Fitur ini sedang dalam pengembangan!");
+            showPage("memoryGamePage");
+            initializeMemoryGame();
+        }
+
+        function initializeMemoryGame() {
+            // Reset game state
+            memoryCards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            gameStarted = false;
+            memoryGameTime = 0;
+            
+            // Create card array with pairs
+            cardPairs.forEach(pair => {
+                memoryCards.push({ ...pair, image: pair.front, isFlipped: false, isMatched: false });
+                memoryCards.push({ ...pair, image: pair.back, isFlipped: false, isMatched: false });
+            });
+            
+            // Shuffle cards
+            shuffleArray(memoryCards);
+            
+            // Render game board
+            renderMemoryGame();
+            updateMemoryGameStats();
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function renderMemoryGame() {
+            const gameBoard = document.getElementById('memoryGameBoard');
+            gameBoard.innerHTML = '';
+            
+            memoryCards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card relative cursor-pointer transform transition-all duration-500 hover:scale-105';
+                cardElement.onclick = () => flipCard(index);
+                
+                cardElement.innerHTML = `
+                    <div class="card-inner relative w-full h-full transition-transform duration-700 transform-style-preserve-3d ${card.isFlipped ? 'rotate-y-180' : ''}">
+                        <!-- Card Front (Cover) -->
+                        <div class="card-face card-front absolute inset-0 w-full h-full backface-hidden rounded-xl overflow-hidden shadow-lg border-3 border-yellow-400">
+                            <img src="${cardCover}" alt="Card Cover" class="w-full h-full object-contain object-center p-2" style="image-rendering: -webkit-optimize-contrast;" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDIwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTUwIiBmaWxsPSIjRkZENzAwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzAwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+8J+lgeKAjTwvdGV4dD4KPHN2Zz4K';">
+                        </div>
+                        <!-- Card Back (Image) -->
+                        <div class="card-face card-back absolute inset-0 w-full h-full backface-hidden rotate-y-180 rounded-xl overflow-hidden shadow-lg border-3 border-green-400">
+                            <img src="${card.image}" alt="Rebana ${card.id}" class="w-full h-full object-contain object-center p-2" style="image-rendering: -webkit-optimize-contrast;" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDIwMCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMTUwIiBmaWxsPSIjRkY4QzAwIi8+Cjx0ZXh0IHg9IjEwMCIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI0ZGRiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+UmViYW5hICR7Y2FyZC5pZH08L3RleHQ+Cjwvc3ZnPgo=';">
+                        </div>
+                    </div>
+                `;
+                
+                if (card.isMatched) {
+                    cardElement.classList.add('matched');
+                    cardElement.onclick = null;
+                }
+                
+                gameBoard.appendChild(cardElement);
+            });
+        }
+
+        function flipCard(index) {
+            if (!gameStarted) {
+                startMemoryGameTimer();
+                gameStarted = true;
+            }
+            
+            const card = memoryCards[index];
+            
+            // Prevent flipping if card is already flipped, matched, or if 2 cards are already flipped
+            if (card.isFlipped || card.isMatched || flippedCards.length >= 2) {
+                return;
+            }
+            
+            // Play flip sound
+            playSound('click');
+            
+            // Flip the card
+            card.isFlipped = true;
+            flippedCards.push(index);
+            
+            // Re-render to show the flip
+            renderMemoryGame();
+            
+            // Check for match if 2 cards are flipped
+            if (flippedCards.length === 2) {
+                setTimeout(checkForMatch, 1000);
+            }
+        }
+
+        function checkForMatch() {
+            const [firstIndex, secondIndex] = flippedCards;
+            const firstCard = memoryCards[firstIndex];
+            const secondCard = memoryCards[secondIndex];
+            
+            if (firstCard.id === secondCard.id) {
+                // Match found!
+                firstCard.isMatched = true;
+                secondCard.isMatched = true;
+                matchedPairs++;
+                
+                playSound('correct');
+                createConfetti();
+                
+                // Check if game is complete
+                if (matchedPairs === 6) {
+                    setTimeout(() => {
+                        stopMemoryGameTimer();
+                        showMemoryGameResults();
+                    }, 1000);
+                }
+            } else {
+                // No match - flip cards back
+                firstCard.isFlipped = false;
+                secondCard.isFlipped = false;
+                playSound('wrong');
+            }
+            
+            // Reset flipped cards array
+            flippedCards = [];
+            
+            // Re-render the game
+            renderMemoryGame();
+            updateMemoryGameStats();
+        }
+
+        function startMemoryGameTimer() {
+            memoryGameTimer = setInterval(() => {
+                memoryGameTime++;
+                updateMemoryGameTimer();
+            }, 1000);
+        }
+
+        function stopMemoryGameTimer() {
+            if (memoryGameTimer) {
+                clearInterval(memoryGameTimer);
+                memoryGameTimer = null;
+            }
+        }
+
+        function updateMemoryGameTimer() {
+            const minutes = Math.floor(memoryGameTime / 60);
+            const seconds = memoryGameTime % 60;
+            const display = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            document.getElementById('memoryGameTimer').textContent = display;
+        }
+
+        function updateMemoryGameStats() {
+            document.getElementById('memoryGameMatches').textContent = matchedPairs;
+        }
+
+        function resetMemoryGame() {
+            stopMemoryGameTimer();
+            memoryGameTime = 0;
+            updateMemoryGameTimer();
+            initializeMemoryGame();
+        }
+
+        function showMemoryGameResults() {
+            const minutes = Math.floor(memoryGameTime / 60);
+            const seconds = memoryGameTime % 60;
+            const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            let emoji = "🎉";
+            let message = "Hebat sekali!";
+            
+            if (memoryGameTime <= 60) {
+                playSound('perfectScore');
+                emoji = "🏆👑";
+                message = "LUAR BIASA! Kamu sangat cepat! 🌟";
+            } else if (memoryGameTime <= 120) {
+                playSound('complete');
+                emoji = "🏆";
+                message = "Fantastis! Waktu yang sangat baik!";
+            } else if (memoryGameTime <= 180) {
+                playSound('complete');
+                emoji = "🎉";
+                message = "Bagus sekali! Terus berlatih!";
+            } else {
+                playSound('complete');
+                emoji = "👍";
+                message = "Kerja bagus! Coba lagi untuk waktu yang lebih baik!";
+            }
+            
+            document.getElementById('memoryResultEmoji').textContent = emoji;
+            document.getElementById('memoryFinalTime').textContent = timeDisplay;
+            document.getElementById('memoryScoreMessage').textContent = message;
+            document.getElementById('memoryGameResultsModal').classList.remove('hidden');
+        }
+
+        function closeMemoryGameResults() {
+            document.getElementById('memoryGameResultsModal').classList.add('hidden');
+        }
+
+        function restartMemoryGame() {
+            closeMemoryGameResults();
+            resetMemoryGame();
         }
 
         // ====== SLIDE NAVIGATION ======
@@ -1537,7 +1889,7 @@
                 id: 1,
                 title: "Pertanyaan 1",
                 image: "https://i.imgur.com/6FTTPjc.jpg",
-                context: "Perhatikan gambar kain corak insang berikut! Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                context: "Perhatikan gambar kain corak insang di atas! Pada gambar diatas terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
                 question: "Apakah segitiga merah dan segitiga hitam sebangun?",
                 options: ["Ya", "Tidak"],
                 correct: 0
@@ -1546,8 +1898,8 @@
                 id: 2,
                 title: "Pertanyaan 1 (lanjutan)",
                 image: "https://i.imgur.com/6FTTPjc.jpg",
-                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
-                question: "Tentukan perbandingan panjang sisi segitiga merah dan segitiga hitam.",
+                context: "Pada gambar diatas terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Tentukan perbandingan panjang sisi segitiga merah dan segitiga hitam!",
                 options: ["⅓", "½"],
                 correct: 1
             },
@@ -1555,7 +1907,7 @@
                 id: 3,
                 title: "Pertanyaan 1 (lanjutan)",
                 image: "https://i.imgur.com/6FTTPjc.jpg",
-                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                context: "Pada gambar diatas terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
                 question: "Berapa tinggi segitiga hitam?",
                 options: ["6", "4"],
                 correct: 1
@@ -1564,7 +1916,7 @@
                 id: 4,
                 title: "Pertanyaan 1 (lanjutan)",
                 image: "https://i.imgur.com/6FTTPjc.jpg",
-                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                context: "Pada gambar diatas terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
                 question: "Jika luas segitiga merah adalah Lm, dan luas segitiga hitam adalah Lh, tentukan perbandingan Lh dan Lm!",
                 options: ["¼", "⅑"],
                 correct: 0
@@ -1574,7 +1926,7 @@
                 id: 5,
                 title: "Pertanyaan 2",
                 image: "https://i.imgur.com/60w7w1L.jpg",
-                context: "Perhatikan gambar berikut! Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 8 m dan tinggi 4,5 m. Di bawah atap utama ada segitiga hiasan dengan alas 3,2 m.",
+                context: "Perhatikan gambar di atas! Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 8 m dan tinggi 4,5 m. Di bawah atap utama ada segitiga hiasan dengan alas 3,2 m.",
                 question: "Apa yang ditanyakan dalam soal?",
                 options: ["Luas segitiga besar", "Tinggi segitiga hiasan"],
                 correct: 1
@@ -1611,7 +1963,7 @@
                 id: 9,
                 title: "Pertanyaan 3",
                 image: "https://i.imgur.com/KguukHd.jpg",
-                context: "Perhatikan gambar berikut. Pintu rumah adat Melayu di atas terdiri dari pintu besar dan pola panel persegi panjang di dalamnya. Panel-panel tersebut sebangun dengan bentuk pintu secara keseluruhan. Pintu rumah adat Melayu memiliki tinggi 210 cm dan lebar 90 cm. Panel di dalam pintu memiliki lebar 30 cm dan sebangun dengan pintu utama.",
+                context: "Perhatikan gambar di atas! Pintu rumah adat Melayu di atas terdiri dari pintu besar dan pola panel persegi panjang di dalamnya. Panel-panel tersebut sebangun dengan bentuk pintu secara keseluruhan. Pintu rumah adat Melayu memiliki tinggi 210 cm dan lebar 90 cm. Panel di dalam pintu memiliki lebar 30 cm dan sebangun dengan pintu utama.",
                 question: "Apa yang ditanyakan pada soal ini?",
                 options: ["tinggi panel", "lebar pintu utama"],
                 correct: 0
@@ -2123,8 +2475,8 @@
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                     <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-left" style="border: 3px solid rgba(59, 130, 246, 0.6); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);">
                         <div class="text-5xl floating mb-3">🎲</div>
-                        <div class="text-xl text-blue-600 font-bold neon-text">3 Mode</div>
-                        <div class="text-lg text-white font-bold">Belajar!</div>
+                        <div class="text-xl text-blue-600 font-bold neon-text">Seru &</div>
+                        <div class="text-lg text-white font-bold">Menarik!</div>
                     </div>
                     <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-up" style="animation-delay: 0.1s; border: 3px solid rgba(34, 197, 94, 0.6); box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);">
                         <div class="text-5xl floating mb-3" style="animation-delay: 0.5s;">⏰</div>
@@ -2188,7 +2540,7 @@
                 <!-- Slide 1 -->
                 <div id="slide1" class="slide-content">
                     <div class="text-center mb-6">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Slide 1: Mengenal Bentuk Segitiga</h3>
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Mengenal Bentuk Segitiga</h3>
                     </div>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-full lg:w-1/2">
@@ -2219,7 +2571,7 @@
                 <!-- Slide 2 -->
                 <div id="slide2" class="slide-content hidden">
                     <div class="text-center mb-6">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Slide 2: Membandingkan Bentuk</h3>
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Membandingkan Bentuk</h3>
                     </div>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-full lg:w-1/2">
@@ -2248,7 +2600,7 @@
                 <!-- Slide 3 -->
                 <div id="slide3" class="slide-content hidden">
                     <div class="text-center mb-6">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Slide 3: Menganalisis Sudut dan Sisi</h3>
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Menganalisis Sudut dan Sisi</h3>
                     </div>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-full lg:w-1/2">
@@ -2282,7 +2634,7 @@
                 <!-- Slide 4 -->
                 <div id="slide4" class="slide-content hidden">
                     <div class="text-center mb-6">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Slide 4: Menemukan Hubungan</h3>
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Menemukan Hubungan</h3>
                     </div>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-full lg:w-1/2">
@@ -2311,7 +2663,7 @@
                 <!-- Slide 5 -->
                 <div id="slide5" class="slide-content hidden">
                     <div class="text-center mb-6">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Slide 5: Konsep Kesebangunan</h3>
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Konsep Kesebangunan</h3>
                     </div>
                     <div class="space-y-6">
                         <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-6 rounded-xl">
@@ -2368,7 +2720,7 @@
                 <!-- Slide 6 -->
                 <div id="slide6" class="slide-content hidden">
                     <div class="text-center mb-6">
-                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Slide 6: Contoh Soal</h3>
+                        <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Contoh Soal</h3>
                     </div>
                     <div class="space-y-6">
                         <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-6 rounded-xl">
@@ -2585,6 +2937,82 @@
         </div>
     </div>
 
+    <!-- Halaman Memory Game -->
+    <div id="memoryGamePage" class="hidden min-h-screen flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl p-6 max-w-6xl mx-auto w-full">
+            <!-- Memory Game Header -->
+            <div class="text-center mb-6">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">🎮 Cocokin Yuk! 🧩</h2>
+                <div class="text-4xl md:text-6xl mb-4 floating">🥁</div>
+                <p class="text-lg md:text-xl text-white neon-text">Game Memori Rebana Melayu</p>
+                
+                <!-- Game Stats -->
+                <div class="flex justify-center space-x-8 mt-6 mb-4">
+                    <div class="bg-gradient-to-r from-blue-100 to-purple-100 px-6 py-3 rounded-xl">
+                        <div class="text-2xl font-bold text-gray-800">⏰ <span id="memoryGameTimer" class="text-blue-600">0:00</span></div>
+                        <div class="text-sm text-gray-600">Waktu</div>
+                    </div>
+                    <div class="bg-gradient-to-r from-green-100 to-teal-100 px-6 py-3 rounded-xl">
+                        <div class="text-2xl font-bold text-gray-800">🎯 <span id="memoryGameMatches" class="text-green-600">0</span>/6</div>
+                        <div class="text-sm text-gray-600">Pasangan</div>
+                    </div>
+                </div>
+                
+                <!-- Instructions -->
+                <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-xl mb-6">
+                    <h3 class="text-lg font-bold text-gray-800 mb-2">📋 Cara Bermain:</h3>
+                    <p class="text-gray-700">Klik kartu untuk membaliknya dan temukan pasangan gambar rebana yang sama!</p>
+                </div>
+            </div>
+
+            <!-- Memory Game Board -->
+            <div class="bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl">
+                <div id="memoryGameBoard" class="memory-game-board">
+                    <!-- Cards will be generated here -->
+                </div>
+            </div>
+
+            <!-- Control Buttons -->
+            <div class="flex justify-center space-x-4 mt-6">
+                <button onclick="resetMemoryGame()" class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                    🔄 Reset Game
+                </button>
+                <button onclick="showPage('homePage')" class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                    🏠 Kembali ke Beranda
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Memory Game Results Modal -->
+    <div id="memoryGameResultsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div class="glass-card rounded-3xl p-8 max-w-lg mx-4 shadow-2xl bounce-in-3d glow-effect">
+            <div class="text-center">
+                <div id="memoryResultEmoji" class="text-8xl mb-4">🎉</div>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Selamat!</h3>
+                <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl mb-6">
+                    <p class="text-xl text-gray-700 font-semibold mb-2">
+                        Kamu berhasil mencocokkan semua pasangan rebana!
+                    </p>
+                    <p class="text-2xl font-bold text-gray-800 mb-2">
+                        ⏰ Waktu: <span id="memoryFinalTime" class="text-blue-600">0:00</span>
+                    </p>
+                    <p id="memoryScoreMessage" class="text-lg text-gray-700 font-semibold">
+                        Hebat sekali!
+                    </p>
+                </div>
+                <div class="space-y-4">
+                    <button onclick="restartMemoryGame()" class="w-full neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                        🔄 Main Lagi
+                    </button>
+                    <button onclick="closeMemoryGameResults(); showPage('homePage')" class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105">
+                        🏠 Kembali ke Beranda
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Halaman Host Dashboard -->
     <div id="hostPage" class="hidden min-h-screen flex items-center justify-center p-8">
       <div class="glass-card rounded-3xl p-8 max-w-3xl mx-auto text-center">
@@ -2596,5 +3024,5 @@
 
 
 
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97bd303a77e18802',t:'MTc1NzMyMTMyMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97c42d802736b5e2',t:'MTc1NzM5NDYxMS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
