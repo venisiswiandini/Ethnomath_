@@ -4,8 +4,17 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>🏀 Ethnomath - Ethnomathematics Twin Shapes</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<title>🏠 Ethnomath - Ethnomathematics Twin Shapes</title>
+<script src="https://cdn.tailwindcss.com">
+// ====== MOBILE AUDIO FIX ======
+document.addEventListener("click", function enableAudioOnce() {
+    let bgm = document.getElementById("backgroundAudio");
+    if (bgm) {
+        bgm.play().catch(e => console.log("Autoplay blocked until user interacts:", e));
+    }
+    document.removeEventListener("click", enableAudioOnce);
+}, { once: true });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
 <style>
@@ -1167,7 +1176,16 @@
             0%, 100% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
         }
-    </style>
+    
+/* Force images to render properly on all devices */
+img {
+    max-width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    background-color: transparent !important;
+}
+</style>
 <script>
         // ====== AUDIO CONTROL ======
         let audioEnabled = true;
