@@ -2541,6 +2541,14 @@
             }
         }
     </script>
+
+<!-- AUTO-INJECTED: small fixes to avoid mobile background disappearing and ensure audio starts on user interaction -->
+<style>
+  body { background-color: #000 !important; z-index: 0 !important; }
+  #particles-js, body::before { z-index: 0 !important; }
+  main, .content, #app { position: relative; z-index: 1 !important; }
+</style>
+
 </head>
 <body class="min-h-screen">
     
@@ -3156,5 +3164,35 @@
 
 
 
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97c6f56347345ce5',t:'MTc1NzQyMzc3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97c6f56347345ce5',t:'MTc1NzQyMzc3MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<!-- AUTO-INJECTED: safe audio enable on first user interaction -->
+<script>
+(function() {
+  function enableAudioOnce() {
+    try {
+      if (typeof initAudioContext === 'function') {
+        try { initAudioContext(); } catch(e) { console.log('initAudioContext error', e); }
+      }
+      var bg = document.getElementById('backgroundAudio');
+      if (bg) {
+        try { bg.play().catch(function(){/*autoplay prevented*/}); } catch(e){}
+        try { bg.muted = false; } catch(e){}
+      }
+      if (typeof audioContext !== 'undefined' && audioContext && audioContext.state === 'suspended') {
+        try { audioContext.resume().catch(function(){/*resume failed*/}); } catch(e){}
+      }
+    } catch(e) {
+      console.log('enableAudioOnce err', e);
+    }
+    document.removeEventListener('click', enableAudioOnce);
+    document.removeEventListener('touchstart', enableAudioOnce);
+    document.removeEventListener('keydown', enableAudioOnce);
+  }
+  document.addEventListener('click', enableAudioOnce, {once:true});
+  document.addEventListener('touchstart', enableAudioOnce, {once:true});
+  document.addEventListener('keydown', enableAudioOnce, {once:true});
+})();
+</script>
+<!-- END AUTO-INJECTED -->
+</body>
 </html>
