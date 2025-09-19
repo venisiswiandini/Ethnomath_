@@ -509,11 +509,58 @@
             }
         }
 
-        /* Ensure all images are properly sized */
+        /* Enhanced image sizing for all devices */
         img {
             max-width: 100%;
             height: auto;
             object-fit: contain;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* Mobile-specific image fixes */
+        @media (max-width: 768px) {
+            img {
+                max-width: 100% !important;
+                width: auto !important;
+                height: auto !important;
+                object-fit: contain !important;
+                object-position: center !important;
+                display: block !important;
+                margin: 0 auto !important;
+            }
+            
+            /* Force image containers to be visible */
+            .slide-content img,
+            #quizImageContainer img,
+            .memory-card img {
+                visibility: visible !important;
+                opacity: 1 !important;
+                min-height: 100px !important;
+                background-color: #f8f9fa !important;
+                border: 1px solid #e9ecef !important;
+                border-radius: 8px !important;
+                padding: 4px !important;
+            }
+            
+            /* Quiz image specific fixes */
+            #quizImageContainer {
+                min-height: 200px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background-color: #f8f9fa !important;
+                border-radius: 12px !important;
+                padding: 8px !important;
+            }
+            
+            /* Material slide image fixes */
+            .slide-content .bg-white {
+                min-height: 200px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
         }
 
         /* Enhanced Quiz Styles */
@@ -2348,22 +2395,37 @@
             document.getElementById('quizQuestionContext').textContent = question.context;
             document.getElementById('quizSubQuestion').textContent = question.question;
             
-            // Update main image
+            // Update main image with mobile-friendly loading
             const imageContainer = document.getElementById('quizImageContainer');
             imageContainer.innerHTML = `
-                <img src="${question.image}" alt="Soal ${currentQuizQuestion + 1}" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4 mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
+                <img src="${question.image}" alt="Soal ${currentQuizQuestion + 1}" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4 mx-auto" 
+                     loading="eager" 
+                     crossorigin="anonymous"
+                     onload="this.style.visibility='visible'; this.style.opacity='1';"
+                     onerror="console.log('Quiz image failed:', this.src); this.style.display='none'; const fallback = document.createElement('div'); fallback.className='text-center p-4 bg-gray-100 rounded-lg'; fallback.innerHTML='<div class=\'text-4xl mb-2\'>📷</div><div class=\'text-sm text-gray-600\'>Gambar soal tidak dapat dimuat</div>'; this.parentNode.appendChild(fallback);">
             `;
             
             // Update question image if exists
             const questionImageContainer = document.getElementById('quizQuestionImageContainer');
             if (question.questionImage) {
                 questionImageContainer.innerHTML = `
-                    <img src="${question.questionImage}" alt="Gambar Pertanyaan" class="max-h-16 object-contain mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
+                    <img src="${question.questionImage}" alt="Gambar Pertanyaan" class="max-h-16 object-contain mx-auto" 
+                         loading="eager" 
+                         crossorigin="anonymous"
+                         onload="this.style.visibility='visible'; this.style.opacity='1';"
+                         onerror="console.log('Question image failed:', this.src); this.style.display='none';">
                 `;
                 questionImageContainer.classList.remove('hidden');
             } else {
                 questionImageContainer.classList.add('hidden');
             }
+            
+            // Force image refresh on mobile
+            setTimeout(() => {
+                if (window.innerWidth <= 768) {
+                    fixMobileImages();
+                }
+            }, 100);
             
             // Generate options
             const optionsContainer = document.getElementById('quizOptions');
@@ -2681,6 +2743,40 @@
             }
         }
 
+        // Mobile image loading fix
+        function fixMobileImages() {
+            // Force reload all images on mobile
+            if (window.innerWidth <= 768) {
+                const allImages = document.querySelectorAll('img');
+                allImages.forEach(img => {
+                    if (img.src && !img.complete) {
+                        const originalSrc = img.src;
+                        img.src = '';
+                        setTimeout(() => {
+                            img.src = originalSrc;
+                        }, 100);
+                    }
+                    
+                    // Add loading event listeners
+                    img.addEventListener('load', function() {
+                        this.style.visibility = 'visible';
+                        this.style.opacity = '1';
+                    });
+                    
+                    img.addEventListener('error', function() {
+                        console.log('Image failed to load:', this.src);
+                        this.style.display = 'none';
+                        
+                        // Show fallback content
+                        const fallback = document.createElement('div');
+                        fallback.className = 'text-center p-4 bg-gray-100 rounded-lg';
+                        fallback.innerHTML = '<div class="text-4xl mb-2">📷</div><div class="text-sm text-gray-600">Gambar tidak dapat dimuat</div>';
+                        this.parentNode.insertBefore(fallback, this.nextSibling);
+                    });
+                });
+            }
+        }
+
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function() {
             // Initialize particles
@@ -2688,6 +2784,9 @@
             
             // Initialize matrix rain
             createMatrixRain();
+            
+            // Fix mobile images
+            setTimeout(fixMobileImages, 500);
             
             // Initialize audio context on first user interaction
             document.addEventListener('click', initAudioContext, { once: true });
@@ -2706,5 +2805,5 @@
             }, { once: true });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'981774f1276f5859',t:'MTc1ODI2Nzg1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98179fb241aa9d24',t:'MTc1ODI2OTYwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
