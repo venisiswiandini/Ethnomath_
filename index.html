@@ -74,7 +74,7 @@
             50% { background-position: 100% 50%; }
         }
 
-        /* Enhanced Floating Animation */
+        /* Simplified floating animation for mobile */
         .floating {
             animation: floating 3s ease-in-out infinite;
         }
@@ -82,6 +82,12 @@
         @keyframes floating {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
+        }
+
+        @media (max-width: 768px) {
+            .floating {
+                animation: none !important;
+            }
         }
 
         /* Enhanced Bounce-in-3D Animation */
@@ -251,7 +257,7 @@
             }
         }
 
-        /* Enhanced Particles Background */
+        /* Simplified background effects for mobile performance */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -261,7 +267,7 @@
             z-index: -2;
         }
 
-        /* Enhanced Matrix Rain Effect */
+        /* Disable matrix rain on mobile for better performance */
         .matrix-rain {
             position: fixed;
             top: 0;
@@ -271,6 +277,16 @@
             pointer-events: none;
             z-index: -1;
             overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .matrix-rain {
+                display: none !important;
+            }
+            
+            #particles-js {
+                display: none !important;
+            }
         }
 
         .matrix-drop {
@@ -520,6 +536,7 @@
 
         /* Mobile-specific image fixes */
         @media (max-width: 768px) {
+            /* Force all images to load and display properly */
             img {
                 max-width: 100% !important;
                 width: auto !important;
@@ -528,38 +545,60 @@
                 object-position: center !important;
                 display: block !important;
                 margin: 0 auto !important;
+                background: #f8f9fa !important;
+                border: 2px solid #dee2e6 !important;
+                border-radius: 8px !important;
+                padding: 8px !important;
+                min-height: 120px !important;
+                box-sizing: border-box !important;
             }
             
-            /* Force image containers to be visible */
+            /* Specific container fixes */
             .slide-content img,
             #quizImageContainer img,
             .memory-card img {
                 visibility: visible !important;
                 opacity: 1 !important;
-                min-height: 100px !important;
-                background-color: #f8f9fa !important;
-                border: 1px solid #e9ecef !important;
-                border-radius: 8px !important;
-                padding: 4px !important;
-            }
-            
-            /* Quiz image specific fixes */
-            #quizImageContainer {
-                min-height: 200px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                background-color: #f8f9fa !important;
+                min-height: 150px !important;
+                background-color: #ffffff !important;
+                border: 3px solid #007bff !important;
                 border-radius: 12px !important;
-                padding: 8px !important;
+                padding: 12px !important;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.1) !important;
             }
             
-            /* Material slide image fixes */
-            .slide-content .bg-white {
-                min-height: 200px !important;
+            /* Quiz image container */
+            #quizImageContainer {
+                min-height: 250px !important;
                 display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+                border: 3px solid #28a745 !important;
+                border-radius: 16px !important;
+                padding: 16px !important;
+                margin: 16px 0 !important;
+            }
+            
+            /* Material slide containers */
+            .slide-content .bg-white {
+                min-height: 250px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+                border: 3px solid #17a2b8 !important;
+                border-radius: 16px !important;
+                padding: 16px !important;
+            }
+            
+            /* Home page main image */
+            .text-center.bg-gradient-to-r.from-yellow-600.to-orange-600 img {
+                min-height: 200px !important;
+                background: #ffffff !important;
+                border: 4px solid #ffc107 !important;
+                border-radius: 16px !important;
+                padding: 16px !important;
             }
         }
 
@@ -2395,14 +2434,23 @@
             document.getElementById('quizQuestionContext').textContent = question.context;
             document.getElementById('quizSubQuestion').textContent = question.question;
             
-            // Update main image with mobile-friendly loading
+            // Update main image with mobile-optimized loading
             const imageContainer = document.getElementById('quizImageContainer');
             imageContainer.innerHTML = `
-                <img src="${question.image}" alt="Soal ${currentQuizQuestion + 1}" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4 mx-auto" 
-                     loading="eager" 
-                     crossorigin="anonymous"
-                     onload="this.style.visibility='visible'; this.style.opacity='1';"
-                     onerror="console.log('Quiz image failed:', this.src); this.style.display='none'; const fallback = document.createElement('div'); fallback.className='text-center p-4 bg-gray-100 rounded-lg'; fallback.innerHTML='<div class=\'text-4xl mb-2\'>📷</div><div class=\'text-sm text-gray-600\'>Gambar soal tidak dapat dimuat</div>'; this.parentNode.appendChild(fallback);">
+                <div class="w-full text-center">
+                    <div class="inline-block bg-white p-4 rounded-lg border-2 border-blue-500 shadow-lg">
+                        <img src="${question.image}" alt="Soal ${currentQuizQuestion + 1}" 
+                             class="max-w-full h-auto max-h-48 object-contain mx-auto" 
+                             loading="eager"
+                             style="min-height: 120px; background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 8px;"
+                             onload="this.style.background='transparent'; this.style.border='none'; this.style.padding='0';"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                        <div style="display: none; padding: 20px; text-align: center; background: #f8f9fa; border-radius: 8px;">
+                            <div style="font-size: 3rem; margin-bottom: 10px;">📷</div>
+                            <div style="color: #6c757d;">Gambar tidak dapat dimuat</div>
+                        </div>
+                    </div>
+                </div>
             `;
             
             // Update question image if exists
@@ -2704,35 +2752,44 @@
             document.getElementById('quizResultsModal').classList.add('hidden');
         }
 
-        // Particle.js Configuration
+        // Particle.js Configuration - Disabled on mobile for performance
         function initParticles() {
+            // Skip particles on mobile devices
+            if (window.innerWidth <= 768) {
+                return;
+            }
+            
             if (typeof particlesJS !== 'undefined') {
                 particlesJS('particles-js', {
                     particles: {
-                        number: { value: 80, density: { enable: true, value_area: 800 } },
+                        number: { value: 40, density: { enable: true, value_area: 800 } },
                         color: { value: '#ffffff' },
                         shape: { type: 'circle' },
-                        opacity: { value: 0.5, random: false },
-                        size: { value: 3, random: true },
-                        line_linked: { enable: true, distance: 150, color: '#ffffff', opacity: 0.4, width: 1 },
-                        move: { enable: true, speed: 6, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+                        opacity: { value: 0.3, random: false },
+                        size: { value: 2, random: true },
+                        line_linked: { enable: true, distance: 100, color: '#ffffff', opacity: 0.2, width: 1 },
+                        move: { enable: true, speed: 3, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
                     },
                     interactivity: {
                         detect_on: 'canvas',
-                        events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
-                        modes: { grab: { distance: 400, line_linked: { opacity: 1 } }, bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 }, repulse: { distance: 200, duration: 0.4 }, push: { particles_nb: 4 }, remove: { particles_nb: 2 } }
+                        events: { onhover: { enable: false }, onclick: { enable: false }, resize: true }
                     },
-                    retina_detect: true
+                    retina_detect: false
                 });
             }
         }
 
-        // Matrix Rain Effect
+        // Matrix Rain Effect - Disabled on mobile
         function createMatrixRain() {
+            // Skip matrix rain on mobile devices
+            if (window.innerWidth <= 768) {
+                return;
+            }
+            
             const matrixContainer = document.getElementById('matrixRain');
             const characters = '01';
             
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 20; i++) {
                 const drop = document.createElement('div');
                 drop.className = 'matrix-drop';
                 drop.textContent = characters[Math.floor(Math.random() * characters.length)];
@@ -2743,36 +2800,72 @@
             }
         }
 
-        // Mobile image loading fix
+        // Enhanced mobile image loading fix
         function fixMobileImages() {
-            // Force reload all images on mobile
             if (window.innerWidth <= 768) {
                 const allImages = document.querySelectorAll('img');
-                allImages.forEach(img => {
+                allImages.forEach((img, index) => {
+                    // Add mobile-specific attributes
+                    img.setAttribute('loading', 'eager');
+                    img.setAttribute('decoding', 'sync');
+                    
+                    // Force reload with delay for mobile
                     if (img.src && !img.complete) {
                         const originalSrc = img.src;
                         img.src = '';
+                        
+                        // Stagger loading to prevent overwhelming mobile browser
                         setTimeout(() => {
-                            img.src = originalSrc;
-                        }, 100);
+                            img.src = originalSrc + '?mobile=' + Date.now();
+                        }, index * 200);
                     }
                     
-                    // Add loading event listeners
+                    // Enhanced loading handlers
                     img.addEventListener('load', function() {
                         this.style.visibility = 'visible';
                         this.style.opacity = '1';
+                        this.style.background = 'transparent';
+                        this.style.border = 'none';
+                        this.style.padding = '0';
+                        console.log('Image loaded successfully:', this.src);
                     });
                     
                     img.addEventListener('error', function() {
                         console.log('Image failed to load:', this.src);
-                        this.style.display = 'none';
                         
-                        // Show fallback content
+                        // Create visible fallback
                         const fallback = document.createElement('div');
-                        fallback.className = 'text-center p-4 bg-gray-100 rounded-lg';
-                        fallback.innerHTML = '<div class="text-4xl mb-2">📷</div><div class="text-sm text-gray-600">Gambar tidak dapat dimuat</div>';
+                        fallback.style.cssText = `
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            justify-content: center;
+                            min-height: 150px;
+                            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                            border: 3px solid #dc3545;
+                            border-radius: 12px;
+                            padding: 20px;
+                            text-align: center;
+                            margin: 10px 0;
+                        `;
+                        fallback.innerHTML = `
+                            <div style="font-size: 3rem; margin-bottom: 10px;">📷</div>
+                            <div style="color: #dc3545; font-weight: bold; margin-bottom: 5px;">Gambar tidak dapat dimuat</div>
+                            <div style="color: #6c757d; font-size: 0.9rem;">Coba refresh halaman</div>
+                        `;
+                        
+                        // Replace the image with fallback
+                        this.style.display = 'none';
                         this.parentNode.insertBefore(fallback, this.nextSibling);
                     });
+                    
+                    // Force refresh after 3 seconds if still not loaded
+                    setTimeout(() => {
+                        if (!img.complete && img.src) {
+                            const originalSrc = img.src.split('?')[0];
+                            img.src = originalSrc + '?retry=' + Date.now();
+                        }
+                    }, 3000);
                 });
             }
         }
@@ -2805,5 +2898,5 @@
             }, { once: true });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98179fb241aa9d24',t:'MTc1ODI2OTYwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9817ac9fd6078349',t:'MTc1ODI3MDEzNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
