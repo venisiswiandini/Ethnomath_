@@ -372,29 +372,32 @@
         /* Enhanced Responsive Design */
         @media (max-width: 768px) {
             .memory-game-board {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-                max-width: 500px;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+                max-width: 100%;
+                padding: 0 10px;
             }
             
             .memory-card {
-                padding: 1px;
+                padding: 2px;
+                min-height: 80px;
             }
             
             .memory-card img {
-                width: 92%;
-                height: 92%;
-                max-width: 92%;
-                max-height: 92%;
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
             }
             
             .glass-card {
-                margin: 10px;
+                margin: 8px;
                 padding: 1rem;
             }
             
             .slide-content img {
-                max-height: 160px !important;
+                max-height: 200px !important;
                 width: 100% !important;
                 object-fit: contain !important;
             }
@@ -404,60 +407,105 @@
                 min-height: 48px;
                 touch-action: manipulation;
                 -webkit-tap-highlight-color: transparent;
+                font-size: 14px;
+                padding: 12px 16px;
             }
             
-            .neon-button, .quiz-option {
-                padding: 16px 24px;
+            .neon-button {
+                padding: 16px 20px;
                 font-size: 16px;
                 line-height: 1.2;
+            }
+            
+            .quiz-option {
+                padding: 16px 20px;
+                font-size: 14px;
+                line-height: 1.4;
+                margin: 8px 0;
+            }
+            
+            /* Text scaling for mobile */
+            .game-title {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            h3 {
+                font-size: 1.3rem;
             }
         }
 
         @media (max-width: 480px) {
             .memory-game-board {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(4, 1fr);
                 gap: 6px;
-                max-width: 320px;
+                max-width: 100%;
+                padding: 0 5px;
             }
             
             .memory-card {
                 padding: 1px;
+                min-height: 70px;
             }
             
             .memory-card img {
-                width: 90%;
-                height: 90%;
-                max-width: 90%;
-                max-height: 90%;
+                width: 100%;
+                height: 100%;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
             }
             
             .slide-content img {
-                max-height: 140px !important;
+                max-height: 180px !important;
                 width: 100% !important;
                 object-fit: contain !important;
             }
             
             .glass-card {
                 padding: 0.75rem;
+                margin: 5px;
             }
             
             /* Small mobile button improvements */
             button {
-                min-height: 52px;
-                padding: 18px 20px;
-                font-size: 15px;
+                min-height: 44px;
+                padding: 12px 16px;
+                font-size: 13px;
             }
             
             .neon-button {
-                padding: 20px 28px;
-                font-size: 16px;
+                padding: 16px 20px;
+                font-size: 15px;
                 font-weight: 700;
             }
             
             .quiz-option {
-                padding: 18px 20px;
-                font-size: 15px;
-                margin: 12px 0;
+                padding: 14px 16px;
+                font-size: 13px;
+                margin: 6px 0;
+                line-height: 1.3;
+            }
+            
+            /* Smaller text for very small screens */
+            .game-title {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            h3 {
+                font-size: 1.1rem;
+            }
+            
+            /* Floating elements smaller on mobile */
+            .floating {
+                font-size: 2rem;
             }
         }
 
@@ -583,16 +631,15 @@
             <div class="glass-card rounded-3xl p-8 shadow-2xl bounce-in-3d card-hover holographic">
                 <div class="mb-8">
                     <div class="text-6xl mb-4 floating">🎮🌈📐✨</div>
+                    
+
+                    
                     <div class="flex justify-center mb-8">
                         <div class="relative group">
                             <div class="absolute -inset-6 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-500 animate-pulse"></div>
                             <div class="relative glass-card rounded-3xl p-8 border-2 border-white/20 shadow-2xl glow-effect">
-                                <img src="https://i.imgur.com/sWMWajt.png" alt="ETHNOMATH Twin Shapes Logo" class="w-full max-w-md mx-auto rounded-2xl shadow-lg object-contain" style="max-height: 300px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                                <div class="hidden text-center bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-8 rounded-2xl">
-                                    <div class="text-5xl mb-4">🎮</div>
-                                    <h1 class="text-3xl font-bold mb-3">ETHNOMATH</h1>
-                                    <h2 class="text-xl font-semibold mb-3">Twin Shapes</h2>
-                                    <p class="text-lg opacity-90">by Veni Siswiandini</p>
+                                <div class="text-center bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-8 rounded-2xl">
+                                    <img src="https://i.imgur.com/sWMWajt.png" alt="ETHNOMATH Twin Shapes by Veni Siswiandini" class="w-full h-auto max-h-80 object-contain rounded-lg mx-auto" onerror="this.src=''; this.alt='ETHNOMATH Twin Shapes by Veni Siswiandini'; this.style.display='none';">
                                 </div>
                             </div>
                             <!-- Enhanced Floating Elements -->
@@ -683,11 +730,10 @@
                     </div>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-full lg:w-1/2">
-                            <div class="bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-8 rounded-xl text-center cursor-pointer hover:scale-105 transition-transform duration-300" onclick="showSlide1Popup()">
-                                <div class="text-6xl mb-4">🏠</div>
-                                <p class="text-lg font-semibold">Rumah Adat Melayu</p>
+                            <div class="bg-white p-4 rounded-xl shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300" onclick="showSlide1Popup()">
+                                <img src="https://i.imgur.com/1As20RS.png" alt="Rumah Adat Melayu" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                             </div>
-                            <p class="text-sm text-gray-600 text-center mt-2">👆 Klik gambar untuk melihat jawaban!</p>
+                            <p class="text-sm text-gray-600 text-center mt-2">👆 Klik untuk melihat jawaban!</p>
                         </div>
                         <div class="w-full lg:w-1/2 text-center lg:text-left">
                             <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl">
@@ -708,9 +754,8 @@
                     </div>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-full lg:w-1/2">
-                            <div class="bg-gradient-to-r from-red-500 to-pink-500 text-white p-8 rounded-xl text-center">
-                                <div class="text-6xl mb-4">📐</div>
-                                <p class="text-lg font-semibold">Perbandingan Segitiga</p>
+                            <div class="bg-white p-4 rounded-xl shadow-lg">
+                                <img src="https://i.imgur.com/q0zRUtd.png" alt="Perbandingan Segitiga" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                             </div>
                         </div>
                         <div class="w-full lg:w-1/2 text-center lg:text-left">
@@ -750,9 +795,8 @@
                     </div>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-full lg:w-1/2">
-                            <div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-8 rounded-xl text-center">
-                                <div class="text-6xl mb-4">📏</div>
-                                <p class="text-lg font-semibold">Analisis Sudut dan Sisi</p>
+                            <div class="bg-white p-4 rounded-xl shadow-lg">
+                                <img src="https://i.imgur.com/WjaUhR6.png" alt="Analisis Sudut dan Sisi" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                             </div>
                         </div>
                         <div class="w-full lg:w-1/2 text-center lg:text-left">
@@ -797,9 +841,8 @@
                     </div>
                     <div class="flex flex-col lg:flex-row items-center gap-6">
                         <div class="w-full lg:w-1/2">
-                            <div class="bg-gradient-to-r from-teal-500 to-cyan-500 text-white p-8 rounded-xl text-center">
-                                <div class="text-6xl mb-4">🔗</div>
-                                <p class="text-lg font-semibold">Hubungan Segitiga</p>
+                            <div class="bg-white p-4 rounded-xl shadow-lg">
+                                <img src="https://i.imgur.com/l5Ts113.png" alt="Hubungan Segitiga" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                             </div>
                         </div>
                         <div class="w-full lg:w-1/2 text-center lg:text-left">
@@ -823,6 +866,11 @@
                         <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Konsep Kesebangunan</h3>
                     </div>
                     <div class="space-y-6">
+                        <div class="text-center mb-6">
+                            <div class="bg-white p-4 rounded-xl shadow-lg">
+                                <img src="https://i.imgur.com/l5Ts113.png" alt="Hubungan Segitiga" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4 mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
+                            </div>
+                        </div>
                         <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-6 rounded-xl">
                             <p class="text-lg text-gray-700 mb-4 leading-relaxed">
                                 Segitiga putih dan segitiga merah merupakan dua segitiga yang sebangun.
@@ -838,18 +886,16 @@
                             </div>
                         </div>
                         <div class="text-center mb-6">
-                            <div class="bg-gradient-to-r from-green-500 to-teal-500 text-white p-8 rounded-xl">
-                                <div class="text-6xl mb-4">📐</div>
-                                <p class="text-xl font-semibold">Ilustrasi Kesebangunan</p>
+                            <div class="bg-white p-4 rounded-xl shadow-lg">
+                                <img src="https://i.imgur.com/0BBJVdf.png" alt="Ilustrasi Kesebangunan" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4 mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
+                                <p class="text-xl font-semibold text-gray-800">Ilustrasi Kesebangunan</p>
                             </div>
                         </div>
                         <div class="bg-gradient-to-r from-orange-100 to-red-100 p-6 rounded-xl mb-6">
                             <h4 class="text-xl md:text-2xl font-bold text-gray-800 mb-4 text-center">Rumus perbandingan sisi:</h4>
                             <div class="text-center">
-                                <div class="bg-gradient-to-r from-orange-500 to-red-500 text-white p-8 rounded-xl">
-                                    <div class="text-6xl mb-4">📊</div>
-                                    <p class="text-xl font-semibold">Rumus Perbandingan Sisi</p>
-                                    <p class="text-lg mt-2">a₁/a₂ = b₁/b₂ = c₁/c₂</p>
+                                <div class="bg-white p-4 rounded-xl shadow-lg">
+                                    <img src="https://i.imgur.com/65FKX3K.png" alt="Rumus Perbandingan Sisi" class="w-full h-auto max-h-32 object-contain rounded-lg mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                                 </div>
                             </div>
                         </div>
@@ -872,9 +918,8 @@
                         <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-6 rounded-xl">
                             <h4 class="text-xl md:text-2xl font-bold text-gray-800 mb-4">📝 Contoh Soal:</h4>
                             <div class="text-center mb-4">
-                                <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 rounded-xl text-center">
-                                    <div class="text-4xl mb-2">📐</div>
-                                    <p class="font-semibold">Contoh Soal Kesebangunan</p>
+                                <div class="bg-white p-4 rounded-xl shadow-lg">
+                                    <img src="https://i.imgur.com/3hiKbI9.png" alt="Contoh Soal Kesebangunan" class="w-full h-auto max-h-48 object-contain rounded-lg mb-4 mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                                 </div>
                             </div>
                             <p class="text-lg text-gray-700 leading-relaxed text-center">
@@ -900,15 +945,11 @@
                                     <h5 class="text-lg font-bold text-gray-800 mb-2">Langkah Kedua (Merencanakan masalah)</h5>
                                     <p class="text-gray-700 mb-2">Karena kedua segitiga sebangun, perbandingan sisi-sisi yang bersesuaian adalah sama. Tuliskan perbandingan sisi yang bersesuaian.</p>
                                     <div class="text-center my-4">
-                                        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 rounded-xl mb-6">
-                                            <div class="text-4xl mb-2">📊</div>
-                                            <p class="text-xl font-semibold">Perbandingan Sisi</p>
-                                            <p class="text-lg mt-2">alas putih / alas merah = tinggi putih / tinggi merah</p>
+                                        <div class="bg-white p-4 rounded-xl shadow-lg mb-6">
+                                            <img src="https://i.imgur.com/ASCSdxT.png" alt="Perbandingan Sisi" class="w-full h-auto max-h-24 object-contain rounded-lg mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                                         </div>
-                                        <div class="bg-gradient-to-r from-green-500 to-teal-500 text-white p-6 rounded-xl">
-                                            <div class="text-4xl mb-2">🔢</div>
-                                            <p class="text-xl font-semibold">Substitusi Nilai</p>
-                                            <p class="text-lg mt-2">8 / 4 = tinggi putih / 3</p>
+                                        <div class="bg-white p-4 rounded-xl shadow-lg">
+                                            <img src="https://i.imgur.com/jIB1g1q.png" alt="Substitusi Nilai" class="w-full h-auto max-h-24 object-contain rounded-lg mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                                         </div>
                                     </div>
                                     <p class="text-gray-700">Kemudian mencari nilai tinggi △putih (menggunakan perkalian silang).</p>
@@ -917,12 +958,8 @@
                                     <h5 class="text-lg font-bold text-gray-800 mb-2">Langkah Ketiga (Menjalankan rencana)</h5>
                                     <p class="text-gray-700 mb-2">Menentukan nilai tinggi △putih</p>
                                     <div class="text-center">
-                                        <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 rounded-xl text-center">
-                                            <div class="text-4xl mb-2">✅</div>
-                                            <p class="text-xl font-semibold mb-2">Penyelesaian:</p>
-                                            <p class="text-lg">8 × 3 = 4 × tinggi putih</p>
-                                            <p class="text-lg">24 = 4 × tinggi putih</p>
-                                            <p class="text-lg">tinggi putih = 24 ÷ 4 = 6 m</p>
+                                        <div class="bg-white p-4 rounded-xl shadow-lg">
+                                            <img src="https://i.imgur.com/oF3A155.png" alt="Penyelesaian" class="w-full h-auto max-h-32 object-contain rounded-lg mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                                         </div>
                                     </div>
                                 </div>
@@ -931,9 +968,8 @@
                                     <p class="text-gray-700 mb-2">Dengan menggunakan perbandingan sisi pada bangun yang sebangun, maka diperoleh tinggi segitiga putih yaitu 6 m.</p>
                                     <p class="text-gray-700 mb-2">Perbandingan sisi-sisi yang bersesuaian sama:</p>
                                     <div class="text-center mb-2">
-                                        <div class="bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-xl text-center">
-                                            <div class="text-2xl mb-2">✓</div>
-                                            <p class="font-semibold">8/4 = 6/3 = 2</p>
+                                        <div class="bg-white p-4 rounded-xl shadow-lg">
+                                            <img src="https://i.imgur.com/oQ20VAh.png" alt="Pemeriksaan Kebenaran" class="w-full h-auto max-h-16 object-contain rounded-lg mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                                         </div>
                                     </div>
                                     <p class="text-gray-700">Karena semua perbandingan sisi yang bersesuaian sama, maka benar segitiga putih dan segitiga merah sebangun dan tinggi segitiga putih adalah 6 m.</p>
@@ -995,12 +1031,6 @@
         </div>
     </div>
 
-
-
-
-
-
-
     <!-- Halaman Input Nama -->
     <div id="nameInputPage" class="hidden min-h-screen flex items-center justify-center p-4">
         <div class="glass-card rounded-3xl p-8 max-w-md mx-auto w-full holographic">
@@ -1052,8 +1082,6 @@
                         ⬅️ Kembali ke Beranda
                     </button>
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -1213,9 +1241,12 @@
                             <div class="text-3xl mr-3">❓</div>
                             <h4 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Pertanyaan</h4>
                         </div>
-                        <h4 id="quizSubQuestion" class="text-xl md:text-2xl font-bold text-gray-800 text-center">
+                        <h4 id="quizSubQuestion" class="text-xl md:text-2xl font-bold text-gray-800 text-center mb-4">
                             <!-- Sub question will be inserted here -->
                         </h4>
+                        <div id="quizQuestionImageContainer" class="text-center hidden">
+                            <!-- Question image will be inserted here if exists -->
+                        </div>
                     </div>
                 </div>
 
@@ -1225,6 +1256,15 @@
                         <div class="flex items-center justify-center mb-4">
                             <div class="text-3xl mr-3">🎯</div>
                             <h4 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-cyan-600">Pilihan Jawaban</h4>
+                        </div>
+                        <!-- Auto advance countdown -->
+                        <div id="autoAdvanceCountdown" class="hidden text-center mb-4">
+                            <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-xl border-2 border-orange-300">
+                                <div class="text-lg font-bold text-orange-800 mb-2">
+                                    ⏰ Otomatis lanjut dalam <span id="countdownTimer" class="text-red-600">10</span> detik
+                                </div>
+                                <div class="text-sm text-orange-700">Klik "Selanjutnya" untuk lanjut sekarang</div>
+                            </div>
                         </div>
                         <div id="quizOptions" class="space-y-4">
                             <!-- Options will be generated here -->
@@ -1319,27 +1359,6 @@
         </div>
     </div>
 
-    <!-- Quiz Coming Soon Modal -->
-    <div id="quizComingSoonModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
-            <div class="text-center">
-                <div class="text-8xl mb-4">🚧</div>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Segera Hadir!</h3>
-                <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-6 rounded-xl mb-6">
-                    <p class="text-xl text-gray-700 font-semibold mb-2">
-                        Fitur Latihan Soal sedang dalam pengembangan
-                    </p>
-                    <p class="text-lg text-gray-600">
-                        Nantikan update selanjutnya! 🎯
-                    </p>
-                </div>
-                <button class="neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeQuizComingSoon()">
-                    👍 Mengerti!
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Global Variables
         let audioContext;
@@ -1360,7 +1379,16 @@
         let slide3Answered = false;
         let slide4Answered = false;
 
-
+        // Quiz Variables
+        let quizTimer;
+        let quizTimeLeft = 1500; // 25 minutes in seconds
+        let currentQuizQuestion = 0;
+        let quizAnswers = [];
+        let quizScore = 0;
+        let quizAnswerLocked = []; // Track which questions have been answered
+        let autoAdvanceTimer = null;
+        let countdownTimer = null;
+        let countdownSeconds = 10;
 
         // Memory Game Cards (Rebana pairs)
         const memoryCardImages = [
@@ -1386,6 +1414,155 @@
             ['https://i.imgur.com/0fxX71F.png', 'https://i.imgur.com/bsv7VA7.png'],
             ['https://i.imgur.com/hDz2ArX.png', 'https://i.imgur.com/974FBWr.png'],
             ['https://i.imgur.com/2witPyO.png', 'https://i.imgur.com/xte0thx.png']
+        ];
+
+        // Quiz Questions Data
+        const quizQuestions = [
+            {
+                title: "Pertanyaan 1",
+                description: "Perhatikan gambar kain corak insang diatas!",
+                image: "https://i.imgur.com/6FTTPjc.png",
+                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Apa informasi yang belum diketahui dari soal tersebut?",
+                options: [
+                    "tinggi segitiga merah",
+                    "tinggi segitiga hitam"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 2", 
+                description: "Perhatikan gambar kain corak insang diatas!",
+                image: "https://i.imgur.com/6FTTPjc.png",
+                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Tentukan perbandingan panjang sisi alas segitiga hitam dan panjang sisi alas segitiga merah.",
+                options: [
+                    "&frac13;",
+                    "&frac12;"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 3",
+                description: "Perhatikan gambar kain corak insang diatas!",
+                image: "https://i.imgur.com/6FTTPjc.png", 
+                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Berapa tinggi segitiga hitam?",
+                options: [
+                    "6",
+                    "4"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 4",
+                description: "Perhatikan gambar kain corak insang diatas!",
+                image: "https://i.imgur.com/6FTTPjc.png",
+                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
+                question: "Tentukan perbandingan tinggi segitiga hitam dan tinggi segitiga merah.",
+                options: [
+                    "&frac14;",
+                    "&frac12;"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 5",
+                description: "Perhatikan gambar diatas!",
+                image: "https://i.imgur.com/3hiKbI9.png",
+                context: "Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 15 m dan tinggi 9 m. Di bawah atap utama ada segitiga hiasan dengan alas 5 m.",
+                question: "Apakah segitiga hiasan dan segitiga besar merupakan dua segitiga yang sebangun?",
+                options: [
+                    "Tidak sebangun",
+                    "Sebangun"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 6",
+                description: "Perhatikan gambar diatas!",
+                image: "https://i.imgur.com/3hiKbI9.png",
+                context: "Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 15 m dan tinggi 9 m. Di bawah atap utama ada segitiga hiasan dengan alas 5 m.",
+                question: "Apakah benar perbandingan alas segitiga hiasan dan alas segitiga besar adalah",
+                questionImage: "https://i.imgur.com/rNj3xUZ.png",
+                options: [
+                    "salah",
+                    "benar"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 7",
+                description: "Perhatikan gambar diatas!",
+                image: "https://i.imgur.com/3hiKbI9.png",
+                context: "Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 15 m dan tinggi 9 m. Di bawah atap utama ada segitiga hiasan dengan alas 5 m.",
+                question: "Tinggi segitiga hiasan adalah …",
+                options: [
+                    "6 m",
+                    "3 m"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 8", 
+                description: "Perhatikan gambar diatas!",
+                image: "https://i.imgur.com/3hiKbI9.png",
+                context: "Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 15 m dan tinggi 9 m. Di bawah atap utama ada segitiga hiasan dengan alas 5 m.",
+                question: "Apakah perbandingan tinggi segitiga hiasan dan tinggi segitiga besar sama dengan perbandingan alas segitiga hiasan dan alas segitiga besar?",
+                options: [
+                    "tidak sama",
+                    "sama"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 9",
+                description: "Perhatikan gambar diatas!",
+                image: "https://i.imgur.com/Z76rW2C.png", 
+                context: "Pintu rumah adat Melayu tersebut memiliki tinggi 210 cm dan lebar 90 cm. Pada pintu tersebut terdapat panel-panel berbentuk persegi panjang yang sebangun dengan pintu utama. Panel pada pintu memiliki lebar 60 cm.",
+                question: "Apa informasi yang belum diketahui dari soal tersebut?",
+                options: [
+                    "lebar pintu utama",
+                    "tinggi panel"
+                ],
+                correct: 1
+            },
+            {
+                title: "Pertanyaan 10",
+                description: "Perhatikan gambar diatas!",
+                image: "https://i.imgur.com/Z76rW2C.png",
+                context: "Pintu rumah adat Melayu tersebut memiliki tinggi 210 cm dan lebar 90 cm. Pada pintu tersebut terdapat panel-panel berbentuk persegi panjang yang sebangun dengan pintu utama. Panel pada pintu memiliki lebar 60 cm.",
+                question: "Perbandingan sisi bersesuaian yang tepat digunakan adalah …",
+                options: [
+                    '<img src="https://i.imgur.com/FpFnPXB.png" alt="Perbandingan 1" class="inline-block max-h-16 object-contain" onerror="this.style.display=\'none\';">',
+                    '<img src="https://i.imgur.com/8RIOUZ4.png" alt="Perbandingan 2" class="inline-block max-h-16 object-contain" onerror="this.style.display=\'none\';">'
+                ],
+                correct: 0
+            },
+            {
+                title: "Pertanyaan 11",
+                description: "Perhatikan gambar diatas!",
+                image: "https://i.imgur.com/Z76rW2C.png",
+                context: "Pintu rumah adat Melayu tersebut memiliki tinggi 210 cm dan lebar 90 cm. Pada pintu tersebut terdapat panel-panel berbentuk persegi panjang yang sebangun dengan pintu utama. Panel pada pintu memiliki lebar 60 cm.",
+                question: "Berapa tinggi panel?",
+                options: [
+                    "140",
+                    "120"
+                ],
+                correct: 0
+            },
+            {
+                title: "Pertanyaan 12",
+                description: "Perhatikan gambar diatas!",
+                image: "https://i.imgur.com/Z76rW2C.png",
+                context: "Pintu rumah adat Melayu tersebut memiliki tinggi 210 cm dan lebar 90 cm. Pada pintu tersebut terdapat panel-panel berbentuk persegi panjang yang sebangun dengan pintu utama. Panel pada pintu memiliki lebar 60 cm.",
+                question: "Apakah perbandingan tinggi panel dan tinggi pintu sama dengan perbandingan lebar panel dan lebar pintu?",
+                options: [
+                    "sama",
+                    "tidak sama"
+                ],
+                correct: 0
+            }
         ];
 
         // Audio Functions
@@ -1764,102 +1941,76 @@
         function updateSlideDisplay() {
             // Hide all slides
             for (let i = 1; i <= totalSlides; i++) {
-                document.getElementById(`slide${i}`).classList.add('hidden');
+                const slide = document.getElementById(`slide${i}`);
+                if (slide) {
+                    slide.classList.add('hidden');
+                }
             }
             
             // Show current slide
-            document.getElementById(`slide${currentSlide}`).classList.remove('hidden');
-            
-            // Reset answer buttons and status when going back to slides 2, 3, or 4
-            if (currentSlide === 2) {
-                const btn1 = document.getElementById('slide2BtnSama');
-                const btn2 = document.getElementById('slide2BtnTidakSama');
-                const answerDiv = document.getElementById('slide2Answer');
-                if (btn1 && btn2) {
-                    btn1.disabled = false;
-                    btn2.disabled = false;
-                    btn1.classList.remove('opacity-50', 'cursor-not-allowed');
-                    btn2.classList.remove('opacity-50', 'cursor-not-allowed');
-                    if (answerDiv) {
-                        answerDiv.classList.add('hidden');
-                    }
-                    slide2Answered = false;
-                }
-            } else if (currentSlide === 3) {
-                const btn1 = document.getElementById('slide3BtnSama');
-                const btn2 = document.getElementById('slide3BtnTidakSama');
-                const answerDiv = document.getElementById('slide3Answer');
-                if (btn1 && btn2) {
-                    btn1.disabled = false;
-                    btn2.disabled = false;
-                    btn1.classList.remove('opacity-50', 'cursor-not-allowed');
-                    btn2.classList.remove('opacity-50', 'cursor-not-allowed');
-                    if (answerDiv) {
-                        answerDiv.classList.add('hidden');
-                    }
-                    slide3Answered = false;
-                }
-            } else if (currentSlide === 4) {
-                const textarea = document.getElementById('slide4Answer');
-                const feedback = document.getElementById('slide4Feedback');
-                if (textarea) {
-                    textarea.value = '';
-                }
-                if (feedback) {
-                    feedback.classList.add('hidden');
-                }
-                slide4Answered = false;
+            const currentSlideElement = document.getElementById(`slide${currentSlide}`);
+            if (currentSlideElement) {
+                currentSlideElement.classList.remove('hidden');
             }
             
             // Update indicators
             for (let i = 1; i <= totalSlides; i++) {
                 const indicator = document.getElementById(`slideIndicator${i}`);
-                if (i === currentSlide) {
-                    indicator.classList.add('active');
-                    indicator.classList.remove('bg-gray-300');
-                    indicator.classList.add('bg-blue-500');
-                } else {
+                if (indicator) {
                     indicator.classList.remove('active');
-                    indicator.classList.remove('bg-blue-500');
                     indicator.classList.add('bg-gray-300');
+                    indicator.classList.remove('bg-blue-500');
                 }
             }
             
-            // Update navigation buttons
-            updateNavigationButtons();
+            const activeIndicator = document.getElementById(`slideIndicator${currentSlide}`);
+            if (activeIndicator) {
+                activeIndicator.classList.add('active');
+                activeIndicator.classList.remove('bg-gray-300');
+                activeIndicator.classList.add('bg-blue-500');
+            }
             
-            // Update counter
-            document.getElementById('slideCounter').textContent = `Slide ${currentSlide} dari ${totalSlides}`;
-        }
-
-        function updateNavigationButtons() {
+            // Update navigation buttons
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             
-            prevBtn.disabled = currentSlide === 1;
-            
-            // Check if current slide requires an answer
-            let canProceed = true;
-            if (currentSlide === 2 && !slide2Answered) {
-                canProceed = false;
-            } else if (currentSlide === 3 && !slide3Answered) {
-                canProceed = false;
-            } else if (currentSlide === 4 && !slide4Answered) {
-                canProceed = false;
+            if (prevBtn) {
+                prevBtn.disabled = currentSlide === 1;
+                if (currentSlide === 1) {
+                    prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
             }
             
-            nextBtn.disabled = !canProceed || currentSlide === totalSlides;
+            if (nextBtn) {
+                let shouldDisableNext = currentSlide === totalSlides;
+                
+                // Check if current slide requires an answer and hasn't been answered
+                if (currentSlide === 2 && !slide2Answered) {
+                    shouldDisableNext = true;
+                } else if (currentSlide === 3 && !slide3Answered) {
+                    shouldDisableNext = true;
+                } else if (currentSlide === 4 && !slide4Answered) {
+                    shouldDisableNext = true;
+                }
+                
+                nextBtn.disabled = shouldDisableNext;
+                if (shouldDisableNext) {
+                    nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                } else {
+                    nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
             
-            // Add visual feedback for disabled state
-            if (nextBtn.disabled) {
-                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                nextBtn.classList.remove('hover:scale-105');
-            } else {
-                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                nextBtn.classList.add('hover:scale-105');
+            // Update slide counter
+            const slideCounter = document.getElementById('slideCounter');
+            if (slideCounter) {
+                slideCounter.textContent = `Slide ${currentSlide} dari ${totalSlides}`;
             }
         }
 
+        // Slide Answer Functions
         function showSlide1Popup() {
             document.getElementById('slide1PopupModal').classList.remove('hidden');
         }
@@ -1868,344 +2019,273 @@
             document.getElementById('slide1PopupModal').classList.add('hidden');
         }
 
-        // Slide 2 Answer Function
         function answerSlide2(answer) {
             const answerDiv = document.getElementById('slide2Answer');
-            answerDiv.classList.remove('hidden');
+            const btnSama = document.getElementById('slide2BtnSama');
+            const btnTidakSama = document.getElementById('slide2BtnTidakSama');
             
-            // Mark as answered and update navigation
             slide2Answered = true;
-            updateNavigationButtons();
-            
-            // Disable buttons after answering
-            document.getElementById('slide2BtnSama').disabled = true;
-            document.getElementById('slide2BtnTidakSama').disabled = true;
-            document.getElementById('slide2BtnSama').classList.add('opacity-50', 'cursor-not-allowed');
-            document.getElementById('slide2BtnTidakSama').classList.add('opacity-50', 'cursor-not-allowed');
             
             if (answer === 'sama') {
+                playSound('correct');
                 answerDiv.innerHTML = `
                     <div class="bg-green-100 border-l-4 border-green-500 p-4">
                         <div class="flex items-center">
-                            <div class="text-green-500 text-2xl mr-3">✅</div>
-                            <p class="text-green-700 font-semibold">Ya, kamu benar. Segitiga putih dan segitiga merah memiliki bentuk yang sama.</p>
+                            <div class="text-2xl mr-3">✅</div>
+                            <div>
+                                <h5 class="text-lg font-bold text-green-800">Benar!</h5>
+                                <p class="text-green-700">Ya, kamu benar. Segitiga putih dan segitiga merah memiliki bentuk yang sama.</p>
+                            </div>
                         </div>
                     </div>
                 `;
-                playSound('correct');
+                btnSama.classList.add('bg-green-500', 'border-green-600');
+                btnSama.classList.remove('bg-gradient-to-r', 'from-green-500', 'via-emerald-500', 'to-teal-500');
             } else {
+                playSound('wrong');
                 answerDiv.innerHTML = `
                     <div class="bg-red-100 border-l-4 border-red-500 p-4">
                         <div class="flex items-center">
-                            <div class="text-red-500 text-2xl mr-3">❌</div>
-                            <p class="text-red-700 font-semibold">Belum tepat. Jawaban yang benar adalah segitiga putih dan segitiga merah memiliki bentuk yang sama.</p>
+                            <div class="text-2xl mr-3">❌</div>
+                            <div>
+                                <h5 class="text-lg font-bold text-red-800">Belum Tepat</h5>
+                                <p class="text-red-700">Belum tepat. Jawaban yang benar adalah segitiga putih dan segitiga merah memiliki bentuk yang sama.</p>
+                            </div>
                         </div>
                     </div>
                 `;
-                playSound('wrong');
+                btnTidakSama.classList.add('bg-red-500', 'border-red-600');
+                btnTidakSama.classList.remove('bg-gradient-to-r', 'from-red-500', 'via-pink-500', 'to-rose-500');
             }
+            
+            answerDiv.classList.remove('hidden');
+            updateSlideDisplay(); // Update navigation buttons
         }
 
-        // Slide 3 Answer Function
         function answerSlide3(answer) {
             const answerDiv = document.getElementById('slide3Answer');
-            answerDiv.classList.remove('hidden');
+            const btnSama = document.getElementById('slide3BtnSama');
+            const btnTidakSama = document.getElementById('slide3BtnTidakSama');
             
-            // Mark as answered and update navigation
             slide3Answered = true;
-            updateNavigationButtons();
-            
-            // Disable buttons after answering
-            document.getElementById('slide3BtnSama').disabled = true;
-            document.getElementById('slide3BtnTidakSama').disabled = true;
-            document.getElementById('slide3BtnSama').classList.add('opacity-50', 'cursor-not-allowed');
-            document.getElementById('slide3BtnTidakSama').classList.add('opacity-50', 'cursor-not-allowed');
             
             if (answer === 'sama') {
+                playSound('correct');
                 answerDiv.innerHTML = `
                     <div class="bg-green-100 border-l-4 border-green-500 p-4 mb-4">
-                        <div class="flex items-center mb-3">
-                            <div class="text-green-500 text-2xl mr-3">✅</div>
-                            <p class="text-green-700 font-semibold">Ya, kamu benar. Sudut-sudut dan perbandingan sisi-sisi yang bersesuaian sama. Karena segitiga merah terbentuk dari garis yang sejajar dengan alas segitiga putih. Sehingga sudut-sudut yang bersesuaian sama besar. Jika dua segitiga memiliki sudut-sudut yang bersesuaian sama besar, maka sisi-sisi yang bersesuaian memiliki perbandingan yang sama.</p>
+                        <div class="flex items-center">
+                            <div class="text-2xl mr-3">✅</div>
+                            <div>
+                                <h5 class="text-lg font-bold text-green-800">Benar!</h5>
+                                <p class="text-green-700">Ya, kamu benar. Sudut-sudut dan perbandingan sisi-sisi yang bersesuaian sama. Karena segitiga merah terbentuk dari garis yang sejajar dengan alas segitiga putih. Sehingga sudut-sudut yang bersesuaian sama besar. Jika dua segitiga memiliki sudut-sudut yang bersesuaian sama besar, maka sisi-sisi yang bersesuaian memiliki perbandingan yang sama.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="text-center">
-                        <img src="https://i.imgur.com/x1f1LQy.png" alt="Penjelasan Sudut dan Sisi" class="w-full max-w-md mx-auto rounded-xl shadow-lg object-contain" style="max-height: 200px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 rounded-xl">
-                            <div class="text-4xl mb-2">📐</div>
-                            <p class="font-semibold">Penjelasan Sudut dan Sisi</p>
+                        <div class="bg-white p-4 rounded-xl shadow-lg">
+                            <img src="https://i.imgur.com/x1f1LQy.png" alt="Penjelasan Sudut dan Sisi" class="w-full h-auto max-h-48 object-contain rounded-lg mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                         </div>
                     </div>
                 `;
-                playSound('correct');
+                btnSama.classList.add('bg-green-500', 'border-green-600');
+                btnSama.classList.remove('bg-gradient-to-r', 'from-blue-500', 'via-indigo-500', 'to-purple-500');
             } else {
+                playSound('wrong');
                 answerDiv.innerHTML = `
                     <div class="bg-red-100 border-l-4 border-red-500 p-4 mb-4">
-                        <div class="flex items-center mb-3">
-                            <div class="text-red-500 text-2xl mr-3">❌</div>
-                            <p class="text-red-700 font-semibold">Belum tepat. Jawaban yang benar adalah sudut-sudut dan perbandingan sisi-sisi yang bersesuaian sama. Karena segitiga merah terbentuk dari garis yang sejajar dengan alas segitiga putih. Sehingga sudut-sudut yang bersesuaian sama besar. Jika dua segitiga memiliki sudut-sudut yang bersesuaian sama besar, maka sisi-sisi yang bersesuaian memiliki perbandingan yang sama.</p>
+                        <div class="flex items-center">
+                            <div class="text-2xl mr-3">❌</div>
+                            <div>
+                                <h5 class="text-lg font-bold text-red-800">Belum Tepat</h5>
+                                <p class="text-red-700">Belum tepat. Jawaban yang benar adalah sudut-sudut dan perbandingan sisi-sisi yang bersesuaian sama. Karena segitiga merah terbentuk dari garis yang sejajar dengan alas segitiga putih. Sehingga sudut-sudut yang bersesuaian sama besar. Jika dua segitiga memiliki sudut-sudut yang bersesuaian sama besar, maka sisi-sisi yang bersesuaian memiliki perbandingan yang sama.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="text-center">
-                        <img src="https://i.imgur.com/x1f1LQy.png" alt="Penjelasan Sudut dan Sisi" class="w-full max-w-md mx-auto rounded-xl shadow-lg object-contain" style="max-height: 200px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                        <div class="hidden bg-gradient-to-r from-blue-500 to-purple-500 text-white p-6 rounded-xl">
-                            <div class="text-4xl mb-2">📐</div>
-                            <p class="font-semibold">Penjelasan Sudut dan Sisi</p>
+                        <div class="bg-white p-4 rounded-xl shadow-lg">
+                            <img src="https://i.imgur.com/x1f1LQy.png" alt="Penjelasan Sudut dan Sisi" class="w-full h-auto max-h-48 object-contain rounded-lg mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
                         </div>
                     </div>
                 `;
-                playSound('wrong');
+                btnTidakSama.classList.add('bg-red-500', 'border-red-600');
+                btnTidakSama.classList.remove('bg-gradient-to-r', 'from-orange-500', 'via-red-500', 'to-pink-500');
             }
+            
+            answerDiv.classList.remove('hidden');
+            updateSlideDisplay(); // Update navigation buttons
         }
 
-        // Slide 4 Answer Check Function
         function checkSlide4Answer() {
-            const answer = document.getElementById('slide4Answer').value.trim();
+            const textarea = document.getElementById('slide4Answer');
             const feedback = document.getElementById('slide4Feedback');
+            const charCount = textarea.value.trim().length;
             
-            if (answer.length > 0) {
-                feedback.classList.remove('hidden');
+            if (charCount > 0) {
                 slide4Answered = true;
-                updateNavigationButtons();
+                feedback.classList.remove('hidden');
+                playSound('correct');
+                updateSlideDisplay(); // Update navigation buttons
             } else {
-                feedback.classList.add('hidden');
                 slide4Answered = false;
-                updateNavigationButtons();
-            }
-        }
-
-
-
-        function showMaterial() {
-            showPage('materialPage');
-            currentSlide = 1;
-            updateSlideDisplay();
-        }
-
-        function showMemoryGame() {
-            showPage('memoryGamePage');
-            initMemoryGame();
-        }
-
-
-
-        function toggleAudio() {
-            const audio = document.getElementById("backgroundAudio");
-            const audioIcon = document.getElementById('audioIcon');
-            const audioTooltip = document.getElementById('audioTooltip');
-            
-            initAudioContext();
-            
-            if (isAudioPlaying) {
-                audio.pause();
-                audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" clip-rule="evenodd"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>';
-                audioTooltip.textContent = 'Nyalakan Musik';
-                isAudioPlaying = false;
-            } else {
-                audio.play().then(() => {
-                    audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>';
-                    audioTooltip.textContent = 'Matikan Musik';
-                    isAudioPlaying = true;
-                }).catch(e => console.log('Audio play failed:', e));
+                feedback.classList.add('hidden');
+                updateSlideDisplay(); // Update navigation buttons
             }
         }
 
         // Memory Game Functions
         function initMemoryGame() {
             memoryGameMatches = 0;
-            memoryGameStartTime = Date.now();
+            memoryCards = [];
             flippedCards = [];
             canFlip = true;
             
-            // Create card pairs using the 12 images
-            memoryCards = [...memoryCardImages];
-            shuffleArray(memoryCards);
-            
-            // Create game board
-            const gameBoard = document.getElementById('memoryGameBoard');
-            gameBoard.innerHTML = '';
-            
-            memoryCards.forEach((card, index) => {
-                const cardElement = document.createElement('div');
-                cardElement.className = 'memory-card';
-                cardElement.dataset.index = index;
-                cardElement.dataset.value = card;
-                
-                // Create front image (cover)
-                const frontImg = document.createElement('img');
-                frontImg.src = 'https://i.imgur.com/vHjoLP5.png';
-                frontImg.alt = 'Kartu Rebana';
-                frontImg.onerror = function() {
-                    this.style.display = 'none';
-                    cardElement.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    cardElement.innerHTML = '🎵';
-                };
-                
-                cardElement.appendChild(frontImg);
-                cardElement.addEventListener('click', () => flipCard(index));
-                gameBoard.appendChild(cardElement);
+            // Create card pairs
+            const cards = [];
+            memoryCardPairs.forEach(pair => {
+                cards.push({image: pair[0], pairId: pair[0]});
+                cards.push({image: pair[1], pairId: pair[0]});
             });
             
-            // Start timer
+            // Shuffle cards
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            
+            memoryCards = cards;
+            renderMemoryGame();
             startMemoryGameTimer();
             updateMemoryGameStats();
         }
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        function renderMemoryGame() {
+            const board = document.getElementById('memoryGameBoard');
+            board.innerHTML = '';
+            
+            memoryCards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card';
+                cardElement.innerHTML = `
+                    <img src="${card.image}" alt="Rebana ${index + 1}" style="display: none;">
+                    <div class="card-back" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 10px; padding: 4px;">
+                        <img src="https://i.imgur.com/vHjoLP5.png" alt="Sampul Kartu" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size: 2rem;\'>🥁</span>';">
+                    </div>
+                `;
+                cardElement.onclick = () => flipMemoryCard(index);
+                board.appendChild(cardElement);
+            });
+        }
+
+        function flipMemoryCard(index) {
+            if (!canFlip || flippedCards.includes(index) || flippedCards.length >= 2) {
+                return;
             }
-        }
-
-        function startMemoryGameTimer() {
-            memoryGameTimer = setInterval(() => {
-                const elapsed = Math.floor((Date.now() - memoryGameStartTime) / 1000);
-                const minutes = Math.floor(elapsed / 60);
-                const seconds = elapsed % 60;
-                document.getElementById('memoryGameTimer').textContent = 
-                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            }, 1000);
-        }
-
-        function flipCard(index) {
-            if (!canFlip || flippedCards.includes(index)) return;
-            
-            const cardElement = document.querySelector(`[data-index="${index}"]`);
-            const cardValue = cardElement.dataset.value;
-            
-            // Replace front image with back image
-            const backImg = document.createElement('img');
-            backImg.src = cardValue;
-            backImg.alt = 'Rebana';
-            backImg.onerror = function() {
-                this.style.display = 'none';
-                cardElement.style.background = 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)';
-                cardElement.innerHTML = '🥁';
-            };
-            
-            cardElement.innerHTML = '';
-            cardElement.appendChild(backImg);
-            cardElement.classList.add('flipped');
-            flippedCards.push(index);
             
             playSound('select');
             
+            const cardElement = document.querySelectorAll('.memory-card')[index];
+            const img = cardElement.querySelector('img');
+            const back = cardElement.querySelector('.card-back');
+            
+            img.style.display = 'block';
+            back.style.display = 'none';
+            cardElement.classList.add('flipped');
+            
+            flippedCards.push(index);
+            
             if (flippedCards.length === 2) {
                 canFlip = false;
-                setTimeout(checkMatch, 1000);
+                setTimeout(checkMemoryMatch, 1000);
             }
         }
 
-        function checkMatch() {
+        function checkMemoryMatch() {
             const [first, second] = flippedCards;
-            const firstCard = document.querySelector(`[data-index="${first}"]`);
-            const secondCard = document.querySelector(`[data-index="${second}"]`);
+            const firstCard = memoryCards[first];
+            const secondCard = memoryCards[second];
             
-            const firstValue = firstCard.dataset.value;
-            const secondValue = secondCard.dataset.value;
-            
-            // Check if cards are a matching pair
-            let isMatch = false;
-            for (let pair of memoryCardPairs) {
-                if ((pair[0] === firstValue && pair[1] === secondValue) || 
-                    (pair[1] === firstValue && pair[0] === secondValue)) {
-                    isMatch = true;
-                    break;
-                }
-            }
-            
-            if (isMatch) {
+            if (firstCard.pairId === secondCard.pairId) {
                 // Match found
-                firstCard.classList.add('matched');
-                secondCard.classList.add('matched');
-                memoryGameMatches++;
-                updateMemoryGameStats();
                 playSound('correct');
+                document.querySelectorAll('.memory-card')[first].classList.add('matched');
+                document.querySelectorAll('.memory-card')[second].classList.add('matched');
+                memoryGameMatches++;
                 
                 if (memoryGameMatches === 6) {
-                    // Game completed (6 pairs)
-                    setTimeout(() => {
-                        finishMemoryGame();
-                        playSound('celebration');
-                    }, 500);
+                    setTimeout(showMemoryGameResults, 500);
                 }
             } else {
-                // No match - flip back to front
-                const frontImg1 = document.createElement('img');
-                frontImg1.src = 'https://i.imgur.com/vHjoLP5.png';
-                frontImg1.alt = 'Kartu Rebana';
-                frontImg1.onerror = function() {
-                    this.style.display = 'none';
-                    firstCard.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    firstCard.innerHTML = '🎵';
-                };
-                
-                const frontImg2 = document.createElement('img');
-                frontImg2.src = 'https://i.imgur.com/vHjoLP5.png';
-                frontImg2.alt = 'Kartu Rebana';
-                frontImg2.onerror = function() {
-                    this.style.display = 'none';
-                    secondCard.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                    secondCard.innerHTML = '🎵';
-                };
-                
-                firstCard.innerHTML = '';
-                secondCard.innerHTML = '';
-                firstCard.appendChild(frontImg1);
-                secondCard.appendChild(frontImg2);
-                firstCard.classList.remove('flipped');
-                secondCard.classList.remove('flipped');
+                // No match
                 playSound('wrong');
+                const firstElement = document.querySelectorAll('.memory-card')[first];
+                const secondElement = document.querySelectorAll('.memory-card')[second];
+                
+                firstElement.querySelector('img').style.display = 'none';
+                firstElement.querySelector('.card-back').style.display = 'flex';
+                firstElement.classList.remove('flipped');
+                
+                secondElement.querySelector('img').style.display = 'none';
+                secondElement.querySelector('.card-back').style.display = 'flex';
+                secondElement.classList.remove('flipped');
             }
             
             flippedCards = [];
             canFlip = true;
+            updateMemoryGameStats();
+        }
+
+        function startMemoryGameTimer() {
+            memoryGameStartTime = Date.now();
+            memoryGameTimer = setInterval(updateMemoryGameTimer, 1000);
+        }
+
+        function updateMemoryGameTimer() {
+            const elapsed = Math.floor((Date.now() - memoryGameStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('memoryGameTimer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function updateMemoryGameStats() {
             document.getElementById('memoryGameMatches').textContent = memoryGameMatches;
         }
 
-        function finishMemoryGame() {
+        function resetMemoryGame() {
+            clearInterval(memoryGameTimer);
+            initMemoryGame();
+        }
+
+        function showMemoryGameResults() {
             clearInterval(memoryGameTimer);
             const elapsed = Math.floor((Date.now() - memoryGameStartTime) / 1000);
             const minutes = Math.floor(elapsed / 60);
             const seconds = elapsed % 60;
             const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
             
-            showMemoryGameResults(timeString);
-            playSound('complete');
-        }
-
-        function showMemoryGameResults(finalTime) {
-            document.getElementById('memoryFinalTime').textContent = finalTime;
+            document.getElementById('memoryFinalTime').textContent = timeString;
             
-            const resultEmoji = document.getElementById('memoryResultEmoji');
-            const scoreMessage = document.getElementById('memoryScoreMessage');
+            let message = '';
+            let emoji = '';
             
-            const totalSeconds = parseInt(finalTime.split(':')[0]) * 60 + parseInt(finalTime.split(':')[1]);
-            
-            if (totalSeconds <= 60) {
-                resultEmoji.textContent = '🏆';
-                scoreMessage.textContent = 'Luar biasa! Kamu sangat cepat!';
-            } else if (totalSeconds <= 120) {
-                resultEmoji.textContent = '🎉';
-                scoreMessage.textContent = 'Hebat! Waktu yang bagus!';
-            } else if (totalSeconds <= 180) {
-                resultEmoji.textContent = '👍';
-                scoreMessage.textContent = 'Bagus! Terus berlatih!';
+            if (elapsed < 60) {
+                message = 'Luar biasa! Kamu sangat cepat!';
+                emoji = '🏆';
+            } else if (elapsed < 120) {
+                message = 'Hebat! Waktu yang bagus!';
+                emoji = '🎉';
+            } else if (elapsed < 180) {
+                message = 'Bagus! Terus berlatih!';
+                emoji = '👏';
             } else {
-                resultEmoji.textContent = '😊';
-                scoreMessage.textContent = 'Tidak buruk! Coba lagi untuk waktu yang lebih baik!';
+                message = 'Selamat! Kamu berhasil menyelesaikannya!';
+                emoji = '🎊';
             }
             
+            document.getElementById('memoryResultEmoji').textContent = emoji;
+            document.getElementById('memoryScoreMessage').textContent = message;
             document.getElementById('memoryGameResultsModal').classList.remove('hidden');
-        }
-
-        function resetMemoryGame() {
-            clearInterval(memoryGameTimer);
-            initMemoryGame();
+            
+            playSound('complete');
         }
 
         function restartMemoryGame() {
@@ -2217,473 +2297,340 @@
             document.getElementById('memoryGameResultsModal').classList.add('hidden');
         }
 
-        // Quiz Variables
-        let currentQuizQuestion = 0;
-        let currentSubQuestion = 0;
-        let quizTimer;
-        let quizStartTime;
-        let quizTimeLimit = 25 * 60; // 25 minutes in seconds
-        let quizScore = 0;
-        let quizCorrectCount = 0; // Track correct answers in real-time
-        let totalQuizQuestions = 12; // 3 main questions × 4 sub-questions each
-        let userAnswers = [];
-        let lockedAnswers = []; // Track which answers are locked (can't be changed)
-
-        // Quiz Data
-        const quizData = [
-            {
-                title: "Pertanyaan 1",
-                description: "Perhatikan gambar kain corak insang diatas!",
-                image: "https://i.imgur.com/6FTTPjc.png",
-                context: "Pada gambar terdapat dua segitiga, yaitu segitiga dengan garis tepi merah dan segitiga dengan garis tepi hitam. Diketahui panjang sisi alas segitiga merah adalah 12 cm, dan tinggi segitiga merah adalah 8 cm. Segitiga hitam berada di dalam segitiga merah dan sebangun dengan segitiga merah. Panjang sisi alas segitiga hitam adalah 6 cm.",
-                questions: [
-                    {
-                        question: "Apa informasi yang belum diketahui dari soal tersebut?",
-                        options: ["tinggi segitiga merah", "tinggi segitiga hitam"],
-                        correct: 1
-                    },
-                    {
-                        question: "Tentukan perbandingan panjang sisi alas segitiga hitam dan panjang sisi alas segitiga merah.",
-                        options: ["⅓", "½"],
-                        correct: 1
-                    },
-                    {
-                        question: "Berapa tinggi segitiga hitam?",
-                        options: ["6", "4"],
-                        correct: 1
-                    },
-                    {
-                        question: "Tentukan perbandingan tinggi segitiga hitam dan tinggi segitiga merah.",
-                        options: ["¼", "½"],
-                        correct: 1
-                    }
-                ]
-            },
-            {
-                title: "Pertanyaan 2",
-                description: "Perhatikan gambar diatas!",
-                image: "https://i.imgur.com/3hiKbI9.png",
-                context: "Atap rumah adat Melayu berbentuk segitiga sama kaki dengan alas 15 m dan tinggi 9 m. Di bawah atap utama ada segitiga hiasan dengan alas 5 m.",
-                questions: [
-                    {
-                        question: "Apakah segitiga hiasan dan segitiga besar merupakan dua segitiga yang sebangun?",
-                        options: ["Sebangun", "Tidak sebangun"],
-                        correct: 0
-                    },
-                    {
-                        question: "Apakah benar perbandingan alas segitiga hiasan dan alas segitiga besar adalah ⅓?",
-                        options: ["benar", "salah"],
-                        correct: 0
-                    },
-                    {
-                        question: "Tinggi segitiga hiasan adalah …",
-                        options: ["6 m", "3 m"],
-                        correct: 1
-                    },
-                    {
-                        question: "Apakah perbandingan tinggi segitiga hiasan dan tinggi segitiga besar sama dengan perbandingan alas segitiga hiasan dan alas segitiga besar?",
-                        options: ["sama", "tidak sama"],
-                        correct: 0
-                    }
-                ]
-            },
-            {
-                title: "Pertanyaan 3",
-                description: "Perhatikan gambar diatas!",
-                image: "https://i.imgur.com/Z76rW2C.png",
-                context: "Pintu rumah adat Melayu tersebut memiliki tinggi 210 cm dan lebar 90 cm. Pada pintu tersebut terdapat panel-panel berbentuk persegi panjang yang sebangun dengan pintu utama. Panel pada pintu memiliki lebar 60 cm.",
-                questions: [
-                    {
-                        question: "Apa informasi yang belum diketahui dari soal tersebut?",
-                        options: ["tinggi panel", "lebar pintu utama"],
-                        correct: 0
-                    },
-                    {
-                        question: "Perbandingan sisi bersesuaian yang tepat digunakan adalah …",
-                        options: ["<img src='https://i.imgur.com/FpFnPXB.png' alt='Rumus A' class='w-full max-w-xs mx-auto rounded-lg shadow-md' onerror='this.style.display=\"none\"; this.nextElementSibling.style.display=\"block\";'><div class='hidden text-center bg-blue-100 p-3 rounded-lg'><span class='font-bold'>tinggi panel / tinggi pintu = lebar panel / lebar pintu</span></div>", "<img src='https://i.imgur.com/8RIOUZ4.png' alt='Rumus B' class='w-full max-w-xs mx-auto rounded-lg shadow-md' onerror='this.style.display=\"none\"; this.nextElementSibling.style.display=\"block\";'><div class='hidden text-center bg-orange-100 p-3 rounded-lg'><span class='font-bold'>tinggi panel / lebar panel = tinggi pintu / lebar pintu</span></div>"],
-                        correct: 0
-                    },
-                    {
-                        question: "Berapa tinggi panel?",
-                        options: ["140", "120"],
-                        correct: 0
-                    },
-                    {
-                        question: "Apakah perbandingan tinggi panel dan tinggi pintu sama dengan perbandingan lebar panel dan lebar pintu?",
-                        options: ["sama", "tidak sama"],
-                        correct: 0
-                    }
-                ]
-            }
-        ];
-
-        function showQuiz() {
-            document.getElementById("homePage").classList.add("hidden");
-            document.getElementById("quizPage").classList.remove("hidden");
-            initQuiz();
-        }
-
+        // Quiz Functions
         function initQuiz() {
             currentQuizQuestion = 0;
-            currentSubQuestion = 0;
+            quizAnswers = new Array(quizQuestions.length).fill(null);
+            quizAnswerLocked = new Array(quizQuestions.length).fill(false);
             quizScore = 0;
-            quizCorrectCount = 0;
-            userAnswers = [];
-            lockedAnswers = [];
-            quizStartTime = Date.now();
+            quizTimeLeft = 1500; // 25 minutes
             
-            // Display player name
             document.getElementById('playerNameDisplay').textContent = playerName;
+            document.getElementById('quizCorrectCount').textContent = '0';
             
-            // Start timer
             startQuizTimer();
-            
-            // Show first question
             displayQuizQuestion();
-            
-            playSound('start');
         }
 
         function startQuizTimer() {
             quizTimer = setInterval(() => {
-                const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
-                const remaining = Math.max(0, quizTimeLimit - elapsed);
+                quizTimeLeft--;
+                updateQuizTimer();
                 
-                const minutes = Math.floor(remaining / 60);
-                const seconds = remaining % 60;
-                
-                document.getElementById('quizTimer').textContent = 
-                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                // Update progress bar
-                const progress = ((quizTimeLimit - remaining) / quizTimeLimit) * 100;
-                document.getElementById('quizTimerProgress').style.width = progress + '%';
-                
-                // Change color based on remaining time
-                const progressBar = document.getElementById('quizTimerProgress');
-                if (remaining < 300) { // Less than 5 minutes
-                    progressBar.style.background = 'linear-gradient(90deg, #EF4444, #DC2626)';
-                } else if (remaining < 600) { // Less than 10 minutes
-                    progressBar.style.background = 'linear-gradient(90deg, #F59E0B, #D97706)';
-                } else {
-                    progressBar.style.background = 'linear-gradient(90deg, #10B981, #059669)';
-                }
-                
-                if (remaining === 0) {
+                if (quizTimeLeft <= 0) {
                     clearInterval(quizTimer);
                     finishQuiz();
-                    playSound('warning');
                 }
             }, 1000);
         }
 
+        function updateQuizTimer() {
+            const minutes = Math.floor(quizTimeLeft / 60);
+            const seconds = quizTimeLeft % 60;
+            document.getElementById('quizTimer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when time is running low
+            const timerElement = document.getElementById('quizTimer');
+            if (quizTimeLeft <= 300) { // 5 minutes
+                timerElement.classList.add('text-red-400');
+                timerElement.classList.remove('text-blue-400');
+            } else {
+                timerElement.classList.add('text-blue-400');
+                timerElement.classList.remove('text-red-400');
+            }
+        }
+
         function displayQuizQuestion() {
-            const currentData = quizData[currentQuizQuestion];
-            const currentQ = currentData.questions[currentSubQuestion];
+            const question = quizQuestions[currentQuizQuestion];
             
-            // Update question info
-            document.getElementById('quizQuestionTitle').textContent = currentData.title;
-            document.getElementById('quizQuestionDescription').textContent = currentData.description;
-            document.getElementById('quizQuestionContext').textContent = currentData.context;
+            document.getElementById('quizQuestionTitle').textContent = question.title;
+            document.getElementById('quizQuestionDescription').textContent = question.description;
+            document.getElementById('quizQuestionContext').textContent = question.context;
+            document.getElementById('quizSubQuestion').textContent = question.question;
             
-            // Update image container based on question
+            // Update main image
             const imageContainer = document.getElementById('quizImageContainer');
-            
             imageContainer.innerHTML = `
-                <img src="${currentData.image}" alt="Gambar Soal" class="w-full max-w-lg mx-auto rounded-xl shadow-lg object-contain" style="max-height: 300px; height: auto;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-                <div class="hidden text-center">
-                    <div class="text-6xl mb-4">${currentQuizQuestion === 0 ? '🎨' : currentQuizQuestion === 1 ? '🏠' : '🚪'}</div>
-                    <p class="text-lg font-semibold">${currentQuizQuestion === 0 ? 'Kain Corak Insang' : currentQuizQuestion === 1 ? 'Atap Rumah Adat Melayu' : 'Pintu Rumah Adat Melayu'}</p>
-                </div>
+                <img src="${question.image}" alt="Soal ${currentQuizQuestion + 1}" class="w-full h-auto max-h-64 object-contain rounded-lg mb-4 mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
             `;
-            imageContainer.className = 'bg-white p-4 rounded-xl border-2 border-gray-200';
             
-            // Update sub-question
-            document.getElementById('quizSubQuestion').textContent = `${currentSubQuestion + 1}. ${currentQ.question}`;
+            // Update question image if exists
+            const questionImageContainer = document.getElementById('quizQuestionImageContainer');
+            if (question.questionImage) {
+                questionImageContainer.innerHTML = `
+                    <img src="${question.questionImage}" alt="Gambar Pertanyaan" class="max-h-16 object-contain mx-auto" onerror="this.src=''; this.alt='Gambar tidak dapat dimuat'; this.style.display='none';">
+                `;
+                questionImageContainer.classList.remove('hidden');
+            } else {
+                questionImageContainer.classList.add('hidden');
+            }
             
-            // Update options
+            // Generate options
             const optionsContainer = document.getElementById('quizOptions');
             optionsContainer.innerHTML = '';
             
-            const answerKey = `${currentQuizQuestion}-${currentSubQuestion}`;
-            const isLocked = lockedAnswers.includes(answerKey);
-            
-            currentQ.options.forEach((option, index) => {
-                const button = document.createElement('button');
-                button.className = 'quiz-option w-full text-left';
-                button.innerHTML = `<span class="font-bold">${String.fromCharCode(65 + index)}.</span> ${option}`;
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
                 
-                if (isLocked) {
-                    button.disabled = true;
-                    button.classList.add('opacity-50', 'cursor-not-allowed');
-                    button.onclick = null;
+                // Check if option contains HTML (for images)
+                if (option.includes('<img')) {
+                    optionElement.innerHTML = `${String.fromCharCode(65 + index)}. ${option}`;
                 } else {
-                    button.onclick = () => selectQuizAnswer(index);
+                    optionElement.innerHTML = `${String.fromCharCode(65 + index)}. ${option}`;
                 }
                 
-                optionsContainer.appendChild(button);
+                optionElement.onclick = () => selectQuizAnswer(index);
+                optionElement.id = `quizOption${index}`;
+                optionElement.style.pointerEvents = 'auto';
+                optionElement.style.cursor = 'pointer';
+                optionsContainer.appendChild(optionElement);
             });
             
+            // Hide countdown initially
+            hideAutoAdvanceCountdown();
+            
+            // Restore previous answer if exists and show results if locked
+            if (quizAnswers[currentQuizQuestion] !== null) {
+                const selectedOption = document.getElementById(`quizOption${quizAnswers[currentQuizQuestion]}`);
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+                document.getElementById('quizNextBtn').disabled = false;
+                document.getElementById('quizNextBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+                
+                // If answer is locked, show results and disable options
+                if (quizAnswerLocked[currentQuizQuestion]) {
+                    showQuizAnswerResults();
+                    disableQuizOptions();
+                }
+            } else {
+                document.getElementById('quizNextBtn').disabled = true;
+                document.getElementById('quizNextBtn').classList.add('opacity-50', 'cursor-not-allowed');
+            }
+            
+            // Update navigation
+            document.getElementById('quizPrevBtn').disabled = currentQuizQuestion === 0;
+            if (currentQuizQuestion === 0) {
+                document.getElementById('quizPrevBtn').classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                document.getElementById('quizPrevBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+            
             // Update progress
-            const totalAnswered = (currentQuizQuestion * 4) + currentSubQuestion;
-            const currentQuestionNumber = totalAnswered + 1;
+            document.getElementById('quizProgress2').textContent = currentQuizQuestion + 1;
             
-            // Update both progress displays
-            const progressElement = document.getElementById('quizProgress');
-            const progress2Element = document.getElementById('quizProgress2');
-            
-            if (progressElement) {
-                progressElement.textContent = `${currentQuestionNumber}/${totalQuizQuestions}`;
+            // Update next button text
+            const nextBtn = document.getElementById('quizNextBtn');
+            if (currentQuizQuestion === quizQuestions.length - 1) {
+                nextBtn.textContent = 'Selesai 🏁';
+            } else {
+                nextBtn.textContent = 'Selanjutnya ➡️';
             }
-            if (progress2Element) {
-                progress2Element.textContent = `${currentQuestionNumber}`;
-            }
-            
-            document.getElementById('quizCorrectCount').textContent = quizCorrectCount;
-            
-            // Update progress bars (if they exist)
-            const progressPercentage = (currentQuestionNumber / totalQuizQuestions) * 100;
-            const progressBar = document.getElementById('quizProgressBar');
-            if (progressBar) {
-                progressBar.style.width = progressPercentage + '%';
-            }
-            
-            const scorePercentage = (quizCorrectCount / totalQuizQuestions) * 100;
-            const scoreBar = document.getElementById('quizScoreBar');
-            if (scoreBar) {
-                scoreBar.style.width = scorePercentage + '%';
-            }
-            
-            // Update navigation buttons
-            updateQuizNavigation();
         }
 
-        function selectQuizAnswer(selectedIndex) {
-            const answerKey = `${currentQuizQuestion}-${currentSubQuestion}`;
-            
-            // Check if answer is already locked
-            if (lockedAnswers.includes(answerKey)) {
+        function selectQuizAnswer(answerIndex) {
+            // Don't allow answer changes if already locked
+            if (quizAnswerLocked[currentQuizQuestion]) {
                 return;
             }
             
-            const options = document.querySelectorAll('.quiz-option');
-            options.forEach((option, index) => {
-                option.classList.remove('selected', 'correct', 'incorrect');
-                if (index === selectedIndex) {
-                    option.classList.add('selected');
+            playSound('select');
+            
+            // Remove previous selection
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Add selection to clicked option
+            document.getElementById(`quizOption${answerIndex}`).classList.add('selected');
+            
+            // Store answer and lock it
+            quizAnswers[currentQuizQuestion] = answerIndex;
+            quizAnswerLocked[currentQuizQuestion] = true;
+            
+            // Enable next button
+            document.getElementById('quizNextBtn').disabled = false;
+            document.getElementById('quizNextBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+            
+            // Show answer results
+            showQuizAnswerResults();
+            disableQuizOptions();
+            
+            // Show countdown and auto advance after 10 seconds
+            startAutoAdvanceCountdown();
+        }
+
+        function showQuizAnswerResults() {
+            const question = quizQuestions[currentQuizQuestion];
+            const userAnswer = quizAnswers[currentQuizQuestion];
+            const correctAnswer = question.correct;
+            
+            // Show correct/incorrect styling
+            question.options.forEach((option, index) => {
+                const optionElement = document.getElementById(`quizOption${index}`);
+                if (index === correctAnswer) {
+                    optionElement.classList.add('correct');
+                } else if (index === userAnswer && index !== correctAnswer) {
+                    optionElement.classList.add('incorrect');
                 }
             });
             
-            // Store answer
-            userAnswers[answerKey] = selectedIndex;
+            // Update score if correct
+            if (userAnswer === correctAnswer) {
+                playSound('correct');
+                quizScore++;
+                document.getElementById('quizCorrectCount').textContent = quizScore;
+            } else {
+                playSound('wrong');
+            }
+        }
+        
+        function disableQuizOptions() {
+            document.querySelectorAll('.quiz-option').forEach(option => {
+                option.style.pointerEvents = 'none';
+                option.style.cursor = 'default';
+            });
+        }
+        
+        function startAutoAdvanceCountdown() {
+            countdownSeconds = 10;
+            document.getElementById('countdownTimer').textContent = countdownSeconds;
+            document.getElementById('autoAdvanceCountdown').classList.remove('hidden');
             
-            playSound('select');
-            
-            // Check if answer is correct and show feedback
-            const currentData = quizData[currentQuizQuestion];
-            const currentQ = currentData.questions[currentSubQuestion];
-            const isCorrect = selectedIndex === currentQ.correct;
-            
-            // Show correct/incorrect feedback
-            setTimeout(() => {
-                options.forEach((option, index) => {
-                    if (index === currentQ.correct) {
-                        option.classList.add('correct');
-                    } else if (index === selectedIndex && !isCorrect) {
-                        option.classList.add('incorrect');
+            countdownTimer = setInterval(() => {
+                countdownSeconds--;
+                document.getElementById('countdownTimer').textContent = countdownSeconds;
+                
+                if (countdownSeconds <= 0) {
+                    clearInterval(countdownTimer);
+                    if (currentQuizQuestion < quizQuestions.length - 1) {
+                        nextQuizQuestion();
+                    } else {
+                        finishQuiz();
                     }
-                });
-                
-                // Lock this answer so it can't be changed
-                lockedAnswers.push(answerKey);
-                
-                // Update correct count if answer is correct
-                if (isCorrect) {
-                    quizCorrectCount++;
-                    document.getElementById('quizCorrectCount').textContent = quizCorrectCount;
-                    
-                    // Update score progress bar
-                    const scorePercentage = (quizCorrectCount / totalQuizQuestions) * 100;
-                    document.getElementById('quizScoreBar').style.width = scorePercentage + '%';
                 }
-                
-                // Enable next button immediately after answer is selected
-                const nextBtn = document.getElementById('quizNextBtn');
-                nextBtn.disabled = false;
-                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                
-                // Disable all option buttons
-                options.forEach(option => {
-                    option.disabled = true;
-                    option.classList.add('cursor-not-allowed');
-                    option.onclick = null;
-                });
-                
-                if (isCorrect) {
-                    playSound('correct');
+            }, 1000);
+            
+            // Also set the main timer
+            autoAdvanceTimer = setTimeout(() => {
+                if (currentQuizQuestion < quizQuestions.length - 1) {
+                    nextQuizQuestion();
                 } else {
-                    playSound('wrong');
+                    finishQuiz();
                 }
-                
-                // Store timeout ID so we can clear it if user clicks next manually
-                const autoAdvanceTimeout = setTimeout(() => {
-                    nextQuizQuestion();
-                }, 10000);
-                
-                // Set up next button click handler to clear auto-advance
-                const originalNextHandler = nextBtn.onclick;
-                nextBtn.onclick = () => {
-                    clearTimeout(autoAdvanceTimeout);
-                    playSound('click');
-                    nextQuizQuestion();
-                };
-                
-            }, 500);
+            }, 10000);
+        }
+        
+        function hideAutoAdvanceCountdown() {
+            document.getElementById('autoAdvanceCountdown').classList.add('hidden');
+            if (countdownTimer) {
+                clearInterval(countdownTimer);
+                countdownTimer = null;
+            }
         }
 
         function nextQuizQuestion() {
-            const answerKey = `${currentQuizQuestion}-${currentSubQuestion}`;
-            if (userAnswers[answerKey] === undefined) {
+            if (quizAnswers[currentQuizQuestion] === null) {
                 playSound('wrong');
                 return;
             }
             
-            // Score is already updated in selectQuizAnswer function
-            // Just use the current quizCorrectCount as the final score
-            quizScore = quizCorrectCount;
-            
-            // Move to next question
-            currentSubQuestion++;
-            
-            if (currentSubQuestion >= quizData[currentQuizQuestion].questions.length) {
-                // Move to next main question
-                currentQuizQuestion++;
-                currentSubQuestion = 0;
-                
-                if (currentQuizQuestion >= quizData.length) {
-                    // Quiz finished
-                    finishQuiz();
-                    return;
-                }
+            // Clear timers
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
             }
+            hideAutoAdvanceCountdown();
             
-            displayQuizQuestion();
+            if (currentQuizQuestion < quizQuestions.length - 1) {
+                currentQuizQuestion++;
+                displayQuizQuestion();
+            } else {
+                finishQuiz();
+            }
         }
 
         function previousQuizQuestion() {
-            if (currentSubQuestion > 0) {
-                currentSubQuestion--;
-            } else if (currentQuizQuestion > 0) {
-                currentQuizQuestion--;
-                currentSubQuestion = quizData[currentQuizQuestion].questions.length - 1;
-            }
-            
-            displayQuizQuestion();
-            
-            // Check if this question was already answered
-            const answerKey = `${currentQuizQuestion}-${currentSubQuestion}`;
-            if (userAnswers[answerKey] !== undefined) {
-                const options = document.querySelectorAll('.quiz-option');
-                const selectedIndex = userAnswers[answerKey];
-                
-                if (lockedAnswers.includes(answerKey)) {
-                    // Show the final state with correct/incorrect colors
-                    const currentData = quizData[currentQuizQuestion];
-                    const currentQ = currentData.questions[currentSubQuestion];
-                    
-                    options.forEach((option, index) => {
-                        if (index === currentQ.correct) {
-                            option.classList.add('correct');
-                        } else if (index === selectedIndex && selectedIndex !== currentQ.correct) {
-                            option.classList.add('incorrect');
-                        }
-                        option.disabled = true;
-                        option.classList.add('cursor-not-allowed');
-                        option.onclick = null;
-                    });
-                } else {
-                    options[selectedIndex].classList.add('selected');
+            if (currentQuizQuestion > 0) {
+                // Clear timers
+                if (autoAdvanceTimer) {
+                    clearTimeout(autoAdvanceTimer);
+                    autoAdvanceTimer = null;
                 }
+                hideAutoAdvanceCountdown();
                 
-                document.getElementById('quizNextBtn').disabled = false;
-                document.getElementById('quizNextBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+                currentQuizQuestion--;
+                displayQuizQuestion();
             }
-        }
-
-        function updateQuizNavigation() {
-            const prevBtn = document.getElementById('quizPrevBtn');
-            const nextBtn = document.getElementById('quizNextBtn');
-            
-            // Previous button
-            prevBtn.disabled = (currentQuizQuestion === 0 && currentSubQuestion === 0);
-            
-            // Next button
-            const answerKey = `${currentQuizQuestion}-${currentSubQuestion}`;
-            const hasAnswer = userAnswers[answerKey] !== undefined;
-            
-            nextBtn.disabled = !hasAnswer;
-            if (nextBtn.disabled) {
-                nextBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            } else {
-                nextBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-            
-            // Set up next button click handler
-            nextBtn.onclick = () => {
-                playSound('click');
-                nextQuizQuestion();
-            };
-            
-            // Update button text for last question
-            const isLastQuestion = (currentQuizQuestion === quizData.length - 1) && 
-                                 (currentSubQuestion === quizData[currentQuizQuestion].questions.length - 1);
-            nextBtn.textContent = isLastQuestion ? '🏁 Selesai' : 'Selanjutnya ➡️';
         }
 
         function finishQuiz() {
             clearInterval(quizTimer);
             
-            const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
-            const minutes = Math.floor(elapsed / 60);
-            const seconds = elapsed % 60;
-            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            // Clear timers
+            if (autoAdvanceTimer) {
+                clearTimeout(autoAdvanceTimer);
+                autoAdvanceTimer = null;
+            }
+            hideAutoAdvanceCountdown();
             
-            showQuizResults(timeString);
-            playSound('complete');
+            // Calculate final score (score is already updated during quiz)
+            let finalScore = 0;
+            quizAnswers.forEach((answer, index) => {
+                if (answer === quizQuestions[index].correct) {
+                    finalScore++;
+                }
+            });
+            quizScore = finalScore;
+            
+            showQuizResults();
         }
 
-        function showQuizResults(finalTime) {
+        function showQuizResults() {
+            const totalTime = 1500 - quizTimeLeft;
+            const minutes = Math.floor(totalTime / 60);
+            const seconds = totalTime % 60;
+            const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            
             document.getElementById('quizFinalScore').textContent = quizScore;
-            document.getElementById('quizTotalQuestions').textContent = totalQuizQuestions;
-            document.getElementById('quizFinalTime').textContent = finalTime;
+            document.getElementById('quizTotalQuestions').textContent = quizQuestions.length;
+            document.getElementById('quizFinalTime').textContent = timeString;
             
-            const resultEmoji = document.getElementById('quizResultEmoji');
-            const scoreMessage = document.getElementById('quizScoreMessage');
-            const resultTitle = document.getElementById('quizResultTitle');
+            let message = '';
+            let emoji = '';
+            let title = '';
             
-            if (quizScore >= 11) {
-                resultEmoji.textContent = '🏆';
-                resultTitle.textContent = `Luar Biasa, ${playerName}!`;
-                scoreMessage.textContent = 'Kamu menguasai konsep kesebangunan dengan sempurna!';
-            } else if (quizScore >= 9) {
-                resultEmoji.textContent = '🎉';
-                resultTitle.textContent = `Hebat, ${playerName}!`;
-                scoreMessage.textContent = 'Pemahaman kamu tentang kesebangunan sangat baik!';
-            } else if (quizScore >= 7) {
-                resultEmoji.textContent = '👍';
-                resultTitle.textContent = `Bagus, ${playerName}!`;
-                scoreMessage.textContent = 'Kamu sudah memahami dasar-dasar kesebangunan!';
-            } else if (quizScore >= 5) {
-                resultEmoji.textContent = '😊';
-                resultTitle.textContent = `Cukup Baik, ${playerName}!`;
-                scoreMessage.textContent = 'Terus belajar untuk meningkatkan pemahaman!';
+            const percentage = (quizScore / quizQuestions.length) * 100;
+            
+            if (percentage >= 90) {
+                title = 'Luar Biasa!';
+                message = 'Kamu menguasai materi kesebangunan dengan sangat baik!';
+                emoji = '🏆';
+            } else if (percentage >= 80) {
+                title = 'Hebat!';
+                message = 'Pemahaman kamu tentang kesebangunan sudah bagus!';
+                emoji = '🎉';
+            } else if (percentage >= 70) {
+                title = 'Bagus!';
+                message = 'Kamu sudah memahami konsep dasar kesebangunan!';
+                emoji = '👏';
+            } else if (percentage >= 60) {
+                title = 'Cukup Baik!';
+                message = 'Terus belajar untuk memahami kesebangunan lebih baik!';
+                emoji = '📚';
             } else {
-                resultEmoji.textContent = '💪';
-                resultTitle.textContent = `Semangat, ${playerName}!`;
-                scoreMessage.textContent = 'Jangan menyerah! Pelajari materi lagi dan coba sekali lagi!';
+                title = 'Semangat!';
+                message = 'Jangan menyerah! Coba pelajari materi lagi dan ulangi quiz!';
+                emoji = '💪';
             }
             
+            document.getElementById('quizResultTitle').textContent = title;
+            document.getElementById('quizResultEmoji').textContent = emoji;
+            document.getElementById('quizScoreMessage').textContent = message;
             document.getElementById('quizResultsModal').classList.remove('hidden');
+            
+            playSound('complete');
         }
 
         function restartQuiz() {
@@ -2695,9 +2642,7 @@
             document.getElementById('quizResultsModal').classList.add('hidden');
         }
 
-
-
-        // Initialize particles and matrix rain
+        // Particle.js Configuration
         function initParticles() {
             if (typeof particlesJS !== 'undefined') {
                 particlesJS('particles-js', {
@@ -2720,40 +2665,46 @@
             }
         }
 
-        function initMatrixRain() {
+        // Matrix Rain Effect
+        function createMatrixRain() {
             const matrixContainer = document.getElementById('matrixRain');
             const characters = '01';
             
             for (let i = 0; i < 50; i++) {
                 const drop = document.createElement('div');
                 drop.className = 'matrix-drop';
+                drop.textContent = characters[Math.floor(Math.random() * characters.length)];
                 drop.style.left = Math.random() * 100 + '%';
                 drop.style.animationDuration = (Math.random() * 3 + 2) + 's';
                 drop.style.animationDelay = Math.random() * 2 + 's';
-                drop.textContent = characters[Math.floor(Math.random() * characters.length)];
                 matrixContainer.appendChild(drop);
             }
         }
 
         // Initialize everything when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            initParticles();
-            initMatrixRain();
+            // Initialize particles
+            setTimeout(initParticles, 1000);
             
-            // Auto-start background music after user interaction
+            // Initialize matrix rain
+            createMatrixRain();
+            
+            // Initialize audio context on first user interaction
+            document.addEventListener('click', initAudioContext, { once: true });
+            document.addEventListener('touchstart', initAudioContext, { once: true });
+            
+            // Auto-play background music after user interaction
             document.addEventListener('click', function() {
+                const audio = document.getElementById('backgroundAudio');
                 if (!isAudioPlaying) {
-                    const audio = document.getElementById('backgroundAudio');
                     audio.play().then(() => {
                         isAudioPlaying = true;
-                        const audioIcon = document.getElementById('audioIcon');
-                        const audioTooltip = document.getElementById('audioTooltip');
-                        audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>';
-                        audioTooltip.textContent = 'Matikan Musik';
+                        document.getElementById('audioIcon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>';
+                        document.getElementById('audioTooltip').textContent = 'Matikan Musik';
                     }).catch(e => console.log('Auto-play failed:', e));
                 }
             }, { once: true });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'980f5a1ee5aaf8da',t:'MTc1ODE4Mjg3MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98175ab7c43e0a9d',t:'MTc1ODI2Njc4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
