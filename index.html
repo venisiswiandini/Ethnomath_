@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ETHNOMATH - Ethnomathematics Twin Shapes</title>
+    <title>🏠ETHNOMATH - Ethnomathematics Twin Shapes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -690,8 +690,9 @@
 </head>
 <body class="min-h-screen">
     <!-- Background Audio -->
-    <audio id="backgroundAudio" loop preload="metadata" crossorigin="anonymous">
+    <audio id="backgroundAudio" loop preload="auto" crossorigin="anonymous">
         <source src="https://raw.githubusercontent.com/venisiswiandini/Ethnomath_/refs/heads/main/BS.mp3" type="audio/mpeg">
+        <source src="https://github.com/venisiswiandini/Ethnomath_/raw/main/BS.mp3" type="audio/mpeg">
         Browser Anda tidak mendukung audio.
     </audio>
 
@@ -2253,8 +2254,8 @@
                 cardElement.className = 'memory-card';
                 cardElement.innerHTML = `
                     <img src="${card.image}" alt="Rebana ${index + 1}" style="display: none;">
-                    <div class="card-back" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 10px; padding: 4px;">
-                        <img src="https://i.imgur.com/vHjoLP5.png" alt="Sampul Kartu" style="width: 100%; height: 100%; object-fit: cover; border-radius: 6px;">
+                    <div class="card-back" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; border-radius: 10px; padding: 4px; background: #f8f9fa; border: 3px solid #FFD700;">
+                        <img src="https://i.imgur.com/vHjoLP5.png" alt="Card Back" style="width: 100%; height: 100%; object-fit: contain; border-radius: 6px;" loading="eager" crossorigin="anonymous" onload="this.style.visibility='visible'; this.style.opacity='1';" onerror="this.src=''; this.alt='Card back image failed to load'; this.style.display='none';">
                     </div>
                 `;
                 cardElement.onclick = () => flipMemoryCard(index);
@@ -2815,17 +2816,31 @@
             document.addEventListener('touchstart', initAudioContext, { once: true });
             
             // Auto-play background music after user interaction
-            document.addEventListener('click', function() {
-                const audio = document.getElementById('backgroundAudio');
-                if (!isAudioPlaying) {
+            let audioStarted = false;
+            function startAudioOnInteraction() {
+                if (!audioStarted) {
+                    const audio = document.getElementById('backgroundAudio');
+                    audio.volume = 0.3; // Set volume to 30%
                     audio.play().then(() => {
                         isAudioPlaying = true;
+                        audioStarted = true;
                         document.getElementById('audioIcon').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>';
                         document.getElementById('audioTooltip').textContent = 'Matikan Musik';
-                    }).catch(e => console.log('Auto-play failed:', e));
+                        console.log('Background music started successfully');
+                    }).catch(e => {
+                        console.log('Auto-play failed:', e);
+                        // Try alternative approach
+                        setTimeout(() => {
+                            audio.play().catch(err => console.log('Retry failed:', err));
+                        }, 1000);
+                    });
                 }
-            }, { once: true });
+            }
+            
+            document.addEventListener('click', startAudioOnInteraction);
+            document.addEventListener('touchstart', startAudioOnInteraction);
+            document.addEventListener('keydown', startAudioOnInteraction);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9817c12291e35542',t:'MTc1ODI3MDk3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'982e3606907181aa',t:'MTc1ODUwNjQ1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
