@@ -1543,6 +1543,16 @@
 
     <!-- Halaman Host Login -->
     <div id="hostLoginPage" class="hidden min-h-screen flex items-center justify-center p-4">
+    <!-- Reset Data Button (assistant) -->
+    <div class="host-reset-container mt-4 text-center">
+        <button id="resetDataBtn"
+            class="mt-4 bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg"
+            onclick="resetGameData()">
+            🔄 Reset Semua Data
+        </button>
+        <button class="mt-4 ml-4 bg-gradient-to-r from-blue-500 to-cyan-600 text-white px-6 py-3 rounded-full font-bold" onclick="showHostReportPage()">📊 Lihat Rekap Nilai</button>
+    </div>
+    
         <div class="glass-card rounded-3xl p-8 max-w-md mx-auto w-full holographic">
             <div class="text-center mb-8">
                 <div class="relative mb-6">
@@ -3519,5 +3529,519 @@
             setTimeout(retryFailedRequests, 3000);
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'992fe72461805f51',t:'MTc2MTIwODU0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'992fe72461805f51',t:'MTc2MTIwODU0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<!-- Host Report Page: Rekap Nilai Semua Siswa -->
+<div id="hostReportPage" class="hidden min-h-screen flex items-center justify-center p-4">
+  <div class="glass-card rounded-3xl p-6 max-w-6xl mx-auto w-full">
+    <div class="text-center mb-6">
+      <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">📊 Rekap Nilai Semua Siswa</h2>
+      <p class="text-white neon-text">Ringkasan skor dan detail jawaban materi per siswa</p>
+    </div>
+    <div id="reportContainer" class="bg-white/5 rounded-2xl p-4 md:p-6 shadow-lg overflow-x-auto">
+      <table id="reportTable" class="w-full text-white text-left border-collapse">
+        <thead>
+          <tr>
+            <th class="border-b border-gray-500 py-2 px-3 text-left">Nama</th>
+            <th class="border-b border-gray-500 py-2 px-3 text-left">Skor Rata-rata</th>
+            <th class="border-b border-gray-500 py-2 px-3 text-left">Game Selesai</th>
+            <th class="border-b border-gray-500 py-2 px-3 text-left">Jawaban Materi</th>
+            <th class="border-b border-gray-500 py-2 px-3 text-left">Detail</th>
+          </tr>
+        </thead>
+        <tbody id="reportBody"></tbody>
+      </table>
+    </div>
+    <div class="flex justify-center mt-6 space-x-4">
+      <button class="neon-button text-black px-6 py-3 rounded-full font-bold" onclick="loadReportData()">🔄 Muat Ulang Data</button>
+      <button class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-full font-bold" onclick="playSound('click'); showPage('homePage')">🏠 Kembali ke Beranda</button>
+      <button id="exportReportBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all duration-300 ml-2" onclick="exportReportWithDetails()">📤 Export Rekap + Jawaban</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Detail Jawaban per User -->
+<div id="userDetailModal" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+  <div class="glass-card w-11/12 max-w-2xl p-6 text-left relative">
+    <button class="absolute top-2 right-3 text-white text-xl" onclick="closeUserDetailModal()">✖</button>
+    <h3 id="detailTitle" class="text-2xl font-bold mb-4 text-white">Detail Jawaban</h3>
+    <div id="detailAnswers" class="max-h-[60vh] overflow-y-auto text-white space-y-3"></div>
+  </div>
+</div>
+
+
+<!-- Assistant injected script: integration, recordGameData, modal fixes, report functions -->
+<script>
+(function(){
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJg-ifRIcbh_-4IvuJqM8-JH649jlbbimbovFdLsYotN3hoPgYwjVwd68GpK8SEqf/exec";
+
+    function safeLog(...args){ try{ console.log(...args); }catch(e){} }
+
+    async function recordGameData(data){
+        try{
+            data._client = {
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language
+            };
+            await fetch(SCRIPT_URL, {
+                method: "POST",
+                mode: "no-cors",
+                cache: "no-cache",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            safeLog("recordGameData: sent", data);
+        } catch(err){
+            console.error("recordGameData error:", err, data);
+        }
+    }
+    window.recordGameData = recordGameData; // expose globally
+
+    // Close quiz modal helper
+    function closeQuizResultsModal(){
+        const modal = document.getElementById('quizResultsModal');
+        if(!modal) return;
+        modal.classList.add('hidden');
+    }
+    window.closeQuizResultsModal = closeQuizResultsModal;
+
+    // Ensure modal has close button and overlay click-to-close & add send-on-show behavior
+    document.addEventListener('DOMContentLoaded', function(){
+        const modal = document.getElementById('quizResultsModal');
+        if(modal){
+            modal.addEventListener('click', function(e){
+                if(e.target === modal) closeQuizResultsModal();
+            });
+            try{
+                const center = modal.querySelector('.glass-card .text-center');
+                if(center && !document.getElementById('closeResultBtn')){
+                    const btn = document.createElement('button');
+                    btn.id = 'closeResultBtn';
+                    btn.type = 'button';
+                    btn.innerText = '❌ Tutup';
+                    btn.className = 'mt-4 neon-button text-black px-6 py-3 rounded-full font-bold';
+                    btn.onclick = closeQuizResultsModal;
+                    center.appendChild(btn);
+                }
+            }catch(e){ safeLog('err append close btn', e); }
+        }
+
+        // Slide4 send button
+        const slide4 = document.getElementById('slide4');
+        if(slide4){
+            const ta = slide4.querySelector('#slide4Answer');
+            if(ta && !document.getElementById('sendSlide4Btn')){
+                const sendBtn = document.createElement('button');
+                sendBtn.id = 'sendSlide4Btn';
+                sendBtn.type = 'button';
+                sendBtn.innerText = '📤 Kirim Jawaban';
+                sendBtn.className = 'mt-4 neon-button text-black px-6 py-3 rounded-full font-bold';
+                sendBtn.onclick = function(){
+                    const playerName = (localStorage.getItem('playerName') || document.getElementById('playerName')?.value || document.getElementById('playerNameDisplay')?.innerText || 'Anonim').trim();
+                    const text = ta.value || '';
+                    if(!text.trim()){
+                        alert('Jawaban kosong — isi dulu lalu kirim.');
+                        return;
+                    }
+                    recordGameData({
+                        name: playerName,
+                        game: 'Materi - Slide4',
+                        type: 'answer_text',
+                        content: text,
+                        timestamp: new Date().toISOString()
+                    });
+                    const fb = document.getElementById('slide4Feedback');
+                    if(fb){
+                        fb.classList.remove('hidden');
+                    }
+                    alert('✅ Jawaban materi berhasil dikirim.');
+                };
+                ta.insertAdjacentElement('afterend', sendBtn);
+            }
+        }
+
+        // store playerName input to localStorage
+        const nameInput = document.getElementById('playerName');
+        if(nameInput){
+            nameInput.addEventListener('input', function(){
+                try{ localStorage.setItem('playerName', nameInput.value); }catch(e){}
+            });
+        }
+        const startBtn = document.getElementById('startQuizBtn');
+        if(startBtn){
+            startBtn.addEventListener('click', function(){
+                const val = document.getElementById('playerName')?.value || '';
+                if(val) try{ localStorage.setItem('playerName', val); }catch(e){}
+            });
+        }
+    });
+
+    // Build quiz result payload
+    function buildQuizResultData(){
+        try{
+            const playerName = (localStorage.getItem('playerName') || document.getElementById('playerName')?.value || document.getElementById('playerNameDisplay')?.innerText || 'Anonim').trim();
+            const scoreEl = document.getElementById('quizFinalScore');
+            const totalEl = document.getElementById('quizTotalQuestions');
+            const timeEl = document.getElementById('quizFinalTime');
+            const emoji = document.getElementById('quizResultEmoji')?.innerText || document.getElementById('resultEmoji')?.innerText || '';
+            const score = scoreEl ? scoreEl.innerText.trim() : null;
+            const total = totalEl ? totalEl.innerText.trim() : null;
+            const time = timeEl ? timeEl.innerText.trim() : '';
+            return {
+                name: playerName,
+                game: 'Quiz',
+                score: score,
+                total: total,
+                time: time,
+                emoji: emoji,
+                timestamp: new Date().toISOString()
+            };
+        }catch(e){
+            console.error('buildQuizResultData err', e);
+            return null;
+        }
+    }
+
+    // Observe quizResultsModal to send data once when shown
+    (function(){
+        const modal = document.getElementById('quizResultsModal');
+        if(!modal) return;
+        const obs = new MutationObserver(function(muts){
+            for(const m of muts){
+                if(m.attributeName === 'class'){
+                    const isHidden = modal.classList.contains('hidden');
+                    if(!isHidden){
+                        const data = buildQuizResultData();
+                        if(data && !modal._sentToServer){
+                            recordGameData(data);
+                            modal._sentToServer = true;
+                        }
+                    } else {
+                        modal._sentToServer = false;
+                    }
+                }
+            }
+        });
+        obs.observe(modal, { attributes: true, attributeFilter: ['class'] });
+    })();
+
+    // Memory game matches observer
+    (function(){
+        const matchesEl = document.getElementById('memoryGameMatches');
+        const timerEl = document.getElementById('memoryGameTimer');
+        if(!matchesEl) return;
+        let lastVal = matchesEl.innerText;
+        const matchesObserver = new MutationObserver(function(muts){
+            for(const m of muts){
+                const now = matchesEl.innerText.trim();
+                try {
+                    const n = parseInt(now);
+                    if(!isNaN(n) && n > 0 && n !== parseInt(lastVal || '0')){
+                        if(n >= 6){
+                            const playerName = (localStorage.getItem('playerName') || document.getElementById('playerName')?.value || document.getElementById('playerNameDisplay')?.innerText || 'Anonim').trim();
+                            recordGameData({
+                                name: playerName,
+                                game: 'Memory Rebana',
+                                matches: n,
+                                time: timerEl ? timerEl.innerText.trim() : '',
+                                timestamp: new Date().toISOString()
+                            });
+                        }
+                        lastVal = now;
+                    }
+                } catch(e){ console.error(e); }
+            }
+        });
+        matchesObserver.observe(matchesEl, { childList: true, characterData: true, subtree: true });
+    })();
+
+    // resetGameData function for host button
+    window.resetGameData = async function(){
+        if(!confirm("Apakah Anda yakin ingin menghapus semua data skor dari spreadsheet?")) return;
+        try{
+            await fetch(SCRIPT_URL + "?action=reset", { method: "GET", mode: "no-cors" });
+            alert("✅ Permintaan reset dikirim. Periksa spreadsheet.");
+        }catch(e){
+            alert("❌ Gagal mereset data. Periksa koneksi atau Apps Script.");
+            console.error(e);
+        }
+    };
+
+    // Host report functions
+    window.loadReportData = async function(){
+        try {
+            const res = await fetch(SCRIPT_URL + "?action=getReport");
+            const data = await res.json();
+            const body = document.getElementById("reportBody");
+            body.innerHTML = "";
+            data.forEach(row => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="border-b border-gray-600 py-2 px-3">${escapeHtml(row.name)}</td>
+                    <td class="border-b border-gray-600 py-2 px-3">${row.avgScore || '-'}</td>
+                    <td class="border-b border-gray-600 py-2 px-3">${row.gamesPlayed}</td>
+                    <td class="border-b border-gray-600 py-2 px-3">${row.materialAnswered}</td>
+                    <td class="border-b border-gray-600 py-2 px-3 text-center">
+                      <button class="neon-button text-black px-4 py-1 rounded-full font-bold text-sm" onclick="showUserDetail('${encodeURIComponent(row.name)}')">🔍 Lihat Jawaban</button>
+                    </td>
+                `;
+                body.appendChild(tr);
+            });
+        } catch (e) {
+            console.error(e);
+            alert("Gagal memuat data rekap. Pastikan Apps Script di-deploy publik.");
+        }
+    };
+
+    window.showHostReportPage = function(){
+        document.getElementById('homePage')?.classList.add('hidden');
+        document.getElementById('hostLoginPage')?.classList.add('hidden');
+        document.getElementById('hostReportPage')?.classList.remove('hidden');
+        loadReportData();
+    };
+
+    window.showUserDetail = async function(encodedName){
+        const name = decodeURIComponent(encodedName || '');
+        try{
+            const res = await fetch(SCRIPT_URL + "?action=getAnswers&name=" + encodeURIComponent(name));
+            const data = await res.json();
+            const container = document.getElementById("detailAnswers");
+            const title = document.getElementById("detailTitle");
+            title.textContent = "🧠 Jawaban Materi: " + name;
+            container.innerHTML = "";
+            if(!data || data.length === 0){
+                container.innerHTML = `<p class="text-gray-300">Belum ada jawaban dari pengguna ini.</p>`;
+            } else {
+                data.forEach((item, i) => {
+                    const block = document.createElement("div");
+                    block.className = "border border-gray-500 rounded-lg p-3 bg-white/10";
+                    const ts = item.timestamp || item.time || "";
+                    block.innerHTML = `
+                        <p class="text-sm text-gray-300">#${i+1} (${escapeHtml(ts)})</p>
+                        <p class="text-lg mt-1">${escapeHtml(item.content || '')}</p>
+                    `;
+                    container.appendChild(block);
+                });
+            }
+            document.getElementById('userDetailModal').classList.remove('hidden');
+        } catch(err){
+            console.error(err);
+            alert('Gagal memuat detail jawaban.');
+        }
+    };
+
+    window.closeUserDetailModal = function(){ document.getElementById('userDetailModal').classList.add('hidden'); };
+
+    // simple escape to prevent HTML injection in table
+    function escapeHtml(unsafe) {
+        if (unsafe === null || unsafe === undefined) return '';
+        return String(unsafe)
+             .replaceAll('&', '&amp;')
+             .replaceAll('<', '&lt;')
+             .replaceAll('>', '&gt;')
+             .replaceAll('"', '&quot;')
+             .replaceAll("'", '&#039;');
+    }
+
+})(); // end IIFE
+</script>
+
+
+<!-- === Host Rekap Logic (v3) === -->
+<script>
+(function(){
+  const SCRIPT_URL_LOCAL = (typeof SCRIPT_URL !== 'undefined') ? SCRIPT_URL : '';
+
+  // Load report directly inside host page
+  window.loadReportDataDirect = async function(){
+    try{
+      const res = await fetch(SCRIPT_URL_LOCAL + "?action=getReport");
+      const data = await res.json();
+      const tbody = document.getElementById("reportBody");
+      tbody.innerHTML = "";
+      (data||[]).forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class='p-2 border'>${item.name||""}</td><td class='p-2 border'>${item.avgScore||"-"}</td><td class='p-2 border'>${item.gamesPlayed||0}</td><td class='p-2 border'>${item.materialAnswered||0}</td>`;
+        tbody.appendChild(tr);
+      });
+      console.log("✅ Rekap host diperbarui.");
+    }catch(err){
+      console.error("Gagal memuat rekap:", err);
+    }
+  };
+
+  // Auto refresh setiap 30 detik
+  setInterval(() => {
+    if(document.getElementById("hostDataManager")) loadReportDataDirect();
+  }, 30000);
+
+  // Panggil langsung setelah login host
+  document.addEventListener("DOMContentLoaded", ()=>{
+    if(document.getElementById("hostDataManager")) loadReportDataDirect();
+  });
+
+  // Export combined rekap + all answers
+  window.exportReportWithDetails = async function(){
+    try{
+      const r1 = await fetch(SCRIPT_URL_LOCAL + "?action=getReport");
+      const report = await r1.json();
+      const r2 = await fetch(SCRIPT_URL_LOCAL + "?action=getAllAnswers");
+      const answers = await r2.json();
+      const answersByName = {};
+      (answers || []).forEach(a=>{
+        const n = a.name || "Anonim";
+        if(!answersByName[n]) answersByName[n] = [];
+        answersByName[n].push(a);
+      });
+
+      const rows = [];
+      rows.push(["Section","Nama","SkorRataRata","GamesPlayed","MaterialAnswered","AnswerTimestamp","AnswerContent"]);
+      (report || []).forEach(r=>{
+        rows.push(["Summary", r.name || "", r.avgScore || "", r.gamesPlayed || "", r.materialAnswered || "", "",""]);
+        const userAnswers = answersByName[r.name] || [];
+        userAnswers.forEach(a=> rows.push(["Answer", r.name || "", "", "", "", a.timestamp||"", a.content||""]));
+      });
+      Object.keys(answersByName).forEach(name=>{
+        const inRep = (report||[]).some(rr=>rr.name===name);
+        if(!inRep){
+          rows.push(["Summary", name, "-", "-", (answersByName[name]||[]).length, "",""]);
+          (answersByName[name]||[]).forEach(a=> rows.push(["Answer", name, "", "", "", a.timestamp||"", a.content||""]));
+        }
+      });
+
+      const csv = rows.map(r => r.map(c => `"${(c||"").toString().replace(/"/g,'""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Rekap_Detail_Nilai.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      alert("✅ Ekspor gabungan selesai: Rekap_Detail_Nilai.csv");
+    }catch(err){
+      console.error(err);
+      alert("❌ Gagal ekspor data. Pastikan Apps Script dapat diakses publik.");
+    }
+  };
+})();
+</script>
+
+
+<!-- === Host Rekap Logic (v4) === -->
+<script>
+(function(){
+  const SCRIPT_URL_LOCAL = (typeof SCRIPT_URL !== 'undefined') ? SCRIPT_URL : '';
+  let hostLoggedIn = false;
+
+  // When host login success, show management block
+  const originalLoginHost = window.loginHost;
+  window.loginHost = function(){
+    try {
+      if(typeof originalLoginHost === 'function'){
+        originalLoginHost();
+      }
+      setTimeout(()=>{
+        const hostSection = document.getElementById("hostDataManager");
+        if(hostSection){
+          hostSection.style.display = "block";
+          hostLoggedIn = true;
+          loadReportDataDirect();
+          console.log("✅ Host login: blok manajemen data ditampilkan.");
+        }
+      }, 800);
+    } catch(err){
+      console.error("Login host error:", err);
+    }
+  };
+
+  // Load report table
+  window.loadReportDataDirect = async function(){
+    if(!hostLoggedIn) return;
+    try{
+      const res = await fetch(SCRIPT_URL_LOCAL + "?action=getReport");
+      const data = await res.json();
+      const tbody = document.getElementById("reportBody");
+      tbody.innerHTML = "";
+      (data||[]).forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td class='p-2 border'>${item.name||""}</td><td class='p-2 border'>${item.avgScore||"-"}</td><td class='p-2 border'>${item.gamesPlayed||0}</td><td class='p-2 border'>${item.materialAnswered||0}</td>`;
+        tbody.appendChild(tr);
+      });
+      console.log("✅ Rekap host diperbarui.");
+    }catch(err){
+      console.error("Gagal memuat rekap:", err);
+    }
+  };
+
+  // Auto refresh setiap 30 detik hanya jika host login
+  setInterval(() => {
+    if(hostLoggedIn) loadReportDataDirect();
+  }, 30000);
+
+  // Export combined rekap + all answers (host only)
+  window.exportReportWithDetails = async function(){
+    if(!hostLoggedIn){ alert("⚠️ Anda harus login sebagai host untuk mengekspor data."); return; }
+    try{
+      const r1 = await fetch(SCRIPT_URL_LOCAL + "?action=getReport");
+      const report = await r1.json();
+      const r2 = await fetch(SCRIPT_URL_LOCAL + "?action=getAllAnswers");
+      const answers = await r2.json();
+      const answersByName = {};
+      (answers || []).forEach(a=>{
+        const n = a.name || "Anonim";
+        if(!answersByName[n]) answersByName[n] = [];
+        answersByName[n].push(a);
+      });
+
+      const rows = [];
+      rows.push(["Section","Nama","SkorRataRata","GamesPlayed","MaterialAnswered","AnswerTimestamp","AnswerContent"]);
+      (report || []).forEach(r=>{
+        rows.push(["Summary", r.name || "", r.avgScore || "", r.gamesPlayed || "", r.materialAnswered || "", "",""]);
+        const userAnswers = answersByName[r.name] || [];
+        userAnswers.forEach(a=> rows.push(["Answer", r.name || "", "", "", "", a.timestamp||"", a.content||""]));
+      });
+      Object.keys(answersByName).forEach(name=>{
+        const inRep = (report||[]).some(rr=>rr.name===name);
+        if(!inRep){
+          rows.push(["Summary", name, "-", "-", (answersByName[name]||[]).length, "",""]);
+          (answersByName[name]||[]).forEach(a=> rows.push(["Answer", name, "", "", "", a.timestamp||"", a.content||""]));
+        }
+      });
+
+      const csv = rows.map(r => r.map(c => `"${(c||"").toString().replace(/"/g,'""')}"`).join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "Rekap_Detail_Nilai.csv";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      alert("✅ Ekspor gabungan selesai: Rekap_Detail_Nilai.csv");
+    }catch(err){
+      console.error(err);
+      alert("❌ Gagal ekspor data. Pastikan Apps Script dapat diakses publik.");
+    }
+  };
+})();
+</script>
+
+</body>
 </html>
+<!-- === Manajemen Data (v4, hidden until host login) === -->
+<div id="hostDataManager" class="mt-8 bg-white/5 p-6 rounded-2xl shadow-lg text-center" style="display:none;">
+  <h2 class="text-2xl font-bold mb-4 text-white">📂 Manajemen Data</h2>
+  <div class="flex justify-center space-x-4 mb-4">
+    <button id="viewReportBtn" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all duration-300" onclick="loadReportDataDirect()">🔍 Lihat Rekap Nilai</button>
+    <button id="exportReportBtn" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-6 py-3 rounded-full font-bold shadow-lg hover:scale-105 transition-all duration-300" onclick="exportReportWithDetails()">📤 Export Rekap + Jawaban</button>
+  </div>
+  <div id="reportContainer" class="overflow-x-auto text-left bg-white/10 p-4 rounded-lg max-h-[500px] overflow-y-auto text-sm text-white">
+    <table id="reportTable" class="min-w-full border border-white/20 rounded-lg">
+      <thead><tr class="bg-white/20 text-white"><th class="p-2 border">Nama</th><th class="p-2 border">Skor Rata-rata</th><th class="p-2 border">Game Selesai</th><th class="p-2 border">Jawaban Materi</th></tr></thead>
+      <tbody id="reportBody"></tbody>
+    </table>
+  </div>
+</div>
