@@ -1761,8 +1761,8 @@
         }
         
         // Google Sheets tracking - ENHANCED REAL-TIME SYSTEM
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4UWqHcZ8WruFUHMWDeGWCyYNNbZ0OUd1ZklORy6YAi15HxZz7SxHF9_6vgw3jZrlRnw/exec';
-        const DASHBOARD_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4UWqHcZ8WruFUHMWDeGWCyYNNbZ0OUd1ZklORy6YAi15HxZz7SxHF9_6vgw3jZrlRnw/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4MyV-hXOANBIAahBIMBQRu0zUI4tYQ752Xmn0HbJlf3oDuKbr6uwgVFjb1cz6hJgkjA/exec';
+        const DASHBOARD_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw4MyV-hXOANBIAahBIMBQRu0zUI4tYQ752Xmn0HbJlf3oDuKbr6uwgVFjb1cz6hJgkjA/exec';
         
         // Enhanced tracking with multiple fallback methods and multiple URLs
         function sendToGoogleSheets(action, data = {}) {
@@ -1783,8 +1783,8 @@
                 // Multiple Apps Script URLs for redundancy
                 const trackingUrls = [
                     APPS_SCRIPT_URL, // Primary URL (your provided URL)
-                    'https://script.google.com/macros/s/AKfycbw4UWqHcZ8WruFUHMWDeGWCyYNNbZ0OUd1ZklORy6YAi15HxZz7SxHF9_6vgw3jZrlRnw/exec', // Same URL as backup
-                    'https://script.google.com/macros/s/AKfycbw4UWqHcZ8WruFUHMWDeGWCyYNNbZ0OUd1ZklORy6YAi15HxZz7SxHF9_6vgw3jZrlRnw/exec' // Same URL as third backup
+                    'https://script.google.com/macros/s/AKfycbw4MyV-hXOANBIAahBIMBQRu0zUI4tYQ752Xmn0HbJlf3oDuKbr6uwgVFjb1cz6hJgkjA/exec', // Same URL as backup
+                    'https://script.google.com/macros/s/AKfycbw4MyV-hXOANBIAahBIMBQRu0zUI4tYQ752Xmn0HbJlf3oDuKbr6uwgVFjb1cz6hJgkjA/exec' // Same URL as third backup
                 ];
                 
                 // Try each URL with POST method
@@ -1852,7 +1852,7 @@
                 try {
                     const emergencyUrls = [
                         APPS_SCRIPT_URL,
-                        'https://script.google.com/macros/s/AKfycbw4UWqHcZ8WruFUHMWDeGWCyYNNbZ0OUd1ZklORy6YAi15HxZz7SxHF9_6vgw3jZrlRnw/exec'
+                        'https://script.google.com/macros/s/AKfycbw4MyV-hXOANBIAahBIMBQRu0zUI4tYQ752Xmn0HbJlf3oDuKbr6uwgVFjb1cz6hJgkjA/exec'
                     ];
                     
                     emergencyUrls.forEach((url, index) => {
@@ -1892,7 +1892,7 @@
                             `${DASHBOARD_SCRIPT_URL}?action=getData&tab=${targetTab}&timestamp=${Date.now()}`,
                             `${DASHBOARD_SCRIPT_URL}?action=getData&tab=${targetTab}`,
                             `${APPS_SCRIPT_URL}?action=getDashboardData&tab=${targetTab}&timestamp=${Date.now()}`,
-                            `https://script.google.com/macros/s/AKfycbw4UWqHcZ8WruFUHMWDeGWCyYNNbZ0OUd1ZklORy6YAi15HxZz7SxHF9_6vgw3jZrlRnw/exec?action=getData&tab=${targetTab}&timestamp=${Date.now()}`
+                            `https://script.google.com/macros/s/AKfycbw4MyV-hXOANBIAahBIMBQRu0zUI4tYQ752Xmn0HbJlf3oDuKbr6uwgVFjb1cz6hJgkjA/exec?action=getData&tab=${targetTab}&timestamp=${Date.now()}`
                         ];
                         
                         const currentUrl = urls[attempts - 1];
@@ -2027,7 +2027,7 @@
             const testUrls = [
                 { name: 'Primary URL', url: APPS_SCRIPT_URL, key: 'mainTracking' },
                 { name: 'Dashboard URL', url: DASHBOARD_SCRIPT_URL, key: 'dashboard' },
-                { name: 'Backup URL', url: 'https://script.google.com/macros/s/AKfycbw4UWqHcZ8WruFUHMWDeGWCyYNNbZ0OUd1ZklORy6YAi15HxZz7SxHF9_6vgw3jZrlRnw/exec', key: 'mainTracking' }
+                { name: 'Backup URL', url: 'https://script.google.com/macros/s/AKfycbw4MyV-hXOANBIAahBIMBQRu0zUI4tYQ752Xmn0HbJlf3oDuKbr6uwgVFjb1cz6hJgkjA/exec', key: 'mainTracking' }
             ];
             
             let successCount = 0;
