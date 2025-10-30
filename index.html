@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ETHNOMATH - Ethnomathematics Twin Shapes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <style>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ETHNOMATH - Ethnomathematics Twin Shapes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;display=swap" rel="stylesheet">
+  <style>
         body {
             box-sizing: border-box;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -760,1188 +760,971 @@
             display: none !important;
         }
     </style>
-</head>
-<body class="min-h-screen">
-    <!-- Background Music -->
-    <audio id="backgroundMusic" loop preload="auto">
-        <source src="https://raw.githubusercontent.com/venisiswiandini/Ethnomath_/refs/heads/main/BS.mp3" type="audio/mpeg">
-    </audio>
-
-    <!-- Enhanced Audio Control Button - Top Right -->
-    <button id="audioButton" class="fixed top-4 right-4 z-50 neon-button rounded-full shadow-2xl flex items-center justify-center" style="z-index: 99999 !important; position: fixed !important; width: 56px !important; height: 56px !important; min-width: 56px !important; min-height: 56px !important; max-width: 56px !important; max-height: 56px !important; padding: 12px !important;" onclick="toggleAudio()">
-        <svg id="audioIcon" class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px !important; height: 24px !important;">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
-        </svg>
-    </button>
-
-    <!-- Connection Status Indicator - Top Right (below audio button) -->
-    <div id="connectionStatus" class="fixed top-20 right-4 z-50 bg-white/90 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg border-2 border-gray-200" style="z-index: 99999 !important; position: fixed !important;">
-        <div class="flex items-center space-x-2">
-            <div id="connectionDot" class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div>
-            <span id="connectionText" class="text-xs font-bold text-gray-700">Testing...</span>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="min-h-screen"><!-- Background Music -->
+  <audio id="backgroundMusic" loop preload="auto"><source src="https://raw.githubusercontent.com/venisiswiandini/Ethnomath_/refs/heads/main/BS.mp3" type="audio/mpeg">
+  </audio><!-- Enhanced Audio Control Button - Top Right --> <button id="audioButton" class="fixed top-4 right-4 z-50 neon-button rounded-full shadow-2xl flex items-center justify-center" style="z-index: 99999 !important; position: fixed !important; width: 56px !important; height: 56px !important; min-width: 56px !important; min-height: 56px !important; max-width: 56px !important; max-height: 56px !important; padding: 12px !important;" onclick="toggleAudio()">
+   <svg id="audioIcon" class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24" style="width: 24px !important; height: 24px !important;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>
+   </svg></button> <!-- Connection Status Indicator - Top Right (below audio button) -->
+  <div id="connectionStatus" class="fixed top-20 right-4 z-50 bg-white/90 backdrop-blur-sm rounded-full px-3 py-2 shadow-lg border-2 border-gray-200" style="z-index: 99999 !important; position: fixed !important;">
+   <div class="flex items-center space-x-2">
+    <div id="connectionDot" class="w-3 h-3 rounded-full bg-yellow-500 animate-pulse"></div><span id="connectionText" class="text-xs font-bold text-gray-700">Testing...</span>
+   </div>
+  </div><!-- Host Login Button - Bottom Left (Only visible on home page) --> <button id="hostLoginBtn" class="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-full shadow-2xl flex items-center justify-center" style="z-index: 99999 !important; position: fixed !important; width: 56px !important; height: 56px !important; min-width: 56px !important; min-height: 56px !important; max-width: 56px !important; max-height: 56px !important; padding: 12px !important;" onclick="showHostLogin()">
+   <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewbox="0 0 24 24" style="width: 24px !important; height: 24px !important;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+   </svg></button> <!-- Enhanced Home Page -->
+  <div id="homePage" class="min-h-screen flex items-center justify-center p-4">
+   <div class="max-w-4xl mx-auto text-center w-full">
+    <div class="glass-card rounded-3xl p-8 shadow-2xl bounce-in-3d card-hover holographic">
+     <div class="mb-8">
+      <div class="text-6xl mb-4 floating">
+       🎮🌈📐✨
+      </div>
+      <div class="flex justify-center mb-8">
+       <div class="relative group">
+        <div class="absolute -inset-6 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-500 animate-pulse"></div>
+        <div class="relative glass-card rounded-3xl p-8 border-2 border-white/20 shadow-2xl glow-effect">
+         <div class="text-center bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-8 rounded-2xl"><img src="https://i.imgur.com/sWMWajt.png" alt="ETHNOMATH Twin Shapes by Veni Siswiandini" class="w-full h-auto max-h-96 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/sWMWajt.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>🎓</div><h3 class=\'text-2xl font-bold text-white\'>ETHNOMATH</h3><p class=\'text-lg text-white\'>Twin Shapes by Veni Siswiandini</p>'; }">
+         </div>
+        </div><!-- Enhanced Floating Elements -->
+        <div class="absolute -top-6 -right-6 text-4xl animate-bounce floating" style="animation-delay: 0s;">
+         ✨
         </div>
+        <div class="absolute -bottom-6 -left-6 text-4xl animate-bounce floating" style="animation-delay: 0.5s;">
+         🌟
+        </div>
+        <div class="absolute top-1/2 -left-8 text-3xl animate-bounce floating" style="animation-delay: 1s;">
+         ⭐
+        </div>
+        <div class="absolute top-1/2 -right-8 text-3xl animate-bounce floating" style="animation-delay: 1.5s;">
+         💫
+        </div>
+        <div class="absolute top-1/4 -left-10 text-2xl animate-bounce floating" style="animation-delay: 2s;">
+         🎯
+        </div>
+        <div class="absolute top-3/4 -right-10 text-2xl animate-bounce floating" style="animation-delay: 2.5s;">
+         🎨
+        </div>
+       </div>
+      </div>
+      <div class="text-2xl font-bold mb-6 text-center game-title">
+       <div style="font-family: 'Orbitron', monospace; font-weight: 600; font-size: 2.2rem; color: #FFFFFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: 0.3px; margin-bottom: 0.5rem; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word;">
+        Ethnomathematics Twin Shapes
+       </div>
+       <div style="font-family: 'Orbitron', monospace; font-weight: 600; font-size: 1.2rem; color: #FFFFFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: 0.3px; margin-top: 0.5rem;">
+        by Veni Siswiandini
+       </div>
+      </div>
+      <div class="text-3xl mb-6 floating">
+       🎯🎪🚀🎊
+      </div>
+     </div><!-- Enhanced Feature Cards -->
+     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+      <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-left" style="border: 3px solid rgba(59, 130, 246, 0.6); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);">
+       <div class="text-5xl floating mb-3">
+        🎲
+       </div>
+       <div class="text-xl text-blue-600 font-bold neon-text">
+        Seru &amp;
+       </div>
+       <div class="text-lg text-white font-bold">
+        Menarik!
+       </div>
+      </div>
+      <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-up" style="animation-delay: 0.1s; border: 3px solid rgba(34, 197, 94, 0.6); box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);">
+       <div class="text-5xl floating mb-3" style="animation-delay: 0.5s;">
+        ⏰
+       </div>
+       <div class="text-xl text-green-600 font-bold neon-text">
+        Interaktif
+       </div>
+       <div class="text-lg text-white font-bold">
+        Seru!
+       </div>
+      </div>
+      <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-down" style="animation-delay: 0.2s; border: 3px solid rgba(245, 158, 11, 0.6); box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);">
+       <div class="text-5xl floating mb-3" style="animation-delay: 1s;">
+        🏆
+       </div>
+       <div class="text-xl text-yellow-600 font-bold neon-text">
+        Budaya
+       </div>
+       <div class="text-lg text-white font-bold">
+        Melayu
+       </div>
+      </div>
+      <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-right" style="animation-delay: 0.3s; border: 3px solid rgba(168, 85, 247, 0.6); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);">
+       <div class="text-5xl floating mb-3" style="animation-delay: 1.5s;">
+        🎨
+       </div>
+       <div class="text-xl text-purple-600 font-bold neon-text">
+        Animasi
+       </div>
+       <div class="text-lg text-white font-bold">
+        Keren!
+       </div>
+      </div>
+     </div><!-- Enhanced Action Buttons -->
+     <div class="space-y-6"><button class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg" style="z-index: 99999 !important;" onclick="playSound('click'); showMaterial()"> 📖 Materi Pembelajaran 📚 </button> <button class="w-full bg-gradient-to-r from-green-500 via-teal-500 to-blue-600 hover:from-green-600 hover:via-teal-600 hover:to-blue-700 text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl border-3 border-green-400" style="background: linear-gradient(135deg, #10B981 0%, #14B8A6 50%, #3B82F6 100%); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 255, 255, 0.6); z-index: 99999 !important;" onclick="playSound('click'); showNameInput()"> 🚀 Latihan Soal 🎮 </button> <button class="w-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-700 text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl border-3 border-pink-400" style="background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 50%, #6366F1 100%); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 255, 255, 0.6); z-index: 99999 !important;" onclick="playSound('click'); showMemoryGame()"> 🎮 Cocokin Yuk! 🧩 </button>
+     </div><!-- Enhanced Footer -->
+     <div class="mt-8 text-center">
+      <div class="text-lg font-bold mb-4" style="color: #000000; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 255, 255, 0.6);">
+       🌟 Belajar Matematika Jadi Menyenangkan! 🌟
+      </div>
+      <div class="flex justify-center space-x-3 text-3xl"><span class="animate-bounce floating">🎉</span> <span class="animate-bounce floating" style="animation-delay: 0.1s;">🎊</span> <span class="animate-bounce floating" style="animation-delay: 0.2s;">🎈</span> <span class="animate-bounce floating" style="animation-delay: 0.3s;">🎁</span> <span class="animate-bounce floating" style="animation-delay: 0.4s;">🎪</span>
+      </div>
+     </div>
     </div>
-
-    <!-- Host Login Button - Bottom Left (Only visible on home page) -->
-    <button id="hostLoginBtn" class="fixed bottom-4 left-4 z-50 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-full shadow-2xl flex items-center justify-center" style="z-index: 99999 !important; position: fixed !important; width: 56px !important; height: 56px !important; min-width: 56px !important; min-height: 56px !important; max-width: 56px !important; max-height: 56px !important; padding: 12px !important;" onclick="showHostLogin()">
-        <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="width: 24px !important; height: 24px !important;">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-        </svg>
-    </button>
-
-    <!-- Enhanced Home Page -->
-    <div id="homePage" class="min-h-screen flex items-center justify-center p-4">
-        <div class="max-w-4xl mx-auto text-center w-full">
-            <div class="glass-card rounded-3xl p-8 shadow-2xl bounce-in-3d card-hover holographic">
-                <div class="mb-8">
-                    <div class="text-6xl mb-4 floating">🎮🌈📐✨</div>
-                    
-                    <div class="flex justify-center mb-8">
-                        <div class="relative group">
-                            <div class="absolute -inset-6 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-all duration-500 animate-pulse"></div>
-                            <div class="relative glass-card rounded-3xl p-8 border-2 border-white/20 shadow-2xl glow-effect">
-                                <div class="text-center bg-gradient-to-r from-yellow-600 to-orange-600 text-white p-8 rounded-2xl">
-                                    <img src="https://i.imgur.com/sWMWajt.png" alt="ETHNOMATH Twin Shapes by Veni Siswiandini" class="w-full h-auto max-h-96 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/sWMWajt.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>🎓</div><h3 class=\'text-2xl font-bold text-white\'>ETHNOMATH</h3><p class=\'text-lg text-white\'>Twin Shapes by Veni Siswiandini</p>'; }">
-                                </div>
-                            </div>
-                            <!-- Enhanced Floating Elements -->
-                            <div class="absolute -top-6 -right-6 text-4xl animate-bounce floating" style="animation-delay: 0s;">✨</div>
-                            <div class="absolute -bottom-6 -left-6 text-4xl animate-bounce floating" style="animation-delay: 0.5s;">🌟</div>
-                            <div class="absolute top-1/2 -left-8 text-3xl animate-bounce floating" style="animation-delay: 1s;">⭐</div>
-                            <div class="absolute top-1/2 -right-8 text-3xl animate-bounce floating" style="animation-delay: 1.5s;">💫</div>
-                            <div class="absolute top-1/4 -left-10 text-2xl animate-bounce floating" style="animation-delay: 2s;">🎯</div>
-                            <div class="absolute top-3/4 -right-10 text-2xl animate-bounce floating" style="animation-delay: 2.5s;">🎨</div>
-                        </div>
-                    </div>
-                    <div class="text-2xl font-bold mb-6 text-center game-title">
-                        <div style="font-family: 'Orbitron', monospace; font-weight: 600; font-size: 2.2rem; color: #FFFFFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: 0.3px; margin-bottom: 0.5rem; line-height: 1.3; word-wrap: break-word; overflow-wrap: break-word;">Ethnomathematics Twin Shapes</div>
-                        <div style="font-family: 'Orbitron', monospace; font-weight: 600; font-size: 1.2rem; color: #FFFFFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); letter-spacing: 0.3px; margin-top: 0.5rem;">by Veni Siswiandini</div>
-                    </div>
-                    <div class="text-3xl mb-6 floating">🎯🎪🚀🎊</div>
-                </div>
-
-                <!-- Enhanced Feature Cards -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
-                    <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-left" style="border: 3px solid rgba(59, 130, 246, 0.6); box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);">
-                        <div class="text-5xl floating mb-3">🎲</div>
-                        <div class="text-xl text-blue-600 font-bold neon-text">Seru &</div>
-                        <div class="text-lg text-white font-bold">Menarik!</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-up" style="animation-delay: 0.1s; border: 3px solid rgba(34, 197, 94, 0.6); box-shadow: 0 8px 25px rgba(34, 197, 94, 0.3);">
-                        <div class="text-5xl floating mb-3" style="animation-delay: 0.5s;">⏰</div>
-                        <div class="text-xl text-green-600 font-bold neon-text">Interaktif</div>
-                        <div class="text-lg text-white font-bold">Seru!</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-down" style="animation-delay: 0.2s; border: 3px solid rgba(245, 158, 11, 0.6); box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);">
-                        <div class="text-5xl floating mb-3" style="animation-delay: 1s;">🏆</div>
-                        <div class="text-xl text-yellow-600 font-bold neon-text">Budaya</div>
-                        <div class="text-lg text-white font-bold">Melayu</div>
-                    </div>
-                    <div class="glass-card rounded-2xl p-6 card-hover glow-effect slide-in-right" style="animation-delay: 0.3s; border: 3px solid rgba(168, 85, 247, 0.6); box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3);">
-                        <div class="text-5xl floating mb-3" style="animation-delay: 1.5s;">🎨</div>
-                        <div class="text-xl text-purple-600 font-bold neon-text">Animasi</div>
-                        <div class="text-lg text-white font-bold">Keren!</div>
-                    </div>
-                </div>
-
-                <!-- Enhanced Action Buttons -->
-                <div class="space-y-6">
-                    <button class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg" style="z-index: 99999 !important;" onclick="playSound('click'); showMaterial()">
-                        📖 Materi Pembelajaran 📚
-                    </button>
-                    <button class="w-full bg-gradient-to-r from-green-500 via-teal-500 to-blue-600 hover:from-green-600 hover:via-teal-600 hover:to-blue-700 text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl border-3 border-green-400" style="background: linear-gradient(135deg, #10B981 0%, #14B8A6 50%, #3B82F6 100%); box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 255, 255, 0.6); z-index: 99999 !important;" onclick="playSound('click'); showNameInput()">
-                        🚀 Latihan Soal 🎮
-                    </button>
-                    <button class="w-full bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 hover:from-pink-600 hover:via-purple-600 hover:to-indigo-700 text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl border-3 border-pink-400" style="background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 50%, #6366F1 100%); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3); text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 255, 255, 0.6); z-index: 99999 !important;" onclick="playSound('click'); showMemoryGame()">
-                        🎮 Cocokin Yuk! 🧩
-                    </button>
-                </div>
-
-                <!-- Enhanced Footer -->
-                <div class="mt-8 text-center">
-                    <div class="text-lg font-bold mb-4" style="color: #000000; text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.9), 1px 1px 2px rgba(255, 255, 255, 0.8), 0 0 6px rgba(255, 255, 255, 0.6);">🌟 Belajar Matematika Jadi Menyenangkan! 🌟</div>
-                    <div class="flex justify-center space-x-3 text-3xl">
-                        <span class="animate-bounce floating">🎉</span>
-                        <span class="animate-bounce floating" style="animation-delay: 0.1s;">🎊</span>
-                        <span class="animate-bounce floating" style="animation-delay: 0.2s;">🎈</span>
-                        <span class="animate-bounce floating" style="animation-delay: 0.3s;">🎁</span>
-                        <span class="animate-bounce floating" style="animation-delay: 0.4s;">🎪</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+   </div>
+  </div><!-- Halaman Materi -->
+  <div id="materialPage" class="hidden min-h-screen flex flex-col items-center justify-center p-4"><!-- Header -->
+   <div class="text-center mb-4">
+    <h2 class="text-2xl md:text-3xl font-bold mb-2 game-title">📖 Materi Pembelajaran 📚</h2>
+    <div class="text-3xl md:text-4xl mb-2 floating">
+     📚
     </div>
-
-    <!-- Halaman Materi -->
-    <div id="materialPage" class="hidden min-h-screen flex flex-col items-center justify-center p-4">
-        <!-- Header -->
-        <div class="text-center mb-4">
-            <h2 class="text-2xl md:text-3xl font-bold mb-2 game-title">📖 Materi Pembelajaran 📚</h2>
-            <div class="text-3xl md:text-4xl mb-2 floating">📚</div>
-            <p class="text-base md:text-lg text-white neon-text">Kesebangunan dalam Budaya Melayu</p>
+    <p class="text-base md:text-lg text-white neon-text">Kesebangunan dalam Budaya Melayu</p>
+   </div><!-- Slide Container -->
+   <div class="glass-card rounded-2xl p-4 max-w-4xl mx-auto w-full mb-4">
+    <div class="relative bg-white/95 rounded-xl p-4 md:p-6 shadow-2xl min-h-[400px] md:min-h-[450px]"><!-- Slide 1 -->
+     <div id="slide1" class="slide-content">
+      <div class="text-center mb-4">
+       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Mengenal Bentuk Segitiga</h3>
+      </div>
+      <div class="flex flex-col lg:flex-row items-center gap-4">
+       <div class="w-full lg:w-1/2">
+        <div class="bg-white p-3 rounded-lg shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300" onclick="showSlide1Popup()"><img src="https://i.imgur.com/1As20RS.png" alt="Rumah Adat Melayu" class="w-full h-auto max-h-48 object-contain rounded-lg mb-2" onerror="this.src='https://imgur.com/1As20RS.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>🏠</div><p class=\'text-lg font-bold text-gray-800\'>Rumah Adat Melayu</p><p class=\'text-sm text-gray-600\'>Gambar tidak dapat dimuat</p>'; }">
         </div>
-
-        <!-- Slide Container -->
-        <div class="glass-card rounded-2xl p-4 max-w-4xl mx-auto w-full mb-4">
-            <div class="relative bg-white/95 rounded-xl p-4 md:p-6 shadow-2xl min-h-[400px] md:min-h-[450px]">
-                <!-- Slide 1 -->
-                <div id="slide1" class="slide-content">
-                    <div class="text-center mb-4">
-                        <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Mengenal Bentuk Segitiga</h3>
-                    </div>
-                    <div class="flex flex-col lg:flex-row items-center gap-4">
-                        <div class="w-full lg:w-1/2">
-                            <div class="bg-white p-3 rounded-lg shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300" onclick="showSlide1Popup()">
-                                <img src="https://i.imgur.com/1As20RS.png" alt="Rumah Adat Melayu" class="w-full h-auto max-h-48 object-contain rounded-lg mb-2" onerror="this.src='https://imgur.com/1As20RS.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>🏠</div><p class=\'text-lg font-bold text-gray-800\'>Rumah Adat Melayu</p><p class=\'text-sm text-gray-600\'>Gambar tidak dapat dimuat</p>'; }">
-                            </div>
-                            <p class="text-xs text-gray-600 text-center mt-1">👆 Klik untuk melihat jawaban!</p>
-                        </div>
-                        <div class="w-full lg:w-1/2 text-center lg:text-left">
-                            <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-4 rounded-lg">
-                                <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">🤔 Pertanyaan:</h4>
-                                <p class="text-sm md:text-base text-gray-700 font-semibold leading-relaxed">
-                                    Bagian mana dari rumah adat ini yang berbentuk segitiga?
-                                </p>
-                                <div class="mt-3 text-3xl">🔍</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 2 -->
-                <div id="slide2" class="slide-content hidden">
-                    <div class="text-center mb-4">
-                        <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Membandingkan Bentuk</h3>
-                    </div>
-                    <div class="flex flex-col lg:flex-row items-center gap-4">
-                        <div class="w-full lg:w-1/2">
-                            <div class="bg-white p-3 rounded-lg shadow-lg">
-                                <img src="https://i.imgur.com/q0zRUtd.png" alt="Perbandingan Segitiga" class="w-full h-auto max-h-48 object-contain rounded-lg mb-2" onerror="this.src='https://imgur.com/q0zRUtd.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Perbandingan Segitiga</p>'; }">
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-1/2 text-center lg:text-left">
-                            <div class="bg-gradient-to-r from-green-100 to-blue-100 p-4 rounded-lg">
-                                <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">🤔 Pertanyaan:</h4>
-                                <p class="text-sm md:text-base text-gray-700 font-semibold leading-relaxed mb-3">
-                                    Apakah segitiga putih dan segitiga merah memiliki bentuk yang sama?
-                                </p>
-                                <div id="slide2-buttons" class="space-y-3">
-                                    <button id="slide2BtnSama" class="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-green-400 hover:shadow-xl" onclick="answerSlide2('sama')" style="z-index: 99999 !important;">
-                                        <div class="flex items-center justify-center space-x-2">
-                                            <span class="text-lg">✅</span>
-                                            <span>Sama</span>
-                                            <span class="text-lg animate-bounce">🎯</span>
-                                        </div>
-                                    </button>
-                                    <button id="slide2BtnTidakSama" class="w-full bg-gradient-to-r from-red-500 via-pink-500 to-rose-500 hover:from-red-600 hover:via-pink-600 hover:to-rose-600 text-white px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-red-400 hover:shadow-xl" onclick="answerSlide2('tidak sama')" style="z-index: 99999 !important;">
-                                        <div class="flex items-center justify-center space-x-2">
-                                            <span class="text-lg">❌</span>
-                                            <span>Tidak Sama</span>
-                                            <span class="text-lg animate-bounce">🤔</span>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div id="slide2-feedback" class="hidden mt-4 p-3 rounded-lg">
-                                    <!-- Feedback will appear here -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 3 -->
-                <div id="slide3" class="slide-content hidden">
-                    <div class="text-center mb-4">
-                        <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Menganalisis Sudut dan Sisi</h3>
-                    </div>
-                    <div class="flex flex-col lg:flex-row items-center gap-4">
-                        <div class="w-full lg:w-1/2">
-                            <div class="bg-white p-3 rounded-lg shadow-lg">
-                                <img src="https://i.imgur.com/WjaUhR6.png" alt="Analisis Sudut dan Sisi" class="w-full h-auto max-h-48 object-contain rounded-lg mb-2" onerror="this.src='https://imgur.com/WjaUhR6.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Analisis Sudut dan Sisi</p>'; }">
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-1/2 text-center lg:text-left">
-                            <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg">
-                                <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">🤔 Pertanyaan:</h4>
-                                <div class="space-y-2 mb-3">
-                                    <p class="text-xs md:text-sm text-gray-700 font-semibold leading-relaxed">
-                                        • Apakah sudut-sudut yang bersesuaian pada kedua segitiga sama besar?
-                                    </p>
-                                    <p class="text-xs md:text-sm text-gray-700 font-semibold leading-relaxed">
-                                        • Apakah sisi-sisi yang bersesuaian memiliki perbandingan yang sama?
-                                    </p>
-                                </div>
-                                <div id="slide3-buttons" class="space-y-3">
-                                    <button id="slide3BtnSama" class="w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 text-white px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-blue-400 hover:shadow-xl" onclick="answerSlide3('sama')" style="z-index: 99999 !important;">
-                                        <div class="flex items-center justify-center space-x-2">
-                                            <span class="text-lg">✅</span>
-                                            <span>Sama</span>
-                                            <span class="text-lg animate-bounce">📐</span>
-                                        </div>
-                                    </button>
-                                    <button id="slide3BtnTidakSama" class="w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:from-orange-600 hover:via-red-600 hover:to-pink-600 text-white px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-orange-400 hover:shadow-xl" onclick="answerSlide3('tidak sama')" style="z-index: 99999 !important;">
-                                        <div class="flex items-center justify-center space-x-2">
-                                            <span class="text-lg">❌</span>
-                                            <span>Tidak Sama</span>
-                                            <span class="text-lg animate-bounce">🤷</span>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div id="slide3-feedback" class="hidden mt-4 p-3 rounded-lg">
-                                    <!-- Feedback will appear here -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="slide3-explanation" class="hidden mt-4">
-                        <div class="bg-white p-3 rounded-lg shadow-lg">
-                            <img src="https://i.imgur.com/x1f1LQy.png" alt="Penjelasan Kesebangunan" class="w-full h-auto max-h-48 object-contain rounded-lg" onerror="this.src='https://imgur.com/x1f1LQy.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📚</div><p class=\'text-lg font-bold text-gray-800\'>Penjelasan Kesebangunan</p>'; }">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 4 -->
-                <div id="slide4" class="slide-content hidden">
-                    <div class="text-center mb-4">
-                        <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Menemukan Hubungan</h3>
-                    </div>
-                    <div class="flex flex-col lg:flex-row items-center gap-4">
-                        <div class="w-full lg:w-1/2">
-                            <div class="bg-white p-3 rounded-lg shadow-lg">
-                                <img src="https://i.imgur.com/l5Ts113.png" alt="Hubungan Segitiga" class="w-full h-auto max-h-48 object-contain rounded-lg mb-2" onerror="this.src='https://imgur.com/l5Ts113.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Hubungan Segitiga</p>'; }">
-                            </div>
-                        </div>
-                        <div class="w-full lg:w-1/2 text-center lg:text-left">
-                            <div class="bg-gradient-to-r from-pink-100 to-red-100 p-4 rounded-lg">
-                                <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">🤔 Pertanyaan:</h4>
-                                <p class="text-sm md:text-base text-gray-700 font-semibold leading-relaxed mb-3">
-                                    Menurutmu, apa hubungan antara segitiga putih dan segitiga merah?
-                                </p>
-                                <textarea id="slide4Answer" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none text-sm" rows="3" placeholder="Tuliskan pendapat Anda di sini..." oninput="checkSlide4Answer()" style="z-index: 99999 !important; resize: vertical;"></textarea>
-                                <div id="slide4Feedback" class="mt-3 p-3 rounded-lg hidden">
-                                    <p class="text-green-600 font-semibold text-sm">✅ Terima kasih atas jawaban Anda! Sekarang Anda bisa melanjutkan ke slide berikutnya.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 5 -->
-                <div id="slide5" class="slide-content hidden">
-                    <div class="text-center mb-4">
-                        <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Konsep Kesebangunan</h3>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="text-center mb-4">
-                            <div class="bg-white p-3 rounded-lg shadow-lg">
-                                <img src="https://i.imgur.com/l5Ts113.png" alt="Hubungan Segitiga" class="w-full h-auto max-h-32 object-contain rounded-lg mb-2 mx-auto" onerror="this.src='https://imgur.com/l5Ts113.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Hubungan Segitiga</p>'; }">
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-4 rounded-lg">
-                            <p class="text-sm text-gray-700 mb-3 leading-relaxed">
-                                Segitiga putih dan segitiga merah merupakan dua segitiga yang sebangun.
-                            </p>
-                            <p class="text-sm text-gray-700 mb-3 leading-relaxed">
-                                Kesebangunan adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama. Dua bangun dikatakan sebangun jika:
-                            </p>
-                            <div class="bg-white p-3 rounded-lg">
-                                <ul class="text-left space-y-1 text-gray-700 text-xs">
-                                    <li class="flex items-start"><span class="text-blue-500 mr-2">•</span> Bentuknya sama (sudut-sudut yang bersesuaian sama besar).</li>
-                                    <li class="flex items-start"><span class="text-blue-500 mr-2">•</span> Perbandingan panjang sisi-sisi yang bersesuaian sama.</li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="text-center mb-4">
-                            <div class="bg-white p-3 rounded-lg shadow-lg">
-                                <img src="https://i.imgur.com/0BBJVdf.png" alt="Ilustrasi Kesebangunan" class="w-full h-auto max-h-32 object-contain rounded-lg mb-2 mx-auto" onerror="this.src='https://imgur.com/0BBJVdf.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Ilustrasi Kesebangunan</p>'; }">
-                                <p class="text-sm font-semibold text-gray-800">Ilustrasi Kesebangunan</p>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-lg mb-4">
-                            <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3 text-center">Rumus perbandingan sisi:</h4>
-                            <div class="text-center">
-                                <div class="bg-white p-3 rounded-lg shadow-lg">
-                                    <img src="https://i.imgur.com/65FKX3K.png" alt="Rumus Perbandingan Sisi" class="w-full h-auto max-h-20 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/65FKX3K.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-4xl mb-2\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>a₁/a₂ = b₁/b₂ = c₁/c₂</p>'; }">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg text-center">
-                            <h4 class="text-base font-bold text-gray-800 mb-2">Simbol kesebangunan:</h4>
-                            <div class="text-center mb-2">
-                                <p class="text-lg font-bold text-gray-800">∆ABC ~ ∆DEF</p>
-                            </div>
-                            <p class="text-sm text-gray-700 mt-2">yang artinya segitiga ABC sebangun dengan segitiga DEF.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide 6 -->
-                <div id="slide6" class="slide-content hidden">
-                    <div class="text-center mb-4">
-                        <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Contoh Soal</h3>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-lg">
-                            <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">📝 Contoh Soal:</h4>
-                            <div class="text-center mb-3">
-                                <div class="bg-white p-3 rounded-lg shadow-lg">
-                                    <img src="https://i.imgur.com/3hiKbI9.png" alt="Contoh Soal Kesebangunan" class="w-full h-auto max-h-64 object-contain rounded-lg mb-2 mx-auto" onerror="this.src='https://imgur.com/3hiKbI9.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📝</div><p class=\'text-lg font-bold text-gray-800\'>Contoh Soal Kesebangunan</p>'; }">
-                                </div>
-                            </div>
-                            <p class="text-sm text-gray-700 leading-relaxed text-center">
-                                Jika panjang alas segitiga putih adalah <strong>8 m</strong>, dan panjang alas segitiga merah adalah <strong>4 m</strong>, serta tinggi segitiga merah adalah <strong>3 m</strong>, berapakah tinggi segitiga putih?
-                            </p>
-                        </div>
-                        <div class="bg-gradient-to-r from-green-100 to-teal-100 p-4 rounded-lg">
-                            <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">✅ Jawaban:</h4>
-                            <div class="space-y-3">
-                                <div class="bg-white p-3 rounded-lg">
-                                    <h5 class="text-sm font-bold text-gray-800 mb-2">Langkah Pertama (Memahami masalah)</h5>
-                                    <p class="text-xs text-gray-700 mb-1"><strong>Diketahui:</strong></p>
-                                    <ul class="text-xs text-gray-700 ml-3 space-y-1">
-                                        <li>• Segitiga putih sebangun dengan segitiga merah</li>
-                                        <li>• Panjang alas segitiga putih = 8 m</li>
-                                        <li>• Panjang alas segitiga merah = 4 m</li>
-                                        <li>• Tinggi segitiga merah = 3 m</li>
-                                    </ul>
-                                    <p class="text-xs text-gray-700 mt-1"><strong>Ditanyakan:</strong></p>
-                                    <p class="text-xs text-gray-700 ml-3">Berapa tinggi segitiga putih?</p>
-                                </div>
-                                <div class="bg-white p-3 rounded-lg">
-                                    <h5 class="text-sm font-bold text-gray-800 mb-2">Langkah Kedua (Merencanakan masalah)</h5>
-                                    <p class="text-xs text-gray-700 mb-2">Karena kedua segitiga sebangun, perbandingan sisi-sisi yang bersesuaian adalah sama. Tuliskan perbandingan sisi yang bersesuaian.</p>
-                                    <div class="text-center my-3">
-                                        <div class="bg-white p-2 rounded-lg shadow-lg mb-3">
-                                            <img src="https://i.imgur.com/ASCSdxT.png" alt="Perbandingan Sisi" class="w-full h-auto max-h-16 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/ASCSdxT.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<p class=\'text-lg font-bold text-gray-800\'>alas₁/alas₂ = tinggi₁/tinggi₂</p>'; }">
-                                        </div>
-                                        <div class="bg-white p-2 rounded-lg shadow-lg">
-                                            <img src="https://i.imgur.com/jIB1g1q.png" alt="Substitusi Nilai" class="w-full h-auto max-h-16 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/jIB1g1q.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<p class=\'text-lg font-bold text-gray-800\'>8/4 = tinggi₁/3</p>'; }">
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-700">Kemudian mencari nilai tinggi △putih (menggunakan perkalian silang).</p>
-                                </div>
-                                <div class="bg-white p-3 rounded-lg">
-                                    <h5 class="text-sm font-bold text-gray-800 mb-2">Langkah Ketiga (Menjalankan rencana)</h5>
-                                    <p class="text-xs text-gray-700 mb-2">Menentukan nilai tinggi △putih</p>
-                                    <div class="text-center">
-                                        <div class="bg-white p-2 rounded-lg shadow-lg">
-                                            <img src="https://i.imgur.com/oF3A155.png" alt="Penyelesaian" class="w-full h-auto max-h-20 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/oF3A155.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<p class=\'text-lg font-bold text-gray-800\'>tinggi₁ = (8 × 3) ÷ 4 = 6 m</p>'; }">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bg-white p-3 rounded-lg">
-                                    <h5 class="text-sm font-bold text-gray-800 mb-2">Langkah Keempat (Memeriksa kebenaran)</h5>
-                                    <p class="text-xs text-gray-700 mb-2">Dengan menggunakan perbandingan sisi pada bangun yang sebangun, maka diperoleh tinggi segitiga putih yaitu 6 m.</p>
-                                    <p class="text-xs text-gray-700 mb-2">Perbandingan sisi-sisi yang bersesuaian sama:</p>
-                                    <div class="text-center mb-2">
-                                        <div class="bg-white p-2 rounded-lg shadow-lg">
-                                            <img src="https://i.imgur.com/oQ20VAh.png" alt="Pemeriksaan Kebenaran" class="w-full h-auto max-h-12 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/oQ20VAh.png'; if(this.complete && this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<p class=\'text-lg font-bold text-gray-800\'>8/4 = 6/3 = 2</p>'; }">
-                                        </div>
-                                    </div>
-                                    <p class="text-xs text-gray-700">Karena semua perbandingan sisi yang bersesuaian sama, maka benar segitiga putih dan segitiga merah sebangun dan tinggi segitiga putih adalah 6 m.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slide Navigation -->
-                <div class="flex justify-center mt-4 mb-3">
-                    <div class="flex space-x-2">
-                        <button class="slide-indicator active" onclick="playSound('click'); showMaterialSlide(1)" style="z-index: 99999 !important;"></button>
-                        <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(2)" style="z-index: 99999 !important;"></button>
-                        <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(3)" style="z-index: 99999 !important;"></button>
-                        <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(4)" style="z-index: 99999 !important;"></button>
-                        <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(5)" style="z-index: 99999 !important;"></button>
-                        <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(6)" style="z-index: 99999 !important;"></button>
-                    </div>
-                </div>
-            </div>
+        <p class="text-xs text-gray-600 text-center mt-1">👆 Klik untuk melihat jawaban!</p>
+       </div>
+       <div class="w-full lg:w-1/2 text-center lg:text-left">
+        <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-4 rounded-lg">
+         <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">🤔 Pertanyaan:</h4>
+         <p class="text-sm md:text-base text-gray-700 font-semibold leading-relaxed">Bagian mana dari rumah adat ini yang berbentuk segitiga?</p>
+         <div class="mt-3 text-3xl">
+          🔍
+         </div>
         </div>
-
-        <!-- Navigation Buttons - Outside Frame -->
-        <div class="flex justify-between items-center w-full max-w-4xl mx-auto mt-4 px-4">
-            <button class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-4 py-2 rounded-full font-bold text-sm" onclick="showPage('homePage')" style="z-index: 99999 !important;">
-                🏠 Beranda
-            </button>
-            
-            <div class="flex space-x-3">
-                <button id="materialPrevBtn" class="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-4 py-2 rounded-full font-bold text-sm disabled:opacity-50" onclick="previousMaterialSlide()" style="z-index: 99999 !important;" disabled>
-                    ⬅️ Sebelumnya
-                </button>
-                <button id="materialNextBtn" class="neon-button px-4 py-2 rounded-full font-bold text-sm" onclick="nextMaterialSlide()" style="z-index: 99999 !important;">
-                    Selanjutnya ➡️
-                </button>
-            </div>
+       </div>
+      </div>
+     </div><!-- Slide 2 -->
+     <div id="slide2" class="slide-content hidden">
+      <div class="text-center mb-4">
+       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Membandingkan Bentuk</h3>
+      </div>
+      <div class="flex flex-col lg:flex-row items-center gap-4">
+       <div class="w-full lg:w-1/2">
+        <div class="bg-white p-3 rounded-lg shadow-lg"><img src="https://i.imgur.com/q0zRUtd.png" alt="Perbandingan Segitiga" class="w-full h-auto max-h-48 object-contain rounded-lg mb-2" onerror="this.src='https://imgur.com/q0zRUtd.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Perbandingan Segitiga</p>'; }">
         </div>
+       </div>
+       <div class="w-full lg:w-1/2 text-center lg:text-left">
+        <div class="bg-gradient-to-r from-green-100 to-blue-100 p-4 rounded-lg">
+         <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">🤔 Pertanyaan:</h4>
+         <p class="text-sm md:text-base text-gray-700 font-semibold leading-relaxed mb-3">Apakah segitiga putih dan segitiga merah memiliki bentuk yang sama?</p>
+         <div id="slide2-buttons" class="space-y-3"><button id="slide2BtnSama" class="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 text-white px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-green-400 hover:shadow-xl" onclick="answerSlide2('sama')" style="z-index: 99999 !important;">
+           <div class="flex items-center justify-center space-x-2"><span class="text-lg">✅</span> <span>Sama</span> <span class="text-lg animate-bounce">🎯</span>
+           </div></button> <button id="slide2BtnTidakSama" class="w-full bg-gradient-to-r from-red-500 via-pink-500 to-rose-500 hover:from-red-600 hover:via-pink-600 hover:to-rose-600 text-white px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-red-400 hover:shadow-xl" onclick="answerSlide2('tidak sama')" style="z-index: 99999 !important;">
+           <div class="flex items-center justify-center space-x-2"><span class="text-lg">❌</span> <span>Tidak Sama</span> <span class="text-lg animate-bounce">🤔</span>
+           </div></button>
+         </div>
+         <div id="slide2-feedback" class="hidden mt-4 p-3 rounded-lg"><!-- Feedback will appear here -->
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Slide 3 -->
+     <div id="slide3" class="slide-content hidden">
+      <div class="text-center mb-4">
+       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Menganalisis Sudut dan Sisi</h3>
+      </div>
+      <div class="flex flex-col lg:flex-row items-center gap-4">
+       <div class="w-full lg:w-1/2">
+        <div class="bg-white p-3 rounded-lg shadow-lg"><img src="https://i.imgur.com/WjaUhR6.png" alt="Analisis Sudut dan Sisi" class="w-full h-auto max-h-48 object-contain rounded-lg mb-2" onerror="this.src='https://imgur.com/WjaUhR6.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Analisis Sudut dan Sisi</p>'; }">
+        </div>
+       </div>
+       <div class="w-full lg:w-1/2 text-center lg:text-left">
+        <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg">
+         <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">🤔 Pertanyaan:</h4>
+         <div class="space-y-2 mb-3">
+          <p class="text-xs md:text-sm text-gray-700 font-semibold leading-relaxed">• Apakah sudut-sudut yang bersesuaian pada kedua segitiga sama besar?</p>
+          <p class="text-xs md:text-sm text-gray-700 font-semibold leading-relaxed">• Apakah sisi-sisi yang bersesuaian memiliki perbandingan yang sama?</p>
+         </div>
+         <div id="slide3-buttons" class="space-y-3"><button id="slide3BtnSama" class="w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 hover:from-blue-600 hover:via-indigo-600 hover:to-purple-600 text-white px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-blue-400 hover:shadow-xl" onclick="answerSlide3('sama')" style="z-index: 99999 !important;">
+           <div class="flex items-center justify-center space-x-2"><span class="text-lg">✅</span> <span>Sama</span> <span class="text-lg animate-bounce">📐</span>
+           </div></button> <button id="slide3BtnTidakSama" class="w-full bg-gradient-to-r from-orange-500 via-red-500 to-pink-500 hover:from-orange-600 hover:via-red-600 hover:to-pink-600 text-white px-4 py-3 rounded-lg font-bold text-sm transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-orange-400 hover:shadow-xl" onclick="answerSlide3('tidak sama')" style="z-index: 99999 !important;">
+           <div class="flex items-center justify-center space-x-2"><span class="text-lg">❌</span> <span>Tidak Sama</span> <span class="text-lg animate-bounce">🤷</span>
+           </div></button>
+         </div>
+         <div id="slide3-feedback" class="hidden mt-4 p-3 rounded-lg"><!-- Feedback will appear here -->
+         </div>
+        </div>
+       </div>
+      </div>
+      <div id="slide3-explanation" class="hidden mt-4">
+       <div class="bg-white p-3 rounded-lg shadow-lg"><img src="https://i.imgur.com/x1f1LQy.png" alt="Penjelasan Kesebangunan" class="w-full h-auto max-h-48 object-contain rounded-lg" onerror="this.src='https://imgur.com/x1f1LQy.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📚</div><p class=\'text-lg font-bold text-gray-800\'>Penjelasan Kesebangunan</p>'; }">
+       </div>
+      </div>
+     </div><!-- Slide 4 -->
+     <div id="slide4" class="slide-content hidden">
+      <div class="text-center mb-4">
+       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Menemukan Hubungan</h3>
+      </div>
+      <div class="flex flex-col lg:flex-row items-center gap-4">
+       <div class="w-full lg:w-1/2">
+        <div class="bg-white p-3 rounded-lg shadow-lg"><img src="https://i.imgur.com/l5Ts113.png" alt="Hubungan Segitiga" class="w-full h-auto max-h-48 object-contain rounded-lg mb-2" onerror="this.src='https://imgur.com/l5Ts113.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Hubungan Segitiga</p>'; }">
+        </div>
+       </div>
+       <div class="w-full lg:w-1/2 text-center lg:text-left">
+        <div class="bg-gradient-to-r from-pink-100 to-red-100 p-4 rounded-lg">
+         <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">🤔 Pertanyaan:</h4>
+         <p class="text-sm md:text-base text-gray-700 font-semibold leading-relaxed mb-3">Menurutmu, apa hubungan antara segitiga putih dan segitiga merah?</p><textarea id="slide4Answer" class="w-full p-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none text-sm" rows="3" placeholder="Tuliskan pendapat Anda di sini..." oninput="checkSlide4Answer()" style="z-index: 99999 !important; resize: vertical;"></textarea>
+         <div id="slide4Feedback" class="mt-3 p-3 rounded-lg hidden">
+          <p class="text-green-600 font-semibold text-sm">✅ Terima kasih atas jawaban Anda! Sekarang Anda bisa melanjutkan ke slide berikutnya.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Slide 5 -->
+     <div id="slide5" class="slide-content hidden">
+      <div class="text-center mb-4">
+       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Konsep Kesebangunan</h3>
+      </div>
+      <div class="space-y-4">
+       <div class="text-center mb-4">
+        <div class="bg-white p-3 rounded-lg shadow-lg"><img src="https://i.imgur.com/l5Ts113.png" alt="Hubungan Segitiga" class="w-full h-auto max-h-32 object-contain rounded-lg mb-2 mx-auto" onerror="this.src='https://imgur.com/l5Ts113.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Hubungan Segitiga</p>'; }">
+        </div>
+       </div>
+       <div class="bg-gradient-to-r from-indigo-100 to-purple-100 p-4 rounded-lg">
+        <p class="text-sm text-gray-700 mb-3 leading-relaxed">Segitiga putih dan segitiga merah merupakan dua segitiga yang sebangun.</p>
+        <p class="text-sm text-gray-700 mb-3 leading-relaxed">Kesebangunan adalah hubungan dua bangun yang memiliki bentuk sama tetapi ukuran belum tentu sama. Dua bangun dikatakan sebangun jika:</p>
+        <div class="bg-white p-3 rounded-lg">
+         <ul class="text-left space-y-1 text-gray-700 text-xs">
+          <li class="flex items-start"><span class="text-blue-500 mr-2">•</span> Bentuknya sama (sudut-sudut yang bersesuaian sama besar).</li>
+          <li class="flex items-start"><span class="text-blue-500 mr-2">•</span> Perbandingan panjang sisi-sisi yang bersesuaian sama.</li>
+         </ul>
+        </div>
+       </div>
+       <div class="text-center mb-4">
+        <div class="bg-white p-3 rounded-lg shadow-lg"><img src="https://i.imgur.com/0BBJVdf.png" alt="Ilustrasi Kesebangunan" class="w-full h-auto max-h-32 object-contain rounded-lg mb-2 mx-auto" onerror="this.src='https://imgur.com/0BBJVdf.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>Ilustrasi Kesebangunan</p>'; }">
+         <p class="text-sm font-semibold text-gray-800">Ilustrasi Kesebangunan</p>
+        </div>
+       </div>
+       <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-lg mb-4">
+        <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3 text-center">Rumus perbandingan sisi:</h4>
+        <div class="text-center">
+         <div class="bg-white p-3 rounded-lg shadow-lg"><img src="https://i.imgur.com/65FKX3K.png" alt="Rumus Perbandingan Sisi" class="w-full h-auto max-h-20 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/65FKX3K.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-4xl mb-2\'>📐</div><p class=\'text-lg font-bold text-gray-800\'>a₁/a₂ = b₁/b₂ = c₁/c₂</p>'; }">
+         </div>
+        </div>
+       </div>
+       <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-lg text-center">
+        <h4 class="text-base font-bold text-gray-800 mb-2">Simbol kesebangunan:</h4>
+        <div class="text-center mb-2">
+         <p class="text-lg font-bold text-gray-800">∆ABC ~ ∆DEF</p>
+        </div>
+        <p class="text-sm text-gray-700 mt-2">yang artinya segitiga ABC sebangun dengan segitiga DEF.</p>
+       </div>
+      </div>
+     </div><!-- Slide 6 -->
+     <div id="slide6" class="slide-content hidden">
+      <div class="text-center mb-4">
+       <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">Contoh Soal</h3>
+      </div>
+      <div class="space-y-4">
+       <div class="bg-gradient-to-r from-blue-100 to-indigo-100 p-4 rounded-lg">
+        <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">📝 Contoh Soal:</h4>
+        <div class="text-center mb-3">
+         <div class="bg-white p-3 rounded-lg shadow-lg"><img src="https://i.imgur.com/3hiKbI9.png" alt="Contoh Soal Kesebangunan" class="w-full h-auto max-h-64 object-contain rounded-lg mb-2 mx-auto" onerror="this.src='https://imgur.com/3hiKbI9.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<div class=\'text-6xl mb-4\'>📝</div><p class=\'text-lg font-bold text-gray-800\'>Contoh Soal Kesebangunan</p>'; }">
+         </div>
+        </div>
+        <p class="text-sm text-gray-700 leading-relaxed text-center">Jika panjang alas segitiga putih adalah <strong>8 m</strong>, dan panjang alas segitiga merah adalah <strong>4 m</strong>, serta tinggi segitiga merah adalah <strong>3 m</strong>, berapakah tinggi segitiga putih?</p>
+       </div>
+       <div class="bg-gradient-to-r from-green-100 to-teal-100 p-4 rounded-lg">
+        <h4 class="text-base md:text-lg font-bold text-gray-800 mb-3">✅ Jawaban:</h4>
+        <div class="space-y-3">
+         <div class="bg-white p-3 rounded-lg">
+          <h5 class="text-sm font-bold text-gray-800 mb-2">Langkah Pertama (Memahami masalah)</h5>
+          <p class="text-xs text-gray-700 mb-1"><strong>Diketahui:</strong></p>
+          <ul class="text-xs text-gray-700 ml-3 space-y-1">
+           <li>• Segitiga putih sebangun dengan segitiga merah</li>
+           <li>• Panjang alas segitiga putih = 8 m</li>
+           <li>• Panjang alas segitiga merah = 4 m</li>
+           <li>• Tinggi segitiga merah = 3 m</li>
+          </ul>
+          <p class="text-xs text-gray-700 mt-1"><strong>Ditanyakan:</strong></p>
+          <p class="text-xs text-gray-700 ml-3">Berapa tinggi segitiga putih?</p>
+         </div>
+         <div class="bg-white p-3 rounded-lg">
+          <h5 class="text-sm font-bold text-gray-800 mb-2">Langkah Kedua (Merencanakan masalah)</h5>
+          <p class="text-xs text-gray-700 mb-2">Karena kedua segitiga sebangun, perbandingan sisi-sisi yang bersesuaian adalah sama. Tuliskan perbandingan sisi yang bersesuaian.</p>
+          <div class="text-center my-3">
+           <div class="bg-white p-2 rounded-lg shadow-lg mb-3"><img src="https://i.imgur.com/ASCSdxT.png" alt="Perbandingan Sisi" class="w-full h-auto max-h-16 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/ASCSdxT.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<p class=\'text-lg font-bold text-gray-800\'>alas₁/alas₂ = tinggi₁/tinggi₂</p>'; }">
+           </div>
+           <div class="bg-white p-2 rounded-lg shadow-lg"><img src="https://i.imgur.com/jIB1g1q.png" alt="Substitusi Nilai" class="w-full h-auto max-h-16 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/jIB1g1q.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<p class=\'text-lg font-bold text-gray-800\'>8/4 = tinggi₁/3</p>'; }">
+           </div>
+          </div>
+          <p class="text-xs text-gray-700">Kemudian mencari nilai tinggi △putih (menggunakan perkalian silang).</p>
+         </div>
+         <div class="bg-white p-3 rounded-lg">
+          <h5 class="text-sm font-bold text-gray-800 mb-2">Langkah Ketiga (Menjalankan rencana)</h5>
+          <p class="text-xs text-gray-700 mb-2">Menentukan nilai tinggi △putih</p>
+          <div class="text-center">
+           <div class="bg-white p-2 rounded-lg shadow-lg"><img src="https://i.imgur.com/oF3A155.png" alt="Penyelesaian" class="w-full h-auto max-h-20 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/oF3A155.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<p class=\'text-lg font-bold text-gray-800\'>tinggi₁ = (8 × 3) ÷ 4 = 6 m</p>'; }">
+           </div>
+          </div>
+         </div>
+         <div class="bg-white p-3 rounded-lg">
+          <h5 class="text-sm font-bold text-gray-800 mb-2">Langkah Keempat (Memeriksa kebenaran)</h5>
+          <p class="text-xs text-gray-700 mb-2">Dengan menggunakan perbandingan sisi pada bangun yang sebangun, maka diperoleh tinggi segitiga putih yaitu 6 m.</p>
+          <p class="text-xs text-gray-700 mb-2">Perbandingan sisi-sisi yang bersesuaian sama:</p>
+          <div class="text-center mb-2">
+           <div class="bg-white p-2 rounded-lg shadow-lg"><img src="https://i.imgur.com/oQ20VAh.png" alt="Pemeriksaan Kebenaran" class="w-full h-auto max-h-12 object-contain rounded-lg mx-auto" onerror="this.src='https://imgur.com/oQ20VAh.png'; if(this.complete &amp;&amp; this.naturalWidth === 0) { this.style.display='none'; this.parentElement.innerHTML='<p class=\'text-lg font-bold text-gray-800\'>8/4 = 6/3 = 2</p>'; }">
+           </div>
+          </div>
+          <p class="text-xs text-gray-700">Karena semua perbandingan sisi yang bersesuaian sama, maka benar segitiga putih dan segitiga merah sebangun dan tinggi segitiga putih adalah 6 m.</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Slide Navigation -->
+     <div class="flex justify-center mt-4 mb-3">
+      <div class="flex space-x-2"><button class="slide-indicator active" onclick="playSound('click'); showMaterialSlide(1)" style="z-index: 99999 !important;"></button> <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(2)" style="z-index: 99999 !important;"></button> <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(3)" style="z-index: 99999 !important;"></button> <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(4)" style="z-index: 99999 !important;"></button> <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(5)" style="z-index: 99999 !important;"></button> <button class="slide-indicator" onclick="playSound('click'); showMaterialSlide(6)" style="z-index: 99999 !important;"></button>
+      </div>
+     </div>
     </div>
-
-    <!-- Halaman Input Nama -->
-    <div id="nameInputPage" class="hidden min-h-screen flex items-center justify-center p-4">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-auto w-full">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">📝 Masukkan Nama</h2>
-                <div class="text-4xl md:text-6xl mb-4 floating">👤</div>
-                <p class="text-lg md:text-xl text-white">Siapa nama kamu?</p>
-            </div>
-
-            <div class="bg-white/95 rounded-3xl p-6 shadow-2xl">
-                <div class="mb-6">
-                    <label for="playerName" class="block text-lg font-bold text-gray-800 mb-3 text-center">
-                        🌟 Nama Lengkap Kamu:
-                    </label>
-                    <input 
-                        type="text" 
-                        id="playerName" 
-                        class="w-full px-6 py-4 text-lg border-3 border-gray-300 rounded-2xl focus:border-blue-500 focus:outline-none text-center font-semibold bg-white shadow-lg"
-                        placeholder="Masukkan nama kamu"
-                        maxlength="50"
-                        onkeypress="if(event.key==='Enter') startQuizWithName()"
-                        oninput="checkNameInput()"
-                        style="z-index: 99999 !important;"
-                    >
-                </div>
-
-                <div class="space-y-4">
-                    <button 
-                        id="startQuizBtn" 
-                        class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg disabled:opacity-50" 
-                        onclick="startQuizWithName()"
-                        disabled
-                        style="z-index: 99999 !important;"
-                    >
-                        🚀 Mulai Latihan Soal
-                    </button>
-                    <button 
-                        class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-full font-bold text-lg" 
-                        onclick="showPage('homePage')"
-                        style="z-index: 99999 !important;"
-                    >
-                        ⬅️ Kembali ke Beranda
-                    </button>
-                </div>
-            </div>
-        </div>
+   </div><!-- Navigation Buttons - Outside Frame -->
+   <div class="flex justify-between items-center w-full max-w-4xl mx-auto mt-4 px-4"><button class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-4 py-2 rounded-full font-bold text-sm" onclick="showPage('homePage')" style="z-index: 99999 !important;"> 🏠 Beranda </button>
+    <div class="flex space-x-3"><button id="materialPrevBtn" class="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-4 py-2 rounded-full font-bold text-sm disabled:opacity-50" onclick="previousMaterialSlide()" style="z-index: 99999 !important;" disabled> ⬅️ Sebelumnya </button> <button id="materialNextBtn" class="neon-button px-4 py-2 rounded-full font-bold text-sm" onclick="nextMaterialSlide()" style="z-index: 99999 !important;"> Selanjutnya ➡️ </button>
     </div>
-
-    <!-- Halaman Quiz -->
-    <div id="quizPage" class="hidden min-h-screen flex items-center justify-center p-4">
-        <div class="glass-card rounded-3xl p-6 max-w-6xl mx-auto w-full holographic">
-            <!-- Quiz Header -->
-            <div class="text-center mb-6">
-                <div class="relative mb-6">
-                    <div class="absolute -inset-4 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
-                    <div class="relative">
-                        <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">🚀 Latihan Soal 🎮</h2>
-                        <div class="text-4xl md:text-6xl mb-4 floating">📝</div>
-                        <p class="text-lg md:text-xl text-white neon-text">Uji Pemahaman Kesebangunan</p>
-                    </div>
-                </div>
-                <!-- Player Name Display -->
-                <div class="text-center mb-4">
-                    <div class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1 rounded-2xl shadow-2xl inline-block">
-                        <div class="bg-white/95 px-6 py-3 rounded-xl">
-                            <div class="text-lg md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
-                                👋 Hai <span id="playerNameDisplay" class="text-orange-600"></span>!
-                            </div>
-                            <div class="text-sm text-gray-600 font-semibold">Selamat mengerjakan quiz</div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Quiz Stats -->
-                <div class="flex justify-center space-x-8 mt-6 mb-4">
-                    <div class="text-center">
-                        <div class="text-xl md:text-2xl font-bold text-white mb-2">✅ <span id="quizCorrectCount" class="text-green-400">0</span></div>
-                        <div class="text-sm text-white font-semibold">Skor</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="text-xl md:text-2xl font-bold text-white mb-2">⏰ <span id="quizTimer" class="text-blue-400">25:00</span></div>
-                        <div class="text-sm text-white font-semibold">Waktu</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Quiz Content -->
-            <div class="bg-gradient-to-br from-white via-blue-50 to-purple-50 rounded-3xl p-4 md:p-8 shadow-2xl min-h-[600px] border-2 border-white/50">
-                <!-- Question Header -->
-                <div class="text-center mb-6">
-                    <div class="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 p-1 rounded-2xl mb-4 inline-block">
-                        <div class="bg-white px-6 py-3 rounded-xl">
-                            <h3 id="quizQuestionTitle" class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-purple-600 mb-2">Pertanyaan 1</h3>
-                            <p id="quizQuestionDescription" class="text-lg md:text-xl text-gray-700 font-semibold mb-0">Perhatikan gambar kain corak insang diatas!</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question Image -->
-                <div class="text-center mb-6">
-                    <div class="bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 p-1 rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 inline-block">
-                        <div id="quizImageContainer" class="bg-white p-6 rounded-xl">
-                            <div class="text-6xl mb-4">📐</div>
-                            <p class="text-lg font-semibold text-gray-800">Gambar Soal</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question Context -->
-                <div class="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 p-1 rounded-2xl mb-6 shadow-lg">
-                    <div class="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 p-6 rounded-xl">
-                        <div class="flex items-center justify-center mb-3">
-                            <div class="text-3xl mr-3">📋</div>
-                            <h4 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">Informasi Soal</h4>
-                        </div>
-                        <p id="quizQuestionContext" class="text-gray-700 leading-relaxed text-center font-medium">
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 p-1 rounded-2xl mb-6 shadow-lg">
-                    <div class="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-6 rounded-xl">
-                        <div class="flex items-center justify-center mb-3">
-                            <div class="text-3xl mr-3">❓</div>
-                            <h4 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Pertanyaan</h4>
-                        </div>
-                        <h4 id="quizSubQuestion" class="text-xl md:text-2xl font-bold text-gray-800 text-center mb-4">
-                            <!-- Sub question will be inserted here -->
-                        </h4>
-                        <div id="quizQuestionImageContainer" class="text-center hidden">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Question Display -->
-                <div id="questionContainer">
-                    <!-- Answer Options -->
-                    <div class="bg-gradient-to-r from-green-400 via-teal-500 to-cyan-500 p-1 rounded-2xl mb-8 shadow-lg">
-                        <div class="bg-gradient-to-r from-green-50 via-teal-50 to-cyan-50 p-6 rounded-xl">
-                            <div class="flex items-center justify-center mb-4">
-                                <div class="text-3xl mr-3">🎯</div>
-                                <h4 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-cyan-600">Pilihan Jawaban</h4>
-                            </div>
-                            <!-- Auto advance countdown -->
-                            <div id="autoAdvanceCountdown" class="hidden text-center mb-4">
-                                <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-xl border-2 border-orange-300">
-                                    <div class="text-lg font-bold text-orange-800 mb-2">
-                                        ⏰ Otomatis lanjut dalam <span id="countdownTimer" class="text-red-600">5</span> detik
-                                    </div>
-                                    <div class="text-sm text-orange-700">Klik "Selanjutnya" untuk lanjut sekarang</div>
-                                </div>
-                            </div>
-                            <div id="quizOptions" class="space-y-4">
-                                <!-- Options will be generated here -->
-                            </div>
-                        </div>
-                    </div>
-
-
-                </div>
-
-                <!-- Quiz Complete Screen -->
-                <div id="quizCompleteScreen" class="hidden text-center">
-                    <div class="text-8xl mb-6">🎉</div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Selamat! Quiz Selesai!</h3>
-                    <div class="bg-gradient-to-r from-green-100 to-blue-100 p-8 rounded-3xl mb-6">
-                        <div class="text-6xl mb-4" id="finalEmoji">🏆</div>
-                        <h4 class="text-2xl font-bold text-gray-800 mb-4">Hasil Quiz Kamu:</h4>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                            <div class="bg-white p-4 rounded-xl">
-                                <div class="text-2xl font-bold text-blue-600" id="finalScore">0</div>
-                                <div class="text-sm text-gray-600">Skor Total</div>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl">
-                                <div class="text-2xl font-bold text-green-600" id="correctAnswers">0</div>
-                                <div class="text-sm text-gray-600">Benar</div>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl">
-                                <div class="text-2xl font-bold text-red-600" id="wrongAnswers">0</div>
-                                <div class="text-sm text-gray-600">Salah</div>
-                            </div>
-                            <div class="bg-white p-4 rounded-xl">
-                                <div class="text-2xl font-bold text-purple-600" id="finalPercentage">0%</div>
-                                <div class="text-sm text-gray-600">Persentase</div>
-                            </div>
-                        </div>
-                        <p class="text-lg text-gray-800" id="finalMessage"></p>
-                    </div>
-                </div>
-            </div>
-
-                <!-- Navigation Controls -->
-                <div class="flex justify-between items-center pt-6 border-t-4 border-purple-300">
-                    <button id="quizPrevBtn" class="bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:from-gray-600 hover:via-gray-700 hover:to-gray-800 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg border-2 border-gray-400" onclick="playSound('click'); previousQuizQuestion()">
-                        ⬅️ Sebelumnya
-                    </button>
-                    
-                    <div class="text-center bg-gradient-to-r from-indigo-100 to-purple-100 px-6 py-3 rounded-full border-2 border-indigo-300">
-                        <div class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
-                            Soal <span id="quizProgress2" class="text-purple-700">1</span> dari <span class="text-indigo-700">12</span>
-                        </div>
-                    </div>
-                    
-                    <button id="quizNextBtn" class="neon-button text-black px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg" onclick="playSound('click'); nextQuizQuestion()" disabled>
-                        Selanjutnya ➡️
-                    </button>
-                </div>
-            </div>
-
-            <!-- Back to Home Button -->
-            <div class="text-center mt-8 pt-6 border-t-4 border-pink-300">
-                <button class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 hover:from-red-600 hover:via-pink-600 hover:to-purple-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-red-400" onclick="playSound('click'); confirmExitQuiz()">
-                    🏠 Keluar Quiz
-                </button>
-            </div>
-        </div>
+   </div>
+  </div><!-- Halaman Input Nama -->
+  <div id="nameInputPage" class="hidden min-h-screen flex items-center justify-center p-4">
+   <div class="glass-card rounded-3xl p-8 max-w-md mx-auto w-full">
+    <div class="text-center mb-8">
+     <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">📝 Masukkan Nama</h2>
+     <div class="text-4xl md:text-6xl mb-4 floating">
+      👤
+     </div>
+     <p class="text-lg md:text-xl text-white">Siapa nama kamu?</p>
     </div>
-
-    <!-- Quiz Exit Confirmation Modal -->
-    <div id="quizExitModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
-            <div class="text-center">
-                <div class="text-8xl mb-4">⚠️</div>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Keluar Quiz?</h3>
-                <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-6 rounded-xl mb-6">
-                    <p class="text-xl text-gray-700 font-semibold mb-2">
-                        Apakah kamu yakin ingin keluar?
-                    </p>
-                    <p class="text-lg text-gray-600">
-                        Progres quiz akan hilang dan tidak tersimpan.
-                    </p>
-                </div>
-                <div class="space-y-4">
-                    <button class="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); exitQuiz()">
-                        ✅ Ya, Keluar
-                    </button>
-                    <button class="w-full neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeExitQuiz()">
-                        ❌ Batal
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="bg-white/95 rounded-3xl p-6 shadow-2xl">
+     <div class="mb-6"><label for="playerName" class="block text-lg font-bold text-gray-800 mb-3 text-center"> 🌟 Nama Lengkap Kamu: </label> <input type="text" id="playerName" class="w-full px-6 py-4 text-lg border-3 border-gray-300 rounded-2xl focus:border-blue-500 focus:outline-none text-center font-semibold bg-white shadow-lg" placeholder="Masukkan nama kamu" maxlength="50" onkeypress="if(event.key==='Enter') startQuizWithName()" oninput="checkNameInput()" style="z-index: 99999 !important;">
+     </div>
+     <div class="space-y-4"><button id="startQuizBtn" class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg disabled:opacity-50" onclick="startQuizWithName()" disabled style="z-index: 99999 !important;"> 🚀 Mulai Latihan Soal </button> <button class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-full font-bold text-lg" onclick="showPage('homePage')" style="z-index: 99999 !important;"> ⬅️ Kembali ke Beranda </button>
+     </div>
     </div>
-
-    <!-- Popup Modal for Slide 1 -->
-    <div id="slide1PopupModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
-            <div class="text-center">
-                <div class="text-6xl mb-4">🎉</div>
-                <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Jawaban Benar!</h3>
-                <div class="bg-gradient-to-r from-green-100 to-blue-100 p-6 rounded-xl mb-6">
-                    <p class="text-lg md:text-xl text-gray-700 font-semibold leading-relaxed">
-                        Ya benar! Yang berbentuk segitiga adalah bagian atapnya! 🏠
-                    </p>
-                </div>
-                <div class="text-4xl mb-4">✅</div>
-                <button class="neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('correct'); hideSlide1Popup()">
-                    👍 Mengerti!
-                </button>
-            </div>
+   </div>
+  </div><!-- Halaman Quiz -->
+  <div id="quizPage" class="hidden min-h-screen flex items-center justify-center p-4">
+   <div class="glass-card rounded-3xl p-6 max-w-6xl mx-auto w-full holographic"><!-- Quiz Header -->
+    <div class="text-center mb-6">
+     <div class="relative mb-6">
+      <div class="absolute -inset-4 bg-gradient-to-r from-pink-400 via-purple-500 to-indigo-500 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+      <div class="relative">
+       <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">🚀 Latihan Soal 🎮</h2>
+       <div class="text-4xl md:text-6xl mb-4 floating">
+        📝
+       </div>
+       <p class="text-lg md:text-xl text-white neon-text">Uji Pemahaman Kesebangunan</p>
+      </div>
+     </div><!-- Player Name Display -->
+     <div class="text-center mb-4">
+      <div class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1 rounded-2xl shadow-2xl inline-block">
+       <div class="bg-white/95 px-6 py-3 rounded-xl">
+        <div class="text-lg md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">
+         👋 Hai <span id="playerNameDisplay" class="text-orange-600"></span>!
         </div>
-    </div>
-
-    <!-- Quiz Answer Popup - Correct -->
-    <div id="quizCorrectPopup" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
-            <div class="text-center">
-                <div class="text-8xl mb-4">🎉</div>
-                <h3 class="text-3xl font-bold text-green-600 mb-4">Benar!</h3>
-                <div class="bg-gradient-to-r from-green-100 to-emerald-100 p-6 rounded-xl">
-                    <div class="text-6xl mb-3">✅</div>
-                    <p class="text-xl text-green-800 font-bold">
-                        Jawaban kamu tepat!
-                    </p>
-                </div>
-            </div>
+        <div class="text-sm text-gray-600 font-semibold">
+         Selamat mengerjakan quiz
         </div>
-    </div>
-
-    <!-- Quiz Answer Popup - Incorrect -->
-    <div id="quizIncorrectPopup" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
-            <div class="text-center">
-                <div class="text-8xl mb-4">😔</div>
-                <h3 class="text-3xl font-bold text-red-600 mb-4">Salah!</h3>
-                <div class="bg-gradient-to-r from-red-100 to-pink-100 p-6 rounded-xl">
-                    <div class="text-6xl mb-3">❌</div>
-                    <p class="text-xl text-red-800 font-bold">
-                        Jawaban kamu belum tepat!
-                    </p>
-                </div>
-            </div>
+       </div>
+      </div>
+     </div><!-- Quiz Stats -->
+     <div class="flex justify-center space-x-8 mt-6 mb-4">
+      <div class="text-center">
+       <div class="text-xl md:text-2xl font-bold text-white mb-2">
+        ✅ <span id="quizCorrectCount" class="text-green-400">0</span>
+       </div>
+       <div class="text-sm text-white font-semibold">
+        Skor
+       </div>
+      </div>
+      <div class="text-center">
+       <div class="text-xl md:text-2xl font-bold text-white mb-2">
+        ⏰ <span id="quizTimer" class="text-blue-400">25:00</span>
+       </div>
+       <div class="text-sm text-white font-semibold">
+        Waktu
+       </div>
+      </div>
+     </div>
+    </div><!-- Quiz Content -->
+    <div class="bg-gradient-to-br from-white via-blue-50 to-purple-50 rounded-3xl p-4 md:p-8 shadow-2xl min-h-[600px] border-2 border-white/50"><!-- Question Header -->
+     <div class="text-center mb-6">
+      <div class="bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 p-1 rounded-2xl mb-4 inline-block">
+       <div class="bg-white px-6 py-3 rounded-xl">
+        <h3 id="quizQuestionTitle" class="text-2xl md:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-purple-600 mb-2">Pertanyaan 1</h3>
+        <p id="quizQuestionDescription" class="text-lg md:text-xl text-gray-700 font-semibold mb-0">Perhatikan gambar kain corak insang diatas!</p>
+       </div>
+      </div>
+     </div><!-- Question Image -->
+     <div class="text-center mb-6">
+      <div class="bg-gradient-to-br from-yellow-400 via-orange-500 to-red-500 p-1 rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 inline-block">
+       <div id="quizImageContainer" class="bg-white p-6 rounded-xl">
+        <div class="text-6xl mb-4">
+         📐
         </div>
-    </div>
-
-    <!-- Halaman Memory Game -->
-    <div id="memoryGamePage" class="hidden min-h-screen flex items-center justify-center p-4">
-        <div class="glass-card rounded-3xl p-6 max-w-6xl mx-auto w-full">
-            <!-- Memory Game Header -->
-            <div class="text-center mb-6">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">🎮 Cocokin Yuk! 🧩</h2>
-                <div class="text-4xl md:text-6xl mb-4 floating">🥁</div>
-                <p class="text-lg md:text-xl text-white neon-text">Game Memori Rebana Melayu</p>
-                
-                <!-- Game Stats -->
-                <div class="flex justify-center space-x-8 mt-6 mb-4">
-                    <div class="bg-gradient-to-r from-blue-100 to-purple-100 px-6 py-3 rounded-xl">
-                        <div class="text-2xl font-bold text-gray-800">⏰ <span id="memoryGameTimer" class="text-blue-600">0:00</span></div>
-                        <div class="text-sm text-gray-600">Waktu</div>
-                    </div>
-                    <div class="bg-gradient-to-r from-green-100 to-teal-100 px-6 py-3 rounded-xl">
-                        <div class="text-2xl font-bold text-gray-800">🎯 <span id="memoryGameMatches" class="text-green-600">0</span>/6</div>
-                        <div class="text-sm text-gray-600">Pasangan</div>
-                    </div>
-                </div>
-                <!-- Instructions -->
-                <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-xl mb-6">
-                    <h3 class="text-lg font-bold text-gray-800 mb-2">📋 Cara Bermain:</h3>
-                    <p class="text-gray-700">Klik kartu untuk membaliknya dan temukan pasangan gambar rebana yang sebangun!</p>
-                </div>
-            </div>
-
-            <!-- Memory Game Board -->
-            <div class="bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl">
-                <div id="memoryGameBoard" class="memory-game-board">
-                    <!-- Cards will be generated here -->
-                </div>
-
-                <!-- Game Complete Message -->
-                <div id="gameCompleteMessage" class="hidden text-center mt-8 p-6 bg-gradient-to-r from-green-100 to-blue-100 rounded-3xl">
-                    <div class="text-8xl mb-4">🎉</div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-4">Selamat! Kamu Berhasil!</h3>
-                    <div class="grid grid-cols-2 gap-4 max-w-md mx-auto mb-6">
-                        <div class="bg-white p-4 rounded-xl">
-                            <div class="text-2xl font-bold text-purple-600" id="finalTime">00:00</div>
-                            <div class="text-sm text-gray-600">Waktu</div>
-                        </div>
-                        <div class="bg-white p-4 rounded-xl">
-                            <div class="text-2xl font-bold text-green-600" id="gameRating">⭐⭐⭐</div>
-                            <div class="text-sm text-gray-600">Rating</div>
-                        </div>
-                    </div>
-                    <p class="text-lg text-gray-800 mb-4" id="congratsMessage">
-                        Hebat! Kamu berhasil mencocokkan semua rebana sebangun!
-                    </p>
-                </div>
-            </div>
-
-            <!-- Control Buttons -->
-            <div class="flex justify-center space-x-4 mt-6">
-                <button class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); showPage('homePage')" style="z-index: 99999 !important;">
-                    🏠 Beranda
-                </button>
-                <button class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); resetMemoryGame()" style="z-index: 99999 !important;">
-                    🔄 Reset
-                </button>
-            </div>
+        <p class="text-lg font-semibold text-gray-800">Gambar Soal</p>
+       </div>
+      </div>
+     </div><!-- Question Context -->
+     <div class="bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 p-1 rounded-2xl mb-6 shadow-lg">
+      <div class="bg-gradient-to-r from-yellow-50 via-orange-50 to-red-50 p-6 rounded-xl">
+       <div class="flex items-center justify-center mb-3">
+        <div class="text-3xl mr-3">
+         📋
         </div>
-    </div>
-
-    <!-- Halaman Host Login -->
-    <div id="hostLoginPage" class="hidden min-h-screen flex items-center justify-center p-4">
-        <div class="glass-card rounded-3xl p-8 max-w-md mx-auto w-full">
-            <div class="text-center mb-8">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">👨‍🏫 Login Host</h2>
-                <div class="text-4xl md:text-6xl mb-4 floating">🔐</div>
-                <p class="text-lg md:text-xl text-white">Akses Dashboard Host</p>
-            </div>
-
-            <div class="bg-white/95 rounded-3xl p-6 shadow-2xl">
-                <div class="mb-6">
-                    <label for="hostPassword" class="block text-lg font-bold text-gray-800 mb-3 text-center">
-                        🔑 Password Host:
-                    </label>
-                    <input 
-                        type="password" 
-                        id="hostPassword" 
-                        class="w-full px-6 py-4 text-lg border-3 border-gray-300 rounded-2xl focus:border-blue-500 focus:outline-none text-center font-semibold bg-white shadow-lg"
-                        placeholder="Masukkan password host"
-                        onkeypress="if(event.key==='Enter') loginHost()"
-                        style="z-index: 99999 !important;"
-                    >
-
-                </div>
-
-                <div class="space-y-4">
-                    <button 
-                        class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg" 
-                        onclick="loginHost()"
-                        style="z-index: 99999 !important;"
-                    >
-                        🚀 Masuk Dashboard
-                    </button>
-                    <button 
-                        class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-full font-bold text-lg" 
-                        onclick="showPage('homePage')"
-                        style="z-index: 99999 !important;"
-                    >
-                        ⬅️ Kembali ke Beranda
-                    </button>
-                </div>
-            </div>
+        <h4 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600">Informasi Soal</h4>
+       </div>
+       <p id="quizQuestionContext" class="text-gray-700 leading-relaxed text-center font-medium"></p>
+      </div>
+     </div>
+     <div class="bg-gradient-to-r from-blue-400 via-indigo-500 to-purple-500 p-1 rounded-2xl mb-6 shadow-lg">
+      <div class="bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 p-6 rounded-xl">
+       <div class="flex items-center justify-center mb-3">
+        <div class="text-3xl mr-3">
+         ❓
         </div>
-    </div>
-
-    <!-- Halaman Hasil Quiz -->
-    <div id="quizResultPage" class="hidden min-h-screen flex items-center justify-center p-4">
-        <div class="glass-card rounded-3xl p-8 max-w-2xl mx-auto w-full holographic">
-            <div class="text-center mb-8">
-                <div class="relative mb-6">
-                    <div class="absolute -inset-4 bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
-                    <div class="relative">
-                        <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">🎉 Hasil Quiz 🏆</h2>
-                        <div id="resultEmoji" class="text-6xl md:text-8xl mb-4 floating">🎊</div>
-                        <p class="text-lg md:text-xl text-white neon-text">Selamat telah menyelesaikan quiz!</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="bg-gradient-to-br from-white via-blue-50 to-purple-50 rounded-3xl p-6 shadow-2xl border-2 border-white/50">
-                <div id="quizResultContent" class="text-center">
-                    <!-- Results will be shown here -->
-                </div>
-
-                <div class="space-y-4 mt-8">
-                    <button 
-                        class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg" 
-                        onclick="playSound('click'); startQuiz()"
-                        style="z-index: 99999 !important;"
-                    >
-                        🔄 Coba Lagi
-                    </button>
-                    <button 
-                        class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg" 
-                        onclick="playSound('click'); showPage('homePage')"
-                        style="z-index: 99999 !important;"
-                    >
-                        🏠 Kembali ke Beranda
-                    </button>
-                </div>
-            </div>
+        <h4 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Pertanyaan</h4>
+       </div>
+       <h4 id="quizSubQuestion" class="text-xl md:text-2xl font-bold text-gray-800 text-center mb-4"><!-- Sub question will be inserted here --></h4>
+       <div id="quizQuestionImageContainer" class="text-center hidden">
+       </div>
+      </div>
+     </div><!-- Question Display -->
+     <div id="questionContainer"><!-- Answer Options -->
+      <div class="bg-gradient-to-r from-green-400 via-teal-500 to-cyan-500 p-1 rounded-2xl mb-8 shadow-lg">
+       <div class="bg-gradient-to-r from-green-50 via-teal-50 to-cyan-50 p-6 rounded-xl">
+        <div class="flex items-center justify-center mb-4">
+         <div class="text-3xl mr-3">
+          🎯
+         </div>
+         <h4 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-cyan-600">Pilihan Jawaban</h4>
+        </div><!-- Auto advance countdown -->
+        <div id="autoAdvanceCountdown" class="hidden text-center mb-4">
+         <div class="bg-gradient-to-r from-orange-100 to-red-100 p-4 rounded-xl border-2 border-orange-300">
+          <div class="text-lg font-bold text-orange-800 mb-2">
+           ⏰ Otomatis lanjut dalam <span id="countdownTimer" class="text-red-600">5</span> detik
+          </div>
+          <div class="text-sm text-orange-700">
+           Klik "Selanjutnya" untuk lanjut sekarang
+          </div>
+         </div>
         </div>
-    </div>
-
-    <!-- Halaman Dashboard Host -->
-    <div id="hostDashboardPage" class="hidden min-h-screen p-4">
-        <div class="max-w-7xl mx-auto">
-            <!-- Header -->
-            <div class="glass-card rounded-3xl p-6 mb-6">
-                <div class="text-center mb-6">
-                    <h1 class="text-3xl md:text-4xl font-bold mb-4 game-title">👨‍🏫 Dashboard Host</h1>
-                    <p class="text-lg md:text-xl text-white">Monitoring Real-time User Activity</p>
-                </div>
-                
-                <div class="flex justify-between items-center">
-                    <div class="flex space-x-3">
-                        <button class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full font-bold" style="z-index: 99999 !important;" onclick="showPage('homePage')">
-                            🏠 Kembali ke Beranda
-                        </button>
-                        <button class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-3 rounded-full font-bold" style="z-index: 99999 !important;" onclick="logoutHost()">
-                            🚪 Logout Host
-                        </button>
-                    </div>
-                    
-                    <div class="flex space-x-4">
-                        <button class="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-6 py-3 rounded-full font-bold" onclick="refreshDashboardData()" style="z-index: 99999 !important;">
-                            🔄 Refresh Data
-                        </button>
-                        <div class="bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 rounded-full">
-                            <span class="text-sm font-bold text-gray-800">📊 Total Users: <span id="totalUsersCount" class="text-blue-600">0</span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Dashboard Tabs -->
-            <div class="glass-card rounded-2xl p-6">
-                <!-- Tab Navigation -->
-                <div class="flex flex-wrap justify-center space-x-2 mb-6 bg-white/10 p-2 rounded-xl">
-                    <button class="dashboard-tab active bg-gradient-to-r from-blue-500 to-indigo-500 text-white" onclick="showDashboardTab('users')" style="z-index: 99999 !important;">
-                        👥 Semua User
-                    </button>
-                    <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('material')" style="z-index: 99999 !important;">
-                        📚 Skor Materi
-                    </button>
-                    <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('quiz')" style="z-index: 99999 !important;">
-                        📝 Skor Quiz
-                    </button>
-                    <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('game')" style="z-index: 99999 !important;">
-                        🎮 Game Rebana
-                    </button>
-                    <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('management')" style="z-index: 99999 !important;">
-                        📊 Manajemen Data
-                    </button>
-                </div>
-
-                <!-- Tab Content -->
-                
-                <!-- Users Tab -->
-                <div id="usersTab" class="dashboard-tab-content">
-                    <div class="bg-white/95 rounded-xl p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-2xl font-bold text-gray-800">👥 Semua User yang Mengakses Aplikasi</h3>
-                            <div class="text-sm text-gray-600">
-                                <span id="usersLastUpdate">Terakhir update: -</span>
-                            </div>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse border border-gray-300">
-                                <thead>
-                                    <tr class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
-                                        <th class="border border-gray-300 px-4 py-3 text-left">No</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Nama User</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Device</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Waktu Akses</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="usersTableBody">
-                                    <tr>
-                                        <td colspan="5" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
-                                            <div class="text-4xl mb-2">⏳</div>
-                                            <p>Memuat data user...</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Material Tab -->
-                <div id="materialTab" class="dashboard-tab-content hidden">
-                    <div class="bg-white/95 rounded-xl p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-2xl font-bold text-gray-800">📚 Skor Pemahaman Materi</h3>
-                            <div class="text-sm text-gray-600">
-                                <span id="materialLastUpdate">Terakhir update: -</span>
-                            </div>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse border border-gray-300">
-                                <thead>
-                                    <tr class="bg-gradient-to-r from-green-500 to-teal-500 text-white">
-                                        <th class="border border-gray-300 px-4 py-3 text-left">No</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Nama User</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Slide 2</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Slide 3</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Slide 4</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Waktu</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="materialTableBody">
-                                    <tr>
-                                        <td colspan="6" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
-                                            <div class="text-4xl mb-2">⏳</div>
-                                            <p>Memuat data materi...</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Quiz Tab -->
-                <div id="quizTab" class="dashboard-tab-content hidden">
-                    <div class="bg-white/95 rounded-xl p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-2xl font-bold text-gray-800">📝 Skor Latihan Soal</h3>
-                            <div class="text-sm text-gray-600">
-                                <span id="quizLastUpdate">Terakhir update: -</span>
-                            </div>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse border border-gray-300">
-                                <thead>
-                                    <tr class="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
-                                        <th class="border border-gray-300 px-4 py-3 text-left">No</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Nama User</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Skor Total</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Benar</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Salah</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Persentase</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Waktu</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="quizTableBody">
-                                    <tr>
-                                        <td colspan="7" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
-                                            <div class="text-4xl mb-2">⏳</div>
-                                            <p>Memuat data quiz...</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Game Tab -->
-                <div id="gameTab" class="dashboard-tab-content hidden">
-                    <div class="bg-white/95 rounded-xl p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-2xl font-bold text-gray-800">🎮 Game Rebana (Cocokin Yuk!)</h3>
-                            <div class="text-sm text-gray-600">
-                                <span id="gameLastUpdate">Terakhir update: -</span>
-                            </div>
-                        </div>
-                        
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse border border-gray-300">
-                                <thead>
-                                    <tr class="bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                                        <th class="border border-gray-300 px-4 py-3 text-left">No</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Nama User</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Durasi Bermain</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Status</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Rating</th>
-                                        <th class="border border-gray-300 px-4 py-3 text-left">Waktu</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="gameTableBody">
-                                    <tr>
-                                        <td colspan="6" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
-                                            <div class="text-4xl mb-2">⏳</div>
-                                            <p>Memuat data game...</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Management Tab -->
-                <div id="managementTab" class="dashboard-tab-content hidden">
-                    <div class="bg-white/95 rounded-xl p-6">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-2xl font-bold text-gray-800">📊 Manajemen Data & Rekap</h3>
-                            <div class="flex space-x-3">
-                                <button class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-sm" onclick="exportToCSV()" style="z-index: 99999 !important;">
-                                    📥 Download CSV
-                                </button>
-                                <div class="text-sm text-gray-600">
-                                    <span id="managementLastUpdate">Terakhir update: -</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Summary Cards -->
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-                            <div class="bg-gradient-to-r from-blue-100 to-blue-200 p-4 rounded-lg">
-                                <div class="text-2xl font-bold text-blue-800" id="totalUsers">0</div>
-                                <div class="text-sm text-blue-600">Total Users</div>
-                            </div>
-                            <div class="bg-gradient-to-r from-green-100 to-green-200 p-4 rounded-lg">
-                                <div class="text-2xl font-bold text-green-800" id="completedMaterial">0</div>
-                                <div class="text-sm text-green-600">Selesai Materi</div>
-                            </div>
-                            <div class="bg-gradient-to-r from-purple-100 to-purple-200 p-4 rounded-lg">
-                                <div class="text-2xl font-bold text-purple-800" id="completedQuiz">0</div>
-                                <div class="text-sm text-purple-600">Selesai Quiz</div>
-                            </div>
-                            <div class="bg-gradient-to-r from-orange-100 to-orange-200 p-4 rounded-lg">
-                                <div class="text-2xl font-bold text-orange-800" id="completedGame">0</div>
-                                <div class="text-sm text-orange-600">Selesai Game</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Comprehensive Data Table -->
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse border border-gray-300 text-sm">
-                                <thead>
-                                    <tr class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
-                                        <th class="border border-gray-300 px-3 py-2 text-left">No</th>
-                                        <th class="border border-gray-300 px-3 py-2 text-left">Nama User</th>
-                                        <th class="border border-gray-300 px-3 py-2 text-left">Materi (S2/S3/S4)</th>
-                                        <th class="border border-gray-300 px-3 py-2 text-left">Quiz Score</th>
-                                        <th class="border border-gray-300 px-3 py-2 text-left">Quiz %</th>
-                                        <th class="border border-gray-300 px-3 py-2 text-left">Game Time</th>
-                                        <th class="border border-gray-300 px-3 py-2 text-left">Terakhir Aktif</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="managementTableBody">
-                                    <tr>
-                                        <td colspan="7" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
-                                            <div class="text-4xl mb-2">⏳</div>
-                                            <p>Memuat data manajemen...</p>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div id="quizOptions" class="space-y-4"><!-- Options will be generated here -->
         </div>
-    </div>
-
-    <!-- Quiz Results Modal -->
-    <div id="quizResultsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-lg mx-4 shadow-2xl bounce-in-3d glow-effect">
-            <div class="text-center">
-                <div id="quizResultEmoji" class="text-8xl mb-4">🎉</div>
-                <h3 id="quizResultTitle" class="text-3xl font-bold text-gray-800 mb-4">Selamat!</h3>
-                <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl mb-6">
-                    <div class="text-center mb-4">
-                        <div class="text-4xl font-bold text-gray-800 mb-2">
-                            <span id="quizFinalScore" class="text-blue-600">0</span>/<span id="quizTotalQuestions" class="text-gray-600">12</span>
-                        </div>
-                        <div class="text-lg text-gray-600 mb-4">Jawaban Benar</div>
-                    </div>
-                    <div class="text-center mb-4">
-                        <div class="text-2xl font-bold text-gray-800">
-                            ⏰ <span id="quizFinalTime" class="text-purple-600">0:00</span>
-                        </div>
-                    </div>
-                    <p id="quizScoreMessage" class="text-lg text-gray-700 font-semibold text-center">
-                        Hebat sekali!
-                    </p>
-                </div>
-                <div class="space-y-4">
-                    <button class="w-full neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeQuizResults(); restartQuiz()" style="z-index: 99999 !important;">
-                        🔄 Coba Lagi
-                    </button>
-                    <button class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeQuizResults(); showPage('homePage')" style="z-index: 99999 !important;">
-                        🏠 Kembali ke Beranda
-                    </button>
-                </div>
-            </div>
+       </div>
+      </div>
+     </div><!-- Quiz Complete Screen -->
+     <div id="quizCompleteScreen" class="hidden text-center">
+      <div class="text-8xl mb-6">
+       🎉
+      </div>
+      <h3 class="text-3xl font-bold text-gray-800 mb-4">Selamat! Quiz Selesai!</h3>
+      <div class="bg-gradient-to-r from-green-100 to-blue-100 p-8 rounded-3xl mb-6">
+       <div class="text-6xl mb-4" id="finalEmoji">
+        🏆
+       </div>
+       <h4 class="text-2xl font-bold text-gray-800 mb-4">Hasil Quiz Kamu:</h4>
+       <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white p-4 rounded-xl">
+         <div class="text-2xl font-bold text-blue-600" id="finalScore">
+          0
+         </div>
+         <div class="text-sm text-gray-600">
+          Skor Total
+         </div>
         </div>
-    </div>
-
-    <!-- Memory Game Results Modal -->
-    <div id="memoryGameResultsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="glass-card rounded-3xl p-8 max-w-lg mx-4 shadow-2xl bounce-in-3d glow-effect">
-            <div class="text-center">
-                <div id="memoryResultEmoji" class="text-8xl mb-4">🎉</div>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Selamat!</h3>
-                <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl mb-6">
-                    <p class="text-xl text-gray-700 font-semibold mb-2">
-                        Kamu berhasil mencocokkan semua pasangan rebana!
-                    </p>
-                    <p class="text-2xl font-bold text-gray-800 mb-2">
-                        ⏰ Waktu: <span id="memoryFinalTime" class="text-blue-600">0:00</span>
-                    </p>
-                    <p id="memoryScoreMessage" class="text-lg text-gray-700 font-semibold">
-                        Hebat sekali!
-                    </p>
-                </div>
-                <div class="space-y-4">
-                    <button class="w-full neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeMemoryGameResults(); restartMemoryGame()" style="z-index: 99999 !important;">
-                        🔄 Main Lagi
-                    </button>
-                    <button class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeMemoryGameResults(); showPage('homePage')" style="z-index: 99999 !important;">
-                        🏠 Kembali ke Beranda
-                    </button>
-                </div>
-            </div>
+        <div class="bg-white p-4 rounded-xl">
+         <div class="text-2xl font-bold text-green-600" id="correctAnswers">
+          0
+         </div>
+         <div class="text-sm text-gray-600">
+          Benar
+         </div>
         </div>
+        <div class="bg-white p-4 rounded-xl">
+         <div class="text-2xl font-bold text-red-600" id="wrongAnswers">
+          0
+         </div>
+         <div class="text-sm text-gray-600">
+          Salah
+         </div>
+        </div>
+        <div class="bg-white p-4 rounded-xl">
+         <div class="text-2xl font-bold text-purple-600" id="finalPercentage">
+          0%
+         </div>
+         <div class="text-sm text-gray-600">
+          Persentase
+         </div>
+        </div>
+       </div>
+       <p class="text-lg text-gray-800" id="finalMessage"></p>
+      </div>
+     </div>
+    </div><!-- Navigation Controls -->
+    <div class="flex justify-between items-center pt-6 border-t-4 border-purple-300"><button id="quizPrevBtn" class="bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:from-gray-600 hover:via-gray-700 hover:to-gray-800 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg border-2 border-gray-400" onclick="playSound('click'); previousQuizQuestion()"> ⬅️ Sebelumnya </button>
+     <div class="text-center bg-gradient-to-r from-indigo-100 to-purple-100 px-6 py-3 rounded-full border-2 border-indigo-300">
+      <div class="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
+       Soal <span id="quizProgress2" class="text-purple-700">1</span> dari <span class="text-indigo-700">12</span>
+      </div>
+     </div><button id="quizNextBtn" class="neon-button text-black px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg" onclick="playSound('click'); nextQuizQuestion()" disabled> Selanjutnya ➡️ </button>
     </div>
-
-    <script>
+   </div><!-- Back to Home Button -->
+   <div class="text-center mt-8 pt-6 border-t-4 border-pink-300"><button class="bg-gradient-to-r from-red-500 via-pink-500 to-purple-500 hover:from-red-600 hover:via-pink-600 hover:to-purple-600 text-white px-8 py-4 rounded-full text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-2xl border-2 border-red-400" onclick="playSound('click'); confirmExitQuiz()"> 🏠 Keluar Quiz </button>
+   </div>
+  </div> <!-- Quiz Exit Confirmation Modal -->
+  <div id="quizExitModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+   <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
+    <div class="text-center">
+     <div class="text-8xl mb-4">
+      ⚠️
+     </div>
+     <h3 class="text-3xl font-bold text-gray-800 mb-4">Keluar Quiz?</h3>
+     <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-6 rounded-xl mb-6">
+      <p class="text-xl text-gray-700 font-semibold mb-2">Apakah kamu yakin ingin keluar?</p>
+      <p class="text-lg text-gray-600">Progres quiz akan hilang dan tidak tersimpan.</p>
+     </div>
+     <div class="space-y-4"><button class="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); exitQuiz()"> ✅ Ya, Keluar </button> <button class="w-full neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeExitQuiz()"> ❌ Batal </button>
+     </div>
+    </div>
+   </div>
+  </div><!-- Popup Modal for Slide 1 -->
+  <div id="slide1PopupModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+   <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
+    <div class="text-center">
+     <div class="text-6xl mb-4">
+      🎉
+     </div>
+     <h3 class="text-2xl md:text-3xl font-bold text-gray-800 mb-4">Jawaban Benar!</h3>
+     <div class="bg-gradient-to-r from-green-100 to-blue-100 p-6 rounded-xl mb-6">
+      <p class="text-lg md:text-xl text-gray-700 font-semibold leading-relaxed">Ya benar! Yang berbentuk segitiga adalah bagian atapnya! 🏠</p>
+     </div>
+     <div class="text-4xl mb-4">
+      ✅
+     </div><button class="neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('correct'); hideSlide1Popup()"> 👍 Mengerti! </button>
+    </div>
+   </div>
+  </div><!-- Quiz Answer Popup - Correct -->
+  <div id="quizCorrectPopup" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+   <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
+    <div class="text-center">
+     <div class="text-8xl mb-4">
+      🎉
+     </div>
+     <h3 class="text-3xl font-bold text-green-600 mb-4">Benar!</h3>
+     <div class="bg-gradient-to-r from-green-100 to-emerald-100 p-6 rounded-xl">
+      <div class="text-6xl mb-3">
+       ✅
+      </div>
+      <p class="text-xl text-green-800 font-bold">Jawaban kamu tepat!</p>
+     </div>
+    </div>
+   </div>
+  </div><!-- Quiz Answer Popup - Incorrect -->
+  <div id="quizIncorrectPopup" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+   <div class="glass-card rounded-3xl p-8 max-w-md mx-4 shadow-2xl bounce-in-3d glow-effect">
+    <div class="text-center">
+     <div class="text-8xl mb-4">
+      😔
+     </div>
+     <h3 class="text-3xl font-bold text-red-600 mb-4">Salah!</h3>
+     <div class="bg-gradient-to-r from-red-100 to-pink-100 p-6 rounded-xl">
+      <div class="text-6xl mb-3">
+       ❌
+      </div>
+      <p class="text-xl text-red-800 font-bold">Jawaban kamu belum tepat!</p>
+     </div>
+    </div>
+   </div>
+  </div><!-- Halaman Memory Game -->
+  <div id="memoryGamePage" class="hidden min-h-screen flex items-center justify-center p-4">
+   <div class="glass-card rounded-3xl p-6 max-w-6xl mx-auto w-full"><!-- Memory Game Header -->
+    <div class="text-center mb-6">
+     <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">🎮 Cocokin Yuk! 🧩</h2>
+     <div class="text-4xl md:text-6xl mb-4 floating">
+      🥁
+     </div>
+     <p class="text-lg md:text-xl text-white neon-text">Game Memori Rebana Melayu</p><!-- Game Stats -->
+     <div class="flex justify-center space-x-8 mt-6 mb-4">
+      <div class="bg-gradient-to-r from-blue-100 to-purple-100 px-6 py-3 rounded-xl">
+       <div class="text-2xl font-bold text-gray-800">
+        ⏰ <span id="memoryGameTimer" class="text-blue-600">0:00</span>
+       </div>
+       <div class="text-sm text-gray-600">
+        Waktu
+       </div>
+      </div>
+      <div class="bg-gradient-to-r from-green-100 to-teal-100 px-6 py-3 rounded-xl">
+       <div class="text-2xl font-bold text-gray-800">
+        🎯 <span id="memoryGameMatches" class="text-green-600">0</span>/6
+       </div>
+       <div class="text-sm text-gray-600">
+        Pasangan
+       </div>
+      </div>
+     </div><!-- Instructions -->
+     <div class="bg-gradient-to-r from-yellow-100 to-orange-100 p-4 rounded-xl mb-6">
+      <h3 class="text-lg font-bold text-gray-800 mb-2">📋 Cara Bermain:</h3>
+      <p class="text-gray-700">Klik kartu untuk membaliknya dan temukan pasangan gambar rebana yang sebangun!</p>
+     </div>
+    </div><!-- Memory Game Board -->
+    <div class="bg-white/95 rounded-2xl p-4 md:p-6 shadow-2xl">
+     <div id="memoryGameBoard" class="memory-game-board"><!-- Cards will be generated here -->
+     </div><!-- Game Complete Message -->
+     <div id="gameCompleteMessage" class="hidden text-center mt-8 p-6 bg-gradient-to-r from-green-100 to-blue-100 rounded-3xl">
+      <div class="text-8xl mb-4">
+       🎉
+      </div>
+      <h3 class="text-3xl font-bold text-gray-800 mb-4">Selamat! Kamu Berhasil!</h3>
+      <div class="grid grid-cols-2 gap-4 max-w-md mx-auto mb-6">
+       <div class="bg-white p-4 rounded-xl">
+        <div class="text-2xl font-bold text-purple-600" id="finalTime">
+         00:00
+        </div>
+        <div class="text-sm text-gray-600">
+         Waktu
+        </div>
+       </div>
+       <div class="bg-white p-4 rounded-xl">
+        <div class="text-2xl font-bold text-green-600" id="gameRating">
+         ⭐⭐⭐
+        </div>
+        <div class="text-sm text-gray-600">
+         Rating
+        </div>
+       </div>
+      </div>
+      <p class="text-lg text-gray-800 mb-4" id="congratsMessage">Hebat! Kamu berhasil mencocokkan semua rebana sebangun!</p>
+     </div>
+    </div><!-- Control Buttons -->
+    <div class="flex justify-center space-x-4 mt-6"><button class="bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); showPage('homePage')" style="z-index: 99999 !important;"> 🏠 Beranda </button> <button class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); resetMemoryGame()" style="z-index: 99999 !important;"> 🔄 Reset </button>
+    </div>
+   </div>
+  </div><!-- Halaman Host Login -->
+  <div id="hostLoginPage" class="hidden min-h-screen flex items-center justify-center p-4">
+   <div class="glass-card rounded-3xl p-8 max-w-md mx-auto w-full">
+    <div class="text-center mb-8">
+     <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">👨‍🏫 Login Host</h2>
+     <div class="text-4xl md:text-6xl mb-4 floating">
+      🔐
+     </div>
+     <p class="text-lg md:text-xl text-white">Akses Dashboard Host</p>
+    </div>
+    <div class="bg-white/95 rounded-3xl p-6 shadow-2xl">
+     <div class="mb-6"><label for="hostPassword" class="block text-lg font-bold text-gray-800 mb-3 text-center"> 🔑 Password Host: </label> <input type="password" id="hostPassword" class="w-full px-6 py-4 text-lg border-3 border-gray-300 rounded-2xl focus:border-blue-500 focus:outline-none text-center font-semibold bg-white shadow-lg" placeholder="Masukkan password host" onkeypress="if(event.key==='Enter') loginHost()" style="z-index: 99999 !important;">
+     </div>
+     <div class="space-y-4"><button class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg" onclick="loginHost()" style="z-index: 99999 !important;"> 🚀 Masuk Dashboard </button> <button class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-full font-bold text-lg" onclick="showPage('homePage')" style="z-index: 99999 !important;"> ⬅️ Kembali ke Beranda </button>
+     </div>
+    </div>
+   </div>
+  </div><!-- Halaman Hasil Quiz -->
+  <div id="quizResultPage" class="hidden min-h-screen flex items-center justify-center p-4">
+   <div class="glass-card rounded-3xl p-8 max-w-2xl mx-auto w-full holographic">
+    <div class="text-center mb-8">
+     <div class="relative mb-6">
+      <div class="absolute -inset-4 bg-gradient-to-r from-green-400 via-blue-500 to-purple-500 rounded-3xl blur-xl opacity-30 animate-pulse"></div>
+      <div class="relative">
+       <h2 class="text-3xl md:text-4xl font-bold mb-4 game-title">🎉 Hasil Quiz 🏆</h2>
+       <div id="resultEmoji" class="text-6xl md:text-8xl mb-4 floating">
+        🎊
+       </div>
+       <p class="text-lg md:text-xl text-white neon-text">Selamat telah menyelesaikan quiz!</p>
+      </div>
+     </div>
+    </div>
+    <div class="bg-gradient-to-br from-white via-blue-50 to-purple-50 rounded-3xl p-6 shadow-2xl border-2 border-white/50">
+     <div id="quizResultContent" class="text-center"><!-- Results will be shown here -->
+     </div>
+     <div class="space-y-4 mt-8"><button class="w-full neon-button text-black px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg" onclick="playSound('click'); startQuiz()" style="z-index: 99999 !important;"> 🔄 Coba Lagi </button> <button class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-4 rounded-full font-bold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg" onclick="playSound('click'); showPage('homePage')" style="z-index: 99999 !important;"> 🏠 Kembali ke Beranda </button>
+     </div>
+    </div>
+   </div>
+  </div><!-- Halaman Dashboard Host -->
+  <div id="hostDashboardPage" class="hidden min-h-screen p-4">
+   <div class="max-w-7xl mx-auto"><!-- Header -->
+    <div class="glass-card rounded-3xl p-6 mb-6">
+     <div class="text-center mb-6">
+      <h1 class="text-3xl md:text-4xl font-bold mb-4 game-title">👨‍🏫 Dashboard Host</h1>
+      <p class="text-lg md:text-xl text-white">Monitoring Real-time User Activity</p>
+     </div>
+     <div class="flex justify-between items-center">
+      <div class="flex space-x-3"><button class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full font-bold" style="z-index: 99999 !important;" onclick="showPage('homePage')"> 🏠 Kembali ke Beranda </button> <button class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-3 rounded-full font-bold" style="z-index: 99999 !important;" onclick="logoutHost()"> 🚪 Logout Host </button>
+      </div>
+      <div class="flex space-x-4"><button class="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-6 py-3 rounded-full font-bold" onclick="refreshDashboardData()" style="z-index: 99999 !important;"> 🔄 Refresh Data </button>
+       <div class="bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 rounded-full"><span class="text-sm font-bold text-gray-800">📊 Total Users: <span id="totalUsersCount" class="text-blue-600">0</span></span>
+       </div>
+      </div>
+     </div>
+    </div><!-- Dashboard Tabs -->
+    <div class="glass-card rounded-2xl p-6"><!-- Tab Navigation -->
+     <div class="flex flex-wrap justify-center space-x-2 mb-6 bg-white/10 p-2 rounded-xl"><button class="dashboard-tab active bg-gradient-to-r from-blue-500 to-indigo-500 text-white" onclick="showDashboardTab('users')" style="z-index: 99999 !important;"> 👥 Semua User </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('material')" style="z-index: 99999 !important;"> 📚 Skor Materi </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('quiz')" style="z-index: 99999 !important;"> 📝 Skor Quiz </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('game')" style="z-index: 99999 !important;"> 🎮 Game Rebana </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('management')" style="z-index: 99999 !important;"> 📊 Manajemen Data </button>
+     </div><!-- Tab Content --> <!-- Users Tab -->
+     <div id="usersTab" class="dashboard-tab-content">
+      <div class="bg-white/95 rounded-xl p-6">
+       <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold text-gray-800">👥 Semua User yang Mengakses Aplikasi</h3>
+        <div class="text-sm text-gray-600"><span id="usersLastUpdate">Terakhir update: -</span>
+        </div>
+       </div>
+       <div class="overflow-x-auto">
+        <table class="w-full border-collapse border border-gray-300">
+         <thead>
+          <tr class="bg-gradient-to-r from-blue-500 to-indigo-500 text-white">
+           <th class="border border-gray-300 px-4 py-3 text-left">No</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Nama User</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Device</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Waktu Akses</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Status</th>
+          </tr>
+         </thead>
+         <tbody id="usersTableBody">
+          <tr>
+           <td colspan="5" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
+            <div class="text-4xl mb-2">
+             ⏳
+            </div><p>Memuat data user...</p></td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </div><!-- Material Tab -->
+     <div id="materialTab" class="dashboard-tab-content hidden">
+      <div class="bg-white/95 rounded-xl p-6">
+       <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold text-gray-800">📚 Skor Pemahaman Materi</h3>
+        <div class="text-sm text-gray-600"><span id="materialLastUpdate">Terakhir update: -</span>
+        </div>
+       </div>
+       <div class="overflow-x-auto">
+        <table class="w-full border-collapse border border-gray-300">
+         <thead>
+          <tr class="bg-gradient-to-r from-green-500 to-teal-500 text-white">
+           <th class="border border-gray-300 px-4 py-3 text-left">No</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Nama User</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Slide 2</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Slide 3</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Slide 4</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Waktu</th>
+          </tr>
+         </thead>
+         <tbody id="materialTableBody">
+          <tr>
+           <td colspan="6" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
+            <div class="text-4xl mb-2">
+             ⏳
+            </div><p>Memuat data materi...</p></td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </div><!-- Quiz Tab -->
+     <div id="quizTab" class="dashboard-tab-content hidden">
+      <div class="bg-white/95 rounded-xl p-6">
+       <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold text-gray-800">📝 Skor Latihan Soal</h3>
+        <div class="text-sm text-gray-600"><span id="quizLastUpdate">Terakhir update: -</span>
+        </div>
+       </div>
+       <div class="overflow-x-auto">
+        <table class="w-full border-collapse border border-gray-300">
+         <thead>
+          <tr class="bg-gradient-to-r from-purple-500 to-pink-500 text-white">
+           <th class="border border-gray-300 px-4 py-3 text-left">No</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Nama User</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Skor Total</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Benar</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Salah</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Persentase</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Waktu</th>
+          </tr>
+         </thead>
+         <tbody id="quizTableBody">
+          <tr>
+           <td colspan="7" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
+            <div class="text-4xl mb-2">
+             ⏳
+            </div><p>Memuat data quiz...</p></td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </div><!-- Game Tab -->
+     <div id="gameTab" class="dashboard-tab-content hidden">
+      <div class="bg-white/95 rounded-xl p-6">
+       <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold text-gray-800">🎮 Game Rebana (Cocokin Yuk!)</h3>
+        <div class="text-sm text-gray-600"><span id="gameLastUpdate">Terakhir update: -</span>
+        </div>
+       </div>
+       <div class="overflow-x-auto">
+        <table class="w-full border-collapse border border-gray-300">
+         <thead>
+          <tr class="bg-gradient-to-r from-orange-500 to-red-500 text-white">
+           <th class="border border-gray-300 px-4 py-3 text-left">No</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Nama User</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Durasi Bermain</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Status</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Rating</th>
+           <th class="border border-gray-300 px-4 py-3 text-left">Waktu</th>
+          </tr>
+         </thead>
+         <tbody id="gameTableBody">
+          <tr>
+           <td colspan="6" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
+            <div class="text-4xl mb-2">
+             ⏳
+            </div><p>Memuat data game...</p></td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </div><!-- Management Tab -->
+     <div id="managementTab" class="dashboard-tab-content hidden">
+      <div class="bg-white/95 rounded-xl p-6">
+       <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold text-gray-800">📊 Manajemen Data &amp; Rekap</h3>
+        <div class="flex space-x-3"><button class="bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white px-4 py-2 rounded-lg font-bold text-sm" onclick="exportToCSV()" style="z-index: 99999 !important;"> 📥 Download CSV </button>
+         <div class="text-sm text-gray-600"><span id="managementLastUpdate">Terakhir update: -</span>
+         </div>
+        </div>
+       </div><!-- Summary Cards -->
+       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-gradient-to-r from-blue-100 to-blue-200 p-4 rounded-lg">
+         <div class="text-2xl font-bold text-blue-800" id="totalUsers">
+          0
+         </div>
+         <div class="text-sm text-blue-600">
+          Total Users
+         </div>
+        </div>
+        <div class="bg-gradient-to-r from-green-100 to-green-200 p-4 rounded-lg">
+         <div class="text-2xl font-bold text-green-800" id="completedMaterial">
+          0
+         </div>
+         <div class="text-sm text-green-600">
+          Selesai Materi
+         </div>
+        </div>
+        <div class="bg-gradient-to-r from-purple-100 to-purple-200 p-4 rounded-lg">
+         <div class="text-2xl font-bold text-purple-800" id="completedQuiz">
+          0
+         </div>
+         <div class="text-sm text-purple-600">
+          Selesai Quiz
+         </div>
+        </div>
+        <div class="bg-gradient-to-r from-orange-100 to-orange-200 p-4 rounded-lg">
+         <div class="text-2xl font-bold text-orange-800" id="completedGame">
+          0
+         </div>
+         <div class="text-sm text-orange-600">
+          Selesai Game
+         </div>
+        </div>
+       </div><!-- Comprehensive Data Table -->
+       <div class="overflow-x-auto">
+        <table class="w-full border-collapse border border-gray-300 text-sm">
+         <thead>
+          <tr class="bg-gradient-to-r from-indigo-500 to-purple-500 text-white">
+           <th class="border border-gray-300 px-3 py-2 text-left">No</th>
+           <th class="border border-gray-300 px-3 py-2 text-left">Nama User</th>
+           <th class="border border-gray-300 px-3 py-2 text-left">Materi (S2/S3/S4)</th>
+           <th class="border border-gray-300 px-3 py-2 text-left">Quiz Score</th>
+           <th class="border border-gray-300 px-3 py-2 text-left">Quiz %</th>
+           <th class="border border-gray-300 px-3 py-2 text-left">Game Time</th>
+           <th class="border border-gray-300 px-3 py-2 text-left">Terakhir Aktif</th>
+          </tr>
+         </thead>
+         <tbody id="managementTableBody">
+          <tr>
+           <td colspan="7" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
+            <div class="text-4xl mb-2">
+             ⏳
+            </div><p>Memuat data manajemen...</p></td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div><!-- Quiz Results Modal -->
+  <div id="quizResultsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+   <div class="glass-card rounded-3xl p-8 max-w-lg mx-4 shadow-2xl bounce-in-3d glow-effect">
+    <div class="text-center">
+     <div id="quizResultEmoji" class="text-8xl mb-4">
+      🎉
+     </div>
+     <h3 id="quizResultTitle" class="text-3xl font-bold text-gray-800 mb-4">Selamat!</h3>
+     <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl mb-6">
+      <div class="grid grid-cols-2 gap-4 mb-4">
+       <div class="text-center">
+        <div class="text-3xl font-bold text-gray-800 mb-2"><span id="quizFinalScore" class="text-blue-600">0</span>/<span id="quizTotalQuestions" class="text-gray-600">12</span>
+        </div>
+        <div class="text-sm text-gray-600">
+         Jawaban Benar
+        </div>
+       </div>
+       <div class="text-center">
+        <div class="text-3xl font-bold text-gray-800 mb-2"><span id="quizFinalPercentage" class="text-green-600">0%</span>
+        </div>
+        <div class="text-sm text-gray-600">
+         Persentase
+        </div>
+       </div>
+      </div>
+      <div class="text-center mb-4">
+       <div class="text-2xl font-bold text-gray-800">
+        ⏰ <span id="quizFinalTime" class="text-purple-600">0:00</span>
+       </div>
+       <div class="text-sm text-gray-600">
+        Waktu Pengerjaan
+       </div>
+      </div>
+      <p id="quizScoreMessage" class="text-lg text-gray-700 font-semibold text-center">Hebat sekali!</p>
+     </div>
+     <div class="space-y-4"><button class="w-full neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeQuizResults(); restartQuiz()" style="z-index: 99999 !important;"> 🔄 Coba Lagi </button> <button class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeQuizResults(); showPage('homePage')" style="z-index: 99999 !important;"> 🏠 Kembali ke Beranda </button>
+     </div>
+    </div>
+   </div>
+  </div><!-- Memory Game Results Modal -->
+  <div id="memoryGameResultsModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+   <div class="glass-card rounded-3xl p-8 max-w-lg mx-4 shadow-2xl bounce-in-3d glow-effect">
+    <div class="text-center">
+     <div id="memoryResultEmoji" class="text-8xl mb-4">
+      🎉
+     </div>
+     <h3 class="text-3xl font-bold text-gray-800 mb-4">Selamat!</h3>
+     <div class="bg-gradient-to-r from-blue-100 to-purple-100 p-6 rounded-xl mb-6">
+      <p class="text-xl text-gray-700 font-semibold mb-2">Kamu berhasil mencocokkan semua pasangan rebana!</p>
+      <p class="text-2xl font-bold text-gray-800 mb-2">⏰ Waktu: <span id="memoryFinalTime" class="text-blue-600">0:00</span></p>
+      <p id="memoryScoreMessage" class="text-lg text-gray-700 font-semibold">Hebat sekali!</p>
+     </div>
+     <div class="space-y-4"><button class="w-full neon-button text-black px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeMemoryGameResults(); restartMemoryGame()" style="z-index: 99999 !important;"> 🔄 Main Lagi </button> <button class="w-full bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105" onclick="playSound('click'); closeMemoryGameResults(); showPage('homePage')" style="z-index: 99999 !important;"> 🏠 Kembali ke Beranda </button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
         // Global Variables
         let isAudioPlaying = false;
         let playerName = '';
@@ -1978,10 +1761,10 @@
         }
         
         // Google Sheets tracking - ENHANCED REAL-TIME SYSTEM
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyAPmRhNAT0oHm8HRn5svCbjEeniLiF5pUIr2bgRwHlHTBBjJYPThF6TMx_z_-jaqJn/exec';
-        const DASHBOARD_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyJg-ifRIcbh_-4IvuJqM8-JH649jlbbimbovFdLsYotN3hoPg9ywjVwd68GpK8SEqf/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyQDL8ZSXoTl6Rafi-etuVOYzhDWM9gRnYLQCF61Ick8blsakciFOWCf6gU-4ao0N23Q/exec';
+        const DASHBOARD_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyQDL8ZSXoTl6Rafi-etuVOYzhDWM9gRnYLQCF61Ick8blsakciFOWCf6gU-4ao0N23Q/exec';
         
-        // Enhanced tracking with multiple fallback methods
+        // Enhanced tracking with multiple fallback methods and multiple URLs
         function sendToGoogleSheets(action, data = {}) {
             try {
                 const payload = {
@@ -1997,96 +1780,90 @@
                 
                 console.log('📊 Sending to Google Sheets:', action, payload);
                 
-                // Method 1: Primary fetch request with timeout
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                // Multiple Apps Script URLs for redundancy
+                const trackingUrls = [
+                    APPS_SCRIPT_URL, // Primary URL (your provided URL)
+                    'https://script.google.com/macros/s/AKfycbxyQDL8ZSXoTl6Rafi-etuVOYzhDWM9gRnYLQCF61Ick8blsakciFOWCf6gU-4ao0N23Q/exec', // Same URL as backup
+                    'https://script.google.com/macros/s/AKfycbxyQDL8ZSXoTl6Rafi-etuVOYzhDWM9gRnYLQCF61Ick8blsakciFOWCf6gU-4ao0N23Q/exec' // Same URL as third backup
+                ];
                 
-                fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(payload),
-                    mode: 'no-cors',
-                    signal: controller.signal
-                }).then(() => {
-                    clearTimeout(timeoutId);
-                    console.log('✅ Data sent successfully via POST');
-                }).catch((error) => {
-                    clearTimeout(timeoutId);
-                    console.warn('⚠️ POST failed, trying fallback methods:', error.message);
+                // Try each URL with POST method
+                trackingUrls.forEach((url, index) => {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), 8000 + (index * 2000)); // Staggered timeouts
                     
-                    // Fallback Method 2: GET request with URL parameters
-                    try {
-                        const params = new URLSearchParams();
-                        Object.keys(payload).forEach(key => {
-                            if (payload[key] !== null && payload[key] !== undefined) {
-                                params.append(key, String(payload[key]));
-                            }
-                        });
-                        
-                        const getUrl = `${APPS_SCRIPT_URL}?${params.toString()}`;
-                        
-                        // Use image pixel for GET request (most reliable)
-                        const img = new Image();
-                        img.onload = () => console.log('✅ Data sent via GET (image pixel)');
-                        img.onerror = () => console.log('⚠️ Image pixel method failed');
-                        img.src = getUrl;
-                        
-                        // Also try fetch GET as backup
-                        fetch(getUrl, { 
-                            method: 'GET', 
-                            mode: 'no-cors',
-                            cache: 'no-cache'
-                        }).then(() => {
-                            console.log('✅ Data sent via GET (fetch)');
-                        }).catch(() => {
-                            console.log('⚠️ GET fetch failed');
-                        });
-                        
-                    } catch (fallbackError) {
-                        console.error('❌ All tracking methods failed:', fallbackError);
-                    }
-                });
-                
-                // Method 3: Dashboard-specific tracking (for dashboard data)
-                if (action.includes('dashboard') || action.includes('host')) {
-                    const dashboardController = new AbortController();
-                    const dashboardTimeoutId = setTimeout(() => dashboardController.abort(), 8000);
-                    
-                    fetch(DASHBOARD_SCRIPT_URL, {
+                    fetch(url, {
                         method: 'POST',
                         headers: { 
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
                         },
-                        body: JSON.stringify({
-                            action: 'recordActivity',
-                            ...payload
-                        }),
+                        body: JSON.stringify(payload),
                         mode: 'no-cors',
-                        signal: dashboardController.signal
+                        signal: controller.signal
                     }).then(() => {
-                        clearTimeout(dashboardTimeoutId);
-                        console.log('✅ Dashboard data sent successfully');
+                        clearTimeout(timeoutId);
+                        console.log(`✅ Data sent successfully via POST to URL ${index + 1}`);
                     }).catch((error) => {
-                        clearTimeout(dashboardTimeoutId);
-                        console.warn('⚠️ Dashboard tracking failed:', error.message);
+                        clearTimeout(timeoutId);
+                        console.warn(`⚠️ POST failed for URL ${index + 1}:`, error.message);
+                        
+                        // Fallback to GET method for this URL
+                        try {
+                            const params = new URLSearchParams();
+                            Object.keys(payload).forEach(key => {
+                                if (payload[key] !== null && payload[key] !== undefined) {
+                                    const value = String(payload[key]);
+                                    if (value.length < 2000) { // URL length limit
+                                        params.append(key, value);
+                                    }
+                                }
+                            });
+                            
+                            const getUrl = `${url}?${params.toString()}`;
+                            
+                            // Use image pixel for GET request (most reliable)
+                            const img = new Image();
+                            img.onload = () => console.log(`✅ Data sent via GET (image pixel) to URL ${index + 1}`);
+                            img.onerror = () => console.log(`⚠️ Image pixel method failed for URL ${index + 1}`);
+                            img.src = getUrl;
+                            
+                            // Also try fetch GET as backup
+                            fetch(getUrl, { 
+                                method: 'GET', 
+                                mode: 'no-cors',
+                                cache: 'no-cache'
+                            }).then(() => {
+                                console.log(`✅ Data sent via GET (fetch) to URL ${index + 1}`);
+                            }).catch(() => {
+                                console.log(`⚠️ GET fetch failed for URL ${index + 1}`);
+                            });
+                            
+                        } catch (fallbackError) {
+                            console.error(`❌ All methods failed for URL ${index + 1}:`, fallbackError);
+                        }
                     });
-                }
+                });
                 
             } catch (error) {
                 console.error('❌ Critical tracking error:', error);
                 
-                // Emergency fallback - try simple GET request
+                // Emergency fallback - try simple GET request to all URLs
                 try {
-                    const emergencyUrl = `${APPS_SCRIPT_URL}?action=${encodeURIComponent(action)}&sessionId=${encodeURIComponent(sessionId)}&playerName=${encodeURIComponent(playerName || 'Anonymous')}&timestamp=${encodeURIComponent(new Date().toISOString())}`;
-                    const emergencyImg = new Image();
-                    emergencyImg.src = emergencyUrl;
-                    console.log('🚨 Emergency tracking sent');
+                    const emergencyUrls = [
+                        APPS_SCRIPT_URL,
+                        'https://script.google.com/macros/s/AKfycbxyQDL8ZSXoTl6Rafi-etuVOYzhDWM9gRnYLQCF61Ick8blsakciFOWCf6gU-4ao0N23Q/exec'
+                    ];
+                    
+                    emergencyUrls.forEach((url, index) => {
+                        const emergencyUrl = `${url}?action=${encodeURIComponent(action)}&sessionId=${encodeURIComponent(sessionId)}&playerName=${encodeURIComponent(playerName || 'Anonymous')}&timestamp=${encodeURIComponent(new Date().toISOString())}&device=${encodeURIComponent(userDevice)}`;
+                        const emergencyImg = new Image();
+                        emergencyImg.onload = () => console.log(`🚨 Emergency tracking sent to URL ${index + 1}`);
+                        emergencyImg.onerror = () => console.log(`💥 Emergency tracking failed for URL ${index + 1}`);
+                        emergencyImg.src = emergencyUrl;
+                    });
                 } catch (emergencyError) {
-                    console.error('💥 Emergency tracking failed:', emergencyError);
+                    console.error('💥 All emergency tracking failed:', emergencyError);
                 }
             }
         }
@@ -2114,7 +1891,8 @@
                         const urls = [
                             `${DASHBOARD_SCRIPT_URL}?action=getData&tab=${targetTab}&timestamp=${Date.now()}`,
                             `${DASHBOARD_SCRIPT_URL}?action=getData&tab=${targetTab}`,
-                            `${APPS_SCRIPT_URL}?action=getDashboardData&tab=${targetTab}&timestamp=${Date.now()}`
+                            `${APPS_SCRIPT_URL}?action=getDashboardData&tab=${targetTab}&timestamp=${Date.now()}`,
+                            `https://script.google.com/macros/s/AKfycbxyQDL8ZSXoTl6Rafi-etuVOYzhDWM9gRnYLQCF61Ick8blsakciFOWCf6gU-4ao0N23Q/exec?action=getData&tab=${targetTab}&timestamp=${Date.now()}`
                         ];
                         
                         const currentUrl = urls[attempts - 1];
@@ -2245,23 +2023,28 @@
             connectionStatus.dashboard = false;
             updateConnectionStatus();
             
-            // Test both URLs
+            // Test multiple URLs for better reliability
             const testUrls = [
-                { name: 'Main Tracking', url: APPS_SCRIPT_URL, key: 'mainTracking' },
-                { name: 'Dashboard', url: DASHBOARD_SCRIPT_URL, key: 'dashboard' }
+                { name: 'Primary URL', url: APPS_SCRIPT_URL, key: 'mainTracking' },
+                { name: 'Dashboard URL', url: DASHBOARD_SCRIPT_URL, key: 'dashboard' },
+                { name: 'Backup URL', url: 'https://script.google.com/macros/s/AKfycbxyQDL8ZSXoTl6Rafi-etuVOYzhDWM9gRnYLQCF61Ick8blsakciFOWCf6gU-4ao0N23Q/exec', key: 'mainTracking' }
             ];
             
-            testUrls.forEach(({ name, url, key }) => {
+            let successCount = 0;
+            const totalTests = testUrls.length;
+            
+            testUrls.forEach(({ name, url, key }, index) => {
                 const testPayload = {
                     action: 'connection_test',
                     sessionId: sessionId,
                     testName: name,
-                    timestamp: new Date().toISOString()
+                    timestamp: new Date().toISOString(),
+                    device: userDevice
                 };
                 
                 // Test POST method
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 8000);
+                const timeoutId = setTimeout(() => controller.abort(), 6000 + (index * 1000)); // Staggered timeouts
                 
                 fetch(url, {
                     method: 'POST',
@@ -2273,33 +2056,37 @@
                     clearTimeout(timeoutId);
                     console.log(`✅ ${name} POST connection: OK`);
                     connectionStatus[key] = true;
+                    successCount++;
                     updateConnectionStatus();
                 }).catch((error) => {
                     clearTimeout(timeoutId);
                     console.warn(`⚠️ ${name} POST connection failed:`, error.message);
                     
                     // Test GET method as fallback
-                    const params = new URLSearchParams(testPayload);
+                    const params = new URLSearchParams();
+                    Object.keys(testPayload).forEach(k => {
+                        if (testPayload[k]) params.append(k, String(testPayload[k]));
+                    });
                     const getUrl = `${url}?${params.toString()}`;
                     
                     const img = new Image();
                     img.onload = () => {
                         console.log(`✅ ${name} GET connection: OK`);
                         connectionStatus[key] = true;
+                        successCount++;
                         updateConnectionStatus();
                     };
                     img.onerror = () => {
                         console.error(`❌ ${name} GET connection: FAILED`);
-                        connectionStatus[key] = false;
-                        updateConnectionStatus();
+                        // Don't set to false immediately, let other URLs try
                     };
                     img.src = getUrl;
                 });
             });
             
-            // Auto-hide connection status after successful connection
+            // Auto-hide connection status after successful connections
             setTimeout(() => {
-                if (connectionStatus.mainTracking && connectionStatus.dashboard) {
+                if (successCount >= 2 || connectionStatus.mainTracking || connectionStatus.dashboard) {
                     const statusElement = document.getElementById('connectionStatus');
                     if (statusElement) {
                         statusElement.style.opacity = '0.7';
@@ -2311,7 +2098,7 @@
                         }, 3000);
                     }
                 }
-            }, 5000);
+            }, 8000);
         }
         
         // Run connection test after page loads
@@ -3457,24 +3244,24 @@
             const seconds = totalTime % 60;
             const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`;
             
-            // Set result content based on score (not percentage)
+            // Set result content based on percentage
             let message = '';
             let emoji = '';
             let title = '';
             
-            if (quizScore >= 110) {
+            if (percentage >= 90) {
                 title = 'Luar Biasa!';
                 emoji = '🏆';
                 message = 'Kamu menguasai materi kesebangunan dengan sangat baik!';
-            } else if (quizScore >= 90) {
+            } else if (percentage >= 80) {
                 title = 'Hebat!';
                 emoji = '🎉';
                 message = 'Pemahaman kamu tentang kesebangunan sudah bagus!';
-            } else if (quizScore >= 70) {
+            } else if (percentage >= 70) {
                 title = 'Bagus!';
                 emoji = '👏';
                 message = 'Kamu sudah memahami konsep dasar kesebangunan!';
-            } else if (quizScore >= 50) {
+            } else if (percentage >= 60) {
                 title = 'Cukup Baik!';
                 emoji = '📚';
                 message = 'Terus belajar untuk memahami kesebangunan lebih baik!';
@@ -3489,6 +3276,18 @@
             document.getElementById('quizResultTitle').textContent = title;
             document.getElementById('quizFinalScore').textContent = correctCount;
             document.getElementById('quizTotalQuestions').textContent = quizQuestions.length;
+            // Update percentage with dynamic color
+            const percentageElement = document.getElementById('quizFinalPercentage');
+            percentageElement.textContent = percentage + '%';
+            
+            // Set color based on percentage
+            if (percentage >= 80) {
+                percentageElement.className = 'text-green-600';
+            } else if (percentage >= 60) {
+                percentageElement.className = 'text-yellow-600';
+            } else {
+                percentageElement.className = 'text-red-600';
+            }
             document.getElementById('quizFinalTime').textContent = timeString;
             document.getElementById('quizScoreMessage').textContent = message;
             
@@ -4014,9 +3813,144 @@
 
 
 
-        // Sound function placeholder
+        // Enhanced Sound Effects - More Exciting!
         function playSound(soundType) {
             console.log('Playing sound:', soundType);
+            
+            // Create audio context for sound effects
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                
+                // Set sound parameters based on type
+                switch(soundType) {
+                    case 'click':
+                        // Energetic pop sound with multiple layers
+                        createMultiLayerSound(audioContext, [
+                            { freq: 1200, startTime: 0, duration: 0.08, volume: 0.15, type: 'square' },
+                            { freq: 800, startTime: 0.02, duration: 0.06, volume: 0.12, type: 'sine' },
+                            { freq: 1600, startTime: 0.04, duration: 0.04, volume: 0.08, type: 'triangle' }
+                        ]);
+                        break;
+                        
+                    case 'correct':
+                        // Super happy celebration sound with chord progression
+                        const correctChord = [
+                            { freq: 523, startTime: 0, duration: 0.4, volume: 0.2, type: 'sine' },      // C5
+                            { freq: 659, startTime: 0.1, duration: 0.4, volume: 0.18, type: 'sine' },   // E5
+                            { freq: 784, startTime: 0.2, duration: 0.4, volume: 0.16, type: 'sine' },   // G5
+                            { freq: 1047, startTime: 0.3, duration: 0.3, volume: 0.14, type: 'sine' },  // C6
+                            { freq: 1319, startTime: 0.35, duration: 0.25, volume: 0.12, type: 'triangle' }, // E6
+                            { freq: 1568, startTime: 0.4, duration: 0.2, volume: 0.1, type: 'square' }   // G6
+                        ];
+                        
+                        // Add sparkle effects
+                        for (let i = 0; i < 8; i++) {
+                            correctChord.push({
+                                freq: 2000 + Math.random() * 1000,
+                                startTime: 0.1 + i * 0.05,
+                                duration: 0.08,
+                                volume: 0.06,
+                                type: 'sine'
+                            });
+                        }
+                        
+                        createMultiLayerSound(audioContext, correctChord);
+                        break;
+                        
+                    case 'incorrect':
+                        // Dramatic but encouraging "try again" sound
+                        createMultiLayerSound(audioContext, [
+                            { freq: 400, startTime: 0, duration: 0.15, volume: 0.18, type: 'sawtooth' },
+                            { freq: 300, startTime: 0.05, duration: 0.2, volume: 0.15, type: 'square' },
+                            { freq: 250, startTime: 0.1, duration: 0.25, volume: 0.12, type: 'sine' },
+                            // Add a hopeful rising note at the end
+                            { freq: 350, startTime: 0.3, duration: 0.15, volume: 0.1, type: 'sine' },
+                            { freq: 450, startTime: 0.35, duration: 0.1, volume: 0.08, type: 'triangle' }
+                        ]);
+                        break;
+                        
+                    case 'complete':
+                        // Epic victory fanfare with multiple instruments
+                        const victoryFanfare = [
+                            // Main melody - triumphant
+                            { freq: 523, startTime: 0, duration: 0.3, volume: 0.25, type: 'square' },    // C5
+                            { freq: 659, startTime: 0.15, duration: 0.3, volume: 0.23, type: 'square' }, // E5
+                            { freq: 784, startTime: 0.3, duration: 0.3, volume: 0.21, type: 'square' },  // G5
+                            { freq: 1047, startTime: 0.45, duration: 0.4, volume: 0.28, type: 'square' }, // C6
+                            
+                            // Harmony layer
+                            { freq: 392, startTime: 0.1, duration: 0.4, volume: 0.15, type: 'sine' },   // G4
+                            { freq: 494, startTime: 0.25, duration: 0.4, volume: 0.15, type: 'sine' },  // B4
+                            { freq: 659, startTime: 0.4, duration: 0.4, volume: 0.15, type: 'sine' },   // E5
+                            
+                            // Bass line
+                            { freq: 131, startTime: 0, duration: 0.6, volume: 0.2, type: 'sawtooth' },  // C3
+                            { freq: 196, startTime: 0.3, duration: 0.5, volume: 0.18, type: 'sawtooth' }, // G3
+                            
+                            // Sparkle effects throughout
+                            { freq: 2093, startTime: 0.1, duration: 0.1, volume: 0.08, type: 'sine' },
+                            { freq: 2349, startTime: 0.2, duration: 0.1, volume: 0.08, type: 'sine' },
+                            { freq: 2637, startTime: 0.3, duration: 0.1, volume: 0.08, type: 'sine' },
+                            { freq: 3136, startTime: 0.4, duration: 0.1, volume: 0.08, type: 'sine' },
+                            { freq: 3520, startTime: 0.5, duration: 0.15, volume: 0.1, type: 'sine' }
+                        ];
+                        
+                        // Add random sparkles for extra excitement
+                        for (let i = 0; i < 12; i++) {
+                            victoryFanfare.push({
+                                freq: 1500 + Math.random() * 2000,
+                                startTime: Math.random() * 0.8,
+                                duration: 0.05 + Math.random() * 0.1,
+                                volume: 0.04 + Math.random() * 0.04,
+                                type: 'sine'
+                            });
+                        }
+                        
+                        createMultiLayerSound(audioContext, victoryFanfare);
+                        break;
+                        
+                    default:
+                        // Enhanced default click sound
+                        createMultiLayerSound(audioContext, [
+                            { freq: 800, startTime: 0, duration: 0.1, volume: 0.12, type: 'sine' },
+                            { freq: 1200, startTime: 0.02, duration: 0.08, volume: 0.08, type: 'triangle' }
+                        ]);
+                }
+            } catch (error) {
+                console.log('Sound effect failed:', error);
+            }
+        }
+        
+        // Helper function to create multi-layered sounds
+        function createMultiLayerSound(audioContext, soundLayers) {
+            soundLayers.forEach(layer => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Set oscillator type
+                oscillator.type = layer.type || 'sine';
+                
+                // Set frequency (with slight vibrato for more life)
+                oscillator.frequency.setValueAtTime(layer.freq, audioContext.currentTime + layer.startTime);
+                if (layer.duration > 0.1) {
+                    // Add subtle vibrato for longer notes
+                    oscillator.frequency.setValueAtTime(layer.freq * 1.02, audioContext.currentTime + layer.startTime + layer.duration * 0.3);
+                    oscillator.frequency.setValueAtTime(layer.freq * 0.98, audioContext.currentTime + layer.startTime + layer.duration * 0.6);
+                    oscillator.frequency.setValueAtTime(layer.freq, audioContext.currentTime + layer.startTime + layer.duration * 0.9);
+                }
+                
+                // Set volume envelope for more natural sound
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime + layer.startTime);
+                gainNode.gain.linearRampToValueAtTime(layer.volume, audioContext.currentTime + layer.startTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(layer.volume * 0.7, audioContext.currentTime + layer.startTime + layer.duration * 0.7);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + layer.startTime + layer.duration);
+                
+                oscillator.start(audioContext.currentTime + layer.startTime);
+                oscillator.stop(audioContext.currentTime + layer.startTime + layer.duration);
+            });
         }
 
         // Dashboard Variables
@@ -4454,23 +4388,81 @@
             }
         }
 
-        // Auto-start background music when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('ETHNOMATH App loaded successfully!');
+        // Enhanced Audio Management
+        let audioInitialized = false;
+        
+        function initializeAudio() {
+            if (audioInitialized) return;
             
-            // Try to auto-play background music
             const backgroundMusic = document.getElementById('backgroundMusic');
             if (backgroundMusic) {
                 backgroundMusic.volume = 0.3; // Set volume to 30%
                 backgroundMusic.play().then(() => {
                     isAudioPlaying = true;
+                    audioInitialized = true;
                     const audioIcon = document.getElementById('audioIcon');
-                    audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>';
+                    if (audioIcon) {
+                        audioIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path>';
+                    }
+                    console.log('🎵 Background music started successfully!');
                 }).catch(e => {
-                    console.log('Auto-play blocked by browser:', e);
+                    console.log('🔇 Auto-play blocked by browser:', e);
+                    // Show a subtle notification that user can enable music
+                    showMusicEnableNotification();
                 });
             }
+        }
+        
+        function showMusicEnableNotification() {
+            // Create a subtle notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-24 right-4 z-40 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-3 rounded-lg shadow-lg text-sm font-semibold animate-bounce';
+            notification.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <span>🎵</span>
+                    <span>Klik tombol musik untuk mengaktifkan suara!</span>
+                </div>
+            `;
+            notification.style.zIndex = '99998';
+            
+            document.body.appendChild(notification);
+            
+            // Auto-hide after 5 seconds
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        if (notification.parentElement) {
+                            notification.parentElement.removeChild(notification);
+                        }
+                    }, 500);
+                }
+            }, 5000);
+        }
+        
+        // Try to initialize audio on first user interaction
+        function enableAudioOnInteraction() {
+            if (!audioInitialized) {
+                initializeAudio();
+            }
+        }
+        
+        // Auto-start background music when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('ETHNOMATH App loaded successfully!');
+            
+            // Try immediate autoplay
+            setTimeout(() => {
+                initializeAudio();
+            }, 1000);
+            
+            // Add event listeners for first user interaction
+            const interactionEvents = ['click', 'touchstart', 'keydown'];
+            interactionEvents.forEach(event => {
+                document.addEventListener(event, enableAudioOnInteraction, { once: true });
+            });
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'996400905258fd97',t:'MTc2MTc1NDg0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9967f4b0c39afd10',t:'MTc2MTc5NjMwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
