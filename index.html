@@ -4464,5 +4464,84 @@
             });
         });
     </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9967f4b0c39afd10',t:'MTc2MTc5NjMwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9967f4b0c39afd10',t:'MTc2MTc5NjMwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+ <!-- ======================
+     ETHNOMATH DATA CONNECTOR
+     ====================== -->
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw4MyV-hXOANBIAahBIMBQRu0zUI4tYQ752Xmn0HbJlf3oDuKbr6uwgVFjb1cz6hJgkjA/exec";
+
+/**
+ * Kirim data ke Google Apps Script
+ */
+async function sendToServer(action, payload) {
+  const data = { ...payload, action };
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+    console.log(`✅ ${action} terkirim:`, await res.text());
+  } catch (err) {
+    console.error(`❌ Gagal kirim ${action}:`, err);
+  }
+}
+
+/**
+ * Ambil nama pemain dari input atau tampilan
+ */
+function getPlayerName() {
+  try {
+    const inputName = document.getElementById("playerName")?.value?.trim();
+    const displayName = document.getElementById("playerNameDisplay")?.textContent?.trim();
+    return inputName || displayName || window.playerName || "Anon";
+  } catch {
+    return "Anon";
+  }
+}
+
+/* ---------- Kirim hasil aktivitas ---------- */
+
+// 🧩 Materi
+function saveMaterialAnswer(slide, answer) {
+  const name = getPlayerName();
+  sendToServer("submitMaterial", {
+    name,
+    slide,
+    answer,
+    timestamp: new Date().toISOString(),
+    deviceId: navigator.userAgent
+  });
+}
+
+// 🧠 Quiz
+function saveQuizResult(score, answers, timeSeconds) {
+  const name = getPlayerName();
+  sendToServer("submitQuiz", {
+    name,
+    score,
+    answers,
+    timeSeconds,
+    timestamp: new Date().toISOString(),
+    deviceId: navigator.userAgent
+  });
+}
+
+// 🎮 Memory Game
+function saveMemoryResult(time, timeSeconds) {
+  const name = getPlayerName();
+  sendToServer("submitMemory", {
+    name,
+    time,
+    timeSeconds,
+    timestamp: new Date().toISOString(),
+    deviceId: navigator.userAgent
+  });
+}
+
+console.log("🟢 Ethnomath Data Connector aktif & siap mengirim data!");
+</script>
+
+ </body>
 </html>
