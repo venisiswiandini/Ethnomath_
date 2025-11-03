@@ -79,6 +79,33 @@ function sendToGoogleSheets(action, data = {}) {
     }
 }
 
+
+// RESET DATA button handler
+const resetBtn = document.getElementById('resetDashboardBtn');
+resetBtn && resetBtn.addEventListener('click', async () => {
+  if (!confirm('⚠️ Yakin ingin menghapus SEMUA data di Google Sheets? Tindakan ini tidak bisa dibatalkan.')) return;
+  setDashboardStatus('Resetting...');
+  showMessage('Menghapus semua data...');
+  try {
+    const res = await fetch(APPS_SCRIPT_URL + '?action=resetData', { method: 'GET' });
+    const json = await res.json();
+    if (json.ok) {
+      showMessage('✅ Data berhasil dihapus.', 'success');
+      setDashboardStatus('Reset OK');
+      console.log('✅ Semua data dihapus:', json);
+      await loadAllTabs();
+    } else {
+      showMessage('❌ Gagal menghapus data: ' + (json.msg || json.error || 'Unknown error'), 'error');
+      setDashboardStatus('Reset failed');
+      console.error('Reset failed', json);
+    }
+  } catch (err) {
+    console.error('Reset error', err);
+    showMessage('❌ Terjadi kesalahan: ' + err.message, 'error');
+    setDashboardStatus('Error');
+  }
+});
+
 </script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;display=swap" rel="stylesheet">
   <style>
@@ -4839,5 +4866,335 @@ function sendToGoogleSheets(action, data = {}) {
     }
 }
 
-</script></body>
+</script>
+<!-- ====== HOST DASHBOARD: INSERTED BY CHATGPT ====== -->
+<!-- Modal + scripts for host dashboard (Semua User, Skor Materi, Skor Quiz, Game Rebana, Manajemen Data) -->
+<div id="hostDashboardBackdrop" class="hidden fixed inset-0 flex items-center justify-center dashboard-backdrop z-50 p-4">
+  <div class="dashboard-modal bg-white/10 border border-white/20 rounded-2xl p-4 glass-card">
+    <div class="flex items-center justify-between mb-3">
+      <div>
+        <h2 class="text-xl font-bold">Dashboard Host — Data Pengguna &amp; Hasil</h2>
+        <p class="text-sm text-white/80">Lihat semua pengguna, skor materi, skor quiz, Game Rebana, dan manajemen data.</p>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button id="refreshDashboardBtn" class="px-3 py-1 bg-indigo-600 rounded-md text-white text-sm">Refresh</button>
+        <button id="resetDashboardBtn" class="px-3 py-1 bg-orange-500 rounded-md text-white text-sm">Reset Data</button>
+        <button id="closeDashboardBtn" class="px-3 py-1 bg-red-500 rounded-md text-white text-sm">Tutup</button>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <div class="flex flex-wrap gap-2">
+        <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="allUsers">Semua User</button>
+        <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="materi">Skor Materi</button>
+        <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="quiz">Skor Quiz</button>
+        <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="memory">Game Rebana</button>
+        <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="management">Manajemen Data</button>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between mb-3">
+      <div id="dashboardStatus" class="text-sm text-white/80">Status: <span id="dashboardStatusText">Idle</span></div>
+      <div class="flex items-center gap-2">
+        <button id="exportCsvBtn" class="px-3 py-1 bg-emerald-500 rounded-md text-sm text-black">Export CSV</button>
+        <select id="autoRefreshSelect" class="text-sm p-1 rounded-md bg-white/10">
+          <option value="0">Auto refresh: Off</option>
+          <option value="15">15s</option>
+          <option value="30" selected>30s</option>
+          <option value="60">60s</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="dashboardMessages" class="mb-3 text-sm"></div>
+
+    <div id="tabContents">
+      <div id="tab_allUsers" class="tab-content hidden">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold">Semua User</h3>
+          <div class="text-xs text-white/80">Menampilkan data gabungan dan status (Sedang bermain / Selesai)</div>
+        </div>
+        <div class="table-scroll bg-white/5 rounded-lg p-2">
+          <table id="table_allUsers" class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left text-xs text-white/80">
+                <th class="p-2">Name</th>
+                <th class="p-2">DeviceId</th>
+                <th class="p-2">Timestamp</th>
+                <th class="p-2">Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab_materi" class="tab-content hidden">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold">Skor Materi (MaterialAnswers)</h3>
+          <div class="text-xs text-white/80">Kolom: Name, Slide, Answer, Timestamp, DeviceId</div>
+        </div>
+        <div class="table-scroll bg-white/5 rounded-lg p-2">
+          <table id="table_materi" class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left text-xs text-white/80">
+                <th class="p-2">Name</th>
+                <th class="p-2">Slide</th>
+                <th class="p-2">Answer</th>
+                <th class="p-2">Timestamp</th>
+                <th class="p-2">DeviceId</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab_quiz" class="tab-content hidden">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold">Skor Quiz (QuizResults)</h3>
+          <div class="text-xs text-white/80">Kolom: Name, Score, Answers, Time, Timestamp, DeviceId</div>
+        </div>
+        <div class="table-scroll bg-white/5 rounded-lg p-2">
+          <table id="table_quiz" class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left text-xs text-white/80">
+                <th class="p-2">Name</th>
+                <th class="p-2">Score</th>
+                <th class="p-2">Answers</th>
+                <th class="p-2">Time</th>
+                <th class="p-2">Timestamp</th>
+                <th class="p-2">DeviceId</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab_memory" class="tab-content hidden">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold">Game Rebana (MemoryResults)</h3>
+          <div class="text-xs text-white/80">Kolom: Name, Time, TimeSeconds, Timestamp, DeviceId</div>
+        </div>
+        <div class="table-scroll bg-white/5 rounded-lg p-2">
+          <table id="table_memory" class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left text-xs text-white/80">
+                <th class="p-2">Name</th>
+                <th class="p-2">Time</th>
+                <th class="p-2">TimeSeconds</th>
+                <th class="p-2">Timestamp</th>
+                <th class="p-2">DeviceId</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="tab_management" class="tab-content hidden">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="font-bold">Manajemen Data (DataUser / Rekap Gabungan)</h3>
+          <div class="text-xs text-white/80">Kolom: Name, MaterialAnswers, QuizResults, MemoryResults, DeviceId, Timestamp</div>
+        </div>
+        <div class="table-scroll bg-white/5 rounded-lg p-2">
+          <table id="table_management" class="min-w-full text-sm">
+            <thead>
+              <tr class="text-left text-xs text-white/80">
+                <th class="p-2">Name</th>
+                <th class="p-2">MaterialAnswers</th>
+                <th class="p-2">QuizResults</th>
+                <th class="p-2">MemoryResults</th>
+                <th class="p-2">DeviceId</th>
+                <th class="p-2">Timestamp</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-4 text-xs text-white/70">Console logs: buka DevTools → Console untuk melihat log sukses/gagal fetch.</div>
+  </div>
+</div>
+
+<style>
+/* minimal styles for injected modal */
+.dashboard-backdrop { background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); }
+.dashboard-modal { max-width: 1100px; width: 95%; max-height: 90vh; overflow: auto; }
+.table-scroll { max-height: 55vh; overflow:auto; }
+</style>
+
+<script>
+// APPS SCRIPT URL - ensure matches your Apps Script URL on page
+const APPS_SCRIPT_URL = typeof APPS_SCRIPT_URL !== 'undefined' ? APPS_SCRIPT_URL : 'https://script.google.com/macros/s/AKfycbxd8-HzT3MwRvQzPD2o1VajC95eWwT3s2I9U92eFE-0VcV0aI9MWXRD0C3cfap4zjlh5Q/exec';
+
+function parseGASTimestamp(tsStr) {
+  if (!tsStr || typeof tsStr !== 'string') return null;
+  const parts = tsStr.split(' ');
+  if (parts.length < 2) return null;
+  const datePart = parts[0].split('/');
+  const timePart = parts[1].split(':');
+  if (datePart.length !== 3) return null;
+  const day = parseInt(datePart[0],10);
+  const month = parseInt(datePart[1],10)-1;
+  const year = parseInt(datePart[2],10);
+  const hour = parseInt(timePart[0],10)||0;
+  const min = parseInt(timePart[1],10)||0;
+  const sec = parseInt(timePart[2],10)||0;
+  return new Date(year, month, day, hour, min, sec);
+}
+
+function computeStatusFromTimestamp(tsStr, thresholdMinutes=5) {
+  const d = parseGASTimestamp(tsStr);
+  if (!d) return 'Unknown';
+  const diff = Date.now() - d.getTime();
+  return diff <= thresholdMinutes*60*1000 ? 'Sedang bermain' : 'Selesai';
+}
+
+function exportToCsv(filename, rows) {
+  if (!rows || !rows.length) { alert('Tidak ada data untuk di-export'); return; }
+  const keys = Object.keys(rows[0]);
+  const csv = [ keys.join(','), ...rows.map(r=>keys.map(k=>`"${String(r[k]===null||r[k]===undefined?'':r[k]).replace(/"/g,'""')}"`).join(',')) ].join('
+');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+}
+
+async function fetchSheet(tabName) {
+  const url = APPS_SCRIPT_URL + '?action=getData&tab=' + encodeURIComponent(tabName);
+  const res = await fetch(url, {cache:'no-store'});
+  if (!res.ok) throw new Error('HTTP '+res.status+' '+res.statusText);
+  const json = await res.json();
+  return Array.isArray(json)?json:[];
+}
+
+function renderTable(tableEl, rows, columns) {
+  const tbody = tableEl.querySelector('tbody');
+  tbody.innerHTML = '';
+  if (!rows || !rows.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="p-2 text-sm text-white/60" colspan="${columns.length}">Belum ada data.</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+  rows.forEach(r=>{
+    const tr = document.createElement('tr');
+    tr.className = 'border-b border-white/10';
+    tr.innerHTML = columns.map(col=>{
+      const val = (r[col]!==undefined && r[col]!==null && r[col]!=='')?r[col]:'-';
+      const safe = String(val).replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      return `<td class="p-2 align-top text-sm text-white/90">${safe}</td>`;
+    }).join('');
+    tbody.appendChild(tr);
+  });
+}
+
+async function loadAllTabs() {
+  setDashboardStatus('Loading...');
+  showMessage('Memuat data...');
+  try {
+    const [material,quiz,memory,management] = await Promise.all([ fetchSheet('MaterialAnswers'), fetchSheet('QuizResults'), fetchSheet('MemoryResults'), fetchSheet('DataUser') ]);
+    console.log('Fetched sheets:', {materialLen:material.length, quizLen:quiz.length, memoryLen:memory.length, managementLen:management.length});
+
+    renderTable(document.getElementById('table_materi'), material, ['Name','Slide','Answer','Timestamp','DeviceId']);
+    renderTable(document.getElementById('table_quiz'), quiz, ['Name','Score','Answers','Time','Timestamp','DeviceId']);
+    renderTable(document.getElementById('table_memory'), memory, ['Name','Time','TimeSeconds','Timestamp','DeviceId']);
+    renderTable(document.getElementById('table_management'), management, ['Name','MaterialAnswers','QuizResults','MemoryResults','DeviceId','Timestamp']);
+
+    let allUsersRows = [];
+    if (management && management.length) {
+      allUsersRows = management.map(r=>({ Name: r.Name||'-', DeviceId: r.DeviceId||'-', Timestamp: r.Timestamp||'-', Status: computeStatusFromTimestamp(r.Timestamp||'') }));
+    } else {
+      const byKey = {};
+      [material,quiz,memory].forEach(arr=>arr.forEach(o=>{
+        const name = o.Name||'Anon';
+        const dev = o.DeviceId||o.device||o.deviceId||'';
+        const ts = o.Timestamp||o.timestamp||'';
+        const key = `${name}|${dev}`;
+        if (!byKey[key]) byKey[key] = { Name: name, DeviceId: dev, Timestamp: ts };
+        else {
+          const prev = parseGASTimestamp(byKey[key].Timestamp);
+          const cur = parseGASTimestamp(ts);
+          if (cur && (!prev || cur.getTime() > prev.getTime())) byKey[key].Timestamp = ts;
+        }
+      }));
+      allUsersRows = Object.values(byKey).map(u=>({ Name: u.Name, DeviceId: u.DeviceId, Timestamp: u.Timestamp, Status: computeStatusFromTimestamp(u.Timestamp||'') }));
+    }
+    renderTable(document.getElementById('table_allUsers'), allUsersRows, ['Name','DeviceId','Timestamp','Status']);
+    setDashboardStatus('Loaded');
+    showMessage('Data berhasil dimuat (lihat console untuk detail).', 'success');
+    console.log('✅ Dashboard data loaded.');
+    return {material,quiz,memory,management,allUsersRows};
+  } catch (err) {
+    console.error('❌ Error loading dashboard:', err);
+    setDashboardStatus('Error');
+    showMessage('Gagal memuat data: ' + (err.message || err.toString()), 'error');
+    throw err;
+  }
+}
+
+function setDashboardStatus(text){ const el=document.getElementById('dashboardStatusText'); if(el) el.textContent=text; }
+function showMessage(msg,type='info'){ const el=document.getElementById('dashboardMessages'); if(!el) return; const color = type==='error'?'text-red-400':type==='success'?'text-green-400':'text-white/80'; el.innerHTML = `<div class="${color}">${msg}</div>`; }
+
+function activateTab(name){
+  document.querySelectorAll('.tab-content').forEach(el=>el.classList.add('hidden'));
+  document.querySelectorAll('.dashboard-tab').forEach(b=>b.classList.remove('active','bg-white/20','text-black'));
+  const btn = Array.from(document.querySelectorAll('.dashboard-tab')).find(b=>b.dataset.tab===name);
+  if(btn) btn.classList.add('active','bg-white/20','text-black');
+  const c = document.getElementById('tab_'+name);
+  if(c) c.classList.remove('hidden');
+}
+
+let autoRefreshTimer = null;
+function setAutoRefresh(seconds){ if(autoRefreshTimer){ clearInterval(autoRefreshTimer); autoRefreshTimer=null; } const s = Number(seconds); if(s>0){ autoRefreshTimer = setInterval(()=>{ console.log('Auto-refresh: loading data...'); loadAllTabs().catch(e=>console.error(e)); }, s*1000); } }
+
+async function exportCurrentTabCsv(){
+  try{
+    const active = Array.from(document.querySelectorAll('.dashboard-tab')).find(b=>b.classList.contains('active'));
+    const tab = active?active.dataset.tab:'allUsers';
+    setDashboardStatus('Exporting CSV...'); showMessage('Mempersiapkan CSV...');
+    if(tab==='materi'){ const data = await fetchSheet('MaterialAnswers'); exportToCsv('MaterialAnswers.csv', data); }
+    else if(tab==='quiz'){ const data = await fetchSheet('QuizResults'); exportToCsv('QuizResults.csv', data); }
+    else if(tab==='memory'){ const data = await fetchSheet('MemoryResults'); exportToCsv('MemoryResults.csv', data); }
+    else if(tab==='management'){ const data = await fetchSheet('DataUser'); exportToCsv('DataUser.csv', data); }
+    else {
+      const data = await fetchSheet('DataUser');
+      if(data && data.length){ const rows = data.map(r=>({ Name: r.Name, DeviceId: r.DeviceId, Timestamp: r.Timestamp, Status: computeStatusFromTimestamp(r.Timestamp) })); exportToCsv('AllUsers.csv', rows); }
+      else {
+        const [material,quiz,memory] = await Promise.all([ fetchSheet('MaterialAnswers'), fetchSheet('QuizResults'), fetchSheet('MemoryResults') ]);
+        const rows = [ ...material.map(r=>({ Source:'MaterialAnswers', Name:r.Name, DeviceId:r.DeviceId, Timestamp:r.Timestamp })), ...quiz.map(r=>({ Source:'QuizResults', Name:r.Name, DeviceId:r.DeviceId, Timestamp:r.Timestamp })), ...memory.map(r=>({ Source:'MemoryResults', Name:r.Name, DeviceId:r.DeviceId, Timestamp:r.Timestamp })) ];
+        exportToCsv('AllUsers_Merged.csv', rows);
+      }
+    }
+    setDashboardStatus('Exported'); showMessage('CSV berhasil dibuat.', 'success');
+  } catch(err){
+    console.error('Export CSV error:', err); setDashboardStatus('Error'); showMessage('Gagal export CSV: ' + (err.message || err.toString()), 'error');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.dashboard-tab').forEach(b=>{ b.addEventListener('click', ()=>{ activateTab(b.dataset.tab); }); });
+  activateTab('allUsers');
+  const hostBtn = document.getElementById('hostLoginBtn');
+  const backdrop = document.getElementById('hostDashboardBackdrop');
+  const closeBtn = document.getElementById('closeDashboardBtn');
+  const refreshBtn = document.getElementById('refreshDashboardBtn');
+  const exportBtn = document.getElementById('exportCsvBtn');
+  hostBtn && hostBtn.addEventListener('click', async ()=>{ backdrop.classList.remove('hidden'); try{ await loadAllTabs(); }catch(e){ console.error(e); } });
+  closeBtn && closeBtn.addEventListener('click', ()=>{ backdrop.classList.add('hidden'); });
+  refreshBtn && refreshBtn.addEventListener('click', async ()=>{ try{ await loadAllTabs(); }catch(e){ console.error(e); } });
+  exportBtn && exportBtn.addEventListener('click', exportCurrentTabCsv);
+  const autoSelect = document.getElementById('autoRefreshSelect');
+  autoSelect && autoSelect.addEventListener('change', ()=>{ setAutoRefresh(Number(autoSelect.value)); });
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') backdrop.classList.add('hidden'); });
+  setAutoRefresh(Number((document.getElementById('autoRefreshSelect')||{}).value||0));
+});
+</script>
+<!-- ====== END HOST DASHBOARD INSERT ====== -->
+</body>
 </html>
