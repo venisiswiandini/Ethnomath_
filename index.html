@@ -864,7 +864,7 @@ resetBtn && resetBtn.addEventListener('click', async () => {
     </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript">
-function 
+function sendToGoogleSheets(action, data = {}) {
     try {
         const appsActionMap = {
             'quiz_complete': 'submitQuiz',
@@ -940,7 +940,7 @@ function
 
 </script>
   <script src="/_sdk/element_sdk.js" type="text/javascript">
-function 
+function sendToGoogleSheets(action, data = {}) {
     try {
         const appsActionMap = {
             'quiz_complete': 'submitQuiz',
@@ -1717,19 +1717,19 @@ function
       <div class="flex space-x-3"><button class="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white px-6 py-3 rounded-full font-bold" style="z-index: 99999 !important;" onclick="showPage('homePage')"> 🏠 Kembali ke Beranda </button> <button class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-6 py-3 rounded-full font-bold" style="z-index: 99999 !important;" onclick="logoutHost()"> 🚪 Logout Host </button>
       </div>
       <div class="flex space-x-4"><button class="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white px-6 py-3 rounded-full font-bold" onclick="refreshDashboardData()" style="z-index: 99999 !important;"> 🔄 Refresh Data </button>
-       <div class="bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 rounded-full"><span class="text-sm font-bold text-gray-800">📊 Total DataUser: <span id="totalDataUserCount" class="text-blue-600">0</span></span>
+       <div class="bg-gradient-to-r from-green-100 to-blue-100 px-4 py-2 rounded-full"><span class="text-sm font-bold text-gray-800">📊 Total Users: <span id="totalUsersCount" class="text-blue-600">0</span></span>
        </div>
       </div>
      </div>
     </div><!-- Dashboard Tabs -->
     <div class="glass-card rounded-2xl p-6"><!-- Tab Navigation -->
-     <div class="flex flex-wrap justify-center space-x-2 mb-6 bg-white/10 p-2 rounded-xl"><button class="dashboard-tab active bg-gradient-to-r from-blue-500 to-indigo-500 text-white" onclick="showDashboardTab('DataUser')" style="z-index: 99999 !important;"> 👥 Semua User </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('material')" style="z-index: 99999 !important;"> 📚 Skor Materi </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('quiz')" style="z-index: 99999 !important;"> 📝 Skor Quiz </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('game')" style="z-index: 99999 !important;"> 🎮 Game Rebana </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('management')" style="z-index: 99999 !important;"> 📊 Manajemen Data </button>
-     </div><!-- Tab Content --> <!-- DataUser Tab -->
-     <div id="DataUserTab" class="dashboard-tab-content">
+     <div class="flex flex-wrap justify-center space-x-2 mb-6 bg-white/10 p-2 rounded-xl"><button class="dashboard-tab active bg-gradient-to-r from-blue-500 to-indigo-500 text-white" onclick="showDashboardTab('users')" style="z-index: 99999 !important;"> 👥 Semua User </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('material')" style="z-index: 99999 !important;"> 📚 Skor Materi </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('quiz')" style="z-index: 99999 !important;"> 📝 Skor Quiz </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('game')" style="z-index: 99999 !important;"> 🎮 Game Rebana </button> <button class="dashboard-tab bg-white/20 text-white hover:bg-white/30" onclick="showDashboardTab('management')" style="z-index: 99999 !important;"> 📊 Manajemen Data </button>
+     </div><!-- Tab Content --> <!-- Users Tab -->
+     <div id="usersTab" class="dashboard-tab-content">
       <div class="bg-white/95 rounded-xl p-6">
        <div class="flex justify-between items-center mb-4">
         <h3 class="text-2xl font-bold text-gray-800">👥 Semua User yang Mengakses Aplikasi</h3>
-        <div class="text-sm text-gray-600"><span id="DataUserLastUpdate">Terakhir update: -</span>
+        <div class="text-sm text-gray-600"><span id="usersLastUpdate">Terakhir update: -</span>
         </div>
        </div>
        <div class="overflow-x-auto">
@@ -1743,7 +1743,7 @@ function
            <th class="border border-gray-300 px-4 py-3 text-left">Status</th>
           </tr>
          </thead>
-         <tbody id="DataUserTableBody">
+         <tbody id="usersTableBody">
           <tr>
            <td colspan="5" class="border border-gray-300 px-4 py-8 text-center text-gray-500">
             <div class="text-4xl mb-2">
@@ -1860,11 +1860,11 @@ function
        </div><!-- Summary Cards -->
        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div class="bg-gradient-to-r from-blue-100 to-blue-200 p-4 rounded-lg">
-         <div class="text-2xl font-bold text-blue-800" id="totalDataUser">
+         <div class="text-2xl font-bold text-blue-800" id="totalUsers">
           0
          </div>
          <div class="text-sm text-blue-600">
-          Total DataUser
+          Total Users
          </div>
         </div>
         <div class="bg-gradient-to-r from-green-100 to-green-200 p-4 rounded-lg">
@@ -2204,11 +2204,11 @@ function
                 // Update last update time
                 updateLastUpdateTime(targetTab);
                 
-                // Update total DataUser count if on DataUser tab
-                if (targetTab === 'DataUser') {
+                // Update total users count if on users tab
+                if (targetTab === 'users') {
                     const userCount = data.data ? data.data.length : 0;
-                    document.getElementById('totalDataUserCount').textContent = userCount;
-                    console.log(`👥 Total DataUser: ${userCount}`);
+                    document.getElementById('totalUsersCount').textContent = userCount;
+                    console.log(`👥 Total users: ${userCount}`);
                 }
                 
                 console.log('✅ Dashboard data loaded successfully');
@@ -3873,7 +3873,7 @@ function
                 
                 // Initialize dashboard
                 setTimeout(() => {
-                    loadDashboardData('DataUser');
+                    loadDashboardData('users');
                     startDashboardAutoRefresh();
                 }, 500);
             } else {
@@ -3928,8 +3928,8 @@ function
                 existingError.remove();
             }
             
-            // Reset dashboard tab to DataUser
-            currentDashboardTab = 'DataUser';
+            // Reset dashboard tab to users
+            currentDashboardTab = 'users';
             
             // Track logout
             sendToGoogleSheets('host_logout');
@@ -4206,9 +4206,9 @@ function
         }
 
         // Dashboard Variables
-        let currentDashboardTab = 'DataUser';
+        let currentDashboardTab = 'users';
         let dashboardData = {
-            DataUser: [],
+            users: [],
             material: [],
             quiz: [],
             game: [],
@@ -4278,9 +4278,9 @@ function
                 // Update last update time
                 updateLastUpdateTime(targetTab);
                 
-                // Update total DataUser count if on DataUser tab
-                if (targetTab === 'DataUser') {
-                    document.getElementById('totalDataUserCount').textContent = data.data ? data.data.length : 0;
+                // Update total users count if on users tab
+                if (targetTab === 'users') {
+                    document.getElementById('totalUsersCount').textContent = data.data ? data.data.length : 0;
                 }
                 
             } catch (error) {
@@ -4342,7 +4342,7 @@ function
             let html = '';
             
             switch (tabName) {
-                case 'DataUser':
+                case 'users':
                     data.forEach((user, index) => {
                         html += `
                             <tr class="hover:bg-gray-50">
@@ -4450,12 +4450,12 @@ function
         }
 
         function updateSummaryCards(data) {
-            const totalDataUser = data.length;
+            const totalUsers = data.length;
             const completedMaterial = data.filter(item => item.slide2 && item.slide3 && item.slide4).length;
             const completedQuiz = data.filter(item => item.quizScore > 0).length;
             const completedGame = data.filter(item => item.gameTime > 0).length;
             
-            document.getElementById('totalDataUser').textContent = totalDataUser;
+            document.getElementById('totalUsers').textContent = totalUsers;
             document.getElementById('completedMaterial').textContent = completedMaterial;
             document.getElementById('completedQuiz').textContent = completedQuiz;
             document.getElementById('completedGame').textContent = completedGame;
@@ -4463,7 +4463,7 @@ function
 
         function getColumnSpan(tabName) {
             const columnCounts = {
-                DataUser: 5,
+                users: 5,
                 material: 6,
                 quiz: 7,
                 game: 6,
@@ -4474,7 +4474,7 @@ function
 
         function getTabDisplayName(tabName) {
             const displayNames = {
-                DataUser: 'user',
+                users: 'user',
                 material: 'materi',
                 quiz: 'quiz',
                 game: 'game',
@@ -4885,7 +4885,7 @@ function sendToGoogleSheets(action, data = {}) {
 
     <div class="mb-4">
       <div class="flex flex-wrap gap-2">
-        <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="allDataUser">Semua User</button>
+        <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="allUsers">Semua User</button>
         <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="materi">Skor Materi</button>
         <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="quiz">Skor Quiz</button>
         <button class="tab-btn dashboard-tab px-3 py-2 bg-white/10 rounded-full text-sm text-white" data-tab="memory">Game Rebana</button>
@@ -4909,13 +4909,13 @@ function sendToGoogleSheets(action, data = {}) {
     <div id="dashboardMessages" class="mb-3 text-sm"></div>
 
     <div id="tabContents">
-      <div id="tab_allDataUser" class="tab-content hidden">
+      <div id="tab_allUsers" class="tab-content hidden">
         <div class="flex items-center justify-between mb-2">
           <h3 class="font-bold">Semua User</h3>
           <div class="text-xs text-white/80">Menampilkan data gabungan dan status (Sedang bermain / Selesai)</div>
         </div>
         <div class="table-scroll bg-white/5 rounded-lg p-2">
-          <table id="table_allDataUser" class="min-w-full text-sm">
+          <table id="table_allUsers" class="min-w-full text-sm">
             <thead>
               <tr class="text-left text-xs text-white/80">
                 <th class="p-2">Name</th>
@@ -5029,7 +5029,7 @@ function sendToGoogleSheets(action, data = {}) {
 
 <script>
 // APPS SCRIPT URL - ensure matches your Apps Script URL on page
-const APPS_SCRIPT_URL = typeof APPS_SCRIPT_URL !== 'undefined' ? APPS_SCRIPT_URL : 'https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec';
+const APPS_SCRIPT_URL = typeof APPS_SCRIPT_URL !== 'undefined' ? APPS_SCRIPT_URL : 'https://script.google.com/macros/s/AKfycbxd8-HzT3MwRvQzPD2o1VajC95eWwT3s2I9U92eFE-0VcV0aI9MWXRD0C3cfap4zjlh5Q/exec';
 
 function parseGASTimestamp(tsStr) {
   if (!tsStr || typeof tsStr !== 'string') return null;
@@ -5106,9 +5106,9 @@ async function loadAllTabs() {
     renderTable(document.getElementById('table_memory'), memory, ['Name','Time','TimeSeconds','Timestamp','DeviceId']);
     renderTable(document.getElementById('table_management'), management, ['Name','MaterialAnswers','QuizResults','MemoryResults','DeviceId','Timestamp']);
 
-    let allDataUserRows = [];
+    let allUsersRows = [];
     if (management && management.length) {
-      allDataUserRows = management.map(r=>({ Name: r.Name||'-', DeviceId: r.DeviceId||'-', Timestamp: r.Timestamp||'-', Status: computeStatusFromTimestamp(r.Timestamp||'') }));
+      allUsersRows = management.map(r=>({ Name: r.Name||'-', DeviceId: r.DeviceId||'-', Timestamp: r.Timestamp||'-', Status: computeStatusFromTimestamp(r.Timestamp||'') }));
     } else {
       const byKey = {};
       [material,quiz,memory].forEach(arr=>arr.forEach(o=>{
@@ -5123,13 +5123,13 @@ async function loadAllTabs() {
           if (cur && (!prev || cur.getTime() > prev.getTime())) byKey[key].Timestamp = ts;
         }
       }));
-      allDataUserRows = Object.values(byKey).map(u=>({ Name: u.Name, DeviceId: u.DeviceId, Timestamp: u.Timestamp, Status: computeStatusFromTimestamp(u.Timestamp||'') }));
+      allUsersRows = Object.values(byKey).map(u=>({ Name: u.Name, DeviceId: u.DeviceId, Timestamp: u.Timestamp, Status: computeStatusFromTimestamp(u.Timestamp||'') }));
     }
-    renderTable(document.getElementById('table_allDataUser'), allDataUserRows, ['Name','DeviceId','Timestamp','Status']);
+    renderTable(document.getElementById('table_allUsers'), allUsersRows, ['Name','DeviceId','Timestamp','Status']);
     setDashboardStatus('Loaded');
     showMessage('Data berhasil dimuat (lihat console untuk detail).', 'success');
     console.log('✅ Dashboard data loaded.');
-    return {material,quiz,memory,management,allDataUserRows};
+    return {material,quiz,memory,management,allUsersRows};
   } catch (err) {
     console.error('❌ Error loading dashboard:', err);
     setDashboardStatus('Error');
@@ -5156,7 +5156,7 @@ function setAutoRefresh(seconds){ if(autoRefreshTimer){ clearInterval(autoRefres
 async function exportCurrentTabCsv(){
   try{
     const active = Array.from(document.querySelectorAll('.dashboard-tab')).find(b=>b.classList.contains('active'));
-    const tab = active?active.dataset.tab:'allDataUser';
+    const tab = active?active.dataset.tab:'allUsers';
     setDashboardStatus('Exporting CSV...'); showMessage('Mempersiapkan CSV...');
     if(tab==='materi'){ const data = await fetchSheet('MaterialAnswers'); exportToCsv('MaterialAnswers.csv', data); }
     else if(tab==='quiz'){ const data = await fetchSheet('QuizResults'); exportToCsv('QuizResults.csv', data); }
@@ -5164,11 +5164,11 @@ async function exportCurrentTabCsv(){
     else if(tab==='management'){ const data = await fetchSheet('DataUser'); exportToCsv('DataUser.csv', data); }
     else {
       const data = await fetchSheet('DataUser');
-      if(data && data.length){ const rows = data.map(r=>({ Name: r.Name, DeviceId: r.DeviceId, Timestamp: r.Timestamp, Status: computeStatusFromTimestamp(r.Timestamp) })); exportToCsv('AllDataUser.csv', rows); }
+      if(data && data.length){ const rows = data.map(r=>({ Name: r.Name, DeviceId: r.DeviceId, Timestamp: r.Timestamp, Status: computeStatusFromTimestamp(r.Timestamp) })); exportToCsv('AllUsers.csv', rows); }
       else {
         const [material,quiz,memory] = await Promise.all([ fetchSheet('MaterialAnswers'), fetchSheet('QuizResults'), fetchSheet('MemoryResults') ]);
         const rows = [ ...material.map(r=>({ Source:'MaterialAnswers', Name:r.Name, DeviceId:r.DeviceId, Timestamp:r.Timestamp })), ...quiz.map(r=>({ Source:'QuizResults', Name:r.Name, DeviceId:r.DeviceId, Timestamp:r.Timestamp })), ...memory.map(r=>({ Source:'MemoryResults', Name:r.Name, DeviceId:r.DeviceId, Timestamp:r.Timestamp })) ];
-        exportToCsv('AllDataUser_Merged.csv', rows);
+        exportToCsv('AllUsers_Merged.csv', rows);
       }
     }
     setDashboardStatus('Exported'); showMessage('CSV berhasil dibuat.', 'success');
@@ -5179,7 +5179,7 @@ async function exportCurrentTabCsv(){
 
 document.addEventListener('DOMContentLoaded', ()=>{
   document.querySelectorAll('.dashboard-tab').forEach(b=>{ b.addEventListener('click', ()=>{ activateTab(b.dataset.tab); }); });
-  activateTab('allDataUser');
+  activateTab('allUsers');
   const hostBtn = document.getElementById('hostLoginBtn');
   const backdrop = document.getElementById('hostDashboardBackdrop');
   const closeBtn = document.getElementById('closeDashboardBtn');
@@ -5198,208 +5198,75 @@ document.addEventListener('DOMContentLoaded', ()=>{
 <!-- ====== END HOST DASHBOARD INSERT ====== -->
 
 <script>
-// ======== PERBAIKAN KONEKSI ETHNOMATH (Sinkron dengan Code.gs terbaru) ========
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
-
-
-  try {
-    const body = { action, timestamp: new Date().toISOString(), ...data };
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    const json = await res.json();
-    console.log('✅ Data terkirim:', json);
-    return json;
-  } catch (err) {
-    console.error('❌ Gagal kirim:', err);
-    return { error: err.message };
-  }
-}
-
-function formatTimestamp(ts) {
-  try {
-    const d = ts ? new Date(ts) : new Date();
-    return d.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
-  } catch (e) {
-    return new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
-  }
-}
-</script>
-
-
-<script>
-/* ETHNOMATH — Robust sender & dashboard v2
-   Ensures payload fields match Apps Script handlers and dashboard reads DataUser.
-*/
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
-
-// Robust mapper: accepts many action names from original app and normalizes payload
-function sendToGoogleSheets(action, data = {}) {
-  // Tambahkan timestamp otomatis
+function sendToGoogleSheets_JSONP(action, data = {}) {
   const params = { action, timestamp: new Date().toISOString(), ...data };
-
-  // Ubah data jadi query string
   const qs = new URLSearchParams(params).toString();
-
-  // Buat callback unik (agar JSONP bisa jalan)
-  const callbackName = "jsonp_cb_" + Math.random().toString(36).substring(2);
-  window[callbackName] = (res) => {
-    console.log("✅ Data terkirim:", res);
-    delete window[callbackName];
-  };
-
-  // Kirim lewat <script> — cara JSONP, tidak diblokir CORS
-  const script = document.createElement("script");
-  script.src = `${APPS_SCRIPT_URL}?${qs}&callback=${callbackName}`;
-  document.body.appendChild(script);
+  const cb = "jsonp_cb_" + Math.random().toString(36).slice(2);
+  return new Promise((resolve) => {
+    window[cb] = (res) => { try { resolve(res); } finally { delete window[cb]; } };
+    const s = document.createElement('script');
+    s.src = `${APPS_SCRIPT_URL}?${qs}&callback=${cb}`;
+    s.onerror = () => { resolve({ error: 'JSONP load error' }); delete window[cb]; };
+    document.body.appendChild(s);
+  });
 }
-
-
-// Dashboard helpers (if host panel exists)
-async function fetchSheet(tab) {
-  try {
-    const res = await fetch(`${APPS_SCRIPT_URL}?action=getData&tab=${encodeURIComponent(tab)}`);
-    const json = await res.json();
-    return Array.isArray(json) ? json : [];
-  } catch (e) {
-    console.error('fetchSheet error', e);
-    return [];
-  }
-}
-
-function formatTimestampDisplay(val) {
-  if (!val) return '';
-  // Try to parse ISO or dd/MM/yyyy etc
-  const d = new Date(val);
-  if (!isNaN(d)) {
-    // format dd/MM/yyyy HH:mm:ss in Asia/Jakarta
+window.sendToGoogleSheets = sendToGoogleSheets_JSONP;
+if (window.fetch) {
+  const _originalFetch = window.fetch.bind(window);
+  window.fetch = async (input, init = {}) => {
     try {
-      return new Intl.DateTimeFormat('id-ID', {
-        timeZone: 'Asia/Jakarta',
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit'
-      }).format(d);
-    } catch (e) {
-      return d.toLocaleString();
-    }
-  }
-  return val;
-}
-
-function renderTableInto(headEl, bodyEl, data) {
-  headEl.innerHTML = '';
-  bodyEl.innerHTML = '';
-  if (!data || !data.length) {
-    headEl.innerHTML = '<tr><th>No data</th></tr>';
-    bodyEl.innerHTML = '<tr><td>Tidak ada entri</td></tr>';
-    return;
-  }
-  const headers = Object.keys(data[0]);
-  const trh = document.createElement('tr');
-  headers.forEach(h => {
-    const th = document.createElement('th');
-    th.textContent = h;
-    th.style.cursor = 'pointer';
-    th.addEventListener('click', () => {
-      // simple sort
-      const asc = th.dataset.asc !== 'true';
-      data.sort((a,b) => {
-        const A = (a[h]===null||a[h]===undefined)?'':a[h];
-        const B = (b[h]===null||b[h]===undefined)?'':b[h];
-        if (!isNaN(Number(A)) && !isNaN(Number(B))) return asc ? Number(A)-Number(B) : Number(B)-Number(A);
-        return asc ? String(A).localeCompare(String(B)) : String(B).localeCompare(String(A));
-      });
-      th.dataset.asc = asc;
-      renderTableInto(headEl, bodyEl, data);
-    });
-    trh.appendChild(th);
-  });
-  headEl.appendChild(trh);
-
-  data.forEach(row => {
-    const tr = document.createElement('tr');
-    headers.forEach(h => {
-      const td = document.createElement('td');
-      let v = row[h];
-      // format likely timestamp columns
-      if (/timestamp|time/i.test(h) && typeof v === 'string') {
-        v = formatTimestampDisplay(v);
+      const url = (typeof input === 'string') ? input : input.url;
+      if (typeof url === 'string' && url.startsWith(APPS_SCRIPT_URL) && init && init.method && init.method.toUpperCase() === 'POST') {
+        let body = {};
+        try {
+          if (init.body) {
+            if (typeof init.body === 'string') body = JSON.parse(init.body);
+            else body = init.body;
+          }
+        } catch(e) { body = {}; }
+        const res = await sendToGoogleSheets_JSONP(body.action || 'submit', body);
+        return { ok: true, status: 200, json: async () => res, text: async () => JSON.stringify(res) };
       }
-      // For arrays or JSON strings, normalize
-      if (Array.isArray(v)) v = v.join(' ; ');
-      if (typeof v === 'string' && v.startsWith('[') && v.endsWith(']')) {
-        try { const parsed = JSON.parse(v); if (Array.isArray(parsed)) v = parsed.join(' ; '); } catch(e){}
-      }
-      td.textContent = v===null||v===undefined?'':v;
-      tr.appendChild(td);
-    });
-    bodyEl.appendChild(tr);
-  });
-}
-
-// If host panel exists, wire it to use these helpers
-document.addEventListener('DOMContentLoaded', () => {
-  // try to find various host panel IDs used earlier
-  const hostPanel = document.getElementById('hostPanel') || document.querySelector('.host-panel') || null;
-  if (!hostPanel) return;
-  window.__ethno_host_opened = true;
-
-  const headEl = document.getElementById('hostTableHead') || document.getElementById('tableHead') || hostPanel.querySelector('thead') || null;
-  const bodyEl = document.getElementById('hostTableBody') || document.getElementById('tableBody') || hostPanel.querySelector('tbody') || null;
-
-  // define loadHostTab if not present
-  window.loadHostTab = window.loadHostTab || async function(tab='DataUser') {
-    if (!headEl || !bodyEl) return;
-    const data = await fetchSheet(tab);
-    // If DataUser is empty, try rebuildRecap trigger by calling getSummary or a rebuild endpoint? We'll just render what we have.
-    renderTableInto(headEl, bodyEl, data);
-    // update last loaded timestamps if exists
-    const lastLoaded = document.getElementById('hostLastLoaded') || document.getElementById('lastLoaded');
-    if (lastLoaded) lastLoaded.textContent = new Date().toLocaleString('id-ID', {timeZone:'Asia/Jakarta'});
+    } catch (e) { console.error('fetch interceptor error', e); }
+    return _originalFetch(input, init);
   };
+}
 
-  // hook existing host buttons if present
-  const hostBtn = document.getElementById('hostLoginBtn') || document.querySelector('[data-host-btn]') || null;
-  if (hostBtn) hostBtn.addEventListener('click', (e) => {
-    // show host panel
-    hostPanel.classList.remove('hidden');
-    hostPanel.style.display = 'block';
-    loadHostTab('DataUser');
+// --- ETHNOMATH JSONP PATCH v5 (CORS-FREE) ---
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
+
+function sendToGoogleSheets_JSONP(action, data = {}) {
+  const params = { action, timestamp: new Date().toISOString(), ...data };
+  const qs = new URLSearchParams(params).toString();
+  const cb = "jsonp_cb_" + Math.random().toString(36).substring(2);
+  return new Promise((resolve) => {
+    window[cb] = (res) => { resolve(res); delete window[cb]; };
+    const s = document.createElement("script");
+    s.src = `${APPS_SCRIPT_URL}?${qs}&callback=${cb}`;
+    s.onerror = () => resolve({ error: "JSONP load error" });
+    document.body.appendChild(s);
   });
+}
+window.sendToGoogleSheets = sendToGoogleSheets_JSONP;
 
-  // wire close/refresh/reset if present
-  const closeBtn = document.getElementById('hostClose') || document.getElementById('closeHostBtn') || hostPanel.querySelector('.host-close') || null;
-  if (closeBtn) closeBtn.addEventListener('click', () => { hostPanel.classList.add('hidden'); });
-
-  const refreshBtn = document.getElementById('refreshHostBtn') || document.getElementById('refreshBtn') || hostPanel.querySelector('#refreshHostBtn') || null;
-  if (refreshBtn) refreshBtn.addEventListener('click', () => loadHostTab('DataUser'));
-
-  const resetBtn = document.getElementById('resetHostBtn') || document.getElementById('resetBtn') || hostPanel.querySelector('#resetHostBtn') || null;
-  if (resetBtn) resetBtn.addEventListener('click', async () => {
-    if (!confirm('⚠️ Yakin ingin menghapus SEMUA data di Google Sheets?')) return;
+// Intercept ALL fetch POSTs to Apps Script (auto reroute via JSONP)
+if (window.fetch) {
+  const originalFetch = window.fetch.bind(window);
+  window.fetch = async (input, init = {}) => {
     try {
-      const r = await fetch(`${APPS_SCRIPT_URL}?action=resetData`);
-      const j = await r.json();
-      alert(j.msg || j.error || 'Reset OK');
-      loadHostTab('DataUser');
-    } catch (e) { alert('Reset gagal: '+e.message); }
-  });
-
-  // tabs inside host panel
-  const tabButtons = hostPanel.querySelectorAll('#hostTabs .tab, .tabs .tab');
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', (ev) => {
-      const tab = btn.dataset.tab || btn.getAttribute('data-tab');
-      if (!tab) return;
-      // mark active
-      tabButtons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      loadHostTab(tab);
-    });
-  });
-});
+      const url = (typeof input === "string") ? input : input.url;
+      if (url && url.startsWith(APPS_SCRIPT_URL) && init?.method?.toUpperCase() === "POST") {
+        let body = {};
+        try { body = init.body ? JSON.parse(init.body) : {}; } catch { body = {}; }
+        const result = await sendToGoogleSheets_JSONP(body.action || "unknown", body);
+        return { ok: true, status: 200, json: async () => result, text: async () => JSON.stringify(result) };
+      }
+    } catch (err) { console.error("Fetch interceptor error:", err); }
+    return originalFetch(input, init);
+  };
+}
+// --- END PATCH ---
 </script>
 
 </body>
