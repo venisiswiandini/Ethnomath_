@@ -5029,7 +5029,7 @@ function sendToGoogleSheets(action, data = {}) {
 
 <script>
 // APPS SCRIPT URL - ensure matches your Apps Script URL on page
-const APPS_SCRIPT_URL = typeof APPS_SCRIPT_URL !== 'undefined' ? APPS_SCRIPT_URL : 'https://script.google.com/macros/s/AKfycbxd8-HzT3MwRvQzPD2o1VajC95eWwT3s2I9U92eFE-0VcV0aI9MWXRD0C3cfap4zjlh5Q/exec';
+const APPS_SCRIPT_URL = typeof APPS_SCRIPT_URL !== 'undefined' ? APPS_SCRIPT_URL : 'https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec';
 
 function parseGASTimestamp(tsStr) {
   if (!tsStr || typeof tsStr !== 'string') return null;
@@ -5196,5 +5196,284 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 </script>
 <!-- ====== END HOST DASHBOARD INSERT ====== -->
+
+<script>
+// ======== PERBAIKAN KONEKSI ETHNOMATH (Sinkron dengan Code.gs terbaru) ========
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
+
+async function sendToGoogleSheets(action, data = {}) {
+  try {
+    const body = { action, timestamp: new Date().toISOString(), ...data };
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const json = await res.json();
+    console.log('✅ Data terkirim:', json);
+    return json;
+  } catch (err) {
+    console.error('❌ Gagal kirim:', err);
+    return { error: err.message };
+  }
+}
+
+function formatTimestamp(ts) {
+  try {
+    const d = ts ? new Date(ts) : new Date();
+    return d.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+  } catch (e) {
+    return new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' });
+  }
+}
+</script>
+
+
+<script>
+/* ETHNOMATH — Robust sender & dashboard v2
+   Ensures payload fields match Apps Script handlers and dashboard reads DataUser.
+*/
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
+
+// Robust mapper: accepts many action names from original app and normalizes payload
+async function sendToGoogleSheets(action, data = {}) {
+  try {
+    // If action is already 'submitMaterial' etc, keep; else map common in-app events
+    const map = {
+      'quiz_complete': 'submitQuiz',
+      'quiz_answer': null,
+      'quiz_start': null,
+      'slide2_answer': 'submitMaterial',
+      'slide3_answer': 'submitMaterial',
+      'slide4_answer': 'submitMaterial',
+      'material_start': null,
+      'memory_game_complete': 'submitMemory',
+      'memory_game_start': null,
+      'submitMaterial': 'submitMaterial',
+      'submitQuiz': 'submitQuiz',
+      'submitMemory': 'submitMemory'
+    };
+    const target = map[action] !== undefined ? map[action] : action;
+
+    // base info
+    const base = {
+      timestamp: new Date().toISOString(),
+      deviceId: (data.deviceId || data.device || data.deviceid || data.deviceID || ''),
+      name: data.name || data.playerName || data.player || 'Anon',
+      url: window.location.href,
+      userAgent: navigator.userAgent,
+      ...data
+    };
+
+    let payload = { action: target, timestamp: base.timestamp };
+
+    if (target === 'submitMaterial') {
+      payload.name = base.name;
+      payload.slide = data.slide || data.slideNumber || data.slide_id || data.slideNo || '';
+      payload.answer = (data.answer || data.answerText || data.text || '').toString();
+      payload.deviceId = base.deviceId;
+    } else if (target === 'submitQuiz') {
+      payload.name = base.name;
+      // answers may be array or string
+      if (Array.isArray(data.answers) && data.answers.length) {
+        payload.answers = data.answers;
+      } else if (data.answers && typeof data.answers === 'string') {
+        try { payload.answers = JSON.parse(data.answers); } catch(e) { payload.answers = data.answers; }
+      } else if (data.quizAnswers) {
+        payload.answers = data.quizAnswers;
+      } else {
+        payload.answers = data.answers || [];
+      }
+      payload.score = Number(data.score || data.finalScore || data.totalScore || 0);
+      payload.timeSeconds = Number(data.timeSeconds || data.timeUsed || data.time || 0);
+      payload.deviceId = base.deviceId;
+    } else if (target === 'submitMemory') {
+      payload.name = base.name;
+      payload.time = data.time || data.timeString || data.duration || '';
+      payload.timeSeconds = Number(data.timeSeconds || data.timeSecondsPlayed || data.tsec || 0);
+      payload.deviceId = base.deviceId;
+    } else {
+      // For unmapped actions, send full base+data so Apps Script can log it for debugging
+      payload = { action, ...base, ...data };
+    }
+
+    // Send as POST JSON
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      mode: 'cors'
+    });
+
+    // Try parse JSON
+    const json = await res.json().catch(() => null);
+    console.log('sendToGoogleSheets ->', payload, json || 'no-json-response');
+    // After sending material/quiz/memory, try refresh recap on host if open
+    if (window.__ethno_host_opened) {
+      // small delay to allow Apps Script to write and rebuild recap
+      setTimeout(() => {
+        if (typeof loadTab === 'function') loadTab('DataUser');
+        if (typeof loadHostTab === 'function') loadHostTab('DataUser');
+      }, 900);
+    }
+    return json || { ok: true };
+  } catch (err) {
+    console.error('sendToGoogleSheets error', err);
+    // fallback beacon GET
+    try {
+      const params = new URLSearchParams({ action, ...data, timestamp: new Date().toISOString() }).toString();
+      new Image().src = `${APPS_SCRIPT_URL}?${params}`;
+      return { ok: true, fallback: true };
+    } catch (e) {
+      return { error: err.message };
+    }
+  }
+}
+
+// Dashboard helpers (if host panel exists)
+async function fetchSheet(tab) {
+  try {
+    const res = await fetch(`${APPS_SCRIPT_URL}?action=getData&tab=${encodeURIComponent(tab)}`);
+    const json = await res.json();
+    return Array.isArray(json) ? json : [];
+  } catch (e) {
+    console.error('fetchSheet error', e);
+    return [];
+  }
+}
+
+function formatTimestampDisplay(val) {
+  if (!val) return '';
+  // Try to parse ISO or dd/MM/yyyy etc
+  const d = new Date(val);
+  if (!isNaN(d)) {
+    // format dd/MM/yyyy HH:mm:ss in Asia/Jakarta
+    try {
+      return new Intl.DateTimeFormat('id-ID', {
+        timeZone: 'Asia/Jakarta',
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+      }).format(d);
+    } catch (e) {
+      return d.toLocaleString();
+    }
+  }
+  return val;
+}
+
+function renderTableInto(headEl, bodyEl, data) {
+  headEl.innerHTML = '';
+  bodyEl.innerHTML = '';
+  if (!data || !data.length) {
+    headEl.innerHTML = '<tr><th>No data</th></tr>';
+    bodyEl.innerHTML = '<tr><td>Tidak ada entri</td></tr>';
+    return;
+  }
+  const headers = Object.keys(data[0]);
+  const trh = document.createElement('tr');
+  headers.forEach(h => {
+    const th = document.createElement('th');
+    th.textContent = h;
+    th.style.cursor = 'pointer';
+    th.addEventListener('click', () => {
+      // simple sort
+      const asc = th.dataset.asc !== 'true';
+      data.sort((a,b) => {
+        const A = (a[h]===null||a[h]===undefined)?'':a[h];
+        const B = (b[h]===null||b[h]===undefined)?'':b[h];
+        if (!isNaN(Number(A)) && !isNaN(Number(B))) return asc ? Number(A)-Number(B) : Number(B)-Number(A);
+        return asc ? String(A).localeCompare(String(B)) : String(B).localeCompare(String(A));
+      });
+      th.dataset.asc = asc;
+      renderTableInto(headEl, bodyEl, data);
+    });
+    trh.appendChild(th);
+  });
+  headEl.appendChild(trh);
+
+  data.forEach(row => {
+    const tr = document.createElement('tr');
+    headers.forEach(h => {
+      const td = document.createElement('td');
+      let v = row[h];
+      // format likely timestamp columns
+      if (/timestamp|time/i.test(h) && typeof v === 'string') {
+        v = formatTimestampDisplay(v);
+      }
+      // For arrays or JSON strings, normalize
+      if (Array.isArray(v)) v = v.join(' ; ');
+      if (typeof v === 'string' && v.startsWith('[') && v.endsWith(']')) {
+        try { const parsed = JSON.parse(v); if (Array.isArray(parsed)) v = parsed.join(' ; '); } catch(e){}
+      }
+      td.textContent = v===null||v===undefined?'':v;
+      tr.appendChild(td);
+    });
+    bodyEl.appendChild(tr);
+  });
+}
+
+// If host panel exists, wire it to use these helpers
+document.addEventListener('DOMContentLoaded', () => {
+  // try to find various host panel IDs used earlier
+  const hostPanel = document.getElementById('hostPanel') || document.querySelector('.host-panel') || null;
+  if (!hostPanel) return;
+  window.__ethno_host_opened = true;
+
+  const headEl = document.getElementById('hostTableHead') || document.getElementById('tableHead') || hostPanel.querySelector('thead') || null;
+  const bodyEl = document.getElementById('hostTableBody') || document.getElementById('tableBody') || hostPanel.querySelector('tbody') || null;
+
+  // define loadHostTab if not present
+  window.loadHostTab = window.loadHostTab || async function(tab='DataUser') {
+    if (!headEl || !bodyEl) return;
+    const data = await fetchSheet(tab);
+    // If DataUser is empty, try rebuildRecap trigger by calling getSummary or a rebuild endpoint? We'll just render what we have.
+    renderTableInto(headEl, bodyEl, data);
+    // update last loaded timestamps if exists
+    const lastLoaded = document.getElementById('hostLastLoaded') || document.getElementById('lastLoaded');
+    if (lastLoaded) lastLoaded.textContent = new Date().toLocaleString('id-ID', {timeZone:'Asia/Jakarta'});
+  };
+
+  // hook existing host buttons if present
+  const hostBtn = document.getElementById('hostLoginBtn') || document.querySelector('[data-host-btn]') || null;
+  if (hostBtn) hostBtn.addEventListener('click', (e) => {
+    // show host panel
+    hostPanel.classList.remove('hidden');
+    hostPanel.style.display = 'block';
+    loadHostTab('DataUser');
+  });
+
+  // wire close/refresh/reset if present
+  const closeBtn = document.getElementById('hostClose') || document.getElementById('closeHostBtn') || hostPanel.querySelector('.host-close') || null;
+  if (closeBtn) closeBtn.addEventListener('click', () => { hostPanel.classList.add('hidden'); });
+
+  const refreshBtn = document.getElementById('refreshHostBtn') || document.getElementById('refreshBtn') || hostPanel.querySelector('#refreshHostBtn') || null;
+  if (refreshBtn) refreshBtn.addEventListener('click', () => loadHostTab('DataUser'));
+
+  const resetBtn = document.getElementById('resetHostBtn') || document.getElementById('resetBtn') || hostPanel.querySelector('#resetHostBtn') || null;
+  if (resetBtn) resetBtn.addEventListener('click', async () => {
+    if (!confirm('⚠️ Yakin ingin menghapus SEMUA data di Google Sheets?')) return;
+    try {
+      const r = await fetch(`${APPS_SCRIPT_URL}?action=resetData`);
+      const j = await r.json();
+      alert(j.msg || j.error || 'Reset OK');
+      loadHostTab('DataUser');
+    } catch (e) { alert('Reset gagal: '+e.message); }
+  });
+
+  // tabs inside host panel
+  const tabButtons = hostPanel.querySelectorAll('#hostTabs .tab, .tabs .tab');
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      const tab = btn.dataset.tab || btn.getAttribute('data-tab');
+      if (!tab) return;
+      // mark active
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadHostTab(tab);
+    });
+  });
+});
+</script>
+
 </body>
 </html>
