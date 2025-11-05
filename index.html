@@ -5201,7 +5201,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 // ======== PERBAIKAN KONEKSI ETHNOMATH (Sinkron dengan Code.gs terbaru) ========
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
 
-async function sendToGoogleSheets(action, data = {}) {
+
   try {
     const body = { action, timestamp: new Date().toISOString(), ...data };
     const res = await fetch(APPS_SCRIPT_URL, {
@@ -5236,99 +5236,26 @@ function formatTimestamp(ts) {
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
 
 // Robust mapper: accepts many action names from original app and normalizes payload
-async function sendToGoogleSheets(action, data = {}) {
-  try {
-    // If action is already 'submitMaterial' etc, keep; else map common in-app events
-    const map = {
-      'quiz_complete': 'submitQuiz',
-      'quiz_answer': null,
-      'quiz_start': null,
-      'slide2_answer': 'submitMaterial',
-      'slide3_answer': 'submitMaterial',
-      'slide4_answer': 'submitMaterial',
-      'material_start': null,
-      'memory_game_complete': 'submitMemory',
-      'memory_game_start': null,
-      'submitMaterial': 'submitMaterial',
-      'submitQuiz': 'submitQuiz',
-      'submitMemory': 'submitMemory'
-    };
-    const target = map[action] !== undefined ? map[action] : action;
+function sendToGoogleSheets(action, data = {}) {
+  // Tambahkan timestamp otomatis
+  const params = { action, timestamp: new Date().toISOString(), ...data };
 
-    // base info
-    const base = {
-      timestamp: new Date().toISOString(),
-      deviceId: (data.deviceId || data.device || data.deviceid || data.deviceID || ''),
-      name: data.name || data.playerName || data.player || 'Anon',
-      url: window.location.href,
-      userAgent: navigator.userAgent,
-      ...data
-    };
+  // Ubah data jadi query string
+  const qs = new URLSearchParams(params).toString();
 
-    let payload = { action: target, timestamp: base.timestamp };
+  // Buat callback unik (agar JSONP bisa jalan)
+  const callbackName = "jsonp_cb_" + Math.random().toString(36).substring(2);
+  window[callbackName] = (res) => {
+    console.log("✅ Data terkirim:", res);
+    delete window[callbackName];
+  };
 
-    if (target === 'submitMaterial') {
-      payload.name = base.name;
-      payload.slide = data.slide || data.slideNumber || data.slide_id || data.slideNo || '';
-      payload.answer = (data.answer || data.answerText || data.text || '').toString();
-      payload.deviceId = base.deviceId;
-    } else if (target === 'submitQuiz') {
-      payload.name = base.name;
-      // answers may be array or string
-      if (Array.isArray(data.answers) && data.answers.length) {
-        payload.answers = data.answers;
-      } else if (data.answers && typeof data.answers === 'string') {
-        try { payload.answers = JSON.parse(data.answers); } catch(e) { payload.answers = data.answers; }
-      } else if (data.quizAnswers) {
-        payload.answers = data.quizAnswers;
-      } else {
-        payload.answers = data.answers || [];
-      }
-      payload.score = Number(data.score || data.finalScore || data.totalScore || 0);
-      payload.timeSeconds = Number(data.timeSeconds || data.timeUsed || data.time || 0);
-      payload.deviceId = base.deviceId;
-    } else if (target === 'submitMemory') {
-      payload.name = base.name;
-      payload.time = data.time || data.timeString || data.duration || '';
-      payload.timeSeconds = Number(data.timeSeconds || data.timeSecondsPlayed || data.tsec || 0);
-      payload.deviceId = base.deviceId;
-    } else {
-      // For unmapped actions, send full base+data so Apps Script can log it for debugging
-      payload = { action, ...base, ...data };
-    }
-
-    // Send as POST JSON
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-      mode: 'cors'
-    });
-
-    // Try parse JSON
-    const json = await res.json().catch(() => null);
-    console.log('sendToGoogleSheets ->', payload, json || 'no-json-response');
-    // After sending material/quiz/memory, try refresh recap on host if open
-    if (window.__ethno_host_opened) {
-      // small delay to allow Apps Script to write and rebuild recap
-      setTimeout(() => {
-        if (typeof loadTab === 'function') loadTab('DataUser');
-        if (typeof loadHostTab === 'function') loadHostTab('DataUser');
-      }, 900);
-    }
-    return json || { ok: true };
-  } catch (err) {
-    console.error('sendToGoogleSheets error', err);
-    // fallback beacon GET
-    try {
-      const params = new URLSearchParams({ action, ...data, timestamp: new Date().toISOString() }).toString();
-      new Image().src = `${APPS_SCRIPT_URL}?${params}`;
-      return { ok: true, fallback: true };
-    } catch (e) {
-      return { error: err.message };
-    }
-  }
+  // Kirim lewat <script> — cara JSONP, tidak diblokir CORS
+  const script = document.createElement("script");
+  script.src = `${APPS_SCRIPT_URL}?${qs}&callback=${callbackName}`;
+  document.body.appendChild(script);
 }
+
 
 // Dashboard helpers (if host panel exists)
 async function fetchSheet(tab) {
