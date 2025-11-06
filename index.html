@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="id">
  <head>
+<script>
+// Unified APPS_SCRIPT_URL (single source of truth)
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyv_idYwNJdgoVyB1Ay0vVbU0nXKukOg6w1lFu5DoHQIw_kCpOXwiIIfq5fn6z7RSGBTQ/exec";
+</script>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ETHNOMATH - Ethnomathematics Twin Shapes</title>
@@ -2013,7 +2018,7 @@ function sendToGoogleSheets(action, data = {}) {
         }
         
         // Google Sheets tracking - ENHANCED REAL-TIME SYSTEM
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzDLMx6TCDXsHOCFUvKID_sXoib3MuIjUuDGNjCBq_XN3RECCtdoYS6UvqMJk41Kp-LkA/exec';
+        
         const DASHBOARD_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzDLMx6TCDXsHOCFUvKID_sXoib3MuIjUuDGNjCBq_XN3RECCtdoYS6UvqMJk41Kp-LkA/exec';
         
         // Enhanced tracking with multiple fallback methods and multiple URLs
@@ -2279,7 +2284,7 @@ function sendToGoogleSheets(action, data = {}) {
             const testUrls = [
                 { name: 'Primary URL', url: APPS_SCRIPT_URL, key: 'mainTracking' },
                 { name: 'Dashboard URL', url: DASHBOARD_SCRIPT_URL, key: 'dashboard' },
-                { name: 'Backup URL', url: 'https://script.google.com/macros/s/AKfycbzDLMx6TCDXsHOCFUvKID_sXoib3MuIjUuDGNjCBq_XN3RECCtdoYS6UvqMJk41Kp-LkA/execc', key: 'mainTracking' }
+                { name: 'Backup URL', url: 'https://script.google.com/macros/s/AKfycbyv_idYwNJdgoVyB1Ay0vVbU0nXKukOg6w1lFu5DoHQIw_kCpOXwiIIfq5fn6z7RSGBTQ/exec', key: 'mainTracking' }
             ];
             
             let successCount = 0;
@@ -5029,7 +5034,7 @@ function sendToGoogleSheets(action, data = {}) {
 
 <script>
 // APPS SCRIPT URL - ensure matches your Apps Script URL on page
-const APPS_SCRIPT_URL = typeof APPS_SCRIPT_URL !== 'undefined' ? APPS_SCRIPT_URL : 'https://script.google.com/macros/s/AKfycbxd8-HzT3MwRvQzPD2o1VajC95eWwT3s2I9U92eFE-0VcV0aI9MWXRD0C3cfap4zjlh5Q/exec';
+
 
 function parseGASTimestamp(tsStr) {
   if (!tsStr || typeof tsStr !== 'string') return null;
@@ -5198,7 +5203,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 <!-- ====== END HOST DASHBOARD INSERT ====== -->
 
 <script>
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
+
 function sendToGoogleSheets_JSONP(action, data = {}) {
   const params = { action, timestamp: new Date().toISOString(), ...data };
   const qs = new URLSearchParams(params).toString();
@@ -5234,7 +5239,7 @@ if (window.fetch) {
 }
 
 // --- ETHNOMATH JSONP PATCH v5 (CORS-FREE) ---
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwue0iVG__OH28-7SXJURqplDQz63LcaZYL_ew0jkntkTnGt_WJAhgSQvC5cBW2Dsn3_w/exec";
+
 
 function sendToGoogleSheets_JSONP(action, data = {}) {
   const params = { action, timestamp: new Date().toISOString(), ...data };
