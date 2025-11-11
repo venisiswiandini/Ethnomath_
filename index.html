@@ -11,10 +11,17 @@
         body {
             box-sizing: border-box;
             background: url('https://i.imgur.com/tSUqoTm.png') center center no-repeat, linear-gradient(135deg, #FF6B9D 0%, #FEC163 25%, #A8E6CF 50%, #FFD93D 75%, #FF6B9D 100%);
-            background-size: contain;
+            background-size: cover, 100% 100%;
             background-attachment: fixed;
             min-height: 100%;
+            width: 100%;
+            position: relative;
             animation: gradientShift 15s ease infinite;
+        }
+        
+        html {
+            height: 100%;
+            width: 100%;
         }
         
         @keyframes gradientShift {
