@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ETHNOMATH - Ethnomathematics Twin Shapes</title>
+  <title>🏠ETHNOMATH - Ethnomathematics Twin Shapes</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;display=swap" rel="stylesheet">
@@ -383,7 +383,39 @@
     </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
+ 
+<style>
+/* --- Memory Game Image Fix and Responsive Grid --- */
+#memoryBoard img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: 12px;
+  background-color: #fff;
+  border: 2px solid rgba(0,0,0,0.1);
+}
+
+#memoryBoard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 0.75rem;
+  justify-items: center;
+}
+
+@media (min-width: 640px) { /* tablet */
+  #memoryBoard {
+    grid-template-columns: repeat(4, minmax(100px, 1fr));
+  }
+}
+@media (min-width: 1024px) { /* laptop/PC */
+  #memoryBoard {
+    grid-template-columns: repeat(6, minmax(120px, 1fr));
+  }
+}
+</style>
+
+</head>
  <body class="min-h-screen"><!-- Background Music -->
   <audio id="backgroundMusic" loop preload="auto"><source src="https://raw.githubusercontent.com/venisiswiandini/Ethnomath_/refs/heads/main/BS.mp3" type="audio/mpeg">
   </audio><!-- Enhanced Audio Control Button - Top Right --> <button id="audioButton" class="fixed top-4 right-4 z-50 neon-button rounded-full shadow-2xl flex items-center justify-center" style="z-index: 99999 !important; position: fixed !important; width: 56px !important; height: 56px !important; min-width: 56px !important; min-height: 56px !important; max-width: 56px !important; max-height: 56px !important; padding: 12px !important;" onclick="toggleAudio()">
@@ -1427,85 +1459,26 @@
         }
         
         function exportData() {
-            playClickSound();
-            
-            // Prepare export data
-            const exportObject = {
-                exported_at: new Date().toLocaleString('id-ID'),
-                summary: {
-                    total_users: hostData.users.length,
-                    total_material_activities: (hostData.materialActivities || []).length,
-                    total_quiz_attempts: hostData.quizResults.length,
-                    total_game_attempts: hostData.gameResults.length
-                },
-                users: hostData.users.map(user => ({
-                    name: user.name,
-                    login_time: user.loginTime,
-                    total_activities: user.activities.length,
-                    activities: user.activities
-                })),
-                material_activities: (hostData.materialActivities || []).map(activity => ({
-                    name: activity.name,
-                    slide: activity.slide,
-                    answer: activity.answer,
-                    time: activity.time
-                })),
-                quiz_results: hostData.quizResults.map(result => ({
-                    name: result.name,
-                    score: result.score,
-                    total: result.total,
-                    percentage: result.percentage,
-                    time: result.time,
-                    details: result.details || []
-                })),
-                game_results: hostData.gameResults.map(result => ({
-                    name: result.name,
-                    time: result.time,
-                    attempts: result.attempts,
-                    date: result.date
-                }))
-            };
-            
-            // Create JSON file
-            const jsonString = JSON.stringify(exportObject, null, 2);
-            const blob = new Blob([jsonString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            
-            // Create download link
-            const a = document.createElement('a');
-            a.href = url;
-            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-            a.download = `ETHNOMATH_Data_Export_${timestamp}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            playSuccessSound();
-            
-            // Show success notification
-            const notification = document.createElement('div');
-            notification.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gradient-to-r from-green-500 to-emerald-500 px-8 py-6 rounded-3xl shadow-2xl text-center';
-            notification.style.cssText = 'animation: popupBounce 0.5s ease-out;';
-            notification.innerHTML = `
-                <div class="text-5xl mb-3">📥</div>
-                <p class="text-white font-bold text-lg">Data berhasil diexport!</p>
-                <p class="text-white text-sm mt-2">File JSON telah diunduh</p>
-            `;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.style.animation = 'popupFadeOut 0.3s ease-out';
-                setTimeout(() => notification.remove(), 300);
-            }, 2000);
-        }
-        
-        function toggleQuizDetails(detailsId) {
-            const detailsDiv = document.getElementById(detailsId);
-            if (detailsDiv) {
-                detailsDiv.classList.toggle('hidden');
-            }
-        }
+  const exportObj = {
+    users: hostData.users,
+    materialActivities: hostData.materialActivities,
+    quizResults: hostData.quizResults,
+    gameResults: hostData.gameResults
+  };
+
+  // Gunakan SheetJS (CDN) untuk membuat file Excel
+  const wb = XLSX.utils.book_new();
+  wb.SheetNames.push("Users");
+  wb.Sheets["Users"] = XLSX.utils.json_to_sheet(hostData.users || []);
+  wb.SheetNames.push("Materi");
+  wb.Sheets["Materi"] = XLSX.utils.json_to_sheet(hostData.materialActivities || []);
+  wb.SheetNames.push("Quiz");
+  wb.Sheets["Quiz"] = XLSX.utils.json_to_sheet(hostData.quizResults || []);
+  wb.SheetNames.push("Game");
+  wb.Sheets["Game"] = XLSX.utils.json_to_sheet(hostData.gameResults || []);
+
+  XLSX.writeFile(wb, "ethnomath_dashboard_data.xlsx");
+}
         
         // Function to generate device ID
         function getDeviceId() {
@@ -2990,5 +2963,17 @@
         });
     </script>
   </div>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99cbd205071d87f6',t:'MTc2Mjg0MzQ1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99cbd205071d87f6',t:'MTc2Mjg0MzQ1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+document.addEventListener('click', function enableAudioOnce() {
+  const music = document.getElementById('backgroundMusic');
+  if (music && music.paused) {
+    music.play().catch(err => console.log('Autoplay diblokir:', err));
+  }
+  document.removeEventListener('click', enableAudioOnce);
+});
+</script>
+
+</body>
 </html>
