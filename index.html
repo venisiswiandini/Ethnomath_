@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🏠ETHNOMATH - Ethnomathematics Twin Shapes</title>
+  <title>ETHNOMATH - Ethnomathematics Twin Shapes</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="/_sdk/element_sdk.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;display=swap" rel="stylesheet">
@@ -1511,7 +1511,7 @@
                     method: 'POST',
                     redirect: 'follow',
                     headers: {
-                        'Content-Type': 'text/plain',
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(payload)
                 });
@@ -1595,11 +1595,22 @@
                     if (quizData && quizData.rows) {
                         quizData.rows.forEach(row => {
                             if (row[0] && row[0] !== 'Name') {
-                                const score = row[1] || '0/12';
-                                const scoreParts = score.split('/');
+                                const rawScore = row[1] || '0/12';
+                                // normalize score which may be "8/12" or accidentally a year/number
+                                let score = '0/12';
+                                if (typeof rawScore === 'string' && rawScore.includes('/')) {
+                                    score = rawScore;
+                                } else if (typeof rawScore === 'number') {
+                                    // treat as single number of correct answers
+                                    score = String(rawScore) + '/12';
+                                } else {
+                                    // fallback
+                                    score = String(rawScore);
+                                }
+                                const scoreParts = (score || '0/12').toString().split('/');
                                 const scoreNum = parseInt(scoreParts[0]) || 0;
                                 const totalNum = parseInt(scoreParts[1]) || 12;
-                                const percentage = Math.round((scoreNum / totalNum) * 100);
+                                const percentage = totalNum > 0 ? Math.round((scoreNum / totalNum) * 100) : 0;
                                 
                                 let details = [];
                                 try {
@@ -1749,6 +1760,7 @@
             sendToGoogleSheets('submitMemory', {
                 name: name,
                 time: time,
+                attempts: attempts || 0,
                 timeSeconds: timeSeconds
             });
         }
@@ -2643,7 +2655,7 @@
                 cardElement.dataset.index = index;
                 cardElement.dataset.pairId = card.pairId;
                 cardElement.dataset.image = card.image;
-                cardElement.innerHTML = '<img src="https://i.imgur.com/HUKC9Y7.jpg" alt="Card Back" class="w-full h-full object-cover rounded-lg" style="max-width: 100%; max-height: 100%; display: block;" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'<div class=\\\'text-4xl md:text-6xl\\\'>❓</div>\';">';
+                cardElement.innerHTML = '<img src="https://i.imgur.com/HUKC9Y7.jpg" alt="Card Back" class="w-full h-full object-contain rounded-lg" style="max-width: 100%; max-height: 100%; display: block;" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'<div class=\\\'text-4xl md:text-6xl\\\'>❓</div>\';">';
                 cardElement.onclick = () => flipCard(index);
                 board.appendChild(cardElement);
             });
@@ -2695,8 +2707,8 @@
                     }, 500);
                 }
             } else {
-                firstCard.innerHTML = '<img src="https://i.imgur.com/HUKC9Y7.jpg" alt="Card Back" class="w-full h-full object-cover rounded-lg" style="max-width: 100%; max-height: 100%; display: block;" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'<div class=\\\'text-4xl md:text-6xl\\\'>❓</div>\';">';
-                secondCard.innerHTML = '<img src="https://i.imgur.com/HUKC9Y7.jpg" alt="Card Back" class="w-full h-full object-cover rounded-lg" style="max-width: 100%; max-height: 100%; display: block;" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'<div class=\\\'text-4xl md:text-6xl\\\'>❓</div>\';">';
+                firstCard.innerHTML = '<img src="https://i.imgur.com/HUKC9Y7.jpg" alt="Card Back" class="w-full h-full object-contain rounded-lg" style="max-width: 100%; max-height: 100%; display: block;" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'<div class=\\\'text-4xl md:text-6xl\\\'>❓</div>\';">';
+                secondCard.innerHTML = '<img src="https://i.imgur.com/HUKC9Y7.jpg" alt="Card Back" class="w-full h-full object-contain rounded-lg" style="max-width: 100%; max-height: 100%; display: block;" onerror="this.style.display=\'none\'; this.parentElement.innerHTML=\'<div class=\\\'text-4xl md:text-6xl\\\'>❓</div>\';">';
                 firstCard.classList.remove('from-yellow-400', 'to-orange-500');
                 secondCard.classList.remove('from-yellow-400', 'to-orange-500');
                 firstCard.classList.add('from-blue-400', 'to-purple-500');
@@ -2973,6 +2985,34 @@ document.addEventListener('click', function enableAudioOnce() {
   }
   document.removeEventListener('click', enableAudioOnce);
 });
+</script>
+
+
+<script>
+function toggleQuizDetails(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.classList.toggle('hidden');
+}
+</script>
+
+<script>
+function showQuiz(){
+    if(typeof showPage === 'function') showPage('quizPage');
+    else console.warn('showPage not defined');
+}
+function showMemoryGame(){
+    if(typeof showPage === 'function') showPage('memoryGamePage');
+    else console.warn('showPage not defined');
+}
+// toggleQuizDetails already added elsewhere; ensure exists
+if(typeof toggleQuizDetails !== 'function'){
+    function toggleQuizDetails(id){
+        const el = document.getElementById(id);
+        if(!el) return;
+        el.classList.toggle('hidden');
+    }
+}
 </script>
 
 </body>
