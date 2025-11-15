@@ -3,8 +3,21 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ETHNOMATH - Ethnomathematics Twin Shapes</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>🏠ETHNOMATH - Ethnomathematics Twin Shapes</title>
+  <script src="https://cdn.tailwindcss.com">
+function showQuiz() {
+    playClickSound();
+    showPage('quizPage');
+    initQuiz();
+}
+
+function showMemoryGame() {
+    playClickSound();
+    showPage('memoryGamePage');
+    initGame();
+}
+
+</script>
   <script src="/_sdk/element_sdk.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&amp;display=swap" rel="stylesheet">
   <style>
@@ -402,7 +415,8 @@
 </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
- </head>
+ <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+</head>
  <body class="min-h-screen"><!-- Background Music -->
   <audio id="backgroundMusic" loop preload="auto"><source src="https://raw.githubusercontent.com/venisiswiandini/Ethnomath_/refs/heads/main/BS.mp3" type="audio/mpeg">
   </audio><!-- Enhanced Audio Control Button - Top Right --> <button id="audioButton" class="fixed top-4 right-4 z-50 neon-button rounded-full shadow-2xl flex items-center justify-center" style="z-index: 99999 !important; position: fixed !important; width: 56px !important; height: 56px !important; min-width: 56px !important; min-height: 56px !important; max-width: 56px !important; max-height: 56px !important; padding: 12px !important;" onclick="toggleAudio()">
@@ -1485,20 +1499,20 @@
                 }))
             };
             
-            // Create JSON file
-            const jsonString = JSON.stringify(exportObject, null, 2);
-            const blob = new Blob([jsonString], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
             
-            // Create download link
-            const a = document.createElement('a');
-            a.href = url;
-            const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5);
-            a.download = `ETHNOMATH_Data_Export_${timestamp}.json`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+// Create XLSX workbook
+const workbook = XLSX.utils.book_new();
+XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet([exportObject.summary]), "Summary");
+XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(exportObject.users), "Users");
+XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(exportObject.material_activities), "Material");
+XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(exportObject.quiz_results), "Quiz");
+XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(exportObject.game_results), "Game");
+
+const timestamp2 = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16);
+XLSX.writeFile(workbook, `ETHNOMATH_Data_Export_${timesta mp2}.xlsx`);
+
+playSuccessSound();
+
             
             playSuccessSound();
             
@@ -1509,7 +1523,7 @@
             notification.innerHTML = `
                 <div class="text-5xl mb-3">📥</div>
                 <p class="text-white font-bold text-lg">Data berhasil diexport!</p>
-                <p class="text-white text-sm mt-2">File JSON telah diunduh</p>
+                <p class="text-white text-sm mt-2">File Excel telah diunduh</p>
             `;
             document.body.appendChild(notification);
             
