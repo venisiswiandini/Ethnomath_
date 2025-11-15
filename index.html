@@ -1509,7 +1509,7 @@ XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(exportObject.qui
 XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(exportObject.game_results), "Game");
 
 const timestamp2 = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 16);
-XLSX.writeFile(workbook, `ETHNOMATH_Data_Export_${timesta mp2}.xlsx`);
+XLSX.writeFile(workbook, `ETHNOMATH_Data_Export_${timestamp2}.xlsx`);
 
 playSuccessSound();
 
