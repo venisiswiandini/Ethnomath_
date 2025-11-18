@@ -845,14 +845,17 @@ function showMemoryGame() {
       </div>
       <div class="overflow-x-auto">
        <table class="w-full bg-white rounded-xl overflow-hidden shadow-lg">
-        <thead class="bg-gradient-to-r from-green-500 to-emerald-600 text-white">
-         <tr>
-          <th class="px-6 py-4 text-left font-bold">Nama</th>
-          <th class="px-6 py-4 text-left font-bold">Slide</th>
-          <th class="px-6 py-4 text-left font-bold">Jawaban</th>
-          <th class="px-6 py-4 text-left font-bold">Waktu</th>
-         </tr>
-        </thead>
+        
+<thead class="bg-gradient-to-r from-green-500 to-emerald-600 text-white">
+<tr>
+<th class="px-6 py-4 text-left font-bold">Nama</th>
+<th class="px-6 py-4 text-left font-bold">Total Aktivitas</th>
+<th class="px-6 py-4 text-left font-bold">Slide Terakhir</th>
+<th class="px-6 py-4 text-left font-bold">Waktu Terakhir</th>
+<th class="px-6 py-4 text-left font-bold">Detail</th>
+</tr>
+</thead>
+
         <tbody id="hostMaterialActivities" class="divide-y divide-gray-200">
          <tr>
           <td colspan="4" class="px-6 py-8 text-center text-gray-500">
@@ -1003,7 +1006,7 @@ function showMemoryGame() {
         let isHostLoggedIn = false;
         
         // Google Apps Script URL
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz6G3SGO_9hayXHrlHy-ciQD0xt1qRpy6emPhGTpdNbaMHjnUlXFgG_oUgLHajIJDtORg/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyrgj_CKPdMPebHP06tF_u7iKLz8iZuxP1pcMBM9MiJdmpPAW8BeSGncuigVxBZc-KHRA/exec';
         
         // Host Data Storage (local cache)
         let hostData = {
@@ -1653,33 +1656,41 @@ playSuccessSound();
                     const quizResponse = await fetch(APPS_SCRIPT_URL + '?action=getData&tab=QuizResults');
                     const quizData = await quizResponse.json();
                     if (quizData && quizData.rows) {
-                        quizData.rows.forEach(row => {
-                            if (row[0] && row[0] !== 'Name') {
-                                const score = row[1] || '0/12';
-                                const scoreParts = score.split('/');
-                                const scoreNum = parseInt(scoreParts[0]) || 0;
-                                const totalNum = parseInt(scoreParts[1]) || 12;
-                                const percentage = Math.round((scoreNum / totalNum) * 100);
-                                
-                                let details = [];
-                                try {
-                                    details = JSON.parse(row[2] || '[]');
-                                } catch (e) {
-                                    details = [];
-                                }
-                                
-                                hostData.quizResults.push({
-                                    name: row[0],
-                                    score: scoreNum,
-                                    total: totalNum,
-                                    percentage: percentage,
-                                    time: row[4],
-                                    details: details
-                                });
+                        
+quizData.rows.forEach(row => {
+    if (!row[0] || row[0] === "Name") return;
+
+    let scoreNum = 0;
+    let totalNum = 12;
+
+    if (row[1] && /^\d+\s*\/\s*\d+$/.test(String(row[1]).trim())) {
+        const parts = row[1].split("/");
+        scoreNum = parseInt(parts[0]) || 0;
+        totalNum = parseInt(parts[1]) || 12;
+    } else {
+        scoreNum = parseInt(row[6]) || 0;
+        totalNum = parseInt(row[7]) || 12;
+    }
+
+    const percentage = Math.round((scoreNum / totalNum) * 100);
+
+    let details = [];
+    try {
+        details = JSON.parse(row[2] || "[]");
+    } catch (e) { details = []; }
+
+    hostData.quizResults.push({
+        name: row[0],
+        score: scoreNum,
+        total: totalNum,
+        percentage: percentage,
+        time: row[4],
+        details: details
+    });
+});
+
                             }
-                        });
-                    }
-                    
+                     
                     // Load memory game results
                     const memoryResponse = await fetch(APPS_SCRIPT_URL + '?action=getData&tab=MemoryResults');
                     const memoryData = await memoryResponse.json();
@@ -1696,7 +1707,7 @@ playSuccessSound();
                         });
                     }
                     
-                    console.log('Data loaded from Google Sheets');
+                    console.log('Data loaded from Google Sheets'); window.dispatchEvent(new Event('hostDataLoaded'));
                     return true;
                 }
             } catch (error) {
@@ -3023,5 +3034,163 @@ playSuccessSound();
         });
     </script>
   </div>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99cbd205071d87f6',t:'MTc2Mjg0MzQ1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99cbd205071d87f6',t:'MTc2Mjg0MzQ1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>
+
+// --- Group and render Material Activities (added by assistant)
+function renderMaterialActivitiesGrouped() {
+    const tbody = document.querySelector('#materialActivities tbody, #materialActivitiesTableBody, table[data-material] tbody');
+    const container = tbody || document.querySelector('#materialActivities') || document.querySelector('.material-activities');
+    if (!container) return;
+
+    // Find the raw activities from hostData (assumes hostData.materialActivities is populated)
+    const activities = hostData && hostData.materialActivities ? hostData.materialActivities : [];
+
+    // Group by user name
+    const groups = {};
+    activities.forEach(row => {
+        const name = String(row[0] || 'Unknown');
+        const slide = String(row[1] || '');
+        const answer = String(row[2] || '');
+        const time = String(row[3] || '');
+
+        if (!groups[name]) groups[name] = [];
+        groups[name].push({slide, answer, time});
+    });
+
+    // Build HTML rows: one header row per user + hidden details row
+    let html = '';
+    Object.keys(groups).forEach(name => {
+        const details = groups[name];
+        const first = details[0] || {};
+        const time = first.time || '';
+        const detailsId = 'mat-details-' + name.replace(/\s+/g,'_') + '-' + Math.random().toString(36).slice(2,8);
+
+        html += `
+            <tr class="user-row">
+                <td class="px-6 py-4 font-medium">${escapeHtml(name)}</td>
+                <td class="px-6 py-4">${details.length} item</td>
+                <td class="px-6 py-4">${escapeHtml(first.slide || '')}</td>
+                <td class="px-6 py-4">${escapeHtml(time)}</td>
+                <td class="px-6 py-4"><button class="view-details-btn btn" data-target="${detailsId}">Lihat Detail Jawaban</button></td>
+            </tr>
+            <tr id="${detailsId}" class="detail-row" style="display:none;">
+                <td colspan="5" class="px-6 py-4 bg-gray-50">
+                    ${details.map(d=>`<div class="detail-item py-1"><strong>${escapeHtml(d.slide)}</strong> — ${escapeHtml(d.answer)} <span class="text-sm text-gray-500">(${escapeHtml(d.time)})</span></div>`).join('')}
+                </td>
+            </tr>
+        `;
+    });
+
+    if (tbody) {
+        tbody.innerHTML = html;
+    } else if (container) {
+        container.innerHTML = '<table class="w-full">'+html+'</table>';
+    }
+
+    // attach handlers
+    document.querySelectorAll('.view-details-btn').forEach(btn=>{
+        btn.removeEventListener('click', onViewDetailsClick);
+        btn.addEventListener('click', onViewDetailsClick);
+    });
+}
+
+function onViewDetailsClick(e) {
+    const id = e.currentTarget.getAttribute('data-target');
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'table-row' : 'none';
+}
+
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+// Dispatch event after hostData loaded - ensure existing code triggers this event.
+// If not, call renderMaterialActivitiesGrouped() manually after data load.
+window.addEventListener('hostDataLoaded', ()=>{ renderMaterialActivitiesGrouped(); });
+
+</script>
+<script>
+
+// --- Material Activities Grouping & Modal (injected by assistant) ---
+function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+function onViewDetailsClick(e){
+    const id = e.currentTarget.getAttribute('data-target');
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'table-row' : 'none';
+    // scroll into view for mobile
+    if (el.style.display !== 'none') el.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function renderMaterialActivitiesGrouped() {
+    const tbody = document.getElementById('hostMaterialActivities');
+    if (!tbody) return;
+    const activities = (hostData && hostData.materialActivities) ? hostData.materialActivities : [];
+
+    if (!activities.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500"><div class="text-4xl mb-2">📭</div><p>Belum ada aktivitas materi</p></td></tr>`;
+        return;
+    }
+
+    // Build groups keyed by name
+    const groups = {};
+    activities.forEach(row => {
+        // row may be array-like: [name, slide, answer, timestamp, deviceId?]
+        const name = String(row[0] || 'Unknown');
+        const slide = String(row[1] || '');
+        const answer = String(row[2] || '');
+        const time = String(row[3] || '');
+
+        if (!groups[name]) groups[name] = [];
+        groups[name].push({slide, answer, time});
+    });
+
+    // Create rows
+    let out = '';
+    Object.keys(groups).forEach(name => {
+        const details = groups[name];
+        const first = details[0] || {};
+        const time = first.time || '';
+        const lastSlide = details[details.length-1].slide || first.slide || '';
+        const detailsId = 'mat-details-' + name.replace(/\s+/g,'_') + '-' + Math.random().toString(36).slice(2,8);
+
+        out += `
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 font-medium">${escapeHtml(name)}</td>
+                <td class="px-6 py-4">${details.length} aktivitas</td>
+                <td class="px-6 py-4">${escapeHtml(lastSlide)}</td>
+                <td class="px-6 py-4">${escapeHtml(time)}</td>
+                <td class="px-6 py-4"><button class="view-details-btn neon-button px-3 py-2 text-sm" data-target="${detailsId}">Lihat Detail Jawaban</button></td>
+            </tr>
+            <tr id="${detailsId}" class="detail-row" style="display:none;">
+                <td colspan="5" class="px-6 py-4 bg-gray-50">
+                    <div class="space-y-2">
+                        ${details.map(d => `<div class="p-3 rounded-lg bg-white shadow-sm"><strong>Slide:</strong> ${escapeHtml(d.slide)}<br><strong>Jawaban:</strong> ${escapeHtml(d.answer)} <span class="text-sm text-gray-500">(${escapeHtml(d.time)})</span></div>`).join('')}
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+
+    tbody.innerHTML = out;
+
+    // attach handlers
+    document.querySelectorAll('.view-details-btn').forEach(btn=>{
+        btn.removeEventListener('click', onViewDetailsClick);
+        btn.addEventListener('click', onViewDetailsClick);
+    });
+}
+
+// Try rendering when hostDataLoaded fires
+window.addEventListener('hostDataLoaded', ()=>{
+    try { renderMaterialActivitiesGrouped(); } catch(e){ console.error(e); }
+});
+
+// Also render on DOMContentLoaded in case data already present
+document.addEventListener('DOMContentLoaded', ()=>{
+    try { renderMaterialActivitiesGrouped(); } catch(e){}
+});
+
+</script>
+</body>
 </html>
