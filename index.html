@@ -1787,7 +1787,8 @@ quizData.rows.forEach(row => {
             // Send to Google Sheets with correct format
             sendToGoogleSheets('submitQuiz', {
                 name: name,
-                score: `${score}/${total}`,  // Format: "8/12"
+                score: score,     // number
+                total: total,     // number
                 answers: JSON.stringify(window.quizAnswerDetails || []),  // JSON string
                 time: timeUsedText,  // Format: "5:30"
                 timeSeconds: timeUsed  // Also send seconds for compatibility
