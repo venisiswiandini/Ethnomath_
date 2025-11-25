@@ -1926,8 +1926,8 @@ if (acts.length === 0) {
 
         <!-- BUTTON DETAIL -->
         <td class="px-6 py-4">
-            <button data-target="${id}" class="px-3 py-1 bg-blue-500 text-white rounded">
-                Detail
+            <button data-target="${id}" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
+                📋 Lihat Detail Jawaban
             </button>
         </td>
     </tr>
@@ -1958,30 +1958,39 @@ if (acts.length === 0) {
 
             
             // Update user list
-            const userList = document.getElementById('hostUserList');
-            if (hostData.users.length === 0) {
-                userList.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
-                            <div class="text-4xl mb-2">📭</div>
-                            <p>Belum ada pengguna yang login</p>
-                        </td>
-                    </tr>
-                `;
-            } else {
-                userList.innerHTML = hostData.users.map((user, index) => `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 font-semibold text-gray-800">${index + 1}</td>
-                        <td class="px-6 py-4 font-semibold text-gray-800">${user.name}</td>
-                        <td class="px-6 py-4 text-gray-600">${user.loginTime}</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
-                                ${user.activities.length} aktivitas
-                            </span>
-                        </td>
-                    </tr>
-                `).join('');
-            }
+const userList = document.getElementById('hostUserList');
+
+// Sort users by loginTime newest → oldest
+const sortedUsers = [...hostData.users].sort((a, b) => {
+    const da = parseIndoDate(a.loginTime);
+    const db = parseIndoDate(b.loginTime);
+    return db - da;
+});
+
+if (sortedUsers.length === 0) {
+    userList.innerHTML = `
+        <tr>
+            <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                <div class="text-4xl mb-2">📭</div>
+                <p>Belum ada pengguna yang login</p>
+            </td>
+        </tr>
+    `;
+} else {
+    userList.innerHTML = sortedUsers.map((user, index) => `
+        <tr class="hover:bg-gray-50">
+            <td class="px-6 py-4 font-semibold text-gray-800">${index + 1}</td>
+            <td class="px-6 py-4 font-semibold text-gray-800">${user.name}</td>
+            <td class="px-6 py-4 text-gray-600">${user.loginTime}</td>
+            <td class="px-6 py-4">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">
+                    ${user.activities.length} aktivitas
+                </span>
+            </td>
+        </tr>
+    `).join('');
+}
+
             
             // Update quiz results
             const quizResults = document.getElementById("hostQuizResults");
@@ -3180,16 +3189,17 @@ if (hostData.quizResults.length === 0) {
  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99cbd205071d87f6',t:'MTc2Mjg0MzQ1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><script>
 
 // --- Group and render Material Activities (added by assistant)
-function renderMaterialActivitiesGrouped() {
+/* function renderMaterialActivitiesGrouped() {
     const tbody = document.querySelector('#materialActivities tbody, #materialActivitiesTableBody, table[data-material] tbody');
     const container = tbody || document.querySelector('#materialActivities') || document.querySelector('.material-activities');
     if (!container) return;
 
-    // Find the raw activities from hostData (assumes hostData.materialActivities is populated)
     const activities = hostData && hostData.materialActivities ? hostData.materialActivities : [];
 
-    // Group by user name
+    // Group by name
     const groups = {};
+    const latestTime = {};
+
     activities.forEach(row => {
         const name = String(row[0] || 'Unknown');
         const slide = String(row[1] || '');
@@ -3197,16 +3207,30 @@ function renderMaterialActivitiesGrouped() {
         const time = String(row[3] || '');
 
         if (!groups[name]) groups[name] = [];
-        groups[name].push({slide, answer, time});
+        groups[name].push({ slide, answer, time });
+
+        // track latest time
+        const d = parseIndoDate(time);
+        if (d && (!latestTime[name] || d > latestTime[name])) {
+            latestTime[name] = d;
+        }
     });
 
-    // Build HTML rows: one header row per user + hidden details row
+    // SORT by latest time (newest → oldest)
+    const groupNames = Object.keys(groups);
+    groupNames.sort((a, b) => {
+        const da = latestTime[a] || 0;
+        const db = latestTime[b] || 0;
+        return db - da;
+    });
+
+    // Build HTML
     let html = '';
-    Object.keys(groups).forEach(name => {
+    groupNames.forEach(name => {
         const details = groups[name];
         const first = details[0] || {};
         const time = first.time || '';
-        const detailsId = 'mat-details-' + name.replace(/\s+/g,'_') + '-' + Math.random().toString(36).slice(2,8);
+        const detailsId = 'mat-details-' + name.replace(/\s+/g, '_') + '-' + Math.random().toString(36).slice(2, 8);
 
         html += `
             <tr class="user-row">
@@ -3214,28 +3238,35 @@ function renderMaterialActivitiesGrouped() {
                 <td class="px-6 py-4">${details.length} item</td>
                 <td class="px-6 py-4">${escapeHtml(first.slide || '')}</td>
                 <td class="px-6 py-4">${escapeHtml(time)}</td>
-                <td class="px-6 py-4"><button class="view-details-btn btn" data-target="${detailsId}">Lihat Detail Jawaban</button></td>
+                <td class="px-6 py-4">
+                    <button class="view-details-btn btn" data-target="${detailsId}">
+                        Lihat Detail Jawaban
+                    </button>
+                </td>
             </tr>
             <tr id="${detailsId}" class="detail-row" style="display:none;">
                 <td colspan="5" class="px-6 py-4 bg-gray-50">
-                    ${details.map(d=>`<div class="detail-item py-1"><strong>${escapeHtml(d.slide)}</strong> — ${escapeHtml(d.answer)} <span class="text-sm text-gray-500">(${escapeHtml(d.time)})</span></div>`).join('')}
+                    ${details.map(d => `
+                        <div class="detail-item py-1">
+                            <strong>${escapeHtml(d.slide)}</strong> — 
+                            ${escapeHtml(d.answer)}
+                            <span class="text-sm text-gray-500">(${escapeHtml(d.time)})</span>
+                        </div>
+                    `).join('')}
                 </td>
             </tr>
         `;
     });
 
-    if (tbody) {
-        tbody.innerHTML = html;
-    } else if (container) {
-        container.innerHTML = '<table class="w-full">'+html+'</table>';
-    }
+    if (tbody) tbody.innerHTML = html;
+    else container.innerHTML = '<table class="w-full">' + html + '</table>';
 
-    // attach handlers
-    document.querySelectorAll('.view-details-btn').forEach(btn=>{
+    // Attach handlers
+    document.querySelectorAll('.view-details-btn').forEach(btn => {
         btn.removeEventListener('click', onViewDetailsClick);
         btn.addEventListener('click', onViewDetailsClick);
     });
-}
+} */
 
 function onViewDetailsClick(e) {
     const id = e.currentTarget.getAttribute('data-target');
@@ -3243,6 +3274,7 @@ function onViewDetailsClick(e) {
     if (!el) return;
     el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'table-row' : 'none';
 }
+
 
 function escapeHtml(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
@@ -3265,7 +3297,7 @@ function onViewDetailsClick(e){
     if (el.style.display !== 'none') el.scrollIntoView({behavior:'smooth', block:'center'});
 }
 
-function renderMaterialActivitiesGrouped() {
+/* function renderMaterialActivitiesGrouped() {
     const tbody = document.getElementById('hostMaterialActivities');
     if (!tbody) return;
     const activities = (hostData && hostData.materialActivities) ? hostData.materialActivities : [];
@@ -3322,7 +3354,7 @@ function renderMaterialActivitiesGrouped() {
         btn.removeEventListener('click', onViewDetailsClick);
         btn.addEventListener('click', onViewDetailsClick);
     });
-}
+} */
 
 // Try rendering when hostDataLoaded fires
 window.addEventListener('hostDataLoaded', ()=>{
@@ -3341,7 +3373,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 (function(){
   function escapeHtml(s){return String(s||'').replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));}
 
-  function renderMaterialActivitiesGrouped(){
+  /* function renderMaterialActivitiesGrouped(){
     let tbody = document.getElementById('hostMaterialActivities');
     if(!tbody) return;
     tbody.innerHTML = '';
@@ -3406,7 +3438,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
       };
     });
-  }
+  } */
 
   window.renderMaterialActivitiesGrouped = renderMaterialActivitiesGrouped;
   window.addEventListener('hostDataLoaded', renderMaterialActivitiesGrouped);
@@ -3419,21 +3451,30 @@ document.addEventListener('DOMContentLoaded', ()=>{
 <script>
 // --- OVERRIDE: robust material grouping & game render ---
 
-function parseIndoDate(str){
-  if(!str) return null;
-  if(/^\d{4}-\d{2}-\d{2}T/.test(str)){
-    const d=Date.parse(str); return isNaN(d)?null:new Date(d);
-  }
-  const parts=String(str).split(',');
-  if(parts.length<2){
-    const alt=String(str).replace(/\./g,':');
-    const d=Date.parse(alt); return isNaN(d)?null:new Date(d);
-  }
-  const dpart=parts[0].trim(); const tpart=parts[1].trim().replace(/\./g,':');
-  const dp=dpart.split('/'); if(dp.length!=3) return null;
-  const iso=`${dp[2]}-${dp[1].padStart(2,'0')}-${dp[0].padStart(2,'0')}T${tpart}`;
-  const d=Date.parse(iso); return isNaN(d)?null:new Date(d);
+function parseIndoDate(str) {
+    if (!str) return null;
+    str = String(str).trim();
+
+    // ISO format
+    if (/^\d{4}-\d{2}-\d{2}T/.test(str)) {
+        const d = Date.parse(str);
+        return isNaN(d) ? null : new Date(d);
+    }
+
+    // Pastikan ada pemisah antara tanggal & waktu
+    str = str.replace(',', ' ').replace(/\./g, ':');
+
+    const [datePart, timePart = "00:00:00"] = str.split(' ');
+
+    const dp = datePart.split('/');
+    if (dp.length !== 3) return null;
+
+    const [dd, mm, yy] = dp.map(n => parseInt(n));
+    const [h = 0, m = 0, s = 0] = timePart.split(':').map(n => parseInt(n));
+
+    return new Date(yy, mm - 1, dd, h, m, s);
 }
+
 
 function formatSecondsToTime(secs){
   secs=Number(secs)||0; const m=Math.floor(secs/60); const s=secs%60;
@@ -3444,75 +3485,105 @@ function escapeHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'
 .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 
 // MATERIAL
-function renderMaterialActivitiesGroupedOverride(){
+function renderMaterialActivitiesGrouped() {
   const tbody = document.getElementById('hostMaterialActivities');
-  if(!tbody) return;
-  const activities = (window.hostData && hostData.materialActivities) ? hostData.materialActivities : [];
-  if(!activities.length){
+  if (!tbody) return;
+
+  let activities = (window.hostData && hostData.materialActivities) ? hostData.materialActivities : [];
+  if (!activities.length) {
     tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500"><div class="text-4xl mb-2">📭</div><p>Belum ada aktivitas materi</p></td></tr>';
     return;
   }
+
+  // ⬇⬇⬇ SORT NEWEST → OLDEST
+  activities = activities.sort((a, b) => {
+    const ta = a.time || a.timestamp || (Array.isArray(a) ? a[3] : "");
+    const tb = b.time || b.timestamp || (Array.isArray(b) ? b[3] : "");
+    const da = parseIndoDate(ta);
+    const db = parseIndoDate(tb);
+    return (db ? db.getTime() : 0) - (da ? da.getTime() : 0);
+  });
+  // ⬆⬆⬆ END SORTING
+
+  // GROUP BY NAME
   const groups = {};
-  activities.forEach(a=>{
-    let obj={};
-    if(Array.isArray(a)){
-      obj.name = a[0]||'Unknown';
-      obj.slide = a[1]||'';
-      obj.answer = a[2]||'';
-      obj.time = a[3]||'';
+  activities.forEach(a => {
+    let obj = {};
+    if (Array.isArray(a)) {
+      obj.name = a[0] || 'Unknown';
+      obj.slide = a[1] || '';
+      obj.answer = a[2] || '';
+      obj.time = a[3] || '';
     } else {
       obj.name = a.name || a[0] || 'Unknown';
       obj.slide = a.slide || a.slideNumber || '';
-      if(Array.isArray(a.answer)) obj.answer = a.answer.join('; ');
-      else if(Array.isArray(a.answers)) obj.answer = a.answers.join('; ');
+      if (Array.isArray(a.answer)) obj.answer = a.answer.join('; ');
+      else if (Array.isArray(a.answers)) obj.answer = a.answers.join('; ');
       else obj.answer = a.answer || a.answers || '';
       obj.time = a.time || a.timestamp || '';
     }
+
     const name = String(obj.name || 'Unknown');
-    groups[name] = groups[name] || [];
+    if (!groups[name]) groups[name] = [];
     groups[name].push(obj);
   });
 
+  // BUILD HTML
   let html = '';
-  let idx=0;
-  for(const name in groups){
+  let idx = 0;
+
+  for (const name in groups) {
     const items = groups[name];
+
+    // karena items sudah include sorting by global time, ambil item 0 yang paling baru
     const first = items[0] || {};
-    const detailsId = 'mat_details_' + idx + '_' + Math.random().toString(36).slice(2,8);
+    const detailsId = 'mat_details_' + idx + '_' + Math.random().toString(36).slice(2, 8);
     const waktu = first.time || '';
-    html += `<tr class="user-row hover:bg-gray-50">
-      <td class="px-6 py-4 font-medium">${escapeHtml(name)}</td>
-      <td class="px-6 py-4">${items.length} aktivitas</td>
-      <td class="px-6 py-4"></td>
-      <td class="px-6 py-4">${escapeHtml(waktu)}</td>
-      <td class="px-6 py-4"><button class="view-details-btn btn" data-target="${detailsId}">Lihat Detail Jawaban</button></td>
-    </tr>`;
-    const detailHtml = items.map(it=>{
-      const slideLabel = it.slide ? ('Slide: ' + escapeHtml(it.slide)) : 'Slide: -';
-      const ans = it.answer ? escapeHtml(String(it.answer)) : '-';
-      const t = it.time ? escapeHtml(String(it.time)) : '';
-      return `<div class="detail-item py-2 border-b last:border-b-0">
-        <div class="font-semibold">${slideLabel}</div>
-        <div class="text-sm">Jawaban: ${ans}</div>
-        <div class="text-xs text-gray-500">${t}</div></div>`;
-    }).join('');
-    html += `<tr id="${detailsId}" class="detail-row hidden"><td colspan="5" class="px-6 py-4 bg-gray-50">${detailHtml}</td></tr>`;
+
+    html += `
+      <tr class="user-row hover:bg-gray-50">
+        <td class="px-6 py-4 font-medium">${escapeHtml(name)}</td>
+        <td class="px-6 py-4">${items.length} aktivitas</td>
+        <td class="px-6 py-4"></td>
+        <td class="px-6 py-4">${escapeHtml(waktu)}</td>
+        <td class="px-6 py-4"><button class="view-details-btn btn" data-target="${detailsId}">Lihat Detail Jawaban</button></td>
+      </tr>
+    `;
+
+    const detailHtml = items.map(it => `
+      <div class="detail-item py-2 border-b last:border-b-0">
+        <div class="font-semibold">Slide: ${escapeHtml(it.slide || '-')}</div>
+        <div class="text-sm">Jawaban: ${escapeHtml(String(it.answer || '-'))}</div>
+        <div class="text-xs text-gray-500">${escapeHtml(String(it.time || ''))}</div>
+      </div>
+    `).join('');
+
+    html += `
+      <tr id="${detailsId}" class="detail-row hidden">
+        <td colspan="5" class="px-6 py-4 bg-gray-50">${detailHtml}</td>
+      </tr>
+    `;
+
     idx++;
   }
 
   tbody.innerHTML = html;
-  document.querySelectorAll('.view-details-btn').forEach(btn=>{
-    const h = function(){
+
+  // ATTACH EVENTS
+  document.querySelectorAll('.view-details-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
       const id = this.getAttribute('data-target');
       const el = document.getElementById(id);
-      if(el){
+      if (el) {
         el.classList.toggle('hidden');
-        if(!el.classList.contains('hidden')) el.scrollIntoView({behavior:'smooth', block:'center'});
+        if (!el.classList.contains('hidden')) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
       }
-    };
-    btn.addEventListener('click', h);
+    });
   });
 }
+
 
 // GAME
 function renderGameResultsOverride(){
@@ -3554,7 +3625,7 @@ function renderQuizResultsOverride(){
   let tb = document.getElementById("quizResultsBody") || document.getElementById("hostQuizResults");
   if(!tb) return;
   tb.innerHTML="";
-  let q = (dashboardData && dashboardData.quizResults) ? [].concat(dashboardData.quizResults) : [];
+  let q = (hostData && hostData.quizResults) ? [].concat(hostData.quizResults) : [];
   function parseIndoDateLocal(str){
     if(!str) return null;
     try{
@@ -3599,7 +3670,7 @@ function renderQuizResultsOverride(){
 
 
 window.addEventListener('hostDataLoaded', function(){
-  renderMaterialActivitiesGroupedOverride();
+  renderMaterialActivitiesGrouped();
   renderGameResultsOverride();
   renderQuizResultsOverride();
 });
@@ -3646,7 +3717,7 @@ function formatSecondsToTime(secs){
 function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,"&#39;"); }
 
 // MATERIAL - group by user and produce one detail button
-function renderMaterialGrouped(){
+/* function renderMaterialGrouped(){
   const tbody = document.getElementById('hostMaterialActivities') || document.querySelector('#hostMaterialActivities');
   if(!tbody) return;
   const rows = (window.hostData && hostData.materialActivities) ? hostData.materialActivities : [];
@@ -3709,7 +3780,7 @@ function renderMaterialGrouped(){
       if(!el.classList.contains('hidden')) el.scrollIntoView({behavior:'smooth', block:'center'});
     };
   });
-}
+} */
 
 // GAME - display time from 'time' field, attempts from attempts column, date from timestamp
 function renderGameDetailed(){
@@ -3808,7 +3879,7 @@ function renderQuizDetailed(){
 
 // run after hostDataLoaded
 window.addEventListener('hostDataLoaded', function(){
-  try{ renderMaterialGrouped(); }catch(e){console.error(e);}
+  
   try{ renderGameDetailed(); }catch(e){console.error(e);}
   try{ renderQuizDetailed(); }catch(e){console.error(e);}
 });
@@ -4020,7 +4091,16 @@ function showMaterialDetail(list){
 function closeMaterialDetail(){
   document.getElementById("materialDetailModal").classList.add("hidden");
 }
+
+document.addEventListener('touchstart', enableAudioOnce, { once: true });
+document.addEventListener('click', enableAudioOnce, { once: true });
+
+function enableAudioOnce() {
+    const audio = document.getElementById("backgroundMusic");
+    if (audio) audio.play().catch(() => {});
+}
 </script>
+
 
 </body>
 </html>
