@@ -416,6 +416,54 @@ function showMemoryGame() {
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+
+<script>
+function parseIndoDate(str){
+    if(!str) return null;
+    if(/^\d{4}-\d{2}-\d{2}T/.test(str)){
+        const d=Date.parse(str); return isNaN(d)?null:new Date(d);
+    }
+    const parts=String(str).split(',');
+    if(parts.length<2){
+        const alt=String(str).replace(/\./g,':');
+        const d=Date.parse(alt); return isNaN(d)?null:new Date(d);
+    }
+    const dpart=parts[0].trim(); const tpart=parts[1].trim().replace(/\./g,':');
+    const dp=dpart.split('/'); if(dp.length!=3) return null;
+    const iso=`${dp[2]}-${dp[1].padStart(2,'0')}-${dp[0].padStart(2,'0')}T${tpart}`;
+    const d=Date.parse(iso); return isNaN(d)?null:new Date(d);
+}
+function formatSecondsToTime(secs){
+    secs=Number(secs)||0; const m=Math.floor(secs/60); const s=secs%60;
+    return (m>0?m:'0')+':' + (s<10?'0'+s:s);
+}
+function escapeHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+</script>
+<script>
+function normalizeDetails(d){
+    try{
+        if(Array.isArray(d)) return d;
+        if(typeof d === 'string'){
+            const s = d.trim();
+            if(!s) return [];
+            if(s.startsWith('[') || s.startsWith('{')){
+                try{
+                    const parsed = JSON.parse(s);
+                    return Array.isArray(parsed) ? parsed : (parsed ? [parsed] : []);
+                }catch(e){
+                    return s.split(/\s*[,;|]\s*/).filter(Boolean);
+                }
+            }
+            return [s];
+        }
+        if(!d) return [];
+        if(typeof d === 'object') return [d];
+    }catch(e){ }
+    return [];
+}
+</script>
+
+
 </head>
  <body class="min-h-screen"><!-- Background Music -->
   <audio id="backgroundMusic" loop preload="auto"><source src="https://raw.githubusercontent.com/venisiswiandini/Ethnomath_/refs/heads/main/BS.mp3" type="audio/mpeg">
@@ -781,7 +829,7 @@ function showMemoryGame() {
          0
         </div>
         <div class="text-sm text-white font-semibold">
-         Jawaban Dari Materi
+         Jawaban Dari Materi 
         </div>
        </div>
        <div class="bg-gradient-to-br from-yellow-400 to-orange-500 p-6 rounded-2xl shadow-lg transform hover:scale-105 transition-all">
@@ -850,7 +898,6 @@ function showMemoryGame() {
 <tr>
 <th class="px-6 py-4 text-left font-bold">Nama</th>
 <th class="px-6 py-4 text-left font-bold">Total Aktivitas</th>
-<th class="px-6 py-4 text-left font-bold">Slide</th>
 <th class="px-6 py-4 text-left font-bold">Waktu</th>
 <th class="px-6 py-4 text-left font-bold">Detail</th>
 </tr>
@@ -880,6 +927,7 @@ function showMemoryGame() {
           <th class="px-6 py-4 text-left font-bold">Skor</th>
           <th class="px-6 py-4 text-left font-bold">Persentase</th>
           <th class="px-6 py-4 text-left font-bold">Waktu</th>
+          <th class="px-6 py-4 text-left font-bold">Detail</th>
          </tr>
         </thead>
         <tbody id="hostQuizResults" class="divide-y divide-gray-200">
@@ -903,9 +951,9 @@ function showMemoryGame() {
         <thead class="bg-gradient-to-r from-purple-500 to-pink-600 text-white">
          <tr>
           <th class="px-6 py-4 text-left font-bold">Nama</th>
-          <th class="px-6 py-4 text-left font-bold">Waktu</th>
+          <th class="px-6 py-4 text-left font-bold">Durasi Bermain</th>
           <th class="px-6 py-4 text-left font-bold">Percobaan</th>
-          <th class="px-6 py-4 text-left font-bold">Tanggal</th>
+          <th class="px-6 py-4 text-left font-bold">Waktu</th>
          </tr>
         </thead>
         <tbody id="hostGameResults" class="divide-y divide-gray-200">
@@ -1006,7 +1054,7 @@ function showMemoryGame() {
         let isHostLoggedIn = false;
         
         // Google Apps Script URL
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzC8DTGExY6KrT-bOtRMAwd7Tl9ScQ_CRQXfPAMz0HyfaS1XLb0QUkNLFJ3bxxv0M7biQ/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzxXiKqbpVQomHSqxXgCeDEwVsLLJeefsztSn-4WThR6Hvl6qtTIZyHKtl-tFnH4drvjg/exec';
         
         // Host Data Storage (local cache)
         let hostData = {
@@ -1700,8 +1748,8 @@ quizData.rows.forEach(row => {
                                 hostData.gameResults.push({
                                     name: row[0],
                                     time: row[1],
-                                    attempts: parseInt(row[2]) || 0,
-                                    date: row[3]
+                                    attempts: parseInt(row[3]) || 0,
+                                    date: row[4]
                                 });
                             }
                         });
@@ -1767,37 +1815,37 @@ quizData.rows.forEach(row => {
             const minutesUsed = Math.floor(timeUsed / 60);
             const secondsUsed = timeUsed % 60;
             const timeUsedText = `${minutesUsed}:${secondsUsed.toString().padStart(2, '0')}`;
-            
+
             const quizData = {
                 name: name,
                 score: score,
                 total: total,
                 percentage: percentage,
-                time: new Date().toLocaleString('id-ID'),
+                time: timeUsedText,
+                date: new Date().toLocaleString('id-ID'),
                 details: window.quizAnswerDetails || []
             };
-            
+
             hostData.quizResults.push(quizData);
-            
+
             const user = hostData.users.find(u => u.name === name);
             if (user) {
                 user.activities.push('Quiz');
             }
-            
+
             // Send to Google Sheets with correct format
             sendToGoogleSheets('submitQuiz', {
                 name: name,
-                score: score,     // number
-                total: total,     // number
+                score: `${score}/${total}`,  // Format: "8/12"
                 answers: JSON.stringify(window.quizAnswerDetails || []),  // JSON string
                 time: timeUsedText,  // Format: "5:30"
                 timeSeconds: timeUsed  // Also send seconds for compatibility
             });
-            
+
             // Reset quiz details for next attempt
             window.quizAnswerDetails = [];
         }
-        
+
         function trackGameResult(name, time, attempts) {
             const gameData = {
                 name: name,
@@ -1821,6 +1869,7 @@ quizData.rows.forEach(row => {
             sendToGoogleSheets('submitMemory', {
                 name: name,
                 time: time,
+                attempts: attempts,
                 timeSeconds: timeSeconds
             });
         }
@@ -1833,26 +1882,80 @@ quizData.rows.forEach(row => {
             document.getElementById('hostGameAttempts').textContent = hostData.gameResults.length;
             
             // Update material activities
-            const materialActivities = document.getElementById('hostMaterialActivities');
-            if (!hostData.materialActivities || hostData.materialActivities.length === 0) {
-                materialActivities.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
-                            <div class="text-4xl mb-2">📭</div>
-                            <p>Belum ada aktivitas materi</p>
-                        </td>
-                    </tr>
-                `;
-            } else {
-                materialActivities.innerHTML = hostData.materialActivities.slice(-20).reverse().map(activity => `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 font-semibold text-gray-800">${activity.name}</td>
-                        <td class="px-6 py-4 text-gray-600">${activity.slide}</td>
-                        <td class="px-6 py-4 text-gray-600 text-sm">${activity.answer}</td>
-                        <td class="px-6 py-4 text-gray-600 text-sm">${activity.time}</td>
-                    </tr>
-                `).join('');
-            }
+            // --- GROUPED MATERIAL ACTIVITIES (PER USER) ---
+const materialActivities = document.getElementById('hostMaterialActivities');
+const acts = hostData.materialActivities || [];
+
+if (acts.length === 0) {
+    materialActivities.innerHTML = `
+        <tr>
+            <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                <div class="text-4xl mb-2">📭</div>
+                <p>Belum ada aktivitas materi</p>
+            </td>
+        </tr>
+    `;
+} else {
+    // Kelompokkan per user
+    const groups = {};
+    acts.forEach(a => {
+        if (!groups[a.name]) groups[a.name] = [];
+        groups[a.name].push(a);
+    });
+
+    // Buat tabel ringkasan + detail collapsible
+    let html = "";
+    let index = 0;
+
+    Object.keys(groups).forEach(name => {
+        const list = groups[name];
+        const id = "detail_" + index++;
+
+        html += `
+    <tr class="hover:bg-gray-50">
+        <!-- NAMA -->
+        <td class="px-6 py-4 font-semibold text-gray-800">${name}</td>
+
+        <!-- TOTAL AKTIVITAS -->
+        <td class="px-6 py-4 text-gray-600">${list.length} aktivitas (slide) </td>
+
+        <!-- WAKTU TERBARU -->
+        <td class="px-6 py-4 text-gray-600 text-sm">
+            ${list[list.length - 1].time}
+        </td>
+
+        <!-- BUTTON DETAIL -->
+        <td class="px-6 py-4">
+            <button data-target="${id}" class="px-3 py-1 bg-blue-500 text-white rounded">
+                Detail
+            </button>
+        </td>
+    </tr>
+    <tr id="${id}" class="hidden bg-gray-50">
+        <td colspan="4" class="px-6 py-4">
+            ${list.map(x => `
+                <div class="py-1 border-b">
+                    <b>${x.slide}</b> – ${x.answer}
+                    <span class="text-xs text-gray-500">(${x.time})</span>
+                </div>
+            `).join("")}
+        </td>
+    </tr>
+`;
+
+    });
+
+    materialActivities.innerHTML = html;
+
+    // Toggle detail
+    document.querySelectorAll("[data-target]").forEach(btn => {
+        btn.onclick = () => {
+            const row = document.getElementById(btn.dataset.target);
+            row.classList.toggle("hidden");
+        };
+    });
+}
+
             
             // Update user list
             const userList = document.getElementById('hostUserList');
@@ -1881,58 +1984,97 @@ quizData.rows.forEach(row => {
             }
             
             // Update quiz results
-            const quizResults = document.getElementById('hostQuizResults');
-            if (hostData.quizResults.length === 0) {
-                quizResults.innerHTML = `
-                    <tr>
-                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
-                            <div class="text-4xl mb-2">📭</div>
-                            <p>Belum ada hasil quiz</p>
-                        </td>
-                    </tr>
-                `;
-            } else {
-                quizResults.innerHTML = hostData.quizResults.slice(-10).reverse().map((result, index) => {
-                    const detailsId = 'quizDetails' + index;
-                    return `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 font-semibold text-gray-800">${result.name}</td>
-                        <td class="px-6 py-4 text-gray-600">${result.score}/${result.total}</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
-                                result.percentage >= 80 ? 'bg-green-100 text-green-800' :
-                                result.percentage >= 60 ? 'bg-yellow-100 text-yellow-800' :
-                                'bg-red-100 text-red-800'
-                            }">
-                                ${result.percentage}%
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-gray-600">${result.time}</td>
-                    </tr>
-                    ${result.details && result.details.length > 0 ? `
-                    <tr class="bg-gray-50">
-                        <td colspan="4" class="px-6 py-4">
-                            <button onclick="toggleQuizDetails('${detailsId}')" class="text-blue-600 hover:text-blue-800 font-semibold text-sm mb-2">
-                                📋 Lihat Detail Jawaban
-                            </button>
-                            <div id="${detailsId}" class="hidden mt-2 space-y-2">
-                                ${result.details.map(detail => `
-                                    <div class="flex items-start space-x-2 text-sm p-2 rounded ${detail.isCorrect ? 'bg-green-50' : 'bg-red-50'}">
-                                        <span class="font-bold ${detail.isCorrect ? 'text-green-600' : 'text-red-600'}">${detail.isCorrect ? '✓' : '✗'}</span>
-                                        <div class="flex-1">
-                                            <div class="font-semibold text-gray-700">Soal ${detail.questionNumber}</div>
-                                            <div class="text-gray-600">Jawaban: ${detail.userAnswer}</div>
-                                            ${!detail.isCorrect ? `<div class="text-gray-500 text-xs">Benar: ${detail.correctAnswer}</div>` : ''}
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </td>
-                    </tr>
-                    ` : ''}
-                `;
-                }).join('');
-            }
+            const quizResults = document.getElementById("hostQuizResults");
+
+if (hostData.quizResults.length === 0) {
+    quizResults.innerHTML = `
+        <tr>
+            <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                <div class="text-4xl mb-2">📭</div>
+                <p>Belum ada hasil quiz</p>
+            </td>
+        </tr>
+    `;
+} else {
+    quizResults.innerHTML = hostData.quizResults
+        .reverse()
+        .map((result, index) => {
+            const detailsId = "quizDetails" + index;
+
+            return `
+<tr class="hover:bg-gray-50">
+    <td class="px-6 py-4 font-semibold text-gray-800">${result.name}</td>
+
+    <td class="px-6 py-4 text-gray-600">${result.score}/${result.total}</td>
+
+    <td class="px-6 py-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
+            result.percentage >= 80
+                ? "bg-green-100 text-green-800"
+                : result.percentage >= 60
+                ? "bg-yellow-100 text-yellow-800"
+                : "bg-red-100 text-red-800"
+        }">${result.percentage}%</span>
+    </td>
+
+    <td class="px-6 py-4 text-gray-600">${result.time}</td>
+
+    <td class="px-6 py-4">
+        <button onclick="toggleQuizDetails('${detailsId}')" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">
+            📋 Lihat Detail Jawaban
+        </button>
+    </td>
+</tr>
+
+<tr id="${detailsId}" class="hidden">
+    <td colspan="5" class="px-6 py-4 bg-gray-50">
+        ${normalizeDetails(result.details)
+            .map((detail, idx) => {
+                const userHasImg =
+                    detail.userAnswer &&
+                    detail.userAnswer.includes("<img");
+                const correctHasImg =
+                    detail.correctAnswer &&
+                    detail.correctAnswer.includes("<img");
+
+                return `
+        <div class="flex items-start space-x-2 p-2 rounded-md shadow-sm ${
+            detail.isCorrect ? "bg-green-50" : "bg-red-50"
+        }">
+            <span class="text-lg font-bold leading-tight ${
+                detail.isCorrect ? "text-green-600" : "text-red-600"
+            }">
+                ${detail.isCorrect ? "✓" : "✗"}
+            </span>
+
+            <div class="leading-tight text-[13px]">
+                <p class="font-bold text-gray-800 mb-0.5">Soal ${idx + 1}</p>
+
+                <p class="font-semibold text-gray-700 mb-0.5">
+                    ${escapeHtml(detail.question)}
+                </p>
+
+                <p class="text-gray-700 mb-0.5"><strong>Jawaban:</strong></p>
+                <div class="ml-1">
+                    ${userHasImg ? detail.userAnswer : escapeHtml(detail.userAnswer)}
+                </div>
+
+                <p class="text-gray-700 mt-1 mb-0.5"><strong>Benar:</strong></p>
+                <div class="ml-1">
+                    ${correctHasImg ? detail.correctAnswer : escapeHtml(detail.correctAnswer)}
+                </div>
+            </div>
+        </div>
+        `;
+            })
+            .join("")}
+    </td>
+</tr>
+`;
+        })
+        .join("");
+}
+
             
             // Update game results
             const gameResults = document.getElementById('hostGameResults');
@@ -1946,7 +2088,7 @@ quizData.rows.forEach(row => {
                     </tr>
                 `;
             } else {
-                gameResults.innerHTML = hostData.gameResults.slice(-10).reverse().map(result => `
+                gameResults.innerHTML = hostData.gameResults.reverse().map(result => `
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4 font-semibold text-gray-800">${result.name}</td>
                         <td class="px-6 py-4 text-gray-600">${result.time}</td>
@@ -3193,5 +3335,692 @@ document.addEventListener('DOMContentLoaded', ()=>{
 });
 
 </script>
+
+<!-- FINAL MATERIAL ACTIVITY GROUPING SCRIPT -->
+<script>
+(function(){
+  function escapeHtml(s){return String(s||'').replace(/[&<>"]/g,c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]));}
+
+  function renderMaterialActivitiesGrouped(){
+    let tbody = document.getElementById('hostMaterialActivities');
+    if(!tbody) return;
+    tbody.innerHTML = '';
+
+    let acts = (window.hostData && window.hostData.materialActivities) ? window.hostData.materialActivities : [];
+    if(acts.length === 0){
+      tbody.innerHTML = "<tr><td colspan='5' class='px-6 py-8 text-center text-gray-500'><div class='text-4xl mb-2'>📭</div>Belum ada aktivitas materi</td></tr>";
+      return;
+    }
+
+    let groups = {};
+    acts.forEach(a=>{
+      let name = a.name;
+      if(!groups[name]) groups[name] = [];
+      groups[name].push(a);
+    });
+
+    Object.keys(groups).forEach(name=>{
+      let items = groups[name];
+      let first = items[0];
+
+      // summary row
+      let tr = document.createElement('tr');
+      tr.className = 'hover:bg-gray-50';
+      tr.innerHTML = `
+        <td class='px-6 py-4 font-medium'>${escapeHtml(name)}</td>
+        <td class='px-6 py-4'>${items.length} Aktivitas</td>
+        <td class='px-6 py-4'>${escapeHtml(first.slide)}</td>
+        <td class='px-6 py-4'>${escapeHtml(first.time)}</td>
+        <td class='px-6 py-4'>
+            <button class='px-3 py-1 bg-blue-500 text-white rounded material-toggle' data-user='${name}'>
+                Lihat Jawaban
+            </button>
+        </td>`;
+      tbody.appendChild(tr);
+
+      // details row
+      let detail = document.createElement('tr');
+      detail.style.display = 'none';
+      detail.setAttribute('data-detail', name);
+      let td = document.createElement('td');
+      td.colSpan = 5;
+      td.className = 'px-6 py-4 bg-gray-50';
+
+      // detail list (NO time inside here)
+      items.forEach(it=>{
+        let div = document.createElement('div');
+        div.className = 'py-1';
+        div.innerHTML = `<strong>${escapeHtml(it.slide)}</strong> — ${escapeHtml(it.answer)}`;
+        td.appendChild(div);
+      });
+
+      detail.appendChild(td);
+      tbody.appendChild(detail);
+    });
+
+    // toggles
+    tbody.querySelectorAll('.material-toggle').forEach(btn=>{
+      btn.onclick = function(){
+        let name = this.getAttribute('data-user');
+        let row = tbody.querySelector(`tr[data-detail='${name}']`);
+        row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+      };
+    });
+  }
+
+  window.renderMaterialActivitiesGrouped = renderMaterialActivitiesGrouped;
+  window.addEventListener('hostDataLoaded', renderMaterialActivitiesGrouped);
+})();
+</script>
+<!-- END FINAL SCRIPT -->
+
+
+<!-- Renderer Override Injected -->
+<script>
+// --- OVERRIDE: robust material grouping & game render ---
+
+function parseIndoDate(str){
+  if(!str) return null;
+  if(/^\d{4}-\d{2}-\d{2}T/.test(str)){
+    const d=Date.parse(str); return isNaN(d)?null:new Date(d);
+  }
+  const parts=String(str).split(',');
+  if(parts.length<2){
+    const alt=String(str).replace(/\./g,':');
+    const d=Date.parse(alt); return isNaN(d)?null:new Date(d);
+  }
+  const dpart=parts[0].trim(); const tpart=parts[1].trim().replace(/\./g,':');
+  const dp=dpart.split('/'); if(dp.length!=3) return null;
+  const iso=`${dp[2]}-${dp[1].padStart(2,'0')}-${dp[0].padStart(2,'0')}T${tpart}`;
+  const d=Date.parse(iso); return isNaN(d)?null:new Date(d);
+}
+
+function formatSecondsToTime(secs){
+  secs=Number(secs)||0; const m=Math.floor(secs/60); const s=secs%60;
+  return (m>0?m:'0')+':' + (s<10?'0'+s:s);
+}
+
+function escapeHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;')
+.replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+
+// MATERIAL
+function renderMaterialActivitiesGroupedOverride(){
+  const tbody = document.getElementById('hostMaterialActivities');
+  if(!tbody) return;
+  const activities = (window.hostData && hostData.materialActivities) ? hostData.materialActivities : [];
+  if(!activities.length){
+    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500"><div class="text-4xl mb-2">📭</div><p>Belum ada aktivitas materi</p></td></tr>';
+    return;
+  }
+  const groups = {};
+  activities.forEach(a=>{
+    let obj={};
+    if(Array.isArray(a)){
+      obj.name = a[0]||'Unknown';
+      obj.slide = a[1]||'';
+      obj.answer = a[2]||'';
+      obj.time = a[3]||'';
+    } else {
+      obj.name = a.name || a[0] || 'Unknown';
+      obj.slide = a.slide || a.slideNumber || '';
+      if(Array.isArray(a.answer)) obj.answer = a.answer.join('; ');
+      else if(Array.isArray(a.answers)) obj.answer = a.answers.join('; ');
+      else obj.answer = a.answer || a.answers || '';
+      obj.time = a.time || a.timestamp || '';
+    }
+    const name = String(obj.name || 'Unknown');
+    groups[name] = groups[name] || [];
+    groups[name].push(obj);
+  });
+
+  let html = '';
+  let idx=0;
+  for(const name in groups){
+    const items = groups[name];
+    const first = items[0] || {};
+    const detailsId = 'mat_details_' + idx + '_' + Math.random().toString(36).slice(2,8);
+    const waktu = first.time || '';
+    html += `<tr class="user-row hover:bg-gray-50">
+      <td class="px-6 py-4 font-medium">${escapeHtml(name)}</td>
+      <td class="px-6 py-4">${items.length} aktivitas</td>
+      <td class="px-6 py-4"></td>
+      <td class="px-6 py-4">${escapeHtml(waktu)}</td>
+      <td class="px-6 py-4"><button class="view-details-btn btn" data-target="${detailsId}">Lihat Detail Jawaban</button></td>
+    </tr>`;
+    const detailHtml = items.map(it=>{
+      const slideLabel = it.slide ? ('Slide: ' + escapeHtml(it.slide)) : 'Slide: -';
+      const ans = it.answer ? escapeHtml(String(it.answer)) : '-';
+      const t = it.time ? escapeHtml(String(it.time)) : '';
+      return `<div class="detail-item py-2 border-b last:border-b-0">
+        <div class="font-semibold">${slideLabel}</div>
+        <div class="text-sm">Jawaban: ${ans}</div>
+        <div class="text-xs text-gray-500">${t}</div></div>`;
+    }).join('');
+    html += `<tr id="${detailsId}" class="detail-row hidden"><td colspan="5" class="px-6 py-4 bg-gray-50">${detailHtml}</td></tr>`;
+    idx++;
+  }
+
+  tbody.innerHTML = html;
+  document.querySelectorAll('.view-details-btn').forEach(btn=>{
+    const h = function(){
+      const id = this.getAttribute('data-target');
+      const el = document.getElementById(id);
+      if(el){
+        el.classList.toggle('hidden');
+        if(!el.classList.contains('hidden')) el.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    };
+    btn.addEventListener('click', h);
+  });
+}
+
+// GAME
+function renderGameResultsOverride(){
+  const tbody = document.getElementById('hostGameResults');
+  if(!tbody) return;
+  const results = (window.hostData && hostData.gameResults) ? hostData.gameResults : [];
+  if(!results.length){
+    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500"><div class="text-4xl mb-2">📭</div><p>Belum ada hasil game</p></td></tr>';
+    return;
+  }
+  let html = '';
+  results.forEach(r=>{
+    let name = r.name || r[0] || '';
+    let timeField = r.time || r.timeText || r.timestamp || r[1] || '';
+    let timeSeconds = r.timeSeconds ?? r[2] ?? '';
+    let attempts = r.attempts ?? 0;
+
+    let attemptsDisplay = attempts>0 ? (attempts + ' percobaan') :
+                          timeSeconds ? (timeSeconds + ' percobaan') : '-';
+
+    let parsed = parseIndoDate(timeField);
+    let waktuDisplay = parsed ? parsed.toISOString() : (timeField? String(timeField) : '');
+
+    let tanggal = parsed ? parsed.toLocaleDateString() : '';
+
+    html += `<tr>
+      <td class="px-6 py-4 font-medium">${escapeHtml(name)}</td>
+      <td class="px-6 py-4">${escapeHtml(waktuDisplay)}</td>
+      <td class="px-6 py-4"><span class="inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">${escapeHtml(attemptsDisplay)}</span></td>
+      <td class="px-6 py-4">${escapeHtml(tanggal)}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+// QUIZ
+
+function renderQuizResultsOverride(){
+  let tb = document.getElementById("quizResultsBody") || document.getElementById("hostQuizResults");
+  if(!tb) return;
+  tb.innerHTML="";
+  let q = (dashboardData && dashboardData.quizResults) ? [].concat(dashboardData.quizResults) : [];
+  function parseIndoDateLocal(str){
+    if(!str) return null;
+    try{
+      if(/^\d{4}-\d{2}-\d{2}T/.test(str)){
+        const d=Date.parse(str); return isNaN(d)?null:new Date(d);
+      }
+      const parts=String(str).split(',');
+      if(parts.length<2){
+        const alt=String(str).replace(/\./g,':');
+        const d=Date.parse(alt); return isNaN(d)?null:new Date(d);
+      }
+      const dpart=parts[0].trim(); const tpart=parts[1].trim().replace(/\./g,':');
+      const dp=dpart.split('/'); if(dp.length!=3) return null;
+      const iso=`${dp[2]}-${dp[1].padStart(2,'0')}-${dp[0].padStart(2,'0')}T${tpart}`;
+      const d=Date.parse(iso); return isNaN(d)?null:new Date(d);
+    }catch(e){ return null; }
+  }
+
+  let html="";
+  q.forEach(r=>{
+    let name = r.name || (r[0]||'') || '';
+    let sn = Number(r.scoreNumber || r.score || r[6] || 0);
+    let tot = Number(r.totalScore || r.total || r[7] || 0);
+    let score = `${sn}/${tot}`;
+    let percent = tot>0 ? `${Math.round((sn/tot)*100)}%` : "-";
+
+    let rawTs = r.timestamp || r.time || r[4] || r.timeText || "";
+    let parsed = parseIndoDateLocal(rawTs);
+    let waktuDisplay = parsed ? parsed.toLocaleString("id-ID") : String(rawTs||"-");
+
+    html += `
+      <tr>
+        <td class="px-6 py-4 font-medium">${escapeHtml(name)}</td>
+        <td class="px-6 py-4">${escapeHtml(score)}</td>
+        <td class="px-6 py-4">${escapeHtml(percent)}</td>
+        <td class="px-6 py-4">${escapeHtml(waktuDisplay)}</td>
+        <td class="px-6 py-4"><button class="text-blue-600 hover:text-blue-800 font-semibold" onclick="toggleQuizDetails('detail${name}')">Lihat Detail</button></td></tr>
+    `;
+  });
+  tb.innerHTML = html;
+}
+
+
+window.addEventListener('hostDataLoaded', function(){
+  renderMaterialActivitiesGroupedOverride();
+  renderGameResultsOverride();
+  renderQuizResultsOverride();
+});
+</script>
+
+
+<!-- PATCH A - Detailed overrides injected by assistant -->
+<script>
+// Helpers
+function parseIndoDate(str){
+  if(!str) return null;
+  if(/^\d{4}-\d{2}-\d{2}T/.test(str)){
+    const d = Date.parse(str); return isNaN(d)?null:new Date(d);
+  }
+  // try to extract date/time patterns like "21/11/2025, 10.57.55" possibly with trailing text
+  // remove any trailing non-date text after seconds (like device ids)
+  const cleaned = String(str).split(' ').slice(0,2).join(' ').replace(/\.+/g,':');
+  const parts = cleaned.split(',');
+  if(parts.length < 2){
+    // try alternative parse
+    const alt = String(str).replace(/\./g,':');
+    const d = Date.parse(alt); return isNaN(d)?null:new Date(d);
+  }
+  const dpart = parts[0].trim();
+  const tpart = parts[1].trim().replace(/\./g,':').split(' ')[0];
+  const dparts = dpart.split('/');
+  if(dparts.length !== 3) return null;
+  const day = dparts[0].padStart(2,'0');
+  const month = dparts[1].padStart(2,'0');
+  const year = dparts[2];
+  const iso = year + '-' + month + '-' + day + 'T' + tpart;
+  const parsed = Date.parse(iso);
+  return isNaN(parsed) ? null : new Date(parsed);
+}
+
+function formatSecondsToTime(secs){
+  secs = Number(secs) || 0;
+  const m = Math.floor(secs/60);
+  const s = Math.floor(secs%60);
+  if(m>0) return m + ':' + (s<10? '0'+s : s);
+  return '0:' + (s<10? '0'+s : s);
+}
+
+function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,"&#39;"); }
+
+// MATERIAL - group by user and produce one detail button
+function renderMaterialGrouped(){
+  const tbody = document.getElementById('hostMaterialActivities') || document.querySelector('#hostMaterialActivities');
+  if(!tbody) return;
+  const rows = (window.hostData && hostData.materialActivities) ? hostData.materialActivities : [];
+  if(!rows.length){
+    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500"><div class="text-4xl mb-2">📭</div><p>Belum ada aktivitas materi</p></td></tr>';
+    return;
+  }
+  const map = {};
+  rows.forEach(r => {
+    let obj = {};
+    if(Array.isArray(r)){
+      obj.name = r[0]||'Unknown';
+      obj.slide = r[1]||'';
+      obj.answer = r[2]||'';
+      obj.timestamp = r[3]||'';
+    } else {
+      obj.name = r.name || r[0] || 'Unknown';
+      obj.slide = r.slide || r.slideNumber || '';
+      // answers may be in .answer or .answers as array/string
+      if(Array.isArray(r.answer)) obj.answer = r.answer.join('; ');
+      else if(Array.isArray(r.answers)) obj.answer = r.answers.join('; ');
+      else obj.answer = r.answer || r.answers || '';
+      obj.timestamp = r.time || r.timestamp || r.date || '';
+    }
+    const key = String(obj.name || 'Unknown');
+    map[key] = map[key] || [];
+    map[key].push(obj);
+  });
+  let html = '';
+  let idx = 0;
+  for(const name in map){
+    const items = map[name];
+    const first = items[0] || {};
+    const detailsId = 'mat_details_' + idx + '_' + Math.random().toString(36).slice(2,8);
+    html += '<tr class="user-row hover:bg-gray-50">';
+    html += '<td class="px-6 py-4 font-medium">' + escapeHtml(name) + '</td>';
+    html += '<td class="px-6 py-4">' + items.length + ' aktivitas</td>';
+    html += '<td class="px-6 py-4"></td>';
+    html += '<td class="px-6 py-4">' + escapeHtml(first.timestamp || '') + '</td>';
+    html += '<td class="px-6 py-4"><button class="view-details-btn btn" data-target="' + detailsId + '">Lihat Detail Jawaban</button></td>';
+    html += '</tr>';
+    // detail row
+    const detailHtml = items.map(it => {
+      const slideLabel = it.slide ? ('Slide: ' + escapeHtml(it.slide)) : 'Slide: -';
+      const ans = it.answer ? escapeHtml(String(it.answer)) : '-';
+      const ts = it.timestamp ? escapeHtml(String(it.timestamp)) : '';
+      return '<div class="detail-item py-2 border-b last:border-b-0"><div class="font-semibold">' + slideLabel + '</div><div class="text-sm">Jawaban: ' + ans + '</div><div class="text-xs text-gray-500">' + ts + '</div></div>';
+    }).join('');
+    html += '<tr id="' + detailsId + '" class="detail-row hidden"><td colspan="5" class="px-6 py-4 bg-gray-50">' + detailHtml + '</td></tr>';
+    idx++;
+  }
+  tbody.innerHTML = html;
+  // attach handlers
+  document.querySelectorAll('.view-details-btn').forEach(btn=>{
+    btn.onclick = function(){
+      const id = this.getAttribute('data-target');
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.classList.toggle('hidden');
+      if(!el.classList.contains('hidden')) el.scrollIntoView({behavior:'smooth', block:'center'});
+    };
+  });
+}
+
+// GAME - display time from 'time' field, attempts from attempts column, date from timestamp
+function renderGameDetailed(){
+  const tbody = document.getElementById('hostGameResults') || document.querySelector('#hostGameResults');
+  if(!tbody) return;
+  const rows = (window.hostData && hostData.gameResults) ? hostData.gameResults : [];
+  if(!rows.length){
+    tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500"><div class="text-4xl mb-2">📭</div><p>Belum ada hasil game</p></td></tr>';
+    return;
+  }
+  let html = '';
+  rows.forEach(r => {
+    // normalize fields
+    let name = r.name || r[0] || '';
+    let timeVal = r.time || r.timeText || r.timestamp || r[1] || '';
+    let timeSeconds = (typeof r.timeSeconds !== 'undefined' && r.timeSeconds !== '') ? r.timeSeconds : (r[2] || '');
+    let attempts = (typeof r.attempts !== 'undefined' && r.attempts !== '') ? Number(r.attempts) : 0;
+    // For display, if attempts==0 and timeSeconds present, show timeSeconds visually (but not change sheet)
+    let attemptsDisplay = attempts > 0 ? (attempts + ' percobaan') : (timeSeconds ? (timeSeconds + ' percobaan') : '-');
+    // Time: prefer 'time' field (string), else try parse timestamp, else fallback format seconds
+    let waktuDisplay = '';
+    if(timeVal){
+      // if timeVal looks like a seconds number, format it
+      if(!isNaN(Number(timeVal)) && String(timeVal).length < 6){
+        waktuDisplay = formatSecondsToTime(Number(timeVal));
+      } else {
+        const parsed = parseIndoDate(timeVal);
+        if(parsed) waktuDisplay = parsed.toISOString();
+        else waktuDisplay = String(timeVal);
+      }
+    } else if(timeSeconds){
+      waktuDisplay = formatSecondsToTime(timeSeconds);
+    } else {
+      waktuDisplay = '';
+    }
+    // tanggal from timestamp parseIndoDate or blank
+    let tanggal = '';
+    const parsedDate = parseIndoDate(r.timestamp || r.time || '');
+    if(parsedDate) tanggal = parsedDate.toLocaleDateString();
+    else if(r.date) tanggal = r.date;
+    html += '<tr><td class="px-6 py-4 font-medium">' + escapeHtml(name) + '</td>';
+    html += '<td class="px-6 py-4">' + escapeHtml(waktuDisplay) + '</td>';
+    html += '<td class="px-6 py-4"><span class="inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">' + escapeHtml(attemptsDisplay) + '</span></td>';
+    html += '<td class="px-6 py-4">' + escapeHtml(tanggal) + '</td></tr>';
+  });
+  tbody.innerHTML = html;
+}
+
+// QUIZ - display score, percent, time
+function renderQuizDetailed(){
+  const tbody = document.getElementById('hostQuizResults');
+  if(!tbody) return;
+  const rows = (window.hostData && hostData.quizResults) ? hostData.quizResults : [];
+  if(!rows.length){
+    tbody.innerHTML = `<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500">
+      <div class="text-4xl mb-2">📭</div><p>Belum ada hasil quiz</p>
+    </td></tr>`;
+    return;
+  }
+  let html = '';
+  rows.forEach((r,idx)=>{
+    const name = escapeHtml(r.name || r[0] || '');
+    const sn = Number(r.scoreNumber || r.score || 0);
+    const tot = Number(r.totalScore || r.total || 0);
+    const percent = tot>0 ? (Math.round((sn/tot)*100) + '%') : '-';
+    const score = sn + '/' + tot;
+    const timeField = r.time || r.timeText || r.timestamp || r[3] || '';
+    const parsed = parseIndoDate(timeField);
+    const waktuDisplay = parsed ? parsed.toISOString() : escapeHtml(String(timeField));
+    const detailsId = `details_${idx}`;
+    html += `
+    <tr>
+      <td class="px-6 py-4 font-medium">${name}</td>
+      <td class="px-6 py-4">${score}</td>
+      <td class="px-6 py-4">${percent}</td>
+      <td class="px-6 py-4">${waktuDisplay}</td>
+      <td class="px-6 py-4">
+        <button onclick="toggleQuizDetails('${detailsId}')" class="text-blue-600 hover:text-blue-800 font-semibold text-sm">📋 Lihat Detail Jawaban</button>
+      </td>
+    </tr>`;
+    const details = normalizeDetails(r.details||[]);
+    const detailHtml = details.map((d,i)=>`
+      <div class="p-3 rounded-md mb-2 shadow-sm ${d.isCorrect?'bg-green-50':'bg-red-50'}">
+        <p class="font-bold mb-1">Soal ${i+1} ${d.isCorrect?'✓':'✗'}</p>
+        <p class="font-semibold text-gray-800">${escapeHtml(d.question)}</p>
+        <p class="mt-1"><strong>Jawaban:</strong> ${escapeHtml(d.userAnswer)}</p>
+        <p><strong>Benar:</strong> ${escapeHtml(d.correctAnswer)}</p>
+      </div>`).join('');
+    html += `
+    <tr id="${detailsId}" class="hidden">
+      <td colspan="5" class="px-6 py-4 bg-gray-50">${detailHtml}</td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+}
+
+// run after hostDataLoaded
+window.addEventListener('hostDataLoaded', function(){
+  try{ renderMaterialGrouped(); }catch(e){console.error(e);}
+  try{ renderGameDetailed(); }catch(e){console.error(e);}
+  try{ renderQuizDetailed(); }catch(e){console.error(e);}
+});
+</script>
+<!-- END PATCH A - Detailed overrides -->
+
+
+<!-- Assistant PATCH A FINAL: enforce correct MemoryResults & Material grouping -->
+<script>
+(async function(){
+  // helper
+  function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,"&#39;"); }
+  function formatDateCell(raw){
+    if(!raw) return '';
+    try{
+      // clean "21/11/2025, 10.30.43" => "21/11/2025 10:30:43"
+      return String(raw).replace(',', '').replace(/\./g, ':');
+    }catch(e){ return String(raw); }
+  }
+  // Ensure APPS_SCRIPT_URL exist
+  const API = (window.APPS_SCRIPT_URL || window.APPS_SCRIPT_URL_GLOBAL || typeof APPS_SCRIPT_URL !== 'undefined' && APPS_SCRIPT_URL) || '';
+  if(!API) {
+    console.warn('PATCH A FINAL: APPS_SCRIPT_URL not found, skipping auto-fix fetches.');
+    return;
+  }
+
+  // Fetch MemoryResults and rebuild hostData.gameResults properly
+  try{
+    const res = await fetch(API + '?action=getData&tab=MemoryResults');
+    const j = await res.json();
+    const rows = j && j.rows? j.rows : (j && j.data? j.data : []);
+    // prepare array
+    const games = [];
+    for(const row of rows){
+      if(!row || !row[0] || row[0]==='Name') continue;
+      // row mapping based on sheet: 0=Name,1=Time,2=TimeSeconds,3=Attempts,4=Timestamp,5=DeviceId
+      const name = row[0];
+      const time = row[1] || ''; // keep as string "0:33"
+      const attempts = (row[3] !== undefined && row[3] !== null && row[3] !== '') ? Number(row[3]) : 0;
+      const date = formatDateCell(row[4] || '');
+      games.push({name: String(name), time: String(time), attempts: attempts, date: date, raw: row});
+    }
+    // store into hostData if exists, else set global hostData
+    if(window.hostData) window.hostData.gameResults = games;
+    else window.hostData = Object.assign({}, window.hostData, {gameResults: games});
+    // render table if element exists
+    const tbody = document.getElementById('hostGameResults') || document.querySelector('#hostGameResults');
+    if(tbody){
+      if(games.length === 0){
+        tbody.innerHTML = '<tr><td colspan="4" class="px-6 py-8 text-center text-gray-500"><div class="text-4xl mb-2">📭</div><p>Belum ada hasil game</p></td></tr>';
+      } else {
+        tbody.innerHTML = games.reverse().map(r=>{
+          const attemptsLabel = r.attempts > 0 ? (r.attempts + ' percobaan') : '-';
+          const cls = r.attempts <= 8 ? 'bg-green-100 text-green-800' : (r.attempts <=12 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800');
+          return '<tr class="hover:bg-gray-50">'+
+            '<td class="px-6 py-4 font-semibold text-gray-800">'+escapeHtml(r.name)+'</td>'+
+            '<td class="px-6 py-4 text-gray-600">'+escapeHtml(r.time)+'</td>'+
+            '<td class="px-6 py-4"><span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold '+cls+'">'+escapeHtml(attemptsLabel)+'</span></td>'+
+            '<td class="px-6 py-4 text-gray-600">'+escapeHtml(r.date)+'</td></tr>';
+        }).join('');
+      }
+    }
+  }catch(err){
+    console.warn('PATCH A FINAL: failed to fetch MemoryResults', err);
+  }
+
+  // Fetch MaterialAnswers and group per user, render grouped table with detail button
+  try{
+    const res2 = await fetch(API + '?action=getData&tab=MaterialAnswers');
+    const j2 = await res2.json();
+    const rows2 = j2 && j2.rows? j2.rows : (j2 && j2.data? j2.data : []);
+    const groups = {};
+    for(const row of rows2){
+      if(!row || !row[0] || row[0]==='Name') continue;
+      // 0=name,1=slide,2=answer,3=timestamp,4=deviceId
+      const name = String(row[0] || 'Unknown');
+      const slide = row[1] || '';
+      const answer = row[2] || '';
+      const timestamp = formatDateCell(row[3] || '');
+      groups[name] = groups[name] || [];
+      groups[name].push({slide: String(slide), answer: String(answer), time: String(timestamp)});
+    }
+    // render grouped
+    const tbodyMat = document.getElementById('hostMaterialActivities') || document.querySelector('#hostMaterialActivities');
+    if(tbodyMat){
+      const names = Object.keys(groups);
+      if(names.length === 0){
+        tbodyMat.innerHTML = '<tr><td colspan="5" class="px-6 py-8 text-center text-gray-500"><div class="text-4xl mb-2">📭</div><p>Belum ada aktivitas materi</p></td></tr>';
+      } else {
+        let out = '';
+        let idx=0;
+        for(const name of names){
+          const items = groups[name];
+          const firstTime = items[0] ? items[0].time : '';
+          const id = 'mat_detail_' + idx + '_' + Math.random().toString(36).slice(2,8);
+          out += '<tr class="user-row hover:bg-gray-50">'+
+                 '<td class="px-6 py-4 font-medium">'+escapeHtml(name)+'</td>'+
+                 '<td class="px-6 py-4">'+items.length+' aktivitas</td>'+
+                 '<td class="px-6 py-4"></td>'+
+                 '<td class="px-6 py-4">'+escapeHtml(firstTime)+'</td>'+
+                 '<td class="px-6 py-4"><button class="view-details-btn btn" data-target="'+id+'">Lihat Detail Jawaban</button></td></tr>';
+          // detail row
+          const detailHtml = items.map(it=> '<div class="detail-item py-2 border-b last:border-b-0"><div class="font-semibold">Slide: '+escapeHtml(it.slide)+'</div><div class="text-sm">Jawaban: '+escapeHtml(it.answer)+'</div><div class="text-xs text-gray-500">'+escapeHtml(it.time)+'</div></div>').join('');
+          out += '<tr id="'+id+'" class="detail-row hidden"><td colspan="5" class="px-6 py-4 bg-gray-50">'+detailHtml+'</td></tr>';
+          idx++;
+        }
+        tbodyMat.innerHTML = out;
+        // attach handlers
+        document.querySelectorAll('.view-details-btn').forEach(btn=>{
+          btn.onclick = function(){
+            const id = this.getAttribute('data-target');
+            const el = document.getElementById(id);
+            if(!el) return;
+            el.classList.toggle('hidden');
+            if(!el.classList.contains('hidden')) el.scrollIntoView({behavior:'smooth', block:'center'});
+          };
+        });
+      }
+    }
+  }catch(err){
+    console.warn('PATCH A FINAL: failed to fetch MaterialAnswers', err);
+  }
+
+  // Also patch endGame submit to ensure attempts/timeSeconds/timestamp are sent
+  try{
+    // monkey patch global endGame if exists
+    if(window.endGame && typeof window.endGame === 'function'){
+      const originalEnd = window.endGame;
+      window.endGame = function(){
+        try{
+          // try to extract variables if available in global scope
+          const userName = window.userName || window.currentUser || (typeof userName !== 'undefined' && userName) || '';
+          const gameTime = window.gameTime || window.currentGameTime || (typeof gameTime !== 'undefined' && gameTime) || 0;
+          const gameAttempts = window.gameAttempts || window.attempts || (typeof gameAttempts !== 'undefined' && gameAttempts) || 0;
+          const matchedPairs = window.matchedPairs || 0;
+          const timeText = (function(){
+            if(typeof window.getTimeText === 'function') return window.getTimeText();
+            // fallback mm:ss
+            const m = Math.floor(Number(gameTime)/60);
+            const s = Math.floor(Number(gameTime)%60);
+            return m+':'+(s<10?('0'+s):s);
+          })();
+          // call original so UI still works
+          const ret = originalEnd.apply(this, arguments);
+          // send payload
+          const payload = {
+            type: "memory",
+            name: userName || 'Anonymous',
+            time: timeText,
+            timeSeconds: Number(gameTime) || 0,
+            attempts: Number(gameAttempts) || 0,
+            timestamp: new Date().toLocaleString('id-ID'),
+            deviceId: (localStorage.getItem('deviceId')||'')
+          };
+          fetch(API, {method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload)}).catch(e=>console.warn('PATCH A FINAL: submitMemory failed',e));
+          return ret;
+        }catch(e){
+          console.warn('PATCH A FINAL: patched endGame error', e);
+          return originalEnd.apply(this, arguments);
+        }
+      };
+    }
+  }catch(e){
+    console.warn('PATCH A FINAL: endGame monkey-patch failed', e);
+  }
+
+  // emit event for other scripts
+  try{ window.dispatchEvent(new Event('hostDataPatched')); }catch(e){}
+})(); 
+</script>
+<!-- END PATCH A FINAL -->
+
+
+<!-- Modal Detail Materi -->
+<div id="materialDetailModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fadeIn">
+  <div class="bg-white rounded-2xl shadow-xl max-w-xl w-full p-6 animate-bounceIn">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-2xl font-bold text-gray-800">Detail Jawaban Materi</h3>
+      <button onclick="closeMaterialDetail()" class="text-red-500 text-xl font-bold">✖</button>
+    </div>
+    <div id="materialDetailContent" class="space-y-4 max-h-96 overflow-y-auto"></div>
+  </div>
+</div>
+
+<style>
+@keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+.animate-fadeIn { animation: fadeIn 0.3s ease; }
+
+@keyframes bounceIn {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.animate-bounceIn { animation: bounceIn 0.4s ease; }
+</style>
+
+<script>
+function showMaterialDetail(list){
+  const box = document.getElementById("materialDetailContent");
+  box.innerHTML = list.map(item => `
+    <div class='p-4 bg-gray-100 rounded-xl border'>
+      <p><strong>Slide:</strong> ${item.slide}</p>
+      <p><strong>Jawaban:</strong> ${item.answer}</p>
+      <p class='text-sm text-gray-500'><strong>Waktu:</strong> ${item.time}</p>
+    </div>
+  `).join("");
+  document.getElementById("materialDetailModal").classList.remove("hidden");
+}
+function closeMaterialDetail(){
+  document.getElementById("materialDetailModal").classList.add("hidden");
+}
+</script>
+
 </body>
 </html>
